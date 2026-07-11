@@ -111,9 +111,9 @@ export default function FAQ() {
       <section className="py-20 sm:py-28 bg-dynasty-cream">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
-            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange">{Icons.users}</span>
+            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.users}</span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-              KM DYNASTY &amp; La'Gwat Creator Network &mdash; FAQs
+              <span className="text-gradient-animated">KM DYNASTY &amp; La'Gwat Creator Network &mdash; FAQs</span>
             </h1>
             <p className="text-gray-500 text-sm max-w-lg mx-auto">
               Answers to the most common questions.
@@ -151,7 +151,7 @@ export default function FAQ() {
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-purple text-white font-bold text-sm rounded-xl hover:bg-dynasty-purple-dark transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-purple text-white font-bold text-sm rounded-xl hover:bg-dynasty-purple-dark transition-colors animate-glow-breathe"
               >
                 Contact Us
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>

@@ -7,16 +7,20 @@ export default function Agency() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-16 sm:py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+      <section className="bg-dynasty-charcoal py-16 sm:py-20 overflow-hidden relative">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px] animate-drift" />
+          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" />
+        </div>
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-dynasty-orange text-xs font-semibold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.users}</span>
+              <span className="w-4 h-4 block animate-float">{Icons.users}</span>
               Official Partnerships
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
               Join the KM Dynasty<br />
-              <span className="text-dynasty-orange">Agency</span>
+              <span className="text-dynasty-orange text-gradient-animated">Agency</span>
             </h1>
             <p className="text-gray-400 max-w-xl mx-auto text-lg">
               Select your region and apply to be part of King Maker's official TikTok agency. Grow your live presence as part of the KM Dynasty family.
@@ -52,7 +56,7 @@ export default function Agency() {
                   </ul>
                   <Link
                     to="/contact"
-                    className="block text-center px-5 py-3 bg-dynasty-purple text-white text-sm font-semibold rounded-xl hover:bg-dynasty-purple/90 transition-colors"
+                    className="block text-center px-5 py-3 bg-dynasty-purple text-white text-sm font-semibold rounded-xl hover:bg-dynasty-purple/90 transition-colors animate-glow-breathe"
                   >
                     Apply Now
                   </Link>
@@ -110,7 +114,7 @@ export default function Agency() {
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-semibold rounded-xl hover:bg-dynasty-orange/90 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-semibold rounded-xl hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
             >
               Apply for Agency
             </Link>

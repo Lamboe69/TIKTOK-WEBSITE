@@ -25,11 +25,11 @@ export default function Giveaway() {
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.gift}</span>
+              <span className="w-4 h-4 block animate-float">{Icons.gift}</span>
               Reward Claim
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              Claim Your <span className="text-dynasty-orange">Reward</span>
+              Claim Your <span className="text-dynasty-orange text-gradient-animated">Reward</span>
             </h1>
             <p className="text-gray-400 max-w-lg mx-auto">
               Enter the code from the livestream and your phone number to claim your free airtime or reward.
@@ -116,7 +116,7 @@ export default function Giveaway() {
 
                   <button
                     type="submit"
-                    className="w-full px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors"
+                    className="w-full px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
                   >
                     Claim Reward
                   </button>

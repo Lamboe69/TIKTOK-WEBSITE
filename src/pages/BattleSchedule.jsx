@@ -48,7 +48,7 @@ function NextBattleCountdown() {
     <Motion variant="fade-up">
       <div className="bg-dynasty-purple/5 border border-dynasty-purple/10 rounded-2xl p-4 sm:p-5 mb-8 flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 bg-dynasty-orange rounded-full animate-breathe" />
+          <span className="w-2.5 h-2.5 bg-dynasty-orange rounded-full animate-breathe animate-pulse" />
           <span className="text-xs font-semibold text-dynasty-purple uppercase tracking-wider">Next Battle</span>
         </div>
         <div className="flex-1 text-center sm:text-left">
@@ -293,17 +293,21 @@ export default function BattleSchedule() {
 
           {/* Champion of Champions Banner */}
           <Motion variant="fade-up">
-            <div className="mt-12 bg-dynasty-charcoal rounded-2xl p-8 text-center text-white">
-              <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.trophy}</span>
-              <h2 className="font-display font-bold text-xl mb-3">
-                Champion of the Champions
+            <div className="mt-12 bg-dynasty-charcoal rounded-2xl p-8 text-center text-white relative overflow-hidden">
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 left-1/4 w-[200px] h-[200px] bg-dynasty-purple/15 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '10s' }} />
+                <div className="absolute bottom-0 right-1/4 w-[200px] h-[200px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
+              </div>
+              <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float relative">{Icons.trophy}</span>
+              <h2 className="font-display font-bold text-xl mb-3 relative">
+                <span className="text-dynasty-orange">Champion</span> of the Champions
               </h2>
               <p className="text-gray-400 text-sm max-w-lg mx-auto mb-6 leading-relaxed">
                 Winners from ALL Official Godsent Box Battles compete in the grand KM DYNASTY finale. Only the best earn their spot.
               </p>
               <Link
                 to="/how-to-join#step-8"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow"
+                className="relative inline-flex items-center gap-2 px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow animate-glow-breathe"
               >
                 How to Qualify
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>

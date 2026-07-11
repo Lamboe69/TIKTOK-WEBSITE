@@ -48,9 +48,9 @@ export default function About() {
       <section className="py-20 sm:py-28 bg-dynasty-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
-            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange">{Icons.crown}</span>
+            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.crown}</span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-              KING MAKER &mdash; Pro-Godsent Box Battle Host
+              <span className="text-gradient-animated">KING MAKER</span> &mdash; Pro-Godsent Box Battle Host
             </h1>
             <p className="text-gray-500 text-sm max-w-lg mx-auto">
               The architect of engagement. Reinventing the TikTok box-battle format.
@@ -58,7 +58,10 @@ export default function About() {
           </div>
 
           {/* By the Numbers — Section 3.1 */}
-          <div className="mb-16">
+          <div className="mb-16 relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '12s' }} />
+            </div>
             <Motion>
               <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-6 text-center">
                 By the Numbers
@@ -226,7 +229,7 @@ export default function About() {
                 href="https://www.tiktok.com/@kingmakernevergivesup"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl hover:bg-dynasty-orange-dark transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl hover:bg-dynasty-orange-dark transition-colors animate-glow-breathe"
               >
                 Follow King Maker
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>

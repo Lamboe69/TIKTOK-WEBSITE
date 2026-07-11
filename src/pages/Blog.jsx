@@ -14,16 +14,16 @@ export default function Blog() {
       {/* Hero */}
       <section className="bg-dynasty-charcoal py-16 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px] animate-drift" />
         </div>
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.clipboard}</span>
+              <span className="w-4 h-4 block animate-float">{Icons.clipboard}</span>
               Battle Reports & Stories
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              The Dynasty <span className="text-dynasty-orange">Blog</span>
+              The Dynasty <span className="text-dynasty-orange text-gradient-animated">Blog</span>
             </h1>
             <p className="text-gray-400 max-w-xl mx-auto">
               Battle results, community stories, and updates from the KM Dynasty family.

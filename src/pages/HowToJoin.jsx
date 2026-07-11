@@ -3,6 +3,7 @@ import Stepper from '../components/Stepper'
 import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
 import Motion from '../components/Motion'
+import Particles from '../components/Particles'
 
 const steps = [
   {
@@ -232,9 +233,10 @@ export default function HowToJoin() {
     <main>
       {/* Intro — dark hero */}
       <section className="py-20 sm:py-28 bg-dynasty-charcoal text-white relative overflow-hidden">
+        <Particles count={25} color="rgba(255,122,0,0.35)" />
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px]" />
-          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px] animate-drift" style={{ animationDuration: '10s' }} />
+          <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         </div>
 
@@ -246,7 +248,7 @@ export default function HowToJoin() {
             </div>
             <h1 className="font-display font-bold text-3xl sm:text-4xl md:text-5xl mb-4">
               How to Join My<br />
-              <span className="text-dynasty-orange">Box Battle</span>
+              <span className="text-gradient-animated">Box Battle</span>
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
               TikTok Live — follow the path from first tap to Champion of Champions.
@@ -303,6 +305,7 @@ export default function HowToJoin() {
 
       {/* Track B: Special Battles */}
       <section className="py-12 sm:py-16 bg-dynasty-charcoal text-white relative overflow-hidden">
+        <Particles count={20} color="rgba(255,255,255,0.25)" />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
         </div>
@@ -353,7 +356,8 @@ export default function HowToJoin() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-16 bg-dynasty-purple">
+      <section className="py-16 bg-dynasty-purple relative overflow-hidden">
+        <Particles count={15} color="rgba(255,255,255,0.3)" />
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <Motion variant="fade-up">
             <h2 className="font-display font-bold text-2xl text-white mb-3">
@@ -364,7 +368,7 @@ export default function HowToJoin() {
             </p>
             <button
               onClick={openOfficial}
-              className="inline-block px-8 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg"
+              className="inline-block px-8 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg animate-glow-breathe"
             >
               Sign Up — Box Battle
             </button>

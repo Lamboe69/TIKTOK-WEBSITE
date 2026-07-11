@@ -11,12 +11,12 @@ export default function Masterclass() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-dynasty-orange text-xs font-semibold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.star}</span>
+              <span className="w-4 h-4 block animate-float">{Icons.star}</span>
               Elite Education
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
               KM Dynasty<br />
-              <span className="text-dynasty-orange">Masterclass</span>
+              <span className="text-dynasty-orange text-gradient-animated">Masterclass</span>
             </h1>
             <p className="text-gray-400 max-w-xl mx-auto text-lg">
               Learn directly from King Maker. Choose the programme that fits your ambition and start your TikTok transformation today.
@@ -73,9 +73,9 @@ export default function Masterclass() {
                     to="/contact"
                     className={`block text-center px-5 py-3 text-sm font-semibold rounded-xl transition-colors ${
                       tier.badge === 'Popular'
-                        ? 'bg-dynasty-orange text-white hover:bg-dynasty-orange/90'
+                        ? 'bg-dynasty-orange text-white hover:bg-dynasty-orange/90 animate-glow-breathe'
                         : tier.badge === 'Premium'
-                        ? 'bg-dynasty-purple text-white hover:bg-dynasty-purple/90'
+                        ? 'bg-dynasty-purple text-white hover:bg-dynasty-purple/90 animate-glow-breathe'
                         : 'bg-dynasty-charcoal text-white hover:bg-dynasty-charcoal/90'
                     }`}
                   >
@@ -162,7 +162,7 @@ export default function Masterclass() {
             </p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-semibold rounded-xl hover:bg-dynasty-orange/90 transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-semibold rounded-xl hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
             >
               <span className="w-4 h-4 block">{Icons.mail}</span>
               Contact Us

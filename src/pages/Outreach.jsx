@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
+import Particles from '../components/Particles'
 
 const impactStats = [
   { value: '500+', label: 'Families Helped' },
@@ -36,6 +37,7 @@ export default function Outreach() {
     <main className="min-h-screen bg-white">
       {/* Hero */}
       <section className="bg-dynasty-charcoal py-16 sm:py-20 relative overflow-hidden">
+        <Particles count={25} color="rgba(255,122,0,0.35)" />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px]" />
           <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
@@ -43,11 +45,11 @@ export default function Outreach() {
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.heart}</span>
+              <span className="w-4 h-4 block animate-float">{Icons.heart}</span>
               Giving Back
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              KM Dynasty <span className="text-dynasty-orange">Outreach</span>
+              KM Dynasty <span className="text-dynasty-orange text-gradient-animated">Outreach</span>
             </h1>
             <p className="text-gray-400 max-w-xl mx-auto">
               "I want to take our dynasty family to the streets and be a destiny helper to those in need."
@@ -105,7 +107,7 @@ export default function Outreach() {
                     href="#"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 animate-glow-breathe"
                   >
                     Donate on GoFundMe
                     <span className="w-4 h-4 block">{Icons.arrowRight}</span>
@@ -211,7 +213,7 @@ export default function Outreach() {
                       </div>
                       <button
                         type="submit"
-                        className="w-full px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors"
+                        className="w-full px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
                       >
                         Submit Application
                       </button>

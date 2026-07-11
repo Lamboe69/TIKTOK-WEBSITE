@@ -122,7 +122,7 @@ export default function Advertise() {
             For Brands & Sponsors
           </div>
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-white mb-4">
-            Advertise With KM DYNASTY
+            <span className="text-gradient-animated">Advertise With KM DYNASTY</span>
           </h1>
           <p className="text-white/70 text-base sm:text-lg max-w-2xl mx-auto mb-10">
             Partner with King Maker to reach a fast-growing, highly engaged livestream audience.
@@ -175,7 +175,7 @@ export default function Advertise() {
 
                   {/* Availability status tag */}
                   <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${avail.bg} ${avail.text} mb-3 self-start`}>
-                    <span className={`w-2 h-2 rounded-full ${avail.dot}`}></span>
+                    <span className={`w-2 h-2 rounded-full ${avail.dot} animate-dot-pulse`}></span>
                     {avail.label}
                     {availabilityNote && <span className="font-normal opacity-70">({availabilityNote})</span>}
                   </div>
@@ -199,7 +199,7 @@ export default function Advertise() {
                         document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
                         setForm({ ...form, placement: name })
                       }}
-                      className="block w-full text-center px-4 py-2.5 bg-gray-100 text-gray-500 font-bold text-sm rounded-xl hover:bg-gray-200 transition-colors"
+                      className="block w-full text-center px-4 py-2.5 bg-gray-100 text-gray-500 font-bold text-sm rounded-xl hover:bg-gray-200 transition-colors animate-glow-breathe"
                     >
                       Join Waitlist
                     </a>
@@ -211,7 +211,7 @@ export default function Advertise() {
                         document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
                         setForm({ ...form, placement: name })
                       }}
-                      className="block w-full text-center px-4 py-2.5 bg-dynasty-purple text-white font-bold text-sm rounded-xl hover:bg-dynasty-purple-dark transition-colors"
+                      className="block w-full text-center px-4 py-2.5 bg-dynasty-purple text-white font-bold text-sm rounded-xl hover:bg-dynasty-purple-dark transition-colors animate-glow-breathe"
                     >
                       Reserve This Slot
                     </a>

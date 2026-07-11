@@ -213,9 +213,9 @@ export default function DailyQuotes() {
       <section className="py-20 sm:py-28 bg-dynasty-cream">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <Motion variant="fade-up" className="text-center mb-10">
-            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange">{Icons.star}</span>
+            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.star}</span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-              Daily KM Quotes
+              <span className="text-gradient-animated">Daily KM Quotes</span>
             </h1>
             <p className="text-gray-500 text-sm max-w-lg mx-auto">
               A quote for every day of the week. Fuel your battles with purpose.
@@ -231,7 +231,7 @@ export default function DailyQuotes() {
               </p>
               <button
                 onClick={openSpecial}
-                className="inline-block px-5 py-2 bg-dynasty-orange text-white text-xs font-semibold rounded-lg btn-glow"
+                className="inline-block px-5 py-2 bg-dynasty-orange text-white text-xs font-semibold rounded-lg btn-glow animate-glow-breathe"
               >
                 Fill Form Here
               </button>

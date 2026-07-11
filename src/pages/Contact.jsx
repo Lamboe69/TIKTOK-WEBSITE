@@ -55,9 +55,9 @@ export default function Contact() {
       <section className="py-20 sm:py-28 bg-dynasty-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
-            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange">{Icons.mail}</span>
+            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.mail}</span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-              Get in Touch
+              <span className="text-gradient-animated">Get in Touch</span>
             </h1>
             <p className="text-gray-500 text-sm max-w-lg mx-auto">
               Reach out to La'Gwat Agency for Creator Support and Expert Advice.
@@ -129,7 +129,7 @@ export default function Contact() {
                       type="submit"
                       disabled={submitting}
                       className={`w-full py-3 text-white font-bold text-sm rounded-xl transition-colors ${
-                        submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-dynasty-purple hover:bg-dynasty-purple-dark'
+                        submitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-dynasty-purple hover:bg-dynasty-purple-dark animate-glow-breathe'
                       }`}
                     >
                       {submitting ? 'Sending...' : 'Send Message'}

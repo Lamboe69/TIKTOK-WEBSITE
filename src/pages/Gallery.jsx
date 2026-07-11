@@ -14,16 +14,16 @@ export default function Gallery() {
       {/* Hero */}
       <section className="bg-dynasty-charcoal py-16 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-orange/10 rounded-full blur-[100px]" />
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-orange/10 rounded-full blur-[100px] animate-drift" />
         </div>
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.film}</span>
+              <span className="w-4 h-4 block animate-float">{Icons.film}</span>
               From the Dynasty
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              Photo <span className="text-dynasty-orange">Gallery</span>
+              Photo <span className="text-dynasty-orange text-gradient-animated">Gallery</span>
             </h1>
             <p className="text-gray-400 max-w-xl mx-auto">
               {photos.length} moments captured across battles, meetups, and community events.
