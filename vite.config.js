@@ -12,10 +12,10 @@ function apiDevPlugin() {
         // Return the cached stats if available, otherwise nulls
         // On Vercel, the real api/stats.js handler runs instead
         const response = {
-          followers: null,
-          followersFormatted: null,
-          likes: null,
-          likesFormatted: null,
+          followers: 50000,
+          followersFormatted: '50K+',
+          likes: 1000000,
+          likesFormatted: '1M+',
           following: null,
           displayName: 'King Maker',
           username: 'kingmakernevergivesup',

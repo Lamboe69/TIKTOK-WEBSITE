@@ -1,12 +1,12 @@
 {
-  "followers": null,
-  "followersFormatted": null,
-  "likes": null,
-  "likesFormatted": null,
+  "followers": 50000,
+  "followersFormatted": "50K+",
+  "likes": 1000000,
+  "likesFormatted": "1M+",
   "following": null,
   "displayName": "King Maker",
   "username": "kingmakernevergivesup",
-  "source": "initial-placeholder",
-  "updatedAt": null,
-  "expiresAt": "2020-01-01T00:00:00.000Z"
+  "source": "hardcoded",
+  "updatedAt": "2026-07-11T00:00:00.000Z",
+  "expiresAt": "2026-12-31T23:59:59.000Z"
 }

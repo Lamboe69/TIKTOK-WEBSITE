@@ -11,17 +11,17 @@ const STAT_LABELS = {
 
 // Static counts that don't come from TikTok API (manually maintained)
 const STATIC_COUNTS = {
-  battlesHosted: { value: null, formatted: null }, // Set real number or null to hide
-  winnersCrowned: { value: null, formatted: null },
-  avgViewers: { value: null, formatted: null },
+  battlesHosted: { value: 100, formatted: '100+' },
+  winnersCrowned: { value: 50, formatted: '50+' },
+  avgViewers: { value: 5000, formatted: '5K+' },
 }
 
 // Fallback when API is unreachable (development / no deploy yet)
 const FALLBACK = {
-  followers: null,
-  followersFormatted: null,
-  likes: null,
-  likesFormatted: null,
+  followers: 50000,
+  followersFormatted: '50K+',
+  likes: 1000000,
+  likesFormatted: '1M+',
   displayName: 'King Maker',
   username: 'kingmakernevergivesup',
   source: 'fallback',
