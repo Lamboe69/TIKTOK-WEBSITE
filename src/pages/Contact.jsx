@@ -83,7 +83,7 @@ export default function Contact() {
                 key={title}
                 href={href}
                 onClick={onClick}
-                className="group relative bg-white rounded-2xl border border-gray-100 p-6 text-center hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                className="group relative backdrop-blur-sm bg-white/80 rounded-2xl border border-white/60 p-6 text-center shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden"
               >
                 {/* Shimmer on hover */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
@@ -101,7 +101,7 @@ export default function Contact() {
           <div id="contact-form" className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Left column: Form */}
             <div>
-              <div className="bg-white rounded-2xl p-8 sm:p-10 border border-gray-100 shadow-sm relative overflow-hidden">
+              <div className="backdrop-blur-sm bg-white/80 rounded-2xl p-8 sm:p-10 border border-white/60 shadow-lg relative overflow-hidden">
                 {/* Subtle accent */}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-dynasty-purple via-dynasty-orange to-dynasty-purple" />
                 <h2 className="font-display font-bold text-2xl text-dynasty-charcoal mb-6">Send a Message</h2>
@@ -128,7 +128,7 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         placeholder="Your full name"
-                        className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all placeholder:text-gray-300"
+                        className="w-full px-4 py-3 text-sm border border-white/60 bg-white/50 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all placeholder:text-gray-300"
                       />
                     </div>
                     <div>
@@ -140,7 +140,7 @@ export default function Contact() {
                         onChange={handleChange}
                         required
                         placeholder="you@example.com"
-                        className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all placeholder:text-gray-300"
+                        className="w-full px-4 py-3 text-sm border border-white/60 bg-white/50 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all placeholder:text-gray-300"
                       />
                     </div>
                     <div>
@@ -150,7 +150,7 @@ export default function Contact() {
                         value={form.reason}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all bg-white"
+                        className="w-full px-4 py-3 text-sm border border-white/60 bg-white/50 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all"
                       >
                         <option value="">Select a reason...</option>
                         {contactReasons.map((r) => (
@@ -167,7 +167,7 @@ export default function Contact() {
                         required
                         rows={5}
                         placeholder="Tell us what you need help with..."
-                        className="w-full px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all resize-none placeholder:text-gray-300"
+                        className="w-full px-4 py-3 text-sm border border-white/60 bg-white/50 rounded-xl focus:outline-none focus:border-dynasty-purple focus:ring-2 focus:ring-dynasty-purple/10 transition-all resize-none placeholder:text-gray-300"
                       />
                     </div>
                     <button
@@ -205,7 +205,7 @@ export default function Contact() {
                   { text: '9am – 6pm CT, Monday–Friday' },
                 ]},
               ].map(({ icon, label, accent, lines }) => (
-                <div key={label} className="bg-white rounded-2xl p-6 border border-gray-100 flex items-start gap-4 card-tilt hover:shadow-md transition-shadow relative overflow-hidden group">
+                <div key={label} className="backdrop-blur-sm bg-white/80 rounded-2xl p-6 border border-white/60 shadow-md flex items-start gap-4 card-tilt hover:shadow-lg transition-all relative overflow-hidden group">
                   {/* Accent left border */}
                   <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-${accent} to-${accent}-dark rounded-r`} />
                   <div className={`w-12 h-12 rounded-xl bg-${accent}/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
@@ -232,7 +232,7 @@ export default function Contact() {
               ))}
 
               {/* Map embed */}
-              <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+              <div className="backdrop-blur-sm bg-white/80 rounded-2xl overflow-hidden border border-white/60 shadow-md">
                 <iframe
                   title="KM DYNASTY — Dallas, Texas"
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107440.60493614768!2d-96.844958!3d32.78761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c197d8735a3a9%3A0x7e7a2b70e7a6a2a7!2sDallas%2C%20TX!5e0!3m2!1sen!2sus!4v1"
