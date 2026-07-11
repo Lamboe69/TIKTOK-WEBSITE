@@ -78,17 +78,45 @@ export default function About() {
           </div>
 
           <div className="space-y-10">
-            {/* The Story — Section 3.3 tightened */}
+            {/* The Story — Timeline / Chapters */}
             <Motion>
-              <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-3">The Story</h2>
-                <p className="text-sm text-gray-600 leading-relaxed">
-                  It started with a $30 dream and a phone screen. King Maker saw what TikTok box battles could be &mdash;
-                  not just a game of coins, but an interactive arena where engagement, community, and heart determine who rises.
-                  From the first livestream to a community that now spans continents, he introduced interactive polls,
-                  narrative-driven battles, and a gamified format that turns every session into an event people plan their evenings around.
-                </p>
-                <p className="text-xs text-gray-400 mt-4 italic">
+              <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-purple/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '14s' }} />
+                </div>
+                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-6 relative z-10">
+                  <span className="text-gradient-animated">The Story</span>
+                </h2>
+                <div className="relative z-10 border-l-2 border-dynasty-purple/20 pl-8 space-y-8">
+                  {/* Chapter 1 */}
+                  <div className="relative">
+                    <div className="absolute -left-[2.55rem] top-0 w-8 h-8 rounded-full bg-dynasty-orange flex items-center justify-center text-white text-xs font-bold shadow-md">1</div>
+                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Beginning</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      A $30 dream and a phone screen. King Maker saw what TikTok box battles could be &mdash;
+                      not just a game of coins, but an interactive arena where engagement, community, and heart determine who rises.
+                    </p>
+                  </div>
+                  {/* Chapter 2 */}
+                  <div className="relative">
+                    <div className="absolute -left-[2.55rem] top-0 w-8 h-8 rounded-full bg-dynasty-orange flex items-center justify-center text-white text-xs font-bold shadow-md">2</div>
+                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Arena</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      Interactive polls, narrative-driven battles, and a gamified format that turns every session into an event
+                      people plan their evenings around.
+                    </p>
+                  </div>
+                  {/* Chapter 3 */}
+                  <div className="relative">
+                    <div className="absolute -left-[2.55rem] top-0 w-8 h-8 rounded-full bg-dynasty-orange flex items-center justify-center text-white text-xs font-bold shadow-md">3</div>
+                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Community</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      From the first livestream to a community that now spans continents &mdash;
+                      a movement built on loyalty, creativity, and shared purpose.
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-400 mt-6 italic relative z-10">
                   * Confirm a real starting date and any verifiable milestones with King Maker before publishing.
                 </p>
               </div>

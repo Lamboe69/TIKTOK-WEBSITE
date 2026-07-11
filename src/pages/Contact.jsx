@@ -64,7 +64,28 @@ export default function Contact() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          {/* Quick-contact category cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-12">
+            {[
+              { icon: Icons.mail, title: 'General Question', href: '#contact-form', onClick: (e) => { e.preventDefault(); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }) } },
+              { icon: Icons.users, title: 'Creator Inquiry', href: '/agency' },
+              { icon: Icons.film, title: 'Press / Media', href: '#contact-form', onClick: (e) => { e.preventDefault(); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }) } },
+            ].map(({ icon, title, href, onClick }) => (
+              <a
+                key={title}
+                href={href}
+                onClick={onClick}
+                className="bg-white rounded-xl border border-gray-100 p-6 text-center hover:shadow-md hover:-translate-y-1 transition-all duration-300 group"
+              >
+                <span className="w-12 h-12 mx-auto mb-3 block rounded-full bg-dynasty-orange/10 flex items-center justify-center text-dynasty-orange group-hover:bg-dynasty-orange group-hover:text-white transition-colors duration-300">
+                  {icon}
+                </span>
+                <p className="text-sm font-bold text-dynasty-charcoal">{title}</p>
+              </a>
+            ))}
+          </div>
+
+          <div id="contact-form" className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Left column: Form */}
             <div>
               <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
@@ -160,7 +181,7 @@ export default function Contact() {
                   { text: '9am – 6pm CT, Monday–Friday' },
                 ]},
               ].map(({ icon, label, lines }) => (
-                <div key={label} className="bg-white rounded-2xl p-5 border border-gray-100 flex items-start gap-4">
+                <div key={label} className="bg-white rounded-2xl p-5 border border-gray-100 flex items-start gap-4 card-tilt">
                   <div className="w-10 h-10 rounded-xl bg-dynasty-orange/10 flex items-center justify-center flex-shrink-0">
                     <span className="w-5 h-5 block text-dynasty-orange">{icon}</span>
                   </div>

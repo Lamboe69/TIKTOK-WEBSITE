@@ -24,6 +24,9 @@ const socials = [
   { href: '#', icon: 'instagram', label: 'Instagram', comingSoon: true, color: 'hover:bg-gradient-to-br hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#bc1888]' },
   { href: '#', icon: 'youtube', label: 'YouTube', comingSoon: true, color: 'hover:bg-[#ff0000]' },
   { href: '#', icon: 'whatsapp', label: 'WhatsApp', comingSoon: true, color: 'hover:bg-[#25d366]' },
+  { href: '#', icon: 'facebook', label: 'Facebook', comingSoon: true, color: 'hover:bg-[#1877f2]' },
+  { href: '#', icon: 'twitch', label: 'Twitch', comingSoon: true, color: 'hover:bg-[#9146ff]' },
+  { href: '#', icon: 'snapchat', label: 'Snapchat', comingSoon: true, color: 'hover:bg-[#fffc00]' },
 ]
 
 export default function Footer() {

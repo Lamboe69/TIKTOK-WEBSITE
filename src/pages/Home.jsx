@@ -6,6 +6,7 @@ import BrandIdentity from '../components/sections/BrandIdentity'
 import Champions from '../components/sections/Champions'
 import CommunityRecognition from '../components/sections/CommunityRecognition'
 import Testimonials from '../components/sections/Testimonials'
+import MasterclassTeaser from '../components/sections/MasterclassTeaser'
 import TimezoneStrip from '../components/sections/TimezoneStrip'
 import CTA from '../components/sections/CTA'
 import SectionDivider from '../components/SectionDivider'
@@ -27,6 +28,8 @@ export default function Home() {
       <CommunityRecognition />
       <SectionDivider />
       <Testimonials />
+      <SectionDivider />
+      <MasterclassTeaser />
       <SectionDivider />
       <CTA />
     </main>
