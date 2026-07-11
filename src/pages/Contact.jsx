@@ -52,11 +52,11 @@ export default function Contact() {
 
   return (
     <main>
-      <section className="py-20 sm:py-28 bg-dynasty-cream relative overflow-hidden">
+      <section className="pt-16 pb-10 sm:pt-20 sm:pb-12 bg-dynasty-cream relative overflow-hidden">
         <div className="absolute top-1/3 left-1/4 w-[400px] h-[300px] bg-dynasty-orange/8 rounded-full blur-[100px] animate-drift pointer-events-none" style={{ animationDuration: '14s' }} />
         <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] bg-dynasty-purple/6 rounded-full blur-[90px] animate-drift pointer-events-none" style={{ animationDuration: '12s', animationDelay: '5s' }} />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-8">
             {/* Mail icon with pulse ring */}
             <div className="relative inline-block mb-6">
               <div className="absolute inset-0 w-16 h-16 mx-auto my-auto rounded-full border-2 border-dynasty-orange/25 animate-pulse-ring" />
