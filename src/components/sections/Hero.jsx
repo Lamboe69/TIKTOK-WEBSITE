@@ -47,10 +47,9 @@ export default function Hero() {
         effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={700}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{ delay: 5000, disableOnInteraction: false, waitForTransition: true }}
         loop
         pagination={{ clickable: true }}
-        lazy={{ loadPrevNext: true }}
         onSwiper={(api) => { swiperRef.current = api }}
         className="w-full h-full hero-swiper"
       >
