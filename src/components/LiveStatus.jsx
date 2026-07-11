@@ -69,9 +69,9 @@ export default function LiveStatus() {
 
   if (nextBattle && countdown) {
     return (
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-dynasty-purple/10 border border-dynasty-purple/20 rounded-full">
+      <div className="inline-flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
         <span className="w-2 h-2 bg-dynasty-orange rounded-full animate-breathe" />
-        <span className="text-dynasty-purple text-xs font-semibold">
+        <span className="text-white text-xs font-semibold">
           Next Battle: {nextBattle.title.split(' Box Battle')[0]} — {countdown}
         </span>
       </div>
