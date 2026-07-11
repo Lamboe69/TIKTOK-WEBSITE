@@ -9,7 +9,8 @@ const navLinks = [
   { to: '/battle-schedule', label: 'Battle Schedule' },
   { to: '/daily-quotes', label: 'Daily Quotes' },
   { to: '/about', label: 'About' },
-  { to: '/faq', label: 'FAQ' },
+  { to: '/agency', label: 'Agency' },
+  { to: '/masterclass', label: 'Masterclass' },
   { to: '/advertise', label: 'Advertise' },
   { to: '/contact', label: 'Contact' },
 ]

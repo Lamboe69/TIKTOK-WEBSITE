@@ -8,7 +8,8 @@ const quickLinks = [
   { to: '/battle-schedule', label: 'Battle Schedule' },
   { to: '/daily-quotes', label: 'Daily Quotes' },
   { to: '/about', label: 'About' },
-  { to: '/faq', label: 'FAQ' },
+  { to: '/agency', label: 'Agency' },
+  { to: '/masterclass', label: 'Masterclass' },
   { to: '/advertise', label: 'Advertise' },
   { to: '/contact', label: 'Contact' },
 ]
@@ -17,6 +18,7 @@ const socials = [
   { href: 'https://www.tiktok.com/@kingmakernevergivesup', icon: 'tiktok', label: 'TikTok', color: 'hover:bg-[#ff0050]' },
   { href: '#', icon: 'instagram', label: 'Instagram', comingSoon: true, color: 'hover:bg-gradient-to-br hover:from-[#f09433] hover:via-[#e6683c] hover:to-[#bc1888]' },
   { href: '#', icon: 'youtube', label: 'YouTube', comingSoon: true, color: 'hover:bg-[#ff0000]' },
+  { href: '#', icon: 'whatsapp', label: 'WhatsApp', comingSoon: true, color: 'hover:bg-[#25d366]' },
 ]
 
 export default function Footer() {
