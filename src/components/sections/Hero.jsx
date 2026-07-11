@@ -43,7 +43,7 @@ export default function Hero() {
     >
       {/* Photo carousel — background layer */}
       <Swiper
-        modules={[Autoplay, EffectFade, Pagination, Navigation]}
+        modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
         fadeEffect={{ crossFade: true }}
         speed={700}
