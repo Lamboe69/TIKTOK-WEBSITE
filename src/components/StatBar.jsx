@@ -10,13 +10,13 @@ function Counter({ value, numericEnd }) {
 
   if (value === null || value === undefined) {
     return (
-      <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-dynasty-orange opacity-30">
+      <span ref={ref} className="font-display font-bold text-3xl sm:text-4xl text-dynasty-orange opacity-30">
         —
       </span>
     )
   }
   return (
-    <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-dynasty-orange">
+    <span ref={ref} className="font-display font-bold text-3xl sm:text-4xl text-gradient-animated">
       {count > 0 ? value : '0'}
     </span>
   )
@@ -56,9 +56,9 @@ export default function StatBar() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
           {items.map(({ value, numericEnd, label, note }, i) => (
             <Motion key={i} variant="fade-up" delay={i * 100}>
-              <div className="flex items-center gap-3 sm:gap-4 bg-white/[0.03] backdrop-blur-sm rounded-xl px-4 py-4 border border-white/5 hover:border-white/10 hover:bg-white/[0.06] transition-all duration-300 group">
-                <div className="w-10 h-10 rounded-lg bg-dynasty-orange/10 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:bg-dynasty-orange/20 transition-all duration-300">
-                  <span className="w-5 h-5 block text-dynasty-orange">{statIcons[i]}</span>
+              <div className="flex items-center gap-3 sm:gap-4 bg-white/[0.04] backdrop-blur-sm rounded-xl px-5 py-5 border border-white/[0.08] hover:border-dynasty-orange/20 hover:bg-white/[0.08] transition-all duration-300 group">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-dynasty-orange/20 to-dynasty-orange/5 flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-dynasty-orange/10 transition-all duration-300">
+                  <span className="w-6 h-6 block text-dynasty-orange">{statIcons[i]}</span>
                 </div>
                 <div className="min-w-0">
                   <Counter value={value} numericEnd={numericEnd} />

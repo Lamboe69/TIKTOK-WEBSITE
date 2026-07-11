@@ -84,41 +84,55 @@ export default function Hero() {
       {/* Brand content — on top of everything */}
       <div className="absolute inset-0 z-[2] flex flex-col justify-end pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto w-full">
-          {/* Badge */}
-          <div className="flex items-center gap-2 mb-4">
-            <span className="relative w-2.5 h-2.5 rounded-full bg-dynasty-orange">
-              <span className="absolute inset-0 rounded-full bg-dynasty-orange animate-pulse-ring" />
-            </span>
-            <span className="text-dynasty-orange text-xs font-semibold uppercase tracking-wider">
-              The Official Hub
-            </span>
+          {/* Frosted glass panel behind text */}
+          <div className="relative inline-block">
+            {/* Badge */}
+            <div className="flex items-center gap-2 mb-4">
+              <span className="relative w-3 h-3 rounded-full bg-dynasty-orange shadow-lg shadow-dynasty-orange/50">
+                <span className="absolute inset-0 rounded-full bg-dynasty-orange animate-pulse-ring" />
+              </span>
+              <span className="text-dynasty-orange text-xs font-bold uppercase tracking-widest">
+                The Official Hub
+              </span>
+            </div>
+
+            {/* Headline */}
+            <h1 className="font-display font-bold text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 leading-[1.05]">
+              KM <span className="text-gradient-animated">DYNASTY</span>
+            </h1>
+
+            {/* Tagline */}
+            <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-xl mb-8 leading-relaxed font-light">
+              Join the family. Compete in Godsent Box Battles. Rise with King Maker.
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={openOfficial}
+                className="group relative px-8 py-4 bg-dynasty-orange text-white font-bold text-sm rounded-xl shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-all animate-glow-breathe overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  Join the Box Battle
+                  <span className="w-4 h-4 block group-hover:translate-x-1 transition-transform">{Icons.arrowRight}</span>
+                </span>
+              </button>
+              <a
+                href="#schedule"
+                className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold text-sm rounded-xl border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all"
+              >
+                See Schedule
+              </a>
+            </div>
           </div>
+        </div>
+      </div>
 
-          {/* Headline */}
-          <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-3 leading-[1.1]">
-            KM <span className="text-gradient-animated">DYNASTY</span>
-          </h1>
-
-          {/* Tagline */}
-          <p className="text-white/70 text-base sm:text-lg md:text-xl max-w-xl mb-8 leading-relaxed">
-            Join the family. Compete in Godsent Box Battles. Rise with King Maker.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-wrap items-center gap-3">
-            <button
-              onClick={openOfficial}
-              className="px-7 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
-            >
-              Join the Box Battle
-            </button>
-            <a
-              href="#schedule"
-              className="px-7 py-3.5 bg-white/10 backdrop-blur-sm text-white font-semibold text-sm rounded-xl border border-white/20 hover:bg-white/20 transition-all"
-            >
-              See Schedule
-            </a>
-          </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[3] flex flex-col items-center gap-2">
+        <span className="text-white/40 text-[10px] uppercase tracking-widest font-medium">Scroll</span>
+        <div className="w-5 h-8 rounded-full border border-white/30 flex items-start justify-center p-1">
+          <div className="w-1 h-2 rounded-full bg-white/60 animate-bounce" />
         </div>
       </div>
 
