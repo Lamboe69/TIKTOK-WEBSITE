@@ -8,6 +8,7 @@ import Champions from '../components/sections/Champions'
 import AdvertiseSection from '../components/sections/AdvertiseSection'
 import WinnersVisit from '../components/sections/WinnersVisit'
 import GiveBack from '../components/sections/GiveBack'
+import BattleFamily from '../components/sections/BattleFamily'
 import CTA from '../components/sections/CTA'
 import SectionDivider from '../components/SectionDivider'
 
@@ -30,6 +31,8 @@ export default function Home() {
       <WinnersVisit />
       <SectionDivider />
       <GiveBack />
+      <SectionDivider />
+      <BattleFamily />
       <CTA />
     </main>
   )
