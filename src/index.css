@@ -52,29 +52,31 @@ body {
 
 @keyframes orb-drift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -20px) scale(1.05); }
-  66% { transform: translate(-20px, 15px) scale(0.95); }
+  20% { transform: translate(50px, -40px) scale(1.1); }
+  40% { transform: translate(-40px, 30px) scale(0.9); }
+  60% { transform: translate(60px, 20px) scale(1.05); }
+  80% { transform: translate(-30px, -50px) scale(0.95); }
 }
 
 .animate-slide-up { animation: slide-up 0.6s ease-out forwards; }
 .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
-.animate-orb { animation: orb-drift 12s ease-in-out infinite; }
+.animate-orb { animation: orb-drift 10s ease-in-out infinite; }
 
 /* ─── Modern Motion Animations ─── */
 
 /* Float — gentle vertical bob */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-12px); }
 }
-.animate-float { animation: float 3s ease-in-out infinite; }
+.animate-float { animation: float 2.5s ease-in-out infinite; }
 
 /* Glow pulse — subtle box-shadow breathe */
 @keyframes glow-pulse {
   0%, 100% { box-shadow: 0 0 20px rgba(91, 42, 134, 0.15); }
   50% { box-shadow: 0 0 40px rgba(91, 42, 134, 0.3); }
 }
-.animate-glow { animation: glow-pulse 3s ease-in-out infinite; }
+.animate-glow { animation: glow-pulse 2.5s ease-in-out infinite; }
 
 /* Gradient shift — background position cycle */
 @keyframes gradient-shift {
@@ -103,14 +105,14 @@ body {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+.animate-spin-slow { animation: spin-slow 12s linear infinite; }
 
 /* Scale breathe — icon pulse */
 @keyframes scale-breathe {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+  50% { transform: scale(1.12); }
 }
-.animate-breathe { animation: scale-breathe 2.5s ease-in-out infinite; }
+.animate-breathe { animation: scale-breathe 2s ease-in-out infinite; }
 
 /* ─── Card Hover Effects ─── */
 .card-hover {
@@ -237,12 +239,14 @@ body {
 .stagger-children.in-view > *:nth-child(5) { transition-delay: 320ms; opacity: 1; transform: translateY(0); }
 .stagger-children.in-view > *:nth-child(6) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
 
-/* ─── Particle float ─── */
+/* ─── Particle float — fast, constant movement ─── */
 @keyframes particle {
-  0%, 100% { transform: translate(0, 0); opacity: var(--particle-opacity, 0.2); }
-  25% { transform: translate(var(--drift-x, 20px), var(--drift-y, -30px)); opacity: calc(var(--particle-opacity, 0.2) * 1.5); }
-  50% { transform: translate(calc(var(--drift-x, 20px) * -0.5), calc(var(--drift-y, -30px) * 1.2)); opacity: var(--particle-opacity, 0.2); }
-  75% { transform: translate(calc(var(--drift-x, 20px) * 0.7), calc(var(--drift-y, -30px) * -0.8)); opacity: calc(var(--particle-opacity, 0.2) * 0.6); }
+  0% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(calc(var(--drift-x, 40px) * 0.6), calc(var(--drift-y, -50px) * 0.8)) scale(1.2); }
+  40% { transform: translate(calc(var(--drift-x, 40px) * -0.4), calc(var(--drift-y, -50px) * 1.1)) scale(0.8); }
+  60% { transform: translate(calc(var(--drift-x, 40px) * 0.9), calc(var(--drift-y, -50px) * -0.3)) scale(1.1); }
+  80% { transform: translate(calc(var(--drift-x, 40px) * -0.7), calc(var(--drift-y, -50px) * 0.6)) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 .animate-particle { animation: particle linear infinite; }
 
@@ -253,14 +257,15 @@ body {
 }
 .animate-pulse-ring { animation: pulse-ring 1.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
 
-/* ─── Continuous drift (orbs, accents) ─── */
+/* ─── Continuous drift (orbs, accents) — faster, more movement ─── */
 @keyframes drift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(20px, -30px) scale(1.05); }
-  50% { transform: translate(-15px, 20px) scale(0.95); }
-  75% { transform: translate(25px, 10px) scale(1.02); }
+  20% { transform: translate(40px, -50px) scale(1.08); }
+  40% { transform: translate(-30px, 35px) scale(0.92); }
+  60% { transform: translate(50px, 20px) scale(1.05); }
+  80% { transform: translate(-25px, -40px) scale(0.97); }
 }
-.animate-drift { animation: drift 20s ease-in-out infinite; }
+.animate-drift { animation: drift 10s ease-in-out infinite; }
 
 /* ─── Shimmer line (sweep across element) ─── */
 @keyframes shimmer-line {
@@ -292,17 +297,17 @@ body {
 
 /* ─── Glow breathe (continuous box-shadow pulse) ─── */
 @keyframes glow-breathe {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 122, 0, 0.15), 0 0 40px rgba(255, 122, 0, 0.05); }
-  50% { box-shadow: 0 0 30px rgba(255, 122, 0, 0.3), 0 0 60px rgba(255, 122, 0, 0.1); }
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 122, 0, 0.2), 0 0 40px rgba(255, 122, 0, 0.08); }
+  50% { box-shadow: 0 0 35px rgba(255, 122, 0, 0.4), 0 0 70px rgba(255, 122, 0, 0.15); }
 }
-.animate-glow-breathe { animation: glow-breathe 2.5s ease-in-out infinite; }
+.animate-glow-breathe { animation: glow-breathe 2s ease-in-out infinite; }
 
 /* ─── Dot pulse (live indicator) ─── */
 @keyframes dot-pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.8); opacity: 0.4; }
+  50% { transform: scale(2); opacity: 0.3; }
 }
-.animate-dot-pulse { animation: dot-pulse 1.5s ease-in-out infinite; }
+.animate-dot-pulse { animation: dot-pulse 1.2s ease-in-out infinite; }
 
 /* ─── Text gradient animate ─── */
 .text-gradient-animated {

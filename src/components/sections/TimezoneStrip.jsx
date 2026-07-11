@@ -6,8 +6,8 @@ export default function TimezoneStrip() {
     <section className="py-10 bg-dynasty-cream border-y border-gray-100 relative overflow-hidden">
       {/* Subtle animated accent */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/3 w-[200px] h-[100px] bg-dynasty-purple/5 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '20s' }} />
-        <div className="absolute bottom-0 right-1/3 w-[150px] h-[80px] bg-dynasty-orange/5 rounded-full blur-[50px] animate-drift" style={{ animationDuration: '16s', animationDelay: '6s' }} />
+        <div className="absolute top-0 left-1/3 w-[200px] h-[100px] bg-dynasty-purple/5 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '10s' }} />
+        <div className="absolute bottom-0 right-1/3 w-[150px] h-[80px] bg-dynasty-orange/5 rounded-full blur-[50px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
       </div>
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">

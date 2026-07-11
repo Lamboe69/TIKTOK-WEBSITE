@@ -77,8 +77,8 @@ export default function Hero() {
 
       {/* Floating accent orbs */}
       <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
-        <div className="absolute top-20 left-[10%] w-32 h-32 bg-dynasty-orange/15 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '15s' }} />
-        <div className="absolute bottom-32 right-[15%] w-40 h-40 bg-dynasty-purple/20 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '20s', animationDelay: '5s' }} />
+        <div className="absolute top-20 left-[10%] w-32 h-32 bg-dynasty-orange/15 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-32 right-[15%] w-40 h-40 bg-dynasty-purple/20 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '10s', animationDelay: '3s' }} />
       </div>
 
       {/* Brand content — on top of everything */}

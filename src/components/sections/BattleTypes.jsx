@@ -42,8 +42,8 @@ export default function BattleTypes() {
     <section className="py-20 sm:py-28 bg-white relative overflow-hidden">
       {/* Animated accent orbs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '20s' }} />
-        <div className="absolute bottom-10 right-[10%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '16s', animationDelay: '5s' }} />
+        <div className="absolute top-10 left-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
+        <div className="absolute bottom-10 right-[10%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">

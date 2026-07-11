@@ -35,8 +35,8 @@ export default function HowItWorks() {
     <section className="py-20 sm:py-28 bg-white relative overflow-hidden">
       {/* Animated background accents */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-purple/5 rounded-full blur-[120px] animate-drift" style={{ animationDuration: '20s' }} />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-dynasty-orange/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '16s', animationDelay: '4s' }} />
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-purple/5 rounded-full blur-[120px] animate-drift" style={{ animationDuration: '10s' }} />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-dynasty-orange/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">

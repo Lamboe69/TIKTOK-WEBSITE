@@ -24,8 +24,8 @@ export default function BrandIdentity() {
     <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
       {/* Animated background accents */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-[20%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '20s' }} />
-        <div className="absolute bottom-0 right-[20%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '16s', animationDelay: '6s' }} />
+        <div className="absolute top-0 left-[20%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
+        <div className="absolute bottom-0 right-[20%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '4s' }} />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
@@ -80,7 +80,7 @@ export default function BrandIdentity() {
           {/* Right — preview card */}
           <Motion delay={0.2}>
             <div className="relative">
-              <div className="absolute inset-0 bg-dynasty-purple/10 rounded-3xl rotate-3 scale-105 animate-drift" style={{ animationDuration: '20s' }} />
+              <div className="absolute inset-0 bg-dynasty-purple/10 rounded-3xl rotate-3 scale-105 animate-drift" style={{ animationDuration: '10s' }} />
               <div className="relative bg-white rounded-2xl border border-gray-100 shadow-xl p-8 text-center card-tilt overflow-hidden">
                 {/* Shimmer sweep */}
                 <div className="absolute inset-0 animate-shimmer-line pointer-events-none" />

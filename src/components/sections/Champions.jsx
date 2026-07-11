@@ -9,8 +9,8 @@ export default function Champions() {
       <Particles count={20} color="rgba(255,122,0,0.4)" />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-dynasty-orange/5 rounded-full blur-3xl animate-spin-slow" />
-        <div className="absolute top-10 left-[20%] w-24 h-24 bg-dynasty-purple/15 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '16s' }} />
-        <div className="absolute bottom-10 right-[20%] w-32 h-32 bg-dynasty-orange/10 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '22s', animationDelay: '6s' }} />
+        <div className="absolute top-10 left-[20%] w-24 h-24 bg-dynasty-purple/15 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '8s' }} />
+        <div className="absolute bottom-10 right-[20%] w-32 h-32 bg-dynasty-orange/10 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '10s', animationDelay: '3s' }} />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
@@ -56,8 +56,8 @@ export default function Champions() {
           <div className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-2xl p-8 sm:p-10 overflow-hidden group hover:border-white/[0.15] transition-all duration-300 shimmer-line">
             {/* Background accents */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-0 right-0 w-[250px] h-[250px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '18s' }} />
-              <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-dynasty-purple/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '22s', animationDelay: '4s' }} />
+              <div className="absolute top-0 right-0 w-[250px] h-[250px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s' }} />
+              <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-dynasty-purple/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '10s', animationDelay: '3s' }} />
             </div>
 
             <div className="relative flex flex-col sm:flex-row items-center gap-8">

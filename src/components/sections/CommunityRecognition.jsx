@@ -40,8 +40,8 @@ export default function CommunityRecognition() {
     <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
       {/* Animated background accents */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '20s' }} />
-        <div className="absolute bottom-0 left-[10%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '16s', animationDelay: '5s' }} />
+        <div className="absolute top-0 right-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
+        <div className="absolute bottom-0 left-[10%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
@@ -70,8 +70,8 @@ export default function CommunityRecognition() {
                   <div className={`h-1.5 w-full ${style.strip}`} />
 
                   {/* Decorative orb — animated */}
-                  <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${style.orb} blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-drift`} style={{ animationDuration: '18s', animationDelay: `${idx * 2}s` }} />
-                  <div className={`absolute -bottom-8 -left-8 w-24 h-24 rounded-full ${style.orb} blur-2xl opacity-40 animate-drift`} style={{ animationDuration: '22s', animationDelay: `${idx * 3}s` }} />
+                  <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${style.orb} blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-drift`} style={{ animationDuration: '8s', animationDelay: `${idx * 1}s` }} />
+                  <div className={`absolute -bottom-8 -left-8 w-24 h-24 rounded-full ${style.orb} blur-2xl opacity-40 animate-drift`} style={{ animationDuration: '10s', animationDelay: `${idx * 1.5}s` }} />
 
                   {/* Rank badge */}
                   {idx < 3 && (
