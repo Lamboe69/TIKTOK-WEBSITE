@@ -1,5 +1,8 @@
 import { useTikTokStats, STAT_LABELS } from '../hooks/useTikTokStats'
 import Motion from './Motion'
+import { Icons } from './Icons'
+
+const statIcons = [Icons.users, Icons.heart, Icons.swords, Icons.trophy]
 
 function Counter({ value }) {
   if (value === null || value === undefined) {
@@ -37,16 +40,21 @@ export default function StatBar() {
   ]
 
   return (
-    <section className="py-12 bg-dynasty-charcoal border-y border-dynasty-purple/30">
+    <section className="py-10 sm:py-12 bg-dynasty-charcoal border-b border-dynasty-purple/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
           {items.map(({ value, label, note }, i) => (
             <Motion key={i} variant="fade-up" delay={i * 100}>
-              <div className="text-center">
-                <Counter value={value} />
-                <p className="text-white font-semibold text-sm mt-1">{label}</p>
-                <p className="text-white/40 text-xs mt-0.5">{note}</p>
-                {i === 0 && <LiveDot source={stats.source} />}
+              <div className="flex items-center gap-3 sm:gap-4 bg-white/[0.03] rounded-xl px-4 py-4 border border-white/5">
+                <div className="w-10 h-10 rounded-lg bg-dynasty-orange/10 flex items-center justify-center flex-shrink-0">
+                  <span className="w-5 h-5 block text-dynasty-orange">{statIcons[i]}</span>
+                </div>
+                <div className="min-w-0">
+                  <Counter value={value} />
+                  <p className="text-white/80 font-medium text-xs sm:text-sm leading-tight">{label}</p>
+                  <p className="text-white/30 text-[11px] leading-tight">{note}</p>
+                  {i === 0 && <LiveDot source={stats.source} />}
+                </div>
               </div>
             </Motion>
           ))}
