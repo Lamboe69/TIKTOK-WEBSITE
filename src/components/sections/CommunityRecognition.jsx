@@ -1,17 +1,29 @@
-import { useState } from 'react'
 import Motion from '../Motion'
 import topGifters from '../../data/topGifters'
 import { Icons } from '../Icons'
 
-const roleColors = {
-  'Royal Supporter': 'bg-dynasty-orange/10 text-dynasty-orange border-dynasty-orange/20',
-  'Dynasty Pillar': 'bg-dynasty-purple/10 text-dynasty-purple border-dynasty-purple/20',
-  'Loyal Supporter': 'bg-white/5 text-gray-400 border-white/10',
+const roleStyles = {
+  'Royal Supporter': {
+    ring: 'ring-dynasty-orange',
+    badge: 'bg-dynasty-orange text-white',
+    border: 'border-dynasty-orange/20 hover:border-dynasty-orange/40',
+    gradient: 'from-dynasty-orange/5 to-transparent',
+  },
+  'Dynasty Pillar': {
+    ring: 'ring-dynasty-purple',
+    badge: 'bg-dynasty-purple text-white',
+    border: 'border-dynasty-purple/20 hover:border-dynasty-purple/40',
+    gradient: 'from-dynasty-purple/5 to-transparent',
+  },
+  'Loyal Supporter': {
+    ring: 'ring-gray-300',
+    badge: 'bg-gray-200 text-gray-600',
+    border: 'border-gray-200 hover:border-gray-300',
+    gradient: 'from-gray-50 to-transparent',
+  },
 }
 
 export default function CommunityRecognition() {
-  const [hoveredIdx, setHoveredIdx] = useState(null)
-
   return (
     <section className="py-16 sm:py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -30,54 +42,72 @@ export default function CommunityRecognition() {
           </div>
         </Motion>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {topGifters.map((gifter, idx) => (
-            <Motion key={gifter.handle} delay={idx * 0.08}>
-              <div
-                className="relative group rounded-2xl border border-gray-100 bg-gray-50/50 p-5 transition-all duration-300 hover:shadow-lg hover:border-dynasty-purple/20 hover:-translate-y-1"
-                onMouseEnter={() => setHoveredIdx(idx)}
-                onMouseLeave={() => setHoveredIdx(null)}
-              >
-                {idx < 3 && (
-                  <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-dynasty-orange text-white text-xs font-bold flex items-center justify-center shadow-md">
-                    #{idx + 1}
-                  </div>
-                )}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {topGifters.map((gifter, idx) => {
+            const style = roleStyles[gifter.role] || roleStyles['Loyal Supporter']
+            return (
+              <Motion key={gifter.handle} delay={idx * 0.08}>
+                <div className={`relative group rounded-2xl border bg-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${style.border}`}>
+                  {/* Top gradient strip */}
+                  <div className={`h-1.5 w-full bg-gradient-to-r ${style.gradient}`} />
 
-                <div className="flex flex-col items-center text-center mb-3">
-                  <div className="w-28 h-28 rounded-2xl overflow-hidden bg-dynasty-purple/10 mb-3">
-                    {gifter.photo ? (
-                      <img src={gifter.photo} alt={gifter.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-4xl">{gifter.badge}</div>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-display font-bold text-dynasty-charcoal text-sm">
-                      {gifter.name}
-                    </h3>
-                    <span className={`inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full mt-1 border ${roleColors[gifter.role] || roleColors['Loyal Supporter']}`}>
-                      {gifter.role}
-                    </span>
+                  {/* Rank badge */}
+                  {idx < 3 && (
+                    <div className={`absolute top-4 right-4 w-9 h-9 rounded-full ${style.badge} text-sm font-bold flex items-center justify-center shadow-lg z-10`}>
+                      #{idx + 1}
+                    </div>
+                  )}
+
+                  <div className="p-6 pt-5">
+                    {/* Photo — large, centered, with ring */}
+                    <div className="flex justify-center mb-4">
+                      <div className={`relative`}>
+                        <div className={`w-28 h-28 rounded-full overflow-hidden ring-4 ${style.ring} shadow-lg`}>
+                          {gifter.photo ? (
+                            <img src={gifter.photo} alt={gifter.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full bg-dynasty-purple/10 flex items-center justify-center text-4xl">{gifter.badge}</div>
+                          )}
+                        </div>
+                        {/* Badge emoji overlay */}
+                        <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-lg">
+                          {gifter.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Name + role */}
+                    <div className="text-center mb-3">
+                      <h3 className="font-display font-bold text-dynasty-charcoal text-base mb-1">
+                        {gifter.name}
+                      </h3>
+                      <span className={`inline-flex items-center text-xs font-semibold px-3 py-1 rounded-full ${style.badge}`}>
+                        {gifter.role}
+                      </span>
+                    </div>
+
+                    {/* Bio */}
+                    <p className="text-gray-500 text-sm leading-relaxed text-center mb-4">
+                      {gifter.bio}
+                    </p>
+
+                    {/* TikTok link */}
+                    <div className="flex justify-center">
+                      <a
+                        href={gifter.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-dynasty-purple/5 border border-gray-100 hover:border-dynasty-purple/20 rounded-xl text-dynasty-purple text-xs font-semibold transition-all"
+                      >
+                        <span className="w-3.5 h-3.5 block">{Icons.tiktok}</span>
+                        {gifter.handle}
+                      </a>
+                    </div>
                   </div>
                 </div>
-
-                <p className="text-gray-500 text-sm leading-relaxed mb-4 line-clamp-2">
-                  {gifter.bio}
-                </p>
-
-                <a
-                  href={gifter.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-dynasty-purple text-xs font-semibold hover:underline"
-                >
-                  <span className="w-3.5 h-3.5 block">{Icons.tiktok}</span>
-                  {gifter.handle}
-                </a>
-              </div>
-            </Motion>
-          ))}
+              </Motion>
+            )
+          })}
         </div>
       </div>
     </section>
