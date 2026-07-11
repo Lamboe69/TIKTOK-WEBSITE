@@ -1,24 +1,31 @@
 import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
+import Particles from '../Particles'
 
 export default function Champions() {
   return (
     <section className="py-20 sm:py-28 bg-dynasty-charcoal text-white relative overflow-hidden">
+      <Particles count={20} color="rgba(255,122,0,0.4)" />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-dynasty-orange/5 rounded-full blur-3xl animate-spin-slow" />
+        <div className="absolute top-10 left-[20%] w-24 h-24 bg-dynasty-purple/15 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '16s' }} />
+        <div className="absolute bottom-10 right-[20%] w-32 h-32 bg-dynasty-orange/10 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '22s', animationDelay: '6s' }} />
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         {/* Champion headline */}
         <div className="text-center mb-12">
           <Motion variant="scale-in">
-            <span className="w-16 h-16 mx-auto mb-6 block text-dynasty-orange animate-float">{Icons.trophy}</span>
+            <div className="relative inline-block mb-6">
+              <span className="w-16 h-16 mx-auto block text-dynasty-orange animate-float">{Icons.trophy}</span>
+              <span className="absolute -inset-3 rounded-full border border-dynasty-orange/20 animate-pulse-ring pointer-events-none" />
+            </div>
           </Motion>
 
           <Motion variant="fade-up" delay={100}>
             <h2 className="font-display font-bold text-3xl sm:text-4xl mb-4">
-              Champion of the Champions
+              Champion of the <span className="text-gradient-animated">Champions</span>
             </h2>
           </Motion>
 
@@ -30,7 +37,7 @@ export default function Champions() {
           </Motion>
 
           <Motion variant="fade-up" delay={300} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-            <div className="inline-flex items-center gap-2 px-5 py-2 bg-dynasty-orange/10 border border-dynasty-orange/20 rounded-full animate-glow">
+            <div className="inline-flex items-center gap-2 px-5 py-2 bg-dynasty-orange/10 border border-dynasty-orange/20 rounded-full animate-glow-breathe">
               <span className="w-4 h-4 block text-dynasty-orange">{Icons.crown}</span>
               <span className="text-dynasty-orange text-sm font-semibold">One Crown. One Dynasty.</span>
             </div>
@@ -46,11 +53,11 @@ export default function Champions() {
 
         {/* Winners' Livestream Visit — merged from WinnersVisit */}
         <Motion variant="fade-up" delay={400}>
-          <div className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-2xl p-8 sm:p-10 overflow-hidden group hover:border-white/[0.15] transition-all duration-300">
+          <div className="relative bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-2xl p-8 sm:p-10 overflow-hidden group hover:border-white/[0.15] transition-all duration-300 shimmer-line">
             {/* Background accents */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-0 right-0 w-[250px] h-[250px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
-              <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-dynasty-purple/10 rounded-full blur-[80px]" />
+              <div className="absolute top-0 right-0 w-[250px] h-[250px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '18s' }} />
+              <div className="absolute bottom-0 left-0 w-[200px] h-[200px] bg-dynasty-purple/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '22s', animationDelay: '4s' }} />
             </div>
 
             <div className="relative flex flex-col sm:flex-row items-center gap-8">

@@ -5,6 +5,7 @@ import { StatsProvider } from './hooks/useTikTokStats'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import StickyCTA from './components/StickyCTA'
+import ScrollProgress from './components/ScrollProgress'
 import Home from './pages/Home'
 import HowToJoin from './pages/HowToJoin'
 import BattleSchedule from './pages/BattleSchedule'
@@ -46,6 +47,7 @@ export default function App() {
       <SignUpProvider>
         <StatsProvider>
           <ScrollToTop />
+          <ScrollProgress />
           <div className="min-h-screen bg-white font-body">
             <Navbar />
             <div className="pb-20 md:pb-0">

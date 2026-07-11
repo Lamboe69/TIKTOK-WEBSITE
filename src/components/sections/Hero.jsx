@@ -68,15 +68,27 @@ export default function Hero() {
         ))}
       </Swiper>
 
-      {/* Dark overlay — consistent across all slides */}
-      <div className="absolute inset-0 bg-gradient-to-t from-dynasty-charcoal via-dynasty-charcoal/70 to-dynasty-charcoal/40 z-[1]" />
+      {/* Animated gradient overlay — shifts colors slowly */}
+      <div className="absolute inset-0 z-[1]" style={{
+        background: 'linear-gradient(135deg, rgba(34,25,52,0.85) 0%, rgba(91,42,134,0.5) 30%, rgba(255,122,0,0.15) 60%, rgba(34,25,52,0.9) 100%)',
+        backgroundSize: '300% 300%',
+        animation: 'gradient-shift 8s ease infinite',
+      }} />
+
+      {/* Floating accent orbs */}
+      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-[10%] w-32 h-32 bg-dynasty-orange/15 rounded-full blur-[60px] animate-drift" style={{ animationDuration: '15s' }} />
+        <div className="absolute bottom-32 right-[15%] w-40 h-40 bg-dynasty-purple/20 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '20s', animationDelay: '5s' }} />
+      </div>
 
       {/* Brand content — on top of everything */}
       <div className="absolute inset-0 z-[2] flex flex-col justify-end pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto w-full">
           {/* Badge */}
           <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-dynasty-orange animate-pulse" />
+            <span className="relative w-2.5 h-2.5 rounded-full bg-dynasty-orange">
+              <span className="absolute inset-0 rounded-full bg-dynasty-orange animate-pulse-ring" />
+            </span>
             <span className="text-dynasty-orange text-xs font-semibold uppercase tracking-wider">
               The Official Hub
             </span>
@@ -84,7 +96,7 @@ export default function Hero() {
 
           {/* Headline */}
           <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white mb-3 leading-[1.1]">
-            KM DYNASTY
+            KM <span className="text-gradient-animated">DYNASTY</span>
           </h1>
 
           {/* Tagline */}
@@ -96,7 +108,7 @@ export default function Hero() {
           <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={openOfficial}
-              className="px-7 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors"
+              className="px-7 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
             >
               Join the Box Battle
             </button>

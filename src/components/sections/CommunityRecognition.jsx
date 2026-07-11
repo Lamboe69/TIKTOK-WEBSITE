@@ -37,8 +37,14 @@ const roleStyles = {
 
 export default function CommunityRecognition() {
   return (
-    <section className="py-16 sm:py-20 bg-gray-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
+      {/* Animated background accents */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 right-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '20s' }} />
+        <div className="absolute bottom-0 left-[10%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '16s', animationDelay: '5s' }} />
+      </div>
+
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1}>
           <div className="text-center mb-12">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-purple/10 text-dynasty-purple text-xs font-semibold uppercase tracking-wider mb-4">
@@ -46,7 +52,7 @@ export default function CommunityRecognition() {
               Kingdom Family
             </span>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-dynasty-charcoal mb-3">
-              Monthly Top Gifters
+              Monthly Top <span className="text-gradient-animated">Gifters</span>
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto">
               These are the most dedicated members of the KM Dynasty family. Their loyalty and generosity keep the battles alive.
@@ -63,9 +69,9 @@ export default function CommunityRecognition() {
                   {/* Color strip top */}
                   <div className={`h-1.5 w-full ${style.strip}`} />
 
-                  {/* Decorative orb — background accent */}
-                  <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${style.orb} blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
-                  <div className={`absolute -bottom-8 -left-8 w-24 h-24 rounded-full ${style.orb} blur-2xl opacity-40`} />
+                  {/* Decorative orb — animated */}
+                  <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${style.orb} blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500 animate-drift`} style={{ animationDuration: '18s', animationDelay: `${idx * 2}s` }} />
+                  <div className={`absolute -bottom-8 -left-8 w-24 h-24 rounded-full ${style.orb} blur-2xl opacity-40 animate-drift`} style={{ animationDuration: '22s', animationDelay: `${idx * 3}s` }} />
 
                   {/* Rank badge */}
                   {idx < 3 && (
@@ -78,7 +84,7 @@ export default function CommunityRecognition() {
                     {/* Photo — large, centered, with ring */}
                     <div className="flex justify-center mb-4">
                       <div className="relative">
-                        <div className={`w-28 h-28 rounded-full overflow-hidden ring-4 ${style.ring} shadow-lg`}>
+                        <div className={`w-28 h-28 rounded-full overflow-hidden ring-4 ${style.ring} shadow-lg group-hover:scale-105 transition-transform duration-300`}>
                           {gifter.photo ? (
                             <img src={gifter.photo} alt={gifter.name} className="w-full h-full object-cover" />
                           ) : (
@@ -86,7 +92,7 @@ export default function CommunityRecognition() {
                           )}
                         </div>
                         {/* Badge emoji overlay */}
-                        <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-lg">
+                        <div className="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-white shadow-md flex items-center justify-center text-lg group-hover:scale-110 transition-transform duration-300">
                           {gifter.badge}
                         </div>
                       </div>
