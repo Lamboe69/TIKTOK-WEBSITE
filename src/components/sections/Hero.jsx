@@ -82,7 +82,7 @@ export default function Hero() {
       </div>
 
       {/* Brand content — on top of everything */}
-      <div className="absolute inset-0 z-[2] flex flex-col justify-end pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6">
+      <div className="absolute inset-0 z-[2] flex flex-col justify-end pb-10 sm:pb-14 md:pb-16 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto w-full">
           {/* Frosted glass panel behind text */}
           <div className="relative inline-block">

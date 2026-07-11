@@ -21,7 +21,7 @@ const steps = [
 
 export default function BrandIdentity() {
   return (
-    <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
+    <section className="py-10 sm:py-14 bg-gray-50 relative overflow-hidden">
       {/* Animated background accents */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-[20%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
@@ -29,7 +29,7 @@ export default function BrandIdentity() {
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left — content */}
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-purple/10 text-dynasty-purple text-xs font-semibold uppercase tracking-wider mb-4">
@@ -44,7 +44,7 @@ export default function BrandIdentity() {
               Add the official KM Dynasty symbols to your TikTok name and become part of the family.
             </p>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {steps.map((step, idx) => (
                 <Motion key={step.num} delay={0.15 + idx * 0.1}>
                   <div className="flex gap-4 group">

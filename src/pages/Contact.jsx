@@ -52,7 +52,7 @@ export default function Contact() {
 
   return (
     <main>
-      <section className="pt-16 pb-10 sm:pt-20 sm:pb-12 bg-dynasty-cream relative overflow-hidden">
+      <section className="pt-12 pb-8 sm:pt-16 sm:pb-10 bg-dynasty-cream relative overflow-hidden">
         <div className="absolute top-1/3 left-1/4 w-[400px] h-[300px] bg-dynasty-orange/8 rounded-full blur-[100px] animate-drift pointer-events-none" style={{ animationDuration: '14s' }} />
         <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] bg-dynasty-purple/6 rounded-full blur-[90px] animate-drift pointer-events-none" style={{ animationDuration: '12s', animationDelay: '5s' }} />
         <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
@@ -73,7 +73,7 @@ export default function Contact() {
           </div>
 
           {/* Quick-contact category cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             {[
               { icon: Icons.mail, title: 'General Question', desc: 'Ask anything about KM DYNASTY', href: '#contact-form', onClick: (e) => { e.preventDefault(); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }) }, gradient: 'from-dynasty-purple to-violet-600' },
               { icon: Icons.users, title: 'Creator Inquiry', desc: 'Join La\'Gwat Agency', href: '/agency', gradient: 'from-dynasty-orange to-amber-500' },
@@ -98,7 +98,7 @@ export default function Contact() {
             ))}
           </div>
 
-          <div id="contact-form" className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div id="contact-form" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left column: Form */}
             <div>
               <div className="backdrop-blur-sm bg-white/80 rounded-2xl p-8 sm:p-10 border border-white/60 shadow-lg relative overflow-hidden">

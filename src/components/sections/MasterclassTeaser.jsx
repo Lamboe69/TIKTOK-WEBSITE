@@ -28,7 +28,7 @@ const plans = [
 
 export default function MasterclassTeaser() {
   return (
-    <section className="py-20 sm:py-28 bg-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-white relative overflow-hidden">
       {/* Background orb */}
       <div
         className="absolute top-1/4 -right-32 w-[400px] h-[400px] rounded-full bg-dynasty-orange/10 blur-[120px] animate-drift"
@@ -37,7 +37,7 @@ export default function MasterclassTeaser() {
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1}>
-          <div className="text-center mb-14">
+          <div className="text-center mb-8">
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-dynasty-charcoal mb-3">
               Master Your <span className="text-gradient-animated">Craft</span>
             </h2>
@@ -47,7 +47,7 @@ export default function MasterclassTeaser() {
           </div>
         </Motion>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 lg:gap-6">
           {plans.map((plan, i) => (
             <Motion key={plan.title} delay={0.15 * i} variant="fade-up">
               <div className="relative bg-white rounded-2xl border border-gray-200 shadow-sm p-8 flex flex-col items-center text-center hover:shadow-md transition-all duration-300 group">
@@ -74,7 +74,7 @@ export default function MasterclassTeaser() {
         </div>
 
         <Motion delay={0.5}>
-          <div className="text-center mt-12">
+          <div className="text-center mt-8">
             <Link
               to="/masterclass"
               className="inline-flex items-center gap-2 px-8 py-3 bg-dynasty-charcoal text-white font-semibold rounded-xl hover:bg-dynasty-charcoal/90 transition-colors animate-glow-breathe"

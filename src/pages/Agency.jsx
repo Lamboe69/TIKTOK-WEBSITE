@@ -7,7 +7,7 @@ export default function Agency() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-16 sm:py-20 overflow-hidden relative">
+      <section className="bg-dynasty-charcoal py-10 sm:py-14 overflow-hidden relative">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px] animate-drift" />
           <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" />
@@ -68,10 +68,10 @@ export default function Agency() {
       </section>
 
       {/* Why Join */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-10 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <Motion delay={0.1}>
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <h2 className="font-display text-3xl font-bold text-dynasty-charcoal mb-3">
                 Why Join the Agency?
               </h2>
@@ -103,7 +103,7 @@ export default function Agency() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 sm:py-20">
+      <section className="py-10 sm:py-14">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <h2 className="font-display text-3xl font-bold text-dynasty-charcoal mb-4">

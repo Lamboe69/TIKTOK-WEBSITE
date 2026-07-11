@@ -223,7 +223,7 @@ export default function BattleSchedule() {
   return (
     <main>
       {/* Header */}
-      <section className="py-20 sm:py-28 bg-dynasty-cream">
+      <section className="py-12 sm:py-16 bg-dynasty-cream">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <Motion variant="fade-up" className="text-center mb-10">
             <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange">{Icons.clock}</span>
@@ -293,7 +293,7 @@ export default function BattleSchedule() {
 
           {/* Champion of Champions Banner */}
           <Motion variant="fade-up">
-            <div className="mt-12 bg-dynasty-charcoal rounded-2xl p-8 text-center text-white relative overflow-hidden">
+            <div className="mt-8 bg-dynasty-charcoal rounded-2xl p-8 text-center text-white relative overflow-hidden">
               <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-0 left-1/4 w-[200px] h-[200px] bg-dynasty-purple/15 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '10s' }} />
                 <div className="absolute bottom-0 right-1/4 w-[200px] h-[200px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />

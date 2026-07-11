@@ -32,7 +32,7 @@ export default function HowItWorks() {
   const { openOfficial } = useSignUp()
 
   return (
-    <section className="py-20 sm:py-28 bg-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-white relative overflow-hidden">
       {/* Animated background accents */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-purple/5 rounded-full blur-[120px] animate-drift" style={{ animationDuration: '10s' }} />
@@ -40,7 +40,7 @@ export default function HowItWorks() {
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-        <Motion variant="fade-up" className="text-center mb-14">
+        <Motion variant="fade-up" className="text-center mb-8">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-purple/10 text-dynasty-purple text-xs font-semibold uppercase tracking-wider mb-4">
             <span className="w-4 h-4 block">{Icons.zap}</span>
             How It Works
@@ -53,7 +53,7 @@ export default function HowItWorks() {
           </p>
         </Motion>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
           {steps.map(({ num, icon, title, description, gradient }, i) => (
             <Motion key={i} variant="fade-up" delay={i * 120}>
               <div className="relative group rounded-2xl bg-dynasty-cream/50 border border-gray-100 p-7 sm:p-8 hover:border-dynasty-purple/20 hover:shadow-xl transition-all duration-300 card-tilt h-full overflow-hidden">
@@ -84,7 +84,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Animated connector line */}
-        <div className="hidden md:flex items-center justify-center gap-4 mb-12">
+        <div className="hidden md:flex items-center justify-center gap-4 mb-6">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dynasty-purple/20 to-transparent" />
           <span className="w-2.5 h-2.5 rounded-full bg-dynasty-purple/40 animate-dot-pulse" />
           <div className="h-px flex-1 bg-gradient-to-r from-transparent via-dynasty-orange/20 to-transparent" />

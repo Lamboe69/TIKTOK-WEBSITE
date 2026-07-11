@@ -12,7 +12,7 @@ export default function Gallery() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-16 sm:py-20 relative overflow-hidden">
+      <section className="bg-dynasty-charcoal py-10 sm:py-14 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-orange/10 rounded-full blur-[100px] animate-drift" />
         </div>

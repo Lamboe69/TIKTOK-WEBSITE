@@ -48,11 +48,11 @@ export default function About() {
   return (
     <main>
       {/* Hero */}
-      <section className="py-20 sm:py-28 bg-dynasty-cream relative overflow-hidden">
+      <section className="py-12 sm:py-16 bg-dynasty-cream relative overflow-hidden">
         <div className="absolute top-1/3 left-1/4 w-[400px] h-[300px] bg-dynasty-orange/8 rounded-full blur-[100px] animate-drift pointer-events-none" style={{ animationDuration: '14s' }} />
         <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] bg-dynasty-purple/6 rounded-full blur-[90px] animate-drift pointer-events-none" style={{ animationDuration: '12s', animationDelay: '5s' }} />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             {/* Crown with pulse ring */}
             <div className="relative inline-block mb-6">
               <div className="absolute inset-0 w-20 h-20 mx-auto my-auto rounded-full border-2 border-dynasty-orange/30 animate-pulse-ring" />
@@ -72,7 +72,7 @@ export default function About() {
           </div>
 
           {/* By the Numbers — Section 3.1 */}
-          <div className="mb-16 relative overflow-hidden">
+          <div className="mb-10 relative overflow-hidden">
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '12s' }} />
             </div>
@@ -91,7 +91,7 @@ export default function About() {
             </Motion>
           </div>
 
-          <div className="space-y-10">
+          <div className="space-y-6">
             {/* The Story — Timeline / Chapters */}
             <Motion>
               <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm relative overflow-hidden">
@@ -101,7 +101,7 @@ export default function About() {
                 <h2 className="font-display font-bold text-2xl text-dynasty-charcoal mb-8 text-center relative z-10">
                   <span className="text-gradient-animated">The Story</span>
                 </h2>
-                <div className="relative z-10 border-l-2 border-gradient-to-b from-dynasty-orange via-dynasty-purple to-dynasty-orange pl-8 sm:pl-10 space-y-10">
+                <div className="relative z-10 border-l-2 border-gradient-to-b from-dynasty-orange via-dynasty-purple to-dynasty-orange pl-8 sm:pl-10 space-y-6">
                   {/* Chapter 1 */}
                   <div className="relative">
                     <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-orange/25 z-10">{Icons.lightbulb}</div>

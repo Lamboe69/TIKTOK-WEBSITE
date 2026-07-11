@@ -232,7 +232,7 @@ export default function HowToJoin() {
   return (
     <main>
       {/* Intro — dark hero */}
-      <section className="py-20 sm:py-28 bg-dynasty-charcoal text-white relative overflow-hidden">
+      <section className="py-12 sm:py-16 bg-dynasty-charcoal text-white relative overflow-hidden">
         <Particles count={25} color="rgba(255,122,0,0.35)" />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px] animate-drift" style={{ animationDuration: '10s' }} />

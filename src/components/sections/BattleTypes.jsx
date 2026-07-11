@@ -39,7 +39,7 @@ const types = [
 
 export default function BattleTypes() {
   return (
-    <section className="py-20 sm:py-28 bg-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-white relative overflow-hidden">
       {/* Animated accent orbs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
@@ -47,7 +47,7 @@ export default function BattleTypes() {
       </div>
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-        <Motion variant="fade-up" className="text-center mb-14">
+        <Motion variant="fade-up" className="text-center mb-8">
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
             Battle <span className="text-gradient-animated">Types</span>
           </h2>

@@ -34,11 +34,11 @@ export default function GiveBack() {
   }
 
   return (
-    <section className="relative overflow-hidden py-20 sm:py-28 bg-dynasty-cream">
+    <section className="relative overflow-hidden py-12 sm:py-16 bg-dynasty-cream">
       <div className="absolute top-10 right-[-120px] w-[300px] h-[300px] rounded-full bg-dynasty-purple/10 blur-[100px] animate-drift" style={{ animationDuration: '12s' }} />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <Motion variant="fade-up">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-dynasty-orange/10 rounded-full text-dynasty-orange text-xs font-semibold mb-5">
               <span className="w-3.5 h-3.5 block animate-float">{Icons.heart}</span>
@@ -55,7 +55,7 @@ export default function GiveBack() {
           </Motion>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
           {charityWork.map(({ icon, title, description }, i) => (
             <Motion key={i} variant="fade-up" delay={i * 120}>
               <div className="card-tilt bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-md hover:border-dynasty-purple/20 transition-all text-center h-full relative overflow-hidden">

@@ -5,7 +5,7 @@ import Particles from '../Particles'
 
 export default function Champions() {
   return (
-    <section className="py-20 sm:py-28 bg-dynasty-charcoal text-white relative overflow-hidden">
+    <section className="py-12 sm:py-16 bg-dynasty-charcoal text-white relative overflow-hidden">
       <Particles count={20} color="rgba(255,122,0,0.4)" />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-dynasty-orange/5 rounded-full blur-3xl animate-spin-slow" />
@@ -15,7 +15,7 @@ export default function Champions() {
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         {/* Champion headline */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <Motion variant="scale-in">
             <div className="relative inline-block mb-6">
               <span className="w-16 h-16 mx-auto block text-dynasty-orange animate-float">{Icons.trophy}</span>
@@ -36,7 +36,7 @@ export default function Champions() {
             </p>
           </Motion>
 
-          <Motion variant="fade-up" delay={300} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
+          <Motion variant="fade-up" delay={300} className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             <div className="inline-flex items-center gap-2 px-5 py-2 bg-dynasty-orange/10 border border-dynasty-orange/20 rounded-full animate-glow-breathe">
               <span className="w-4 h-4 block text-dynasty-orange">{Icons.crown}</span>
               <span className="text-dynasty-orange text-sm font-semibold">One Crown. One Dynasty.</span>

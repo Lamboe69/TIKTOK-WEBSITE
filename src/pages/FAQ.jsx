@@ -108,9 +108,9 @@ export default function FAQ() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section className="py-20 sm:py-28 bg-dynasty-cream">
+      <section className="py-12 sm:py-16 bg-dynasty-cream">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.users}</span>
             <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
               <span className="text-gradient-animated">KM DYNASTY &amp; La'Gwat Creator Network &mdash; FAQs</span>
@@ -124,7 +124,7 @@ export default function FAQ() {
 
           <FAQAccordion items={filteredItems} />
 
-          <div className="mt-14 bg-white rounded-2xl p-8 border border-gray-100">
+          <div className="mt-8 bg-white rounded-2xl p-8 border border-gray-100">
             <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-4 text-center">
               How to Join &mdash; Quick Preview
             </h2>

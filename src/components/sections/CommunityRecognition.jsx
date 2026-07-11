@@ -37,7 +37,7 @@ const roleStyles = {
 
 export default function CommunityRecognition() {
   return (
-    <section className="py-16 sm:py-20 bg-gray-50 relative overflow-hidden">
+    <section className="py-10 sm:py-14 bg-gray-50 relative overflow-hidden">
       {/* Animated background accents */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 right-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
@@ -46,7 +46,7 @@ export default function CommunityRecognition() {
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1}>
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-purple/10 text-dynasty-purple text-xs font-semibold uppercase tracking-wider mb-4">
               <span className="w-4 h-4 block">{Icons.award}</span>
               Kingdom Family

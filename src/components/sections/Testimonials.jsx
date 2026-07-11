@@ -10,12 +10,12 @@ export default function Testimonials() {
   const doubled = [...testimonials, ...testimonials]
 
   return (
-    <section className="py-16 sm:py-20 bg-dynasty-charcoal overflow-hidden relative">
+    <section className="py-10 sm:py-14 bg-dynasty-charcoal overflow-hidden relative">
       <Particles count={15} color="rgba(255,122,0,0.3)" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1}>
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-dynasty-orange text-xs font-semibold uppercase tracking-wider mb-4">
               <span className="w-4 h-4 block">{Icons.star}</span>
               Testimony & Feedback

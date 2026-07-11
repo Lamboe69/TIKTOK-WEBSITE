@@ -18,7 +18,7 @@ export default function Giveaway() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-16 sm:py-20 relative overflow-hidden">
+      <section className="bg-dynasty-charcoal py-10 sm:py-14 relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-dynasty-orange/15 rounded-full blur-[120px]" />
         </div>
@@ -62,7 +62,7 @@ export default function Giveaway() {
       </section>
 
       {/* Claim Form */}
-      <section className="py-16 sm:py-20">
+      <section className="py-10 sm:py-14">
         <div className="max-w-md mx-auto px-4 sm:px-6">
           <Motion delay={0.1}>
             <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 sm:p-8">

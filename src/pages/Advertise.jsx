@@ -115,7 +115,7 @@ export default function Advertise() {
   return (
     <main>
       {/* Intro */}
-      <section className="bg-dynasty-purple py-20 sm:py-28">
+      <section className="bg-dynasty-purple py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/10 backdrop-blur-sm rounded-full text-white/80 text-xs font-medium mb-6">
             <span className="w-3 h-3 block text-dynasty-orange">{Icons.globe}</span>
@@ -148,9 +148,9 @@ export default function Advertise() {
       </section>
 
       {/* Placement Packages — with availability tags */}
-      <section className="py-20 sm:py-28 bg-dynasty-cream">
+      <section className="py-12 sm:py-16 bg-dynasty-cream">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
               Placement Options
             </h2>
@@ -255,7 +255,7 @@ export default function Advertise() {
       </section>
 
       {/* Inquiry Form */}
-      <section id="inquiry-form" className="py-20 sm:py-28 bg-dynasty-cream scroll-mt-20">
+      <section id="inquiry-form" className="py-12 sm:py-16 bg-dynasty-cream scroll-mt-20">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-10">
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">

@@ -36,7 +36,7 @@ export default function Outreach() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-16 sm:py-20 relative overflow-hidden">
+      <section className="bg-dynasty-charcoal py-10 sm:py-14 relative overflow-hidden">
         <Particles count={25} color="rgba(255,122,0,0.35)" />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px]" />
@@ -75,9 +75,9 @@ export default function Outreach() {
       </section>
 
       {/* Main Content */}
-      <section className="py-16 sm:py-20">
+      <section className="py-10 sm:py-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Left — Mission + GoFundMe */}
             <div>
               <Motion delay={0.1}>

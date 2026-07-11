@@ -210,7 +210,7 @@ export default function DailyQuotes() {
 
   return (
     <main>
-      <section className="py-20 sm:py-28 bg-dynasty-cream">
+      <section className="py-12 sm:py-16 bg-dynasty-cream">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <Motion variant="fade-up" className="text-center mb-10">
             <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.star}</span>
@@ -259,7 +259,7 @@ export default function DailyQuotes() {
 
           {/* Trust Blurbs */}
           <Motion variant="fade-up" delay={400}>
-            <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
               <div className="bg-white rounded-xl p-5 border border-gray-100 text-center card-hover">
                 <p className="text-xs text-gray-400 mb-1">Brand Protection</p>
                 <p className="text-xs text-dynasty-charcoal font-medium">KM DYNASTY brand identity is protected. Respect the name, respect the family.</p>

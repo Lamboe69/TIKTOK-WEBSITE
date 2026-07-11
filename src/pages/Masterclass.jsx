@@ -7,7 +7,7 @@ export default function Masterclass() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-16 sm:py-20">
+      <section className="bg-dynasty-charcoal py-10 sm:py-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-dynasty-orange text-xs font-semibold uppercase tracking-wider mb-4">
@@ -89,9 +89,9 @@ export default function Masterclass() {
       </section>
 
       {/* Schedule & Terms */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-10 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Schedule */}
             <Motion delay={0.1}>
               <div className="rounded-2xl border border-gray-100 bg-white p-6">
@@ -151,7 +151,7 @@ export default function Masterclass() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 sm:py-20">
+      <section className="py-10 sm:py-14">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
             <h2 className="font-display text-3xl font-bold text-dynasty-charcoal mb-4">

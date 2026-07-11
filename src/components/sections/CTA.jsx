@@ -7,7 +7,7 @@ export default function CTA() {
   const { openOfficial } = useSignUp()
 
   return (
-    <section className="py-24 sm:py-32 bg-dynasty-purple relative overflow-hidden">
+    <section className="py-16 sm:py-20 bg-dynasty-purple relative overflow-hidden">
       <Particles count={30} color="rgba(255,255,255,0.3)" />
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 right-20 w-64 h-64 bg-dynasty-orange/15 rounded-full blur-3xl animate-drift" style={{ animationDuration: '8s' }} />
