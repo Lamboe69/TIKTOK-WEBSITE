@@ -7,11 +7,11 @@ import { convertTimezones, getBattleStatus, getCountdown, getBattleDate, downloa
 import Motion from '../components/Motion'
 
 const typeThumbnails = {
-  'Daily Godsent': '/battles/daily-godsent.svg',
-  'Most Beautiful': '/battles/most-beautiful.svg',
-  'Country': '/battles/country.svg',
-  'Scavengers': '/battles/scavengers.svg',
-  'Champion of Champions': '/battles/champion-of-champions.svg',
+  'Daily Godsent': '/battles-photos/daily-godsent.jpg',
+  'Most Beautiful': '/battles-photos/most-beautiful.jpg',
+  'Country': '/battles-photos/country.jpg',
+  'Scavengers': '/battles-photos/scavengers.jpg',
+  'Champion of Champions': '/battles-photos/champion-of-champions.jpg',
 }
 
 const typeColors = {

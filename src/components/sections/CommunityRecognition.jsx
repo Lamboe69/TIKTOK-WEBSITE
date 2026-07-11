@@ -45,8 +45,12 @@ export default function CommunityRecognition() {
                 )}
 
                 <div className="flex items-start gap-4 mb-3">
-                  <div className="w-12 h-12 rounded-xl bg-dynasty-purple/10 flex items-center justify-center text-xl flex-shrink-0">
-                    {gifter.badge}
+                  <div className="w-12 h-12 rounded-xl overflow-hidden bg-dynasty-purple/10 flex-shrink-0">
+                    {gifter.photo ? (
+                      <img src={gifter.photo} alt={gifter.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-xl">{gifter.badge}</div>
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h3 className="font-display font-bold text-dynasty-charcoal text-sm truncate">

@@ -5,6 +5,7 @@ const topGifters = [
     url: 'https://www.tiktok.com/@britdillard',
     role: 'Royal Supporter',
     badge: '👑',
+    photo: '/gifters/brittany.jpg',
     bio: 'The undisputed Queen of the Dynasty. As the first member to reach Level 50, she leads with unmatched loyalty.',
   },
   {
@@ -13,6 +14,7 @@ const topGifters = [
     url: 'https://www.tiktok.com/@gregpizarrojr',
     role: 'Dynasty Pillar',
     badge: '💎',
+    photo: '/gifters/gregory.jpg',
     bio: 'A renowned business mogul and philanthropist. Gregory serves as a true Destiny Helper, extending his generosity to transform lives.',
   },
   {
@@ -21,6 +23,7 @@ const topGifters = [
     url: 'https://www.tiktok.com/@ailinda60',
     role: 'Loyal Supporter',
     badge: '🔱',
+    photo: '/gifters/ailinda.jpg',
     bio: 'Creates funny AI videos to make your day with fun storytelling and happy endings.',
   },
   {
@@ -29,6 +32,7 @@ const topGifters = [
     url: 'https://www.tiktok.com/@charlesodia.coach',
     role: 'Loyal Supporter',
     badge: '🔱',
+    photo: '/gifters/charles.jpg',
     bio: 'A distinguished executive, strategist, and transformational leader. He empowers individuals to navigate challenges with confidence.',
   },
   {
@@ -37,6 +41,7 @@ const topGifters = [
     url: 'https://www.tiktok.com/@bns4255',
     role: 'Loyal Supporter',
     badge: '🔱',
+    photo: '/gifters/dr-bns.jpg',
     bio: 'A triple board certified physician in Internal Medicine, Critical Care & Pulmonary Medicine. Saving lives is her calling.',
   },
   {
@@ -45,6 +50,7 @@ const topGifters = [
     url: 'https://www.tiktok.com/@thatgurl_b86',
     role: 'Loyal Supporter',
     badge: '🔱',
+    photo: '/gifters/baindu.jpg',
     bio: 'Your favorite upcoming Most Beautiful and Destiny Helper Host. Turn on notifications for when I\'m on.',
   },
 ]

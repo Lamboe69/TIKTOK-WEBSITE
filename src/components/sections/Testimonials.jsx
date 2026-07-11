@@ -49,17 +49,22 @@ export default function Testimonials() {
                 "{t.text}"
               </p>
 
-              <div className="border-t border-white/10 pt-4">
-                <p className="font-display font-bold text-white text-sm">{t.name}</p>
-                <a
-                  href={t.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-dynasty-orange text-xs hover:underline mt-1"
-                >
-                  <span className="w-3 h-3 block">{Icons.tiktok}</span>
-                  {t.handle}
-                </a>
+              <div className="border-t border-white/10 pt-4 flex items-center gap-3">
+                {t.photo && (
+                  <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                )}
+                <div>
+                  <p className="font-display font-bold text-white text-sm">{t.name}</p>
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-dynasty-orange text-xs hover:underline mt-0.5"
+                  >
+                    <span className="w-3 h-3 block">{Icons.tiktok}</span>
+                    {t.handle}
+                  </a>
+                </div>
               </div>
             </div>
           ))}
