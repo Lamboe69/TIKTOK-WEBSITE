@@ -185,31 +185,21 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Advertise strip */}
+      {/* Bottom bar — single strip */}
       <div className="border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-center">
-          <p className="text-gray-500 text-xs">
-            Want to reach the KM DYNASTY audience?{' '}
-            <Link to="/advertise" className="text-dynasty-orange hover:text-dynasty-orange/80 font-semibold transition-colors">
-              Advertise With Us
-            </Link>
-          </p>
-        </div>
-      </div>
-
-      {/* Copyright */}
-      <div className="border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-          <p className="text-gray-600 text-xs text-center">
-            &copy; {new Date().getFullYear()} KM DYNASTY. All rights reserved.
-          </p>
-        </div>
-      </div>
-
-      {/* Disclaimer */}
-      <div className="border-t border-white/[0.03]">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
-          <p className="text-gray-700 text-[11px] text-center leading-relaxed max-w-2xl mx-auto">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-5">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-gray-500 text-xs">
+              &copy; {new Date().getFullYear()} KM DYNASTY. All rights reserved.
+            </p>
+            <p className="text-gray-500 text-xs">
+              Want to reach our audience?{' '}
+              <Link to="/advertise" className="text-dynasty-orange hover:text-dynasty-orange/80 font-semibold transition-colors">
+                Advertise With Us
+              </Link>
+            </p>
+          </div>
+          <p className="text-gray-700 text-[10px] text-center mt-3 leading-relaxed">
             This is an independent fan/community platform and is not officially affiliated with, endorsed by, or sponsored by TikTok or ByteDance Ltd.
           </p>
         </div>
