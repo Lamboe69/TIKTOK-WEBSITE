@@ -1,50 +1,67 @@
-import PayPalDonate from '../PayPalDonate'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
 
-const impactAreas = [
-  { icon: Icons.gift, label: 'Community giveaways & prizes' },
-  { icon: Icons.handshake, label: 'Charity drives & outreach events' },
-  { icon: Icons.users, label: 'Creator support & development' },
+const charityWork = [
+  {
+    icon: Icons.gift,
+    title: 'Community Giveaways',
+    description: 'KM DYNASTY runs regular giveaways for the community — prize boxes, creator support packages, and surprise rewards for loyal members who show up and engage.',
+  },
+  {
+    icon: Icons.handshake,
+    title: 'Charity Drives & Outreach',
+    description: 'King Maker and the KM DYNASTY team organize charity events and outreach efforts, using the platform to give back to those in need beyond the battle arena.',
+  },
+  {
+    icon: Icons.users,
+    title: 'Creator Development',
+    description: 'We invest in rising creators — coaching, visibility, and direct support to help talent grow from unknown to unforgettable.',
+  },
 ]
 
 export default function GiveBack() {
   return (
     <section className="py-20 sm:py-28 bg-dynasty-cream">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <Motion variant="fade-right">
+        <div className="text-center mb-12">
+          <Motion variant="fade-up">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-dynasty-orange/10 rounded-full text-dynasty-orange text-xs font-semibold mb-5">
               <span className="w-3.5 h-3.5 block animate-breathe">{Icons.heart}</span>
-              Give Back
+              Giving Back
             </div>
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-4">
-              Support the Dynasty
+              We Give Back to the Community
             </h2>
-            <p className="text-sm text-gray-500 leading-relaxed mb-6">
-              Every donation fuels the family. Your support powers community giveaways, charity drives,
-              creator development, and bigger prizes for the fighters who show up every day.
-              KM DYNASTY isn't just a battle — it's a movement. Help us keep it growing.
+            <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mx-auto">
+              KM DYNASTY isn't just about battles — it's about lifting people up. King Maker and the team
+              are committed to giving back through community giveaways, charity drives, and direct support
+              for creators who need a hand getting started.
             </p>
-
-            <div className="space-y-3 mb-8">
-              {impactAreas.map(({ icon, label }, i) => (
-                <Motion key={i} variant="fade-left" delay={i * 120}>
-                  <div className="flex items-center gap-3 group">
-                    <span className="w-8 h-8 rounded-lg bg-dynasty-purple/10 flex items-center justify-center flex-shrink-0 group-hover:bg-dynasty-purple/20 group-hover:scale-110 transition-all duration-300">
-                      <span className="w-4 h-4 block text-dynasty-purple">{icon}</span>
-                    </span>
-                    <span className="text-sm text-dynasty-charcoal font-medium">{label}</span>
-                  </div>
-                </Motion>
-              ))}
-            </div>
-          </Motion>
-
-          <Motion variant="fade-left" delay={200}>
-            <PayPalDonate variant="full" />
           </Motion>
         </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {charityWork.map(({ icon, title, description }, i) => (
+            <Motion key={i} variant="fade-up" delay={i * 120}>
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-md hover:border-dynasty-purple/20 transition-all text-center h-full">
+                <div className="w-12 h-12 rounded-xl bg-dynasty-purple/10 flex items-center justify-center mx-auto mb-4">
+                  <span className="w-6 h-6 block text-dynasty-purple">{icon}</span>
+                </div>
+                <h3 className="font-display font-bold text-lg text-dynasty-charcoal mb-2">{title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+              </div>
+            </Motion>
+          ))}
+        </div>
+
+        <Motion variant="fade-up" delay={400}>
+          <div className="mt-10 text-center">
+            <p className="text-xs text-gray-400 italic max-w-lg mx-auto">
+              Want to support a charity drive or partner with KM DYNASTY on an outreach event?
+              {' '}<a href="/contact" className="text-dynasty-purple hover:text-dynasty-orange font-semibold transition-colors">Get in touch</a>.
+            </p>
+          </div>
+        </Motion>
       </div>
     </section>
   )

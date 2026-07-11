@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Icons } from '../components/Icons'
-import PayPalDonate from '../components/PayPalDonate'
 
 const FORMSPREE_CONTACT = ''
 
@@ -203,21 +202,6 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Section 1 — Donation moved to bottom, clearly separated */}
-      <section className="py-14 bg-white">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
-          <div className="bg-dynasty-purple/5 rounded-2xl border border-dynasty-purple/10 p-8">
-            <span className="w-10 h-10 mx-auto mb-3 block text-dynasty-orange">{Icons.heart}</span>
-            <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-2">
-              Support KM DYNASTY
-            </h2>
-            <p className="text-sm text-gray-500 mb-6 max-w-md mx-auto">
-              Love what we're building? Your support keeps the battles going, the community growing, and the platform free for everyone.
-            </p>
-            <PayPalDonate />
-          </div>
-        </div>
-      </section>
     </main>
   )
 }
