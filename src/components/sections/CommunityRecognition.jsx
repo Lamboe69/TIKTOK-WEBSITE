@@ -7,25 +7,37 @@ const roleStyles = {
     ring: 'ring-dynasty-orange',
     badge: 'bg-dynasty-orange text-white',
     border: 'border-dynasty-orange/20 hover:border-dynasty-orange/40',
-    gradient: 'from-dynasty-orange/5 to-transparent',
+    cardBg: 'bg-gradient-to-br from-orange-50 via-white to-amber-50',
+    strip: 'bg-gradient-to-r from-dynasty-orange via-amber-400 to-dynasty-orange',
+    orb: 'bg-dynasty-orange/10',
+    tiktokBg: 'hover:bg-dynasty-orange/5 border-dynasty-orange/10 hover:border-dynasty-orange/20',
+    tiktokText: 'text-dynasty-orange',
   },
   'Dynasty Pillar': {
     ring: 'ring-dynasty-purple',
     badge: 'bg-dynasty-purple text-white',
     border: 'border-dynasty-purple/20 hover:border-dynasty-purple/40',
-    gradient: 'from-dynasty-purple/5 to-transparent',
+    cardBg: 'bg-gradient-to-br from-purple-50 via-white to-violet-50',
+    strip: 'bg-gradient-to-r from-dynasty-purple via-violet-500 to-dynasty-purple',
+    orb: 'bg-dynasty-purple/10',
+    tiktokBg: 'hover:bg-dynasty-purple/5 border-dynasty-purple/10 hover:border-dynasty-purple/20',
+    tiktokText: 'text-dynasty-purple',
   },
   'Loyal Supporter': {
     ring: 'ring-gray-300',
     badge: 'bg-gray-200 text-gray-600',
     border: 'border-gray-200 hover:border-gray-300',
-    gradient: 'from-gray-50 to-transparent',
+    cardBg: 'bg-gradient-to-br from-gray-50 via-white to-slate-50',
+    strip: 'bg-gradient-to-r from-gray-300 via-gray-400 to-gray-300',
+    orb: 'bg-gray-200/50',
+    tiktokBg: 'hover:bg-gray-100 border-gray-200 hover:border-gray-300',
+    tiktokText: 'text-gray-600',
   },
 }
 
 export default function CommunityRecognition() {
   return (
-    <section className="py-16 sm:py-20 bg-white">
+    <section className="py-16 sm:py-20 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1}>
           <div className="text-center mb-12">
@@ -47,26 +59,30 @@ export default function CommunityRecognition() {
             const style = roleStyles[gifter.role] || roleStyles['Loyal Supporter']
             return (
               <Motion key={gifter.handle} delay={idx * 0.08}>
-                <div className={`relative group rounded-2xl border bg-white overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${style.border}`}>
-                  {/* Top gradient strip */}
-                  <div className={`h-1.5 w-full bg-gradient-to-r ${style.gradient}`} />
+                <div className={`relative group rounded-2xl border overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${style.cardBg} ${style.border}`}>
+                  {/* Color strip top */}
+                  <div className={`h-1.5 w-full ${style.strip}`} />
+
+                  {/* Decorative orb — background accent */}
+                  <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${style.orb} blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500`} />
+                  <div className={`absolute -bottom-8 -left-8 w-24 h-24 rounded-full ${style.orb} blur-2xl opacity-40`} />
 
                   {/* Rank badge */}
                   {idx < 3 && (
-                    <div className={`absolute top-4 right-4 w-9 h-9 rounded-full ${style.badge} text-sm font-bold flex items-center justify-center shadow-lg z-10`}>
+                    <div className={`absolute top-5 right-5 w-9 h-9 rounded-full ${style.badge} text-sm font-bold flex items-center justify-center shadow-lg z-10`}>
                       #{idx + 1}
                     </div>
                   )}
 
-                  <div className="p-6 pt-5">
+                  <div className="relative p-6 pt-5">
                     {/* Photo — large, centered, with ring */}
                     <div className="flex justify-center mb-4">
-                      <div className={`relative`}>
+                      <div className="relative">
                         <div className={`w-28 h-28 rounded-full overflow-hidden ring-4 ${style.ring} shadow-lg`}>
                           {gifter.photo ? (
                             <img src={gifter.photo} alt={gifter.name} className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full bg-dynasty-purple/10 flex items-center justify-center text-4xl">{gifter.badge}</div>
+                            <div className="w-full h-full bg-white flex items-center justify-center text-4xl">{gifter.badge}</div>
                           )}
                         </div>
                         {/* Badge emoji overlay */}
@@ -97,7 +113,7 @@ export default function CommunityRecognition() {
                         href={gifter.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-dynasty-purple/5 border border-gray-100 hover:border-dynasty-purple/20 rounded-xl text-dynasty-purple text-xs font-semibold transition-all"
+                        className={`inline-flex items-center gap-2 px-4 py-2 bg-white/60 backdrop-blur-sm border rounded-xl ${style.tiktokText} text-xs font-semibold transition-all ${style.tiktokBg}`}
                       >
                         <span className="w-3.5 h-3.5 block">{Icons.tiktok}</span>
                         {gifter.handle}
