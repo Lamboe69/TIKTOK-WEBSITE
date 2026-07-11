@@ -23,10 +23,13 @@ const team = [
 
 function StatCard({ icon, value, label, color }) {
   return (
-    <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm text-center">
-      <span className={`w-8 h-8 mx-auto mb-2 block ${color}`}>{icon}</span>
-      <p className="font-display font-bold text-2xl text-dynasty-charcoal">{value}</p>
-      <p className="text-xs text-gray-500 mt-1">{label}</p>
+    <div className="group relative bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 shadow-sm text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color === 'text-dynasty-orange' ? 'from-dynasty-orange/5 to-transparent' : 'from-dynasty-purple/5 to-transparent'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+      <span className={`w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full ${color === 'text-dynasty-orange' ? 'bg-dynasty-orange/10' : 'bg-dynasty-purple/10'} relative z-10`}>
+        <span className={`w-6 h-6 block ${color}`}>{icon}</span>
+      </span>
+      <p className={`font-display font-bold text-3xl sm:text-4xl mb-1 relative z-10 ${color === 'text-dynasty-orange' ? 'text-dynasty-orange' : 'text-dynasty-purple'}`}>{value}</p>
+      <p className="text-xs text-gray-500 font-medium relative z-10">{label}</p>
     </div>
   )
 }
@@ -45,15 +48,26 @@ export default function About() {
   return (
     <main>
       {/* Hero */}
-      <section className="py-20 sm:py-28 bg-dynasty-cream">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section className="py-20 sm:py-28 bg-dynasty-cream relative overflow-hidden">
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[300px] bg-dynasty-orange/8 rounded-full blur-[100px] animate-drift pointer-events-none" style={{ animationDuration: '14s' }} />
+        <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] bg-dynasty-purple/6 rounded-full blur-[90px] animate-drift pointer-events-none" style={{ animationDuration: '12s', animationDelay: '5s' }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center mb-16">
-            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.crown}</span>
-            <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-              <span className="text-gradient-animated">KING MAKER</span> &mdash; Pro-Godsent Box Battle Host
+            {/* Crown with pulse ring */}
+            <div className="relative inline-block mb-6">
+              <div className="absolute inset-0 w-20 h-20 mx-auto my-auto rounded-full border-2 border-dynasty-orange/30 animate-pulse-ring" />
+              <div className="relative w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center shadow-lg shadow-dynasty-orange/25">
+                <span className="w-10 h-10 block text-white animate-float">{Icons.crown}</span>
+              </div>
+            </div>
+            <h1 className="font-display font-bold text-4xl sm:text-5xl text-dynasty-charcoal mb-3 leading-tight">
+              <span className="text-gradient-animated">KING MAKER</span>
             </h1>
-            <p className="text-gray-500 text-sm max-w-lg mx-auto">
-              The architect of engagement. Reinventing the TikTok box-battle format.
+            <p className="font-display font-semibold text-dynasty-orange text-lg sm:text-xl mb-4">
+              Pro-Godsent Box Battle Host
+            </p>
+            <p className="text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+              The architect of engagement. Reinventing the TikTok box-battle format &mdash; one livestream at a time.
             </p>
           </div>
 
@@ -84,14 +98,14 @@ export default function About() {
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-purple/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '14s' }} />
                 </div>
-                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-6 relative z-10">
+                <h2 className="font-display font-bold text-2xl text-dynasty-charcoal mb-8 text-center relative z-10">
                   <span className="text-gradient-animated">The Story</span>
                 </h2>
-                <div className="relative z-10 border-l-2 border-dynasty-purple/20 pl-8 space-y-8">
+                <div className="relative z-10 border-l-2 border-gradient-to-b from-dynasty-orange via-dynasty-purple to-dynasty-orange pl-8 sm:pl-10 space-y-10">
                   {/* Chapter 1 */}
                   <div className="relative">
-                    <div className="absolute -left-[2.55rem] top-0 w-8 h-8 rounded-full bg-dynasty-orange flex items-center justify-center text-white text-xs font-bold shadow-md">1</div>
-                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Beginning</h3>
+                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-orange/25 z-10">{Icons.lightbulb}</div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Beginning</h3>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       A $30 dream and a phone screen. King Maker saw what TikTok box battles could be &mdash;
                       not just a game of coins, but an interactive arena where engagement, community, and heart determine who rises.
@@ -99,8 +113,8 @@ export default function About() {
                   </div>
                   {/* Chapter 2 */}
                   <div className="relative">
-                    <div className="absolute -left-[2.55rem] top-0 w-8 h-8 rounded-full bg-dynasty-orange flex items-center justify-center text-white text-xs font-bold shadow-md">2</div>
-                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Arena</h3>
+                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-purple to-dynasty-purple-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-purple/25 z-10">{Icons.swords}</div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Arena</h3>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       Interactive polls, narrative-driven battles, and a gamified format that turns every session into an event
                       people plan their evenings around.
@@ -108,8 +122,8 @@ export default function About() {
                   </div>
                   {/* Chapter 3 */}
                   <div className="relative">
-                    <div className="absolute -left-[2.55rem] top-0 w-8 h-8 rounded-full bg-dynasty-orange flex items-center justify-center text-white text-xs font-bold shadow-md">3</div>
-                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Community</h3>
+                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-orange/25 z-10">{Icons.users}</div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Community</h3>
                     <p className="text-sm text-gray-600 leading-relaxed">
                       From the first livestream to a community that now spans continents &mdash;
                       a movement built on loyalty, creativity, and shared purpose.
@@ -124,16 +138,21 @@ export default function About() {
 
             {/* Video intro — Section 3.4 */}
             <Motion>
-              <div className="bg-dynasty-purple/5 rounded-2xl border border-dynasty-purple/10 p-8 text-center">
-                <span className="w-10 h-10 mx-auto mb-3 block text-dynasty-purple">{Icons.film}</span>
-                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-2">Meet King Maker</h2>
-                <p className="text-xs text-gray-500 mb-4 max-w-md mx-auto">
+              <div className="bg-dynasty-charcoal rounded-2xl border border-dynasty-charcoal p-8 sm:p-10 text-center relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-purple/20 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '12s' }} />
+                </div>
+                <span className="w-10 h-10 mx-auto mb-4 block text-dynasty-orange relative z-10">{Icons.film}</span>
+                <h2 className="font-display font-bold text-xl text-white mb-2 relative z-10">Meet King Maker</h2>
+                <p className="text-xs text-gray-400 mb-5 max-w-md mx-auto relative z-10">
                   A short video intro from King Maker himself &mdash; coming soon. Personal, unscripted, straight from the throne room.
                 </p>
-                <div className="w-full max-w-md mx-auto aspect-video bg-dynasty-charcoal/5 rounded-xl border border-dashed border-dynasty-purple/20 flex items-center justify-center">
-                  <span className="w-12 h-12 text-dynasty-purple/40">{Icons.play}</span>
+                <div className="w-full max-w-lg mx-auto aspect-video bg-dynasty-charcoal/80 rounded-xl border border-dashed border-white/10 flex items-center justify-center relative z-10">
+                  <div className="w-16 h-16 rounded-full bg-dynasty-orange/90 flex items-center justify-center shadow-lg shadow-dynasty-orange/30 animate-glow-breathe cursor-pointer">
+                    <span className="w-6 h-6 text-white ml-1">{Icons.play}</span>
+                  </div>
                 </div>
-                <p className="text-[10px] text-gray-400 mt-3 italic">Phase 2 — add a 30–60s "Meet King Maker" clip here.</p>
+                <p className="text-[10px] text-gray-500 mt-3 italic relative z-10">Phase 2 &mdash; add a 30&ndash;60s &ldquo;Meet King Maker&rdquo; clip here.</p>
               </div>
             </Motion>
 
@@ -149,17 +168,19 @@ export default function About() {
               </div>
             </Motion>
 
-            {/* Mission — Section 3.5 with CTA */}
+            {/* Mission */}
             <Motion>
-              <div id="mission" className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-3">Mission</h2>
-                <p className="text-sm text-gray-600 leading-relaxed italic mb-4">
-                  "King Maker exists to find, honor, and empower those who shine among their peers &mdash;
-                  connecting them with the platform, mentorship, and community to grow from a rising talent into a recognized creator."
+              <div id="mission" className="bg-white rounded-2xl p-8 sm:p-10 border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-dynasty-purple to-dynasty-purple-dark rounded-r" />
+                <span className="text-6xl sm:text-7xl font-display font-bold text-dynasty-purple/10 absolute top-4 right-6 leading-none">&ldquo;</span>
+                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-4">Mission</h2>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed italic mb-5 pl-4 border-l-2 border-dynasty-purple/20">
+                  King Maker exists to find, honor, and empower those who shine among their peers &mdash;
+                  connecting them with the platform, mentorship, and community to grow from a rising talent into a recognized creator.
                 </p>
                 <Link
                   to="/how-to-join"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-dynasty-purple hover:text-dynasty-purple-dark transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-dynasty-purple hover:text-dynasty-orange transition-colors"
                 >
                   See How It Works
                   <span className="w-3 h-3 block">{Icons.arrowRight}</span>
@@ -167,16 +188,18 @@ export default function About() {
               </div>
             </Motion>
 
-            {/* Vision — Section 3.5 with CTA */}
+            {/* Vision */}
             <Motion>
-              <div id="vision" className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
-                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-3">Vision</h2>
-                <p className="text-sm text-gray-600 leading-relaxed italic mb-4">
-                  "To build a global community where shining is not a solitary pursuit, but a collective celebration."
+              <div id="vision" className="bg-white rounded-2xl p-8 sm:p-10 border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-dynasty-orange to-dynasty-orange-dark rounded-r" />
+                <span className="text-6xl sm:text-7xl font-display font-bold text-dynasty-orange/10 absolute top-4 right-6 leading-none">&ldquo;</span>
+                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-4">Vision</h2>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed italic mb-5 pl-4 border-l-2 border-dynasty-orange/20">
+                  To build a global community where shining is not a solitary pursuit, but a collective celebration.
                 </p>
                 <a
                   href="/#km-lovers"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-dynasty-purple hover:text-dynasty-purple-dark transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-dynasty-orange hover:text-dynasty-purple transition-colors"
                 >
                   Meet the Community
                   <span className="w-3 h-3 block">{Icons.arrowRight}</span>
@@ -184,26 +207,30 @@ export default function About() {
               </div>
             </Motion>
 
-            {/* The Innovator & The Pro — Section 1 FIX: always visible */}
+            {/* The Innovator & The Pro */}
             <Motion>
-              <div className="bg-dynasty-purple/5 rounded-2xl border border-dynasty-purple/10 p-8">
-                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-6 text-center">
-                  The Innovator &amp; The Pro
+              <div className="rounded-2xl border border-gray-100 p-8 sm:p-10">
+                <h2 className="font-display font-bold text-2xl sm:text-3xl text-dynasty-charcoal mb-8 text-center">
+                  The <span className="text-gradient-animated">Innovator</span> &amp; <span className="text-gradient-animated">Pro</span>
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="bg-white rounded-xl p-5 border border-gray-100">
-                    <span className="w-8 h-8 mb-3 block text-dynasty-orange">{Icons.lightbulb}</span>
-                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Innovator</h3>
-                    <p className="text-xs text-gray-500 leading-relaxed">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="card-tilt bg-white rounded-2xl p-6 border border-dynasty-orange/15 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-dynasty-orange/10 mb-4">
+                      <span className="w-7 h-7 block text-dynasty-orange">{Icons.lightbulb}</span>
+                    </div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Innovator</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
                       Interactive polls, gamified battles, AR-style features, and a narrative-driven format that keeps audiences locked in.
                       Every battle is designed as an experience, not just a broadcast.
                     </p>
                   </div>
-                  <div className="bg-white rounded-xl p-5 border border-gray-100">
-                    <span className="w-8 h-8 mb-3 block text-dynasty-purple">{Icons.play}</span>
-                    <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">The Pro Livestreamer</h3>
-                    <p className="text-xs text-gray-500 leading-relaxed">
-                      Retention, banter, and the "KM DYNASTY" community identity. Every livestream feels like a family gathering &mdash;
+                  <div className="card-tilt bg-white rounded-2xl p-6 border border-dynasty-purple/15 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-dynasty-purple/10 mb-4">
+                      <span className="w-7 h-7 block text-dynasty-purple">{Icons.play}</span>
+                    </div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Pro Livestreamer</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
+                      Retention, banter, and the &ldquo;KM DYNASTY&rdquo; community identity. Every livestream feels like a family gathering &mdash;
                       not a performance, but a place people come back to because they belong.
                     </p>
                   </div>
@@ -213,7 +240,9 @@ export default function About() {
 
             {/* Team — Section 3.2 with photos */}
             <div>
-              <h2 className="font-display font-bold text-2xl text-dynasty-charcoal mb-6 text-center">The Team</h2>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-dynasty-charcoal mb-8 text-center">
+                The <span className="text-gradient-animated">Team</span>
+              </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {team.map(({ name, role, url, icon, photo }) => (
                   <a
@@ -221,28 +250,30 @@ export default function About() {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-md hover:border-dynasty-purple/20 transition-all text-center group"
+                    className="block bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-lg hover:border-dynasty-purple/20 transition-all duration-300 text-center group"
                   >
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden bg-dynasty-purple border-2 border-white shadow-sm group-hover:scale-110 transition-transform">
-                      <img
-                        src={photo}
-                        alt={name}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.style.display = 'none'
-                          e.target.nextSibling.style.display = 'flex'
-                        }}
-                      />
-                      <div
-                        className="w-full h-full items-center justify-center text-white hidden"
-                        style={{ display: 'none' }}
-                      >
-                        <span className="w-10 h-10 block">{icon}</span>
+                    <div className="w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden bg-dynasty-purple/10 p-1 bg-gradient-to-br from-dynasty-orange to-dynasty-purple shadow-lg group-hover:scale-105 transition-transform duration-300">
+                      <div className="w-full h-full rounded-full overflow-hidden bg-white p-0.5">
+                        <img
+                          src={photo}
+                          alt={name}
+                          className="w-full h-full object-cover rounded-full"
+                          onError={(e) => {
+                            e.target.style.display = 'none'
+                            e.target.nextSibling.style.display = 'flex'
+                          }}
+                        />
+                        <div
+                          className="w-full h-full items-center justify-center text-dynasty-purple hidden"
+                          style={{ display: 'none' }}
+                        >
+                          <span className="w-12 h-12 block">{icon}</span>
+                        </div>
                       </div>
                     </div>
-                    <h3 className="font-display font-bold text-lg text-dynasty-charcoal">{name}</h3>
-                    <p className="text-xs text-dynasty-purple font-medium mb-2">{role}</p>
-                    <p className="text-xs text-gray-400">View TikTok Profile</p>
+                    <h3 className="font-display font-bold text-lg text-dynasty-charcoal mb-1">{name}</h3>
+                    <p className="text-xs text-dynasty-purple font-semibold mb-2">{role}</p>
+                    <p className="text-xs text-gray-400 group-hover:text-dynasty-orange transition-colors">View TikTok Profile &rarr;</p>
                   </a>
                 ))}
               </div>
