@@ -3,19 +3,17 @@ import Motion from '../Motion'
 
 export default function WinnersVisit() {
   return (
-    <section className="py-20 sm:py-28 bg-dynasty-charcoal text-white relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px]" />
-        <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
-        <div className="absolute bottom-0 left-0 w-[250px] h-[250px] bg-dynasty-purple/10 rounded-full blur-[80px]" />
-        {/* Dot pattern */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-      </div>
+    <section className="py-20 sm:py-28 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative bg-dynasty-charcoal rounded-3xl p-8 sm:p-12 overflow-hidden group">
+          {/* Background accents */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
+            <div className="absolute bottom-0 left-0 w-[250px] h-[250px] bg-dynasty-purple/10 rounded-full blur-[80px]" />
+            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          </div>
 
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="bg-white/[0.04] backdrop-blur-sm border border-white/[0.06] rounded-3xl p-8 sm:p-12 hover:bg-white/[0.06] transition-all duration-500">
-          <div className="flex flex-col sm:flex-row items-center gap-8">
+          <div className="relative flex flex-col sm:flex-row items-center gap-8">
             {/* Icon */}
             <Motion variant="scale-in" delay={100}>
               <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-dynasty-orange to-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-dynasty-orange/20 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300">
@@ -26,7 +24,7 @@ export default function WinnersVisit() {
             {/* Content */}
             <div className="text-center sm:text-left flex-1">
               <Motion variant="fade-left" delay={200}>
-                <h2 className="font-display font-bold text-2xl sm:text-3xl mb-3">
+                <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
                   Winners' Livestream <span className="text-dynasty-orange">Visit</span>
                 </h2>
               </Motion>
