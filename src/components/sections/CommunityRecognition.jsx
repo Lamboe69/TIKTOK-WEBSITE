@@ -44,16 +44,16 @@ export default function CommunityRecognition() {
                   </div>
                 )}
 
-                <div className="flex items-start gap-4 mb-3">
-                  <div className="w-16 h-16 rounded-xl overflow-hidden bg-dynasty-purple/10 flex-shrink-0">
+                <div className="flex flex-col items-center text-center mb-3">
+                  <div className="w-28 h-28 rounded-2xl overflow-hidden bg-dynasty-purple/10 mb-3">
                     {gifter.photo ? (
                       <img src={gifter.photo} alt={gifter.name} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-2xl">{gifter.badge}</div>
+                      <div className="w-full h-full flex items-center justify-center text-4xl">{gifter.badge}</div>
                     )}
                   </div>
-                  <div className="min-w-0">
-                    <h3 className="font-display font-bold text-dynasty-charcoal text-sm truncate">
+                  <div>
+                    <h3 className="font-display font-bold text-dynasty-charcoal text-sm">
                       {gifter.name}
                     </h3>
                     <span className={`inline-flex items-center text-[11px] font-medium px-2 py-0.5 rounded-full mt-1 border ${roleColors[gifter.role] || roleColors['Loyal Supporter']}`}>
