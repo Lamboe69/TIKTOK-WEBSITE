@@ -15,6 +15,10 @@ const navLinks = [
 
 const moreLinks = [
   { to: '/daily-quotes', label: 'Daily Quotes' },
+  { to: '/blog', label: 'Blog' },
+  { to: '/gallery', label: 'Gallery' },
+  { to: '/outreach', label: 'Outreach' },
+  { to: '/giveaway', label: 'Giveaway' },
   { to: '/faq', label: 'FAQ' },
   { to: '/advertise', label: 'Advertise' },
 ]
