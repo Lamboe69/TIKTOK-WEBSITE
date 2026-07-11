@@ -6,13 +6,17 @@ import { useSignUp } from './SignUpContext'
 const navLinks = [
   { to: '/', label: 'Home' },
   { to: '/how-to-join', label: 'How to Join' },
-  { to: '/battle-schedule', label: 'Battle Schedule' },
-  { to: '/daily-quotes', label: 'Daily Quotes' },
-  { to: '/about', label: 'About' },
-  { to: '/agency', label: 'Agency' },
+  { to: '/battle-schedule', label: 'Schedule' },
   { to: '/masterclass', label: 'Masterclass' },
-  { to: '/advertise', label: 'Advertise' },
+  { to: '/agency', label: 'Agency' },
+  { to: '/about', label: 'About' },
   { to: '/contact', label: 'Contact' },
+]
+
+const moreLinks = [
+  { to: '/daily-quotes', label: 'Daily Quotes' },
+  { to: '/faq', label: 'FAQ' },
+  { to: '/advertise', label: 'Advertise' },
 ]
 
 export default function Navbar() {
@@ -92,6 +96,22 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
+            <div className="border-t border-dynasty-cream my-2 pt-2">
+              {moreLinks.map(({ to, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block px-3 py-2.5 text-sm font-medium rounded-lg transition-all ${
+                    pathname === to
+                      ? 'bg-dynasty-purple text-white'
+                      : 'text-dynasty-charcoal hover:bg-dynasty-cream'
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
             <button
               onClick={() => { ctaAction(); setMobileOpen(false) }}
               className="block w-full px-3 py-2.5 text-sm font-semibold bg-dynasty-orange text-white rounded-lg text-center hover:bg-dynasty-orange-dark transition-colors"

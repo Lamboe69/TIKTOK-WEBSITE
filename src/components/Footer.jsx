@@ -11,6 +11,7 @@ const quickLinks = [
   { to: '/agency', label: 'Agency' },
   { to: '/masterclass', label: 'Masterclass' },
   { to: '/advertise', label: 'Advertise' },
+  { to: '/faq', label: 'FAQ' },
   { to: '/contact', label: 'Contact' },
 ]
 
