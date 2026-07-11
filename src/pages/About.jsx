@@ -116,9 +116,6 @@ export default function About() {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-dynasty-cream to-transparent pointer-events-none" />
       </section>
 
-      {/* Gradient: charcoal → cream */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-dynasty-charcoal to-dynasty-cream" />
-
       {/* ═══════════ SECTION 2 — BY THE NUMBERS ═══════════ */}
       <section className="relative bg-dynasty-cream py-20 sm:py-28 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-dynasty-orange/8 rounded-full blur-[100px] animate-drift pointer-events-none" />
@@ -155,9 +152,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
-      {/* Gradient: cream → white */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-dynasty-cream to-white" />
 
       {/* ═══════════ SECTION 3 — THE STORY ═══════════ */}
       <section className="bg-white py-20 sm:py-28">
@@ -196,9 +190,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Gradient: white → cream */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-white to-dynasty-cream" />
-
       {/* ═══════════ SECTION 4 — MEET KING MAKER ═══════════ */}
       <section className="bg-dynasty-cream py-20 sm:py-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
@@ -223,9 +214,6 @@ export default function About() {
           <p className="text-[11px] text-gray-400 italic">Phase 2 — add a 30–60s "Meet King Maker" clip here.</p>
         </div>
       </section>
-
-      {/* Gradient: cream → white */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-dynasty-cream to-white" />
 
       {/* ═══════════ SECTION 5 — AT A GLANCE + MISSION/VISION ═══════════ */}
       <section className="bg-white py-20 sm:py-28">
@@ -283,9 +271,6 @@ export default function About() {
         </div>
       </section>
 
-      {/* Gradient: white → cream */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-white to-dynasty-cream" />
-
       {/* ═══════════ SECTION 6 — THE INNOVATOR & PRO ═══════════ */}
       <section className="bg-dynasty-cream py-20 sm:py-28">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
@@ -318,9 +303,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
-      {/* Gradient: cream → white */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-dynasty-cream to-white" />
 
       {/* ═══════════ SECTION 7 — THE TEAM ═══════════ */}
       <section className="bg-white py-20 sm:py-28">
@@ -365,9 +347,6 @@ export default function About() {
           </div>
         </div>
       </section>
-
-      {/* Gradient: white → charcoal */}
-      <div className="h-16 sm:h-24 bg-gradient-to-b from-white to-dynasty-charcoal" />
 
       {/* ═══════════ SECTION 8 — BOTTOM CTA ═══════════ */}
       <section className="relative bg-dynasty-charcoal py-20 sm:py-28 overflow-hidden">
