@@ -12,20 +12,17 @@ export default function Gallery() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-10 sm:py-14 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-dynasty-orange/10 rounded-full blur-[100px] animate-drift" />
-        </div>
+      <section className="bg-brand-900 py-10 sm:py-14">
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block animate-float">{Icons.film}</span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 text-accent text-xs font-semibold uppercase tracking-wider mb-4">
+              <span className="w-4 h-4 block">{Icons.film}</span>
               From the Dynasty
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              Photo <span className="text-dynasty-orange text-gradient-animated">Gallery</span>
+              Photo <span className="text-gold text-gradient">Gallery</span>
             </h1>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-brand-500 max-w-xl mx-auto">
               {photos.length} moments captured across battles, meetups, and community events.
             </p>
           </Motion>
@@ -42,10 +39,10 @@ export default function Gallery() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+                  className={`px-4 py-2 text-sm font-semibold rounded-md transition-all ${
                     activeCategory === cat
-                      ? 'bg-dynasty-purple text-white'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                      ? 'bg-accent text-white'
+                      : 'bg-brand-50 text-brand-500 hover:bg-brand-100'
                   }`}
                 >
                   {cat}
@@ -60,7 +57,7 @@ export default function Gallery() {
               <Motion key={photo.id} delay={0.05 + idx * 0.04}>
                 <button
                   onClick={() => setSelectedPhoto(photo)}
-                  className="group relative aspect-square rounded-xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300"
+                  className="group relative aspect-square rounded-xl overflow-hidden border border-brand-100 hover:border-brand-200 transition-colors"
                 >
                   <img
                     src={photo.src}
@@ -78,7 +75,7 @@ export default function Gallery() {
           </div>
 
           {filtered.length === 0 && (
-            <div className="text-center py-12 text-gray-400">
+            <div className="text-center py-12 text-brand-500">
               <p className="text-sm">No photos in this category yet.</p>
             </div>
           )}

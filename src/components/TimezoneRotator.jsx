@@ -78,19 +78,19 @@ export default function TimezoneRotator({ sourceTime = '8:00 PM' }) {
     >
       <button
         onClick={() => setActiveIdx((prev) => (prev - 1 + TIMEZONES.length) % TIMEZONES.length)}
-        className="w-8 h-8 rounded-full bg-dynasty-purple/10 hover:bg-dynasty-purple/20 flex items-center justify-center transition-colors flex-shrink-0"
+        className="w-7 h-7 rounded-md bg-brand-100 hover:bg-brand-200 flex items-center justify-center transition-colors flex-shrink-0"
         aria-label="Previous timezone"
       >
-        <svg className="w-4 h-4 text-dynasty-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+        <svg className="w-3.5 h-3.5 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
       </button>
 
       <div className="relative min-w-[220px] text-center">
         <div key={activeIdx} className="tz-fade-in flex flex-col items-center gap-1">
-          <span className="text-2xl">{current.flag}</span>
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-dynasty-purple rounded-full">
-            <span className="text-white font-bold text-sm">{current.label}</span>
+          <span className="text-xl">{current.flag}</span>
+          <span className="inline-flex items-center gap-2 px-4 py-2 bg-brand-900 rounded-full">
+            <span className="text-white font-semibold text-sm">{current.label}</span>
             <span className="w-px h-4 bg-white/20" />
-            <span className="text-dynasty-orange font-bold text-sm">{currentTime}</span>
+            <span className="text-accent font-bold text-sm">{currentTime}</span>
           </span>
         </div>
 
@@ -100,7 +100,7 @@ export default function TimezoneRotator({ sourceTime = '8:00 PM' }) {
               key={i}
               onClick={() => setActiveIdx(i)}
               className={`h-1.5 rounded-full transition-all ${
-                i === activeIdx ? 'w-5 bg-dynasty-orange' : 'w-1.5 bg-dynasty-purple/20'
+                i === activeIdx ? 'w-5 bg-accent' : 'w-1.5 bg-brand-200'
               }`}
               aria-label={`Go to ${TIMEZONES[i].label}`}
             />
@@ -110,10 +110,10 @@ export default function TimezoneRotator({ sourceTime = '8:00 PM' }) {
 
       <button
         onClick={() => setActiveIdx((prev) => (prev + 1) % TIMEZONES.length)}
-        className="w-8 h-8 rounded-full bg-dynasty-purple/10 hover:bg-dynasty-purple/20 flex items-center justify-center transition-colors flex-shrink-0"
+        className="w-7 h-7 rounded-md bg-brand-100 hover:bg-brand-200 flex items-center justify-center transition-colors flex-shrink-0"
         aria-label="Next timezone"
       >
-        <svg className="w-4 h-4 text-dynasty-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+        <svg className="w-3.5 h-3.5 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
       </button>
     </div>
   )
