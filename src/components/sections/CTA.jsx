@@ -6,37 +6,63 @@ export default function CTA() {
   const { openOfficial } = useSignUp()
 
   return (
-    <section className="py-16 sm:py-20 bg-brand-900">
-      <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
-        <Motion variant="fade-up">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
+    <section className="relative overflow-hidden" style={{ minHeight: 360 }}>
+      {/* Background image */}
+      <img
+        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
+        alt="Join the Dynasty"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Deep overlay — stage gradient */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.92) 0%, rgba(18,6,32,0.96) 60%, rgba(18,6,32,0.98) 100%)' }}
+      />
+      {/* Subtle ember orb */}
+      <div
+        className="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.12) 0%, transparent 70%)', transform: 'translate(30%, 30%)' }}
+      />
+
+      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-24 text-center">
+        <Motion delay={0.1}>
+          {/* Crown icon */}
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: 'rgba(255,107,26,0.15)', border: '1px solid rgba(255,107,26,0.25)' }}
+          >
+            <span className="w-7 h-7 block text-ember">{Icons.crown}</span>
+          </div>
+
+          <h2
+            className="font-display font-bold text-ivory mb-4 leading-tight"
+            style={{ fontSize: 'clamp(28px, 4vw, 48px)', letterSpacing: '-0.02em' }}
+          >
             Ready to Join the Dynasty?
           </h2>
-        </Motion>
 
-        <Motion variant="fade-up" delay={100}>
-          <p className="text-brand-400 text-sm sm:text-base max-w-lg mx-auto mb-6 leading-relaxed">
-            Whether you're a creator, a supporter, or just curious — there's a place for you in KM DYNASTY.
+          <p className="text-white/55 text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed">
+            Whether you're a creator, a supporter, or just curious —<br className="hidden sm:block" />
+            there's a place for you in KM DYNASTY.
           </p>
-        </Motion>
 
-        <Motion variant="fade-up" delay={200}>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={openOfficial}
-              className="px-6 py-3 bg-white text-brand-900 font-semibold text-sm rounded-lg hover:bg-brand-50 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8, boxShadow: '0 0 0 0 rgba(255,107,26,0)' }}
             >
-              <span className="flex items-center gap-2">
-                {Icons.arrowRight}
-                Sign Up — Box Battle
-              </span>
+              <span className="w-4 h-4 block">{Icons.swords}</span>
+              Sign Up — Box Battle
             </button>
             <a
               href="https://www.tiktok.com/@kingmakernevergivesup"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-3 bg-white/10 text-white font-medium text-sm rounded-lg border border-white/10 hover:bg-white/15 transition-colors"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-medium text-white/80 hover:text-white transition-all"
+              style={{ border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(8px)' }}
             >
+              <span className="w-4 h-4 block">{Icons.tiktok}</span>
               Follow King Maker
             </a>
           </div>
