@@ -23,12 +23,13 @@ const team = [
 
 function StatCard({ icon, value, label, color }) {
   return (
-    <div className="group rounded-xl border border-brand-100 bg-white p-6 text-center hover:border-brand-200 transition-colors">
-      <span className={`w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full ${color === 'text-gold' ? 'bg-gold/10' : 'bg-accent/10'}`}>
+    <div className="group relative bg-white/70 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 shadow-sm text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden">
+      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${color === 'text-dynasty-orange' ? 'from-dynasty-orange/5 to-transparent' : 'from-dynasty-purple/5 to-transparent'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
+      <span className={`w-12 h-12 mx-auto mb-3 flex items-center justify-center rounded-full ${color === 'text-dynasty-orange' ? 'bg-dynasty-orange/10' : 'bg-dynasty-purple/10'} relative z-10`}>
         <span className={`w-6 h-6 block ${color}`}>{icon}</span>
       </span>
-      <p className={`font-display font-bold text-3xl sm:text-4xl mb-1 ${color === 'text-gold' ? 'text-gold' : 'text-accent'}`}>{value}</p>
-      <p className="text-xs text-brand-500 font-medium">{label}</p>
+      <p className={`font-display font-bold text-3xl sm:text-4xl mb-1 relative z-10 ${color === 'text-dynasty-orange' ? 'text-dynasty-orange' : 'text-dynasty-purple'}`}>{value}</p>
+      <p className="text-xs text-gray-500 font-medium relative z-10">{label}</p>
     </div>
   )
 }
@@ -38,39 +39,48 @@ export default function About() {
   const { stats } = useTikTokStats()
 
   const numbers = useMemo(() => [
-    { icon: Icons.trophy, value: stats.battlesHostedFormatted || '—', label: 'Box Battles Hosted', color: 'text-gold' },
-    { icon: Icons.star, value: stats.winnersCrownedFormatted || '—', label: 'Winners Crowned', color: 'text-accent' },
-    { icon: Icons.clock, value: stats.avgViewersFormatted || '—', label: 'Avg. Live Viewers', color: 'text-gold' },
-    { icon: Icons.users, value: stats.followersFormatted || '—', label: 'Community Members', color: 'text-accent' },
+    { icon: Icons.trophy, value: stats.battlesHostedFormatted || '—', label: 'Box Battles Hosted', color: 'text-dynasty-orange' },
+    { icon: Icons.star, value: stats.winnersCrownedFormatted || '—', label: 'Winners Crowned', color: 'text-dynasty-purple' },
+    { icon: Icons.clock, value: stats.avgViewersFormatted || '—', label: 'Avg. Live Viewers', color: 'text-dynasty-orange' },
+    { icon: Icons.users, value: stats.followersFormatted || '—', label: 'Community Members', color: 'text-dynasty-purple' },
   ], [stats])
 
   return (
     <main>
       {/* Hero */}
-      <section className="py-12 sm:py-16 bg-muted">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <section className="py-12 sm:py-16 bg-dynasty-cream relative overflow-hidden">
+        <div className="absolute top-1/3 left-1/4 w-[400px] h-[300px] bg-dynasty-orange/8 rounded-full blur-[100px] animate-drift pointer-events-none" style={{ animationDuration: '14s' }} />
+        <div className="absolute bottom-1/3 right-1/4 w-[350px] h-[250px] bg-dynasty-purple/6 rounded-full blur-[90px] animate-drift pointer-events-none" style={{ animationDuration: '12s', animationDelay: '5s' }} />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center mb-10">
-            <div className="relative w-20 h-20 mx-auto rounded-full bg-gold flex items-center justify-center mb-6">
-              <span className="w-10 h-10 block text-white">{Icons.crown}</span>
+            {/* Crown with pulse ring */}
+            <div className="relative inline-block mb-6">
+              <div className="absolute inset-0 w-20 h-20 mx-auto my-auto rounded-full border-2 border-dynasty-orange/30 animate-pulse-ring" />
+              <div className="relative w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center shadow-lg shadow-dynasty-orange/25">
+                <span className="w-10 h-10 block text-white animate-float">{Icons.crown}</span>
+              </div>
             </div>
-            <h1 className="font-display font-bold text-4xl sm:text-5xl text-brand-900 mb-3 leading-tight">
-              KING MAKER
+            <h1 className="font-display font-bold text-4xl sm:text-5xl text-dynasty-charcoal mb-3 leading-tight">
+              <span className="text-gradient-animated">KING MAKER</span>
             </h1>
-            <p className="font-display font-semibold text-gold text-lg sm:text-xl mb-4">
+            <p className="font-display font-semibold text-dynasty-orange text-lg sm:text-xl mb-4">
               Pro-Godsent Box Battle Host
             </p>
-            <p className="text-brand-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
+            <p className="text-gray-500 text-sm sm:text-base max-w-lg mx-auto leading-relaxed">
               The architect of engagement. Reinventing the TikTok box-battle format &mdash; one livestream at a time.
             </p>
           </div>
 
-          {/* By the Numbers */}
-          <div className="mb-10">
+          {/* By the Numbers — Section 3.1 */}
+          <div className="mb-10 relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-orange/10 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '12s' }} />
+            </div>
             <Motion>
-              <h2 className="font-display font-bold text-xl text-brand-900 mb-6 text-center">
+              <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-6 text-center">
                 By the Numbers
               </h2>
-              <p className="text-xs text-brand-500 text-center mb-6 italic">
+              <p className="text-xs text-gray-400 text-center mb-6 italic">
                 Real figures. Real impact. (Replace placeholders with verified stats before launch.)
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -82,69 +92,75 @@ export default function About() {
           </div>
 
           <div className="space-y-6">
-            {/* The Story */}
+            {/* The Story — Timeline / Chapters */}
             <Motion>
-              <div className="bg-white rounded-xl border border-brand-100 p-8">
-                <h2 className="font-display font-bold text-2xl text-brand-900 mb-8 text-center">
-                  <span className="text-gradient">The Story</span>
+              <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-purple/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '14s' }} />
+                </div>
+                <h2 className="font-display font-bold text-2xl text-dynasty-charcoal mb-8 text-center relative z-10">
+                  <span className="text-gradient-animated">The Story</span>
                 </h2>
-                <div className="border-l-2 border-accent/20 pl-8 sm:pl-10 space-y-6">
+                <div className="relative z-10 border-l-2 border-gradient-to-b from-dynasty-orange via-dynasty-purple to-dynasty-orange pl-8 sm:pl-10 space-y-6">
                   {/* Chapter 1 */}
                   <div className="relative">
-                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gold flex items-center justify-center text-white text-sm font-bold z-10">{Icons.lightbulb}</div>
-                    <h3 className="font-display font-bold text-base text-brand-900 mb-2">The Beginning</h3>
-                    <p className="text-sm text-brand-500 leading-relaxed">
+                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-orange/25 z-10">{Icons.lightbulb}</div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Beginning</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       A $30 dream and a phone screen. King Maker saw what TikTok box battles could be &mdash;
                       not just a game of coins, but an interactive arena where engagement, community, and heart determine who rises.
                     </p>
                   </div>
                   {/* Chapter 2 */}
                   <div className="relative">
-                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white text-sm font-bold z-10">{Icons.swords}</div>
-                    <h3 className="font-display font-bold text-base text-brand-900 mb-2">The Arena</h3>
-                    <p className="text-sm text-brand-500 leading-relaxed">
+                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-purple to-dynasty-purple-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-purple/25 z-10">{Icons.swords}</div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Arena</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       Interactive polls, narrative-driven battles, and a gamified format that turns every session into an event
                       people plan their evenings around.
                     </p>
                   </div>
                   {/* Chapter 3 */}
                   <div className="relative">
-                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gold flex items-center justify-center text-white text-sm font-bold z-10">{Icons.users}</div>
-                    <h3 className="font-display font-bold text-base text-brand-900 mb-2">The Community</h3>
-                    <p className="text-sm text-brand-500 leading-relaxed">
+                    <div className="absolute -left-[2.55rem] sm:-left-[2.8rem] top-0 w-10 h-10 rounded-full bg-gradient-to-br from-dynasty-orange to-dynasty-orange-dark flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-dynasty-orange/25 z-10">{Icons.users}</div>
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Community</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
                       From the first livestream to a community that now spans continents &mdash;
                       a movement built on loyalty, creativity, and shared purpose.
                     </p>
                   </div>
                 </div>
-                <p className="text-xs text-brand-500 mt-6 italic">
+                <p className="text-xs text-gray-400 mt-6 italic relative z-10">
                   * Confirm a real starting date and any verifiable milestones with King Maker before publishing.
                 </p>
               </div>
             </Motion>
 
-            {/* Video intro */}
+            {/* Video intro — Section 3.4 */}
             <Motion>
-              <div className="bg-brand-900 rounded-xl p-8 sm:p-10 text-center">
-                <span className="w-10 h-10 mx-auto mb-4 block text-gold">{Icons.film}</span>
-                <h2 className="font-display font-bold text-xl text-white mb-2">Meet King Maker</h2>
-                <p className="text-xs text-brand-500 mb-5 max-w-md mx-auto">
+              <div className="bg-dynasty-charcoal rounded-2xl border border-dynasty-charcoal p-8 sm:p-10 text-center relative overflow-hidden">
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px] bg-dynasty-purple/20 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '12s' }} />
+                </div>
+                <span className="w-10 h-10 mx-auto mb-4 block text-dynasty-orange relative z-10">{Icons.film}</span>
+                <h2 className="font-display font-bold text-xl text-white mb-2 relative z-10">Meet King Maker</h2>
+                <p className="text-xs text-gray-400 mb-5 max-w-md mx-auto relative z-10">
                   A short video intro from King Maker himself &mdash; coming soon. Personal, unscripted, straight from the throne room.
                 </p>
-                <div className="w-full max-w-lg mx-auto aspect-video bg-brand-800 rounded-xl border border-dashed border-white/10 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-gold flex items-center justify-center cursor-pointer">
+                <div className="w-full max-w-lg mx-auto aspect-video bg-dynasty-charcoal/80 rounded-xl border border-dashed border-white/10 flex items-center justify-center relative z-10">
+                  <div className="w-16 h-16 rounded-full bg-dynasty-orange/90 flex items-center justify-center shadow-lg shadow-dynasty-orange/30 animate-glow-breathe cursor-pointer">
                     <span className="w-6 h-6 text-white ml-1">{Icons.play}</span>
                   </div>
                 </div>
-                <p className="text-[10px] text-brand-500 mt-3 italic">Phase 2 &mdash; add a 30&ndash;60s &ldquo;Meet King Maker&rdquo; clip here.</p>
+                <p className="text-[10px] text-gray-500 mt-3 italic relative z-10">Phase 2 &mdash; add a 30&ndash;60s &ldquo;Meet King Maker&rdquo; clip here.</p>
               </div>
             </Motion>
 
             {/* Kingmaker at a Glance */}
             <Motion>
-              <div className="bg-white rounded-xl border border-brand-100 p-8">
-                <h2 className="font-display font-bold text-xl text-brand-900 mb-3">Kingmaker at a Glance</h2>
-                <p className="text-sm text-brand-500 leading-relaxed">
+              <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
+                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-3">Kingmaker at a Glance</h2>
+                <p className="text-sm text-gray-600 leading-relaxed">
                   A blend of showmanship and strategy. Leveraging TikTok's market scope and Symphony tools,
                   King Maker crafts each battle as a theatre of engagement &mdash; where every participant has a role, every tap matters,
                   and every battle tells a story.
@@ -154,17 +170,17 @@ export default function About() {
 
             {/* Mission */}
             <Motion>
-              <div id="mission" className="bg-white rounded-xl border border-brand-100 p-8 sm:p-10 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-accent rounded-r" />
-                <span className="text-6xl sm:text-7xl font-display font-bold text-accent/10 absolute top-4 right-6 leading-none">&ldquo;</span>
-                <h2 className="font-display font-bold text-xl text-brand-900 mb-4">Mission</h2>
-                <p className="text-sm sm:text-base text-brand-500 leading-relaxed italic mb-5 pl-4 border-l-2 border-accent/20">
+              <div id="mission" className="bg-white rounded-2xl p-8 sm:p-10 border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-dynasty-purple to-dynasty-purple-dark rounded-r" />
+                <span className="text-6xl sm:text-7xl font-display font-bold text-dynasty-purple/10 absolute top-4 right-6 leading-none">&ldquo;</span>
+                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-4">Mission</h2>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed italic mb-5 pl-4 border-l-2 border-dynasty-purple/20">
                   King Maker exists to find, honor, and empower those who shine among their peers &mdash;
                   connecting them with the platform, mentorship, and community to grow from a rising talent into a recognized creator.
                 </p>
                 <Link
                   to="/how-to-join"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-gold transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-dynasty-purple hover:text-dynasty-orange transition-colors"
                 >
                   See How It Works
                   <span className="w-3 h-3 block">{Icons.arrowRight}</span>
@@ -174,16 +190,16 @@ export default function About() {
 
             {/* Vision */}
             <Motion>
-              <div id="vision" className="bg-white rounded-xl border border-brand-100 p-8 sm:p-10 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gold rounded-r" />
-                <span className="text-6xl sm:text-7xl font-display font-bold text-gold/10 absolute top-4 right-6 leading-none">&ldquo;</span>
-                <h2 className="font-display font-bold text-xl text-brand-900 mb-4">Vision</h2>
-                <p className="text-sm sm:text-base text-brand-500 leading-relaxed italic mb-5 pl-4 border-l-2 border-gold/20">
+              <div id="vision" className="bg-white rounded-2xl p-8 sm:p-10 border border-gray-100 shadow-sm relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-dynasty-orange to-dynasty-orange-dark rounded-r" />
+                <span className="text-6xl sm:text-7xl font-display font-bold text-dynasty-orange/10 absolute top-4 right-6 leading-none">&ldquo;</span>
+                <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-4">Vision</h2>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed italic mb-5 pl-4 border-l-2 border-dynasty-orange/20">
                   To build a global community where shining is not a solitary pursuit, but a collective celebration.
                 </p>
                 <a
                   href="/#km-lovers"
-                  className="inline-flex items-center gap-2 text-xs font-bold text-gold hover:text-accent transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-bold text-dynasty-orange hover:text-dynasty-purple transition-colors"
                 >
                   Meet the Community
                   <span className="w-3 h-3 block">{Icons.arrowRight}</span>
@@ -193,27 +209,27 @@ export default function About() {
 
             {/* The Innovator & The Pro */}
             <Motion>
-              <div className="rounded-xl border border-brand-100 p-8 sm:p-10">
-                <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-8 text-center">
-                  The <span className="text-gradient">Innovator</span> &amp; <span className="text-gradient">Pro</span>
+              <div className="rounded-2xl border border-gray-100 p-8 sm:p-10">
+                <h2 className="font-display font-bold text-2xl sm:text-3xl text-dynasty-charcoal mb-8 text-center">
+                  The <span className="text-gradient-animated">Innovator</span> &amp; <span className="text-gradient-animated">Pro</span>
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="bg-white rounded-xl p-6 border border-brand-100 hover:border-brand-200 transition-colors">
-                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-gold/10 mb-4">
-                      <span className="w-7 h-7 block text-gold">{Icons.lightbulb}</span>
+                  <div className="card-tilt bg-white rounded-2xl p-6 border border-dynasty-orange/15 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-dynasty-orange/10 mb-4">
+                      <span className="w-7 h-7 block text-dynasty-orange">{Icons.lightbulb}</span>
                     </div>
-                    <h3 className="font-display font-bold text-base text-brand-900 mb-2">The Innovator</h3>
-                    <p className="text-xs sm:text-sm text-brand-500 leading-relaxed">
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Innovator</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
                       Interactive polls, gamified battles, AR-style features, and a narrative-driven format that keeps audiences locked in.
                       Every battle is designed as an experience, not just a broadcast.
                     </p>
                   </div>
-                  <div className="bg-white rounded-xl p-6 border border-brand-100 hover:border-brand-200 transition-colors">
-                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-accent/10 mb-4">
-                      <span className="w-7 h-7 block text-accent">{Icons.play}</span>
+                  <div className="card-tilt bg-white rounded-2xl p-6 border border-dynasty-purple/15 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-14 h-14 flex items-center justify-center rounded-full bg-dynasty-purple/10 mb-4">
+                      <span className="w-7 h-7 block text-dynasty-purple">{Icons.play}</span>
                     </div>
-                    <h3 className="font-display font-bold text-base text-brand-900 mb-2">The Pro Livestreamer</h3>
-                    <p className="text-xs sm:text-sm text-brand-500 leading-relaxed">
+                    <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-2">The Pro Livestreamer</h3>
+                    <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
                       Retention, banter, and the &ldquo;KM DYNASTY&rdquo; community identity. Every livestream feels like a family gathering &mdash;
                       not a performance, but a place people come back to because they belong.
                     </p>
@@ -222,10 +238,10 @@ export default function About() {
               </div>
             </Motion>
 
-            {/* Team */}
+            {/* Team — Section 3.2 with photos */}
             <div>
-              <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-8 text-center">
-                The <span className="text-gradient">Team</span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-dynasty-charcoal mb-8 text-center">
+                The <span className="text-gradient-animated">Team</span>
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {team.map(({ name, role, url, icon, photo }) => (
@@ -234,9 +250,9 @@ export default function About() {
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block bg-white rounded-xl p-8 border border-brand-100 hover:border-brand-200 transition-colors text-center group"
+                    className="block bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-lg hover:border-dynasty-purple/20 transition-all duration-300 text-center group"
                   >
-                    <div className="w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden bg-accent/10 p-1 bg-gradient-to-br from-gold to-accent">
+                    <div className="w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden bg-dynasty-purple/10 p-1 bg-gradient-to-br from-dynasty-orange to-dynasty-purple shadow-lg group-hover:scale-105 transition-transform duration-300">
                       <div className="w-full h-full rounded-full overflow-hidden bg-white p-0.5">
                         <img
                           src={photo}
@@ -248,20 +264,20 @@ export default function About() {
                           }}
                         />
                         <div
-                          className="w-full h-full items-center justify-center text-accent hidden"
+                          className="w-full h-full items-center justify-center text-dynasty-purple hidden"
                           style={{ display: 'none' }}
                         >
                           <span className="w-12 h-12 block">{icon}</span>
                         </div>
                       </div>
                     </div>
-                    <h3 className="font-display font-bold text-lg text-brand-900 mb-1">{name}</h3>
-                    <p className="text-xs text-accent font-semibold mb-2">{role}</p>
-                    <p className="text-xs text-brand-500 group-hover:text-gold transition-colors">View TikTok Profile &rarr;</p>
+                    <h3 className="font-display font-bold text-lg text-dynasty-charcoal mb-1">{name}</h3>
+                    <p className="text-xs text-dynasty-purple font-semibold mb-2">{role}</p>
+                    <p className="text-xs text-gray-400 group-hover:text-dynasty-orange transition-colors">View TikTok Profile &rarr;</p>
                   </a>
                 ))}
               </div>
-              <p className="text-[10px] text-brand-500 text-center mt-4 italic">
+              <p className="text-[10px] text-gray-400 text-center mt-4 italic">
                 Add real headshots for King Mufasa and King Maker before launch.
               </p>
             </div>
@@ -272,7 +288,7 @@ export default function About() {
                 href="https://www.tiktok.com/@kingmakernevergivesup"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-white font-bold text-sm rounded-md hover:bg-accent-dark transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl hover:bg-dynasty-orange-dark transition-colors animate-glow-breathe"
               >
                 Follow King Maker
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>

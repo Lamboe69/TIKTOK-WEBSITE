@@ -18,17 +18,20 @@ export default function Giveaway() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-brand-900 py-10 sm:py-14">
+      <section className="bg-dynasty-charcoal py-10 sm:py-14 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-dynasty-orange/15 rounded-full blur-[120px]" />
+        </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 text-accent text-xs font-semibold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.gift}</span>
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
+              <span className="w-4 h-4 block animate-float">{Icons.gift}</span>
               Reward Claim
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              Claim Your <span className="text-gold text-gradient">Reward</span>
+              Claim Your <span className="text-dynasty-orange text-gradient-animated">Reward</span>
             </h1>
-            <p className="text-brand-500 max-w-lg mx-auto">
+            <p className="text-gray-400 max-w-lg mx-auto">
               Enter the code from the livestream and your phone number to claim your free airtime or reward.
             </p>
           </Motion>
@@ -36,7 +39,7 @@ export default function Giveaway() {
       </section>
 
       {/* How It Works */}
-      <section className="py-12 bg-muted border-b border-brand-100">
+      <section className="py-12 bg-gray-50 border-b border-gray-100">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
@@ -46,11 +49,11 @@ export default function Giveaway() {
             ].map((step, idx) => (
               <Motion key={step.num} delay={0.1 + idx * 0.1}>
                 <div className="text-center">
-                  <div className="w-10 h-10 rounded-full bg-gold text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">
+                  <div className="w-10 h-10 rounded-full bg-dynasty-orange text-white text-sm font-bold flex items-center justify-center mx-auto mb-3">
                     {step.num}
                   </div>
-                  <h3 className="font-display font-bold text-sm text-brand-900 mb-1">{step.title}</h3>
-                  <p className="text-brand-500 text-xs">{step.desc}</p>
+                  <h3 className="font-display font-bold text-sm text-dynasty-charcoal mb-1">{step.title}</h3>
+                  <p className="text-gray-500 text-xs">{step.desc}</p>
                 </div>
               </Motion>
             ))}
@@ -62,17 +65,17 @@ export default function Giveaway() {
       <section className="py-10 sm:py-14">
         <div className="max-w-md mx-auto px-4 sm:px-6">
           <Motion delay={0.1}>
-            <div className="bg-muted border border-brand-100 rounded-xl p-6 sm:p-8">
+            <div className="bg-gray-50 border border-gray-100 rounded-2xl p-6 sm:p-8">
               {submitted ? (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                     <span className="w-8 h-8 block text-green-500">{Icons.check}</span>
                   </div>
-                  <h3 className="font-display font-bold text-lg text-brand-900 mb-2">Claim Submitted!</h3>
-                  <p className="text-brand-500 text-sm">We'll process your reward and get back to you shortly.</p>
+                  <h3 className="font-display font-bold text-lg text-dynasty-charcoal mb-2">Claim Submitted!</h3>
+                  <p className="text-gray-500 text-sm">We'll process your reward and get back to you shortly.</p>
                   <button
                     onClick={() => { setSubmitted(false); setCode(''); setPhone('') }}
-                    className="mt-4 text-accent text-sm font-semibold hover:underline"
+                    className="mt-4 text-dynasty-purple text-sm font-semibold hover:underline"
                   >
                     Submit another claim
                   </button>
@@ -80,40 +83,40 @@ export default function Giveaway() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="text-center mb-2">
-                    <div className="w-14 h-14 rounded-xl bg-gold/10 flex items-center justify-center mx-auto mb-3">
-                      <span className="w-7 h-7 block text-gold">{Icons.gift}</span>
+                    <div className="w-14 h-14 rounded-2xl bg-dynasty-orange/10 flex items-center justify-center mx-auto mb-3">
+                      <span className="w-7 h-7 block text-dynasty-orange">{Icons.gift}</span>
                     </div>
-                    <h2 className="font-display font-bold text-xl text-brand-900">Enter Giveaway Code</h2>
-                    <p className="text-brand-500 text-xs mt-1">Code is announced during King Maker's livestream</p>
+                    <h2 className="font-display font-bold text-xl text-dynasty-charcoal">Enter Giveaway Code</h2>
+                    <p className="text-gray-400 text-xs mt-1">Code is announced during King Maker's livestream</p>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-brand-900 mb-1">Giveaway Code</label>
+                    <label className="block text-sm font-semibold text-dynasty-charcoal mb-1">Giveaway Code</label>
                     <input
                       type="text"
                       required
                       value={code}
                       onChange={e => setCode(e.target.value)}
                       placeholder="e.g. DYNASTY2026"
-                      className="w-full px-4 py-3 bg-white border border-brand-100 rounded-md text-sm text-center font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-center font-mono tracking-wider focus:outline-none focus:ring-2 focus:ring-dynasty-purple focus:border-transparent"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-semibold text-brand-900 mb-1">Phone Number</label>
+                    <label className="block text-sm font-semibold text-dynasty-charcoal mb-1">Phone Number</label>
                     <input
                       type="tel"
                       required
                       value={phone}
                       onChange={e => setPhone(e.target.value)}
                       placeholder="+256 700 000 000"
-                      className="w-full px-4 py-3 bg-white border border-brand-100 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-dynasty-purple focus:border-transparent"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full px-6 py-3 bg-gold text-white font-bold text-sm rounded-md hover:bg-gold-dark transition-colors"
+                    className="w-full px-6 py-3 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors animate-glow-breathe"
                   >
                     Claim Reward
                   </button>
