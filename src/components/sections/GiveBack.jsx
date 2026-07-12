@@ -27,7 +27,7 @@ export default function GiveBack() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
           <Motion variant="fade-up">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/5 rounded-full text-gold text-xs font-semibold mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-ember/10 rounded-full text-ember text-xs font-semibold mb-3">
               <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
               Giving Back
             </div>
@@ -63,7 +63,7 @@ export default function GiveBack() {
               href="https://gofundme.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold text-white text-sm font-semibold rounded-lg hover:bg-gold-dark transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-ember text-white text-sm font-semibold rounded-lg hover:bg-ember-dark transition-colors"
             >
               Donate on GoFundMe
             </a>

@@ -14,7 +14,7 @@ const typeImages = {
   'Champion of Champions': 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=80',
 }
 const typeEmoji = { 'Daily Godsent': '⚔️', 'Most Beautiful': '✨', 'Country': '🌍', 'Scavengers': '🎯', 'Champion of Champions': '👑' }
-const typeAccent = { 'Daily Godsent': '#FF6B1A', 'Most Beautiful': '#E8B94A', 'Country': '#FF6B1A', 'Scavengers': '#3B1063', 'Champion of Champions': '#E8B94A' }
+const typeAccent = { 'Daily Godsent': '#FF6B1A', 'Most Beautiful': '#ffffff', 'Country': '#FF6B1A', 'Scavengers': '#3B1063', 'Champion of Champions': '#ffffff' }
 
 function BattleCard({ battle, onSignUp }) {
   const status = getBattleStatus(battle.date, battle.time)
@@ -38,7 +38,7 @@ function BattleCard({ battle, onSignUp }) {
                 <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />LIVE
               </span>
             ) : status === 'today' ? (
-              <span className="px-2.5 py-1 text-[10px] font-bold rounded-full text-white" style={{ background: '#E8B94A' }}>TODAY</span>
+              <span className="px-2.5 py-1 text-[10px] font-bold rounded-full text-white" style={{ background: '#FF6B1A' }}>TODAY</span>
             ) : (
               <span className="px-2.5 py-1 bg-black/40 backdrop-blur-sm text-white text-[10px] font-bold rounded-full">
                 {d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
@@ -231,8 +231,8 @@ export default function BattleSchedule() {
             </p>
             <Link
               to="/how-to-join"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg border border-crown-gold/40 hover:border-crown-gold transition-all"
-              style={{ color: '#E8B94A' }}
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg border border-white/30 hover:border-white transition-all"
+              style={{ color: '#ffffff' }}
             >
               How to Qualify
               <span className="w-4 h-4 block">{Icons.arrowRight}</span>

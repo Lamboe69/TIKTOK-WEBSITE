@@ -40,7 +40,7 @@ export default function Blog() {
                 <p className="text-white/40 text-[10px] uppercase tracking-widest mb-4">Latest Post</p>
                 {posts[0] && (
                   <>
-                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold mb-2" style={{ background: 'rgba(232,185,74,0.15)', color: '#E8B94A' }}>
+                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold mb-2" style={{ background: 'rgba(255,107,26,0.15)', color: '#FF6B1A' }}>
                       {posts[0].category}
                     </span>
                     <p className="font-display font-bold text-ivory text-base leading-snug mb-2">{posts[0].title}</p>

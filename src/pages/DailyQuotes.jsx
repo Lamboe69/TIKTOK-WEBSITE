@@ -72,7 +72,7 @@ function QuoteCard({ quote, isToday, index }) {
         }
       >
         {isToday && (
-          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, #FF6B1A, #E8B94A)' }} />
+          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, #FF6B1A, #ffffff)' }} />
         )}
 
         <div className="flex items-center justify-between mb-4">
@@ -170,7 +170,7 @@ export default function DailyQuotes() {
           <Motion delay={0.1}>
             <div className="rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(232,185,74,0.08)', border: '1px solid rgba(232,185,74,0.15)' }}>
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#E8B94A' }}>Quick Reminder</p>
+                <p className="text-xs font-bold uppercase tracking-wider mb-1 text-ember">Quick Reminder</p>
                 <p className="text-white/70 text-sm">
                   Scavengers, Country, Most Beautiful — fill the form. Official Godsent — bring your taps and prayers.
                 </p>
@@ -178,7 +178,7 @@ export default function DailyQuotes() {
               <button
                 onClick={openSpecial}
                 className="flex-shrink-0 px-5 py-2.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #E8B94A, #CC9A20)', borderRadius: 8 }}
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}
               >
                 Fill Form Here
               </button>

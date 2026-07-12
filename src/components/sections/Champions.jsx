@@ -17,8 +17,8 @@ export default function Champions() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left: text */}
           <Motion delay={0.1}>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-crown-gold" style={{ background: 'rgba(232,185,74,0.1)' }}>
-              <span className="w-3.5 h-3.5 block text-crown-gold">{Icons.trophy}</span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ivory" style={{ background: 'rgba(255,255,255,0.08)' }}>
+              <span className="w-3.5 h-3.5 block text-ember">{Icons.trophy}</span>
               Champion of Champions
             </span>
             <h2 className="font-display font-bold text-3xl sm:text-5xl text-ivory mb-4 leading-tight">
@@ -55,7 +55,7 @@ export default function Champions() {
                     <p className="text-ivory text-sm font-semibold">{name}</p>
                     <p className="text-white/40 text-xs">{handle}</p>
                   </div>
-                  <p className="text-crown-gold text-sm font-bold">{score}</p>
+                  <p className="text-ember text-sm font-bold">{score}</p>
                 </div>
               ))}
             </div>

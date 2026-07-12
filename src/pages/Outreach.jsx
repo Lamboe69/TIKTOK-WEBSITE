@@ -110,7 +110,7 @@ export default function Outreach() {
                       { icon: Icons.shield, text: 'Emergency shelter and housing support' },
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3 text-sm text-white/60">
-                        <span className="w-5 h-5 block mt-0.5 flex-shrink-0" style={{ color: '#E8B94A' }}>{item.icon}</span>
+                        <span className="w-5 h-5 block mt-0.5 flex-shrink-0 text-ember">{item.icon}</span>
                         {item.text}
                       </li>
                     ))}
@@ -127,7 +127,7 @@ export default function Outreach() {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                    style={{ background: 'linear-gradient(135deg, #E8B94A, #CC9A20)', borderRadius: 8 }}
+                    style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}
                   >
                     Donate on GoFundMe
                     <span className="w-4 h-4 block">{Icons.arrowRight}</span>

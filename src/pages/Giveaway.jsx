@@ -51,7 +51,7 @@ export default function Giveaway() {
                     { num: '03', text: 'Receive your reward directly' },
                   ].map(step => (
                     <div key={step.num} className="flex items-center gap-3">
-                      <span className="font-display font-bold text-sm flex-shrink-0" style={{ color: '#E8B94A' }}>{step.num}</span>
+                      <span className="font-display font-bold text-sm flex-shrink-0 text-ember">{step.num}</span>
                       <p className="text-white/60 text-sm">{step.text}</p>
                     </div>
                   ))}
@@ -85,7 +85,7 @@ export default function Giveaway() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="text-center mb-2">
                     <div className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(232,185,74,0.12)', border: '1px solid rgba(232,185,74,0.2)' }}>
-                      <span className="w-7 h-7 block" style={{ color: '#E8B94A' }}>{Icons.gift}</span>
+                      <span className="w-7 h-7 block text-ember">{Icons.gift}</span>
                     </div>
                     <h2 className="font-display font-bold text-2xl text-ivory">Enter Giveaway Code</h2>
                     <p className="text-white/40 text-xs mt-1">Code is announced during King Maker's livestream</p>
@@ -120,7 +120,7 @@ export default function Giveaway() {
                   <button
                     type="submit"
                     className="w-full px-6 py-3.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                    style={{ background: 'linear-gradient(135deg, #E8B94A, #CC9A20)', borderRadius: 8 }}
+                    style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}
                   >
                     Claim Reward
                   </button>

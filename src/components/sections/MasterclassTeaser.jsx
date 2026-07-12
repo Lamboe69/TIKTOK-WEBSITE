@@ -45,9 +45,9 @@ export default function MasterclassTeaser() {
           <Motion delay={0.1}>
             <span
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5"
-              style={{ background: 'rgba(232,185,74,0.12)', color: '#E8B94A', border: '1px solid rgba(232,185,74,0.2)' }}
+              style={{ background: 'rgba(255,255,255,0.08)', color: '#FFF7F0', border: '1px solid rgba(255,255,255,0.15)' }}
             >
-              <span className="w-3.5 h-3.5 block" style={{ color: '#E8B94A' }}>{Icons.star}</span>
+              <span className="w-3.5 h-3.5 block text-ember">{Icons.star}</span>
               Masterclass
             </span>
             <h2
@@ -85,7 +85,7 @@ export default function MasterclassTeaser() {
                   {badge && (
                     <span
                       className="absolute -top-2.5 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full text-[9px] font-bold text-white whitespace-nowrap"
-                      style={{ background: highlight ? '#FF6B1A' : '#E8B94A' }}
+                      style={{ background: highlight ? '#FF6B1A' : '#6B3FA0' }}
                     >
                       {badge}
                     </span>
@@ -94,7 +94,7 @@ export default function MasterclassTeaser() {
                   <h3 className="font-display font-bold text-ivory text-xs mb-2 leading-snug">{title}</h3>
                   <p
                     className="font-display font-bold text-2xl mb-1"
-                    style={{ color: highlight ? '#FF6B1A' : badge === 'Premium' ? '#E8B94A' : '#FFF7F0' }}
+                    style={{ color: highlight ? '#FF6B1A' : badge === 'Premium' ? '#ffffff' : '#FFF7F0' }}
                   >
                     {price}
                   </p>

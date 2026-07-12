@@ -79,7 +79,7 @@ function EligibilityChecker() {
       </div>
 
       {allAnswered && (
-        <div className="mt-4 p-3 rounded-xl text-xs font-semibold" style={{ background: ready ? 'rgba(16,185,129,0.1)' : 'rgba(232,185,74,0.1)', color: ready ? '#10b981' : '#E8B94A' }}>
+        <div className="mt-4 p-3 rounded-xl text-xs font-semibold" style={{ background: ready ? 'rgba(16,185,129,0.1)' : 'rgba(255,107,26,0.1)', color: ready ? '#10b981' : '#FF6B1A' }}>
           {ready ? '✓ You\'re ready — sign up below!' : 'Keep working toward the requirements.'}
         </div>
       )}
@@ -210,7 +210,7 @@ export default function HowToJoin() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <Motion delay={0.1}>
               <div className="flex items-center gap-3 mb-4">
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ background: '#E8B94A' }}>B</span>
+                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ background: '#3B1063' }}>B</span>
                 <h2 className="font-display font-bold text-2xl sm:text-3xl text-ivory">Scavengers, Country & Most Beautiful</h2>
               </div>
               <p className="text-white/60 text-sm leading-relaxed mb-6">
@@ -219,7 +219,7 @@ export default function HowToJoin() {
               <button
                 onClick={openSpecial}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #E8B94A, #B8891A)', borderRadius: 6 }}
+                style={{ background: 'linear-gradient(135deg, #3B1063, #6B3FA0)', borderRadius: 6 }}
               >
                 Apply for Box Battle
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
@@ -228,11 +228,11 @@ export default function HowToJoin() {
 
             <Motion delay={0.2}>
               <div className="glass rounded-2xl p-5 border border-white/10">
-                <p className="text-crown-gold text-xs font-bold uppercase tracking-wider mb-3">What's different</p>
+                <p className="text-ember text-xs font-bold uppercase tracking-wider mb-3">What's different</p>
                 <ul className="space-y-3">
                   {['Separate sign-up form (not the Official form)', 'No 5,000 tap minimum — open to all', 'Own rules, own schedule, own winner'].map(item => (
                     <li key={item} className="flex items-start gap-3 text-sm text-white/70">
-                      <span className="w-4 h-4 block text-crown-gold flex-shrink-0 mt-0.5">{Icons.check}</span>
+                      <span className="w-4 h-4 block text-ember flex-shrink-0 mt-0.5">{Icons.check}</span>
                       {item}
                     </li>
                   ))}

@@ -121,7 +121,7 @@ export default function Contact() {
             {/* Form */}
             <Motion delay={0.1}>
               <div className="rounded-2xl p-6 sm:p-8 border border-white/08" style={{ background: 'rgba(59,16,99,0.2)' }}>
-                <div className="h-0.5 rounded-full mb-6" style={{ background: 'linear-gradient(90deg, #FF6B1A, #E8B94A)' }} />
+                <div className="h-0.5 rounded-full mb-6" style={{ background: 'linear-gradient(90deg, #FF6B1A, #ffffff)' }} />
                 <h2 className="font-display font-bold text-2xl text-ivory mb-6">Send a Message</h2>
 
                 {submitted ? (

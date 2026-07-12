@@ -8,7 +8,7 @@ const tierImages = [
   'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80',
   'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80',
 ]
-const tierAccents = ['#3B1063', '#FF6B1A', '#E8B94A']
+const tierAccents = ['#3B1063', '#FF6B1A', '#ffffff']
 
 export default function Masterclass() {
   return (
@@ -25,8 +25,8 @@ export default function Masterclass() {
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
             <Motion delay={0.1}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-crown-gold" style={{ background: 'rgba(232,185,74,0.1)' }}>
-                <span className="w-3.5 h-3.5 block text-crown-gold">{Icons.star}</span>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ivory" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                <span className="w-3.5 h-3.5 block text-ember">{Icons.star}</span>
                 Elite Education
               </span>
               <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>

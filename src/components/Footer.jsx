@@ -74,7 +74,7 @@ export default function Footer() {
   return (
     <footer style={{ background: '#120620' }}>
       {/* Ember accent line */}
-      <div style={{ height: 3, background: 'linear-gradient(90deg, #FF6B1A, #E8B94A, #FF6B1A)' }} />
+      <div style={{ height: 3, background: 'linear-gradient(90deg, #3B1063, #FF6B1A, #3B1063)' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
         {/* Main grid */}

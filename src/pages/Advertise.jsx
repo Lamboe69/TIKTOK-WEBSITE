@@ -9,14 +9,14 @@ const packages = [
     name: 'Livestream Shout-Out',
     availability: 'available',
     features: ['On-screen brand mention during live battle', 'Tagged in stream description', 'Shared to King Maker\'s TikTok story'],
-    accent: '#FF6B1A',
+    accent: '#6B3FA0',
   },
   {
     name: 'Homepage Banner',
     availability: 'limited',
     availabilityNote: '1 slot at a time',
     features: ['Rotating banner on kmDynasty.com homepage', 'Visible to every site visitor', 'Link to your site or campaign page'],
-    accent: '#E8B94A',
+    accent: '#ffffff',
   },
   {
     name: 'Sponsored Content',
@@ -28,7 +28,7 @@ const packages = [
     name: 'Custom / Bundle',
     availability: 'available',
     features: ['Mix & match any placement above', 'Tailored to your campaign goals', 'Contact for a custom quote'],
-    accent: '#E8B94A',
+    accent: '#ffffff',
   },
 ]
 
