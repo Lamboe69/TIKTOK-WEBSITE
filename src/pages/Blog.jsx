@@ -12,20 +12,17 @@ export default function Blog() {
   return (
     <main className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-dynasty-charcoal py-10 sm:py-14 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-dynasty-purple/15 rounded-full blur-[120px] animate-drift" />
-        </div>
+      <section className="bg-brand-900 py-10 sm:py-14">
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <Motion delay={0.1}>
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-dynasty-orange/10 border border-dynasty-orange/20 text-dynasty-orange text-xs font-bold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block animate-float">{Icons.clipboard}</span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 text-accent text-xs font-semibold uppercase tracking-wider mb-4">
+              <span className="w-4 h-4 block">{Icons.clipboard}</span>
               Battle Reports & Stories
             </span>
             <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              The Dynasty <span className="text-dynasty-orange text-gradient-animated">Blog</span>
+              The Dynasty <span className="text-gold text-gradient">Blog</span>
             </h1>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-brand-500 max-w-xl mx-auto">
               Battle results, community stories, and updates from the KM Dynasty family.
             </p>
           </Motion>
@@ -42,10 +39,10 @@ export default function Blog() {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+                  className={`px-4 py-2 text-sm font-semibold rounded-md transition-all ${
                     activeCategory === cat
-                      ? 'bg-dynasty-purple text-white'
-                      : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                      ? 'bg-accent text-white'
+                      : 'bg-brand-50 text-brand-500 hover:bg-brand-100'
                   }`}
                 >
                   {cat}
@@ -58,7 +55,7 @@ export default function Blog() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {filtered.map((post, idx) => (
               <Motion key={post.id} delay={0.1 + idx * 0.08}>
-                <article className="group rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300">
+                <article className="group rounded-xl border border-brand-100 overflow-hidden hover:border-brand-200 transition-colors">
                   {/* Cover */}
                   <div className="relative h-48 overflow-hidden">
                     <img
@@ -68,7 +65,7 @@ export default function Blog() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <div className="absolute bottom-3 left-3">
-                      <span className="px-3 py-1 bg-dynasty-orange/90 text-white text-xs font-bold rounded-lg">
+                      <span className="px-3 py-1 bg-gold/90 text-white text-xs font-bold rounded-lg">
                         {post.category}
                       </span>
                     </div>
@@ -76,26 +73,26 @@ export default function Blog() {
 
                   {/* Content */}
                   <div className="p-5">
-                    <div className="flex items-center gap-3 text-xs text-gray-400 mb-3">
+                    <div className="flex items-center gap-3 text-xs text-brand-500 mb-3">
                       <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                       <span>·</span>
                       <span>{post.readTime}</span>
                     </div>
-                    <h2 className="font-display font-bold text-lg text-dynasty-charcoal mb-2 group-hover:text-dynasty-purple transition-colors">
+                    <h2 className="font-display font-bold text-lg text-brand-900 mb-2 group-hover:text-accent transition-colors">
                       {post.title}
                     </h2>
-                    <p className="text-gray-500 text-sm leading-relaxed mb-4">
+                    <p className="text-brand-500 text-sm leading-relaxed mb-4">
                       {post.excerpt}
                     </p>
 
                     {expandedId === post.id ? (
                       <div>
-                        <div className="text-gray-600 text-sm leading-relaxed whitespace-pre-line mb-4">
+                        <div className="text-brand-900 text-sm leading-relaxed whitespace-pre-line mb-4">
                           {post.content}
                         </div>
                         <button
                           onClick={() => setExpandedId(null)}
-                          className="text-dynasty-purple text-sm font-semibold hover:underline"
+                          className="text-accent text-sm font-semibold hover:underline"
                         >
                           Show less
                         </button>
@@ -103,7 +100,7 @@ export default function Blog() {
                     ) : (
                       <button
                         onClick={() => setExpandedId(post.id)}
-                        className="text-dynasty-purple text-sm font-semibold hover:underline"
+                        className="text-accent text-sm font-semibold hover:underline"
                       >
                         Read more
                       </button>
@@ -115,7 +112,7 @@ export default function Blog() {
           </div>
 
           {filtered.length === 0 && (
-            <div className="text-center py-12 text-gray-400">
+            <div className="text-center py-12 text-brand-500">
               <p className="text-sm">No posts in this category yet.</p>
             </div>
           )}

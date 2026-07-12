@@ -4,75 +4,66 @@ import Motion from '../Motion'
 
 const types = [
   {
-    icon: Icons.target,
-    title: 'Daily Godsent Box Battle',
-    description: 'The daily battleground. Show up, tap, pray, and compete to advance to the weekly finale.',
-    gradient: 'from-dynasty-purple to-violet-600',
-    glow: 'group-hover:shadow-dynasty-purple/20',
-    to: '/battle-schedule#daily-godsent',
+    icon: Icons.swords,
+    title: 'Official Godsent Box Battle',
+    description: 'The main event. Every creator gets a fair shot at the crown.',
+    to: '/battle-schedule',
+    color: 'text-accent',
+    bg: 'bg-accent/5',
   },
   {
     icon: Icons.star,
     title: 'Most Beautiful Box Battle',
-    description: 'Beauty meets battle. A special edition where sparkle and strategy collide in the box.',
-    gradient: 'from-dynasty-orange to-amber-500',
-    glow: 'group-hover:shadow-dynasty-orange/20',
-    to: '/battle-schedule#most-beautiful',
+    description: 'Where creativity meets competition. Beauty in every battle.',
+    to: '/battle-schedule',
+    color: 'text-gold',
+    bg: 'bg-gold/5',
   },
   {
     icon: Icons.globe,
     title: 'Country Box Battle',
-    description: 'Rep your nation. Country pride on the line in the box battle arena.',
-    gradient: 'from-dynasty-purple to-indigo-600',
-    glow: 'group-hover:shadow-dynasty-purple/20',
-    to: '/battle-schedule#country',
+    description: 'Rep your nation. Battle for national pride.',
+    to: '/battle-schedule',
+    color: 'text-accent',
+    bg: 'bg-accent/5',
   },
   {
-    icon: Icons.handshake,
-    title: 'Community First',
-    description: "It's not about who has the most coins. It's about who lifts others. A pro battle where the winner is chosen by the community \u2013 not just box value.",
-    gradient: 'from-dynasty-orange to-rose-500',
-    glow: 'group-hover:shadow-dynasty-orange/20',
-    to: '/about#mission',
+    icon: Icons.trophy,
+    title: 'Champion of Champions',
+    description: 'Winners only. The elite compete for the ultimate crown.',
+    to: '/battle-schedule',
+    color: 'text-gold',
+    bg: 'bg-gold/5',
   },
 ]
 
 export default function BattleTypes() {
   return (
-    <section className="py-12 sm:py-16 bg-white relative overflow-hidden">
-      {/* Animated accent orbs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-[10%] w-[300px] h-[300px] bg-dynasty-purple/5 rounded-full blur-[100px] animate-drift" style={{ animationDuration: '10s' }} />
-        <div className="absolute bottom-10 right-[10%] w-[250px] h-[250px] bg-dynasty-orange/5 rounded-full blur-[80px] animate-drift" style={{ animationDuration: '8s', animationDelay: '3s' }} />
-      </div>
-
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+    <section className="py-12 sm:py-16 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <Motion variant="fade-up" className="text-center mb-8">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-            Battle <span className="text-gradient-animated">Types</span>
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-2">
+            Battle <span className="text-gradient">Types</span>
           </h2>
-          <p className="text-gray-500 text-sm max-w-xl mx-auto">
-            Four ways to compete. Each with its own rules, its own energy, and its own path to the crown.
+          <p className="text-brand-500 text-sm max-w-md mx-auto">
+            Four ways to compete. Each with its own rules and energy.
           </p>
         </Motion>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {types.map(({ icon, title, description, gradient, glow, to }, i) => (
-            <Motion key={i} variant="fade-up" delay={i * 100}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {types.map(({ icon, title, description, to, color, bg }, i) => (
+            <Motion key={i} variant="fade-up" delay={i * 80}>
               <Link
                 to={to}
-                className={`group relative bg-dynasty-cream/50 rounded-2xl p-7 border border-gray-100 hover:border-dynasty-purple/20 block card-tilt overflow-hidden ${glow} hover:shadow-xl transition-all duration-300`}
+                className="group flex items-start gap-4 p-5 rounded-xl border border-brand-100 hover:border-brand-200 hover:bg-brand-50 transition-all"
               >
-                {/* Shimmer sweep on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <div className="absolute inset-0 animate-shimmer-line" />
+                <div className={`w-10 h-10 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>
+                  <span className={`w-5 h-5 block ${color}`}>{icon}</span>
                 </div>
-
-                <div className={`relative w-12 h-12 rounded-xl bg-gradient-to-br ${gradient} text-white flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
-                  {icon}
+                <div>
+                  <h3 className="font-display font-bold text-sm text-brand-900 mb-1 group-hover:text-accent transition-colors">{title}</h3>
+                  <p className="text-brand-500 text-sm leading-relaxed">{description}</p>
                 </div>
-                <h3 className="relative font-display font-bold text-lg text-dynasty-charcoal mb-2 group-hover:text-dynasty-purple transition-colors">{title}</h3>
-                <p className="relative text-sm text-gray-500 leading-relaxed">{description}</p>
               </Link>
             </Motion>
           ))}

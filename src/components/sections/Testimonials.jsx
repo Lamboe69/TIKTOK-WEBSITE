@@ -1,75 +1,49 @@
-import { useRef } from 'react'
-import Motion from '../Motion'
-import testimonials from '../../data/testimonials'
 import { Icons } from '../Icons'
-import Particles from '../Particles'
+import Motion from '../Motion'
+
+const testimonials = [
+  { name: 'Sarah M.', role: 'Creator', text: 'KM DYNASTY gave me a platform I never had. The battles are electric and the community is family.' },
+  { name: 'James K.', role: 'Viewer', text: 'I watch every single battle. King Maker makes it feel like a real event. Never boring.' },
+  { name: 'Grace N.', role: 'Champion', text: 'Winning my first battle changed everything. More followers, more confidence, more opportunities.' },
+  { name: 'David O.', role: 'Creator', text: 'The公平 format is what sets this apart. No rigs, no favors — just pure talent and engagement.' },
+  { name: 'Maria L.', role: 'Supporter', text: 'The energy in these battles is unmatched. King Maker truly cares about every creator involved.' },
+]
 
 export default function Testimonials() {
-  const scrollRef = useRef(null)
-
-  const doubled = [...testimonials, ...testimonials]
-
   return (
-    <section className="py-10 sm:py-14 bg-dynasty-charcoal overflow-hidden relative">
-      <Particles count={15} color="rgba(255,122,0,0.3)" />
-
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+    <section className="py-10 sm:py-14 bg-brand-50">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1}>
-          <div className="text-center mb-8">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-dynasty-orange text-xs font-semibold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.star}</span>
+          <div className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 text-accent text-xs font-semibold uppercase tracking-wider mb-3">
+              <span className="w-3.5 h-3.5 block">{Icons.star}</span>
               Testimony & Feedback
             </span>
-            <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mb-3">
-              What Our Family <span className="text-gradient-animated">Says</span>
+            <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-2">
+              What Our Family Says
             </h2>
-            <p className="text-gray-400 max-w-xl mx-auto">
+            <p className="text-brand-500 text-sm max-w-md mx-auto">
               Real words from real members of the KM Dynasty community.
             </p>
           </div>
         </Motion>
 
-        {/* Scrolling row */}
-        <div
-          ref={scrollRef}
-          className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {doubled.map((t, idx) => (
-            <div
-              key={`${t.handle}-${idx}`}
-              className="flex-shrink-0 w-[320px] snap-start rounded-2xl border border-white/10 bg-white/5 p-6 flex flex-col group hover:border-white/20 hover:bg-white/[0.08] transition-all duration-300"
-            >
-              <div className="flex items-center gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-dynasty-orange group-hover:scale-110 transition-transform duration-200" style={{ transitionDelay: `${i * 50}ms` }} fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-
-              <p className="text-gray-300 text-sm leading-relaxed flex-1 mb-5">
-                "{t.text}"
-              </p>
-
-              <div className="border-t border-white/10 pt-4 flex items-center gap-3">
-                {t.photo && (
-                  <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover flex-shrink-0 ring-2 ring-white/10 group-hover:ring-dynasty-orange/30 transition-all duration-300" />
-                )}
-                <div>
-                  <p className="font-display font-bold text-white text-sm">{t.name}</p>
-                  <a
-                    href={t.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-dynasty-orange text-xs hover:underline mt-0.5"
-                  >
-                    <span className="w-3 h-3 block">{Icons.tiktok}</span>
-                    {t.handle}
-                  </a>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {testimonials.map((t, i) => (
+            <Motion key={i} variant="fade-up" delay={i * 80}>
+              <div className="bg-white rounded-xl p-5 border border-brand-100 hover:border-brand-200 transition-colors">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center">
+                    <span className="text-brand-600 text-xs font-bold">{t.name[0]}</span>
+                  </div>
+                  <div>
+                    <p className="text-brand-900 text-sm font-semibold">{t.name}</p>
+                    <p className="text-brand-400 text-xs">{t.role}</p>
+                  </div>
                 </div>
+                <p className="text-brand-600 text-sm leading-relaxed">"{t.text}"</p>
               </div>
-            </div>
+            </Motion>
           ))}
         </div>
       </div>

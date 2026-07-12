@@ -69,8 +69,8 @@ function CategoryFilter({ active, onChange }) {
           onClick={() => onChange(cat)}
           className={`px-4 py-1.5 text-xs font-semibold rounded-full border transition-all ${
             active === cat
-              ? 'bg-dynasty-purple text-white border-dynasty-purple'
-              : 'bg-white text-gray-500 border-gray-200 hover:border-dynasty-purple/30 hover:text-dynasty-purple'
+              ? 'bg-accent text-white border-accent'
+              : 'bg-white text-brand-500 border-brand-100 hover:border-accent/30 hover:text-accent'
           }`}
         >
           {cat}
@@ -108,14 +108,14 @@ export default function FAQ() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <section className="py-12 sm:py-16 bg-dynasty-cream">
+      <section className="py-12 sm:py-16 bg-muted">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8">
-            <span className="w-12 h-12 mx-auto mb-4 block text-dynasty-orange animate-float">{Icons.users}</span>
-            <h1 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-3">
-              <span className="text-gradient-animated">KM DYNASTY &amp; La'Gwat Creator Network &mdash; FAQs</span>
+            <span className="w-12 h-12 mx-auto mb-4 block text-gold">{Icons.users}</span>
+            <h1 className="font-display font-bold text-3xl sm:text-4xl text-brand-900 mb-3">
+              <span className="text-gradient">KM DYNASTY &amp; La'Gwat Creator Network &mdash; FAQs</span>
             </h1>
-            <p className="text-gray-500 text-sm max-w-lg mx-auto">
+            <p className="text-brand-500 text-sm max-w-lg mx-auto">
               Answers to the most common questions.
             </p>
           </div>
@@ -124,15 +124,15 @@ export default function FAQ() {
 
           <FAQAccordion items={filteredItems} />
 
-          <div className="mt-8 bg-white rounded-2xl p-8 border border-gray-100">
-            <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-4 text-center">
+          <div className="mt-8 bg-white rounded-xl p-8 border border-brand-100">
+            <h2 className="font-display font-bold text-xl text-brand-900 mb-4 text-center">
               How to Join &mdash; Quick Preview
             </h2>
             <Stepper steps={quickSteps} />
             <div className="mt-6 text-center">
               <Link
                 to="/how-to-join"
-                className="inline-flex items-center gap-2 text-sm text-dynasty-purple font-semibold hover:text-dynasty-orange transition-colors"
+                className="inline-flex items-center gap-2 text-sm text-accent font-semibold hover:text-gold transition-colors"
               >
                 View all 10 steps
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
@@ -140,18 +140,18 @@ export default function FAQ() {
             </div>
           </div>
 
-          {/* Section 3.1 — Still have a question? */}
+          {/* Still have a question? */}
           <div className="mt-10 text-center">
-            <div className="bg-dynasty-purple/5 rounded-2xl border border-dynasty-purple/10 p-8">
-              <h2 className="font-display font-bold text-xl text-dynasty-charcoal mb-2">
+            <div className="bg-accent/5 rounded-xl border border-accent/10 p-8">
+              <h2 className="font-display font-bold text-xl text-brand-900 mb-2">
                 Still have a question?
               </h2>
-              <p className="text-sm text-gray-500 mb-5">
+              <p className="text-sm text-brand-500 mb-5">
                 Reach out directly &mdash; we're happy to help.
               </p>
               <Link
                 to="/contact"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-dynasty-purple text-white font-bold text-sm rounded-xl hover:bg-dynasty-purple-dark transition-colors animate-glow-breathe"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand-900 text-white font-bold text-sm rounded-md hover:bg-brand-800 transition-colors"
               >
                 Contact Us
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>

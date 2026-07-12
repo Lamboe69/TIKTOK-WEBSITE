@@ -27,8 +27,6 @@ export default function LiveStatus() {
   const [nextBattle, setNextBattle] = useState(null)
 
   useEffect(() => {
-    // Check TikTok live status via proxy endpoint
-    // Falls back to countdown if unavailable
     const checkLive = async () => {
       try {
         const res = await fetch('/api/live-status')
@@ -59,20 +57,19 @@ export default function LiveStatus() {
         href="https://www.tiktok.com/@kingmakernevergivesup"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-full text-red-500 text-xs font-bold animate-glow hover:bg-red-500/20 transition-colors"
+        className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-full text-red-600 text-xs font-semibold hover:bg-red-100 transition-colors"
       >
-        <span className="w-2 h-2 bg-red-500 rounded-full animate-breathe" />
-        LIVE NOW — Watch on TikTok
+        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+        LIVE
       </a>
     )
   }
 
   if (nextBattle && countdown) {
     return (
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
-        <span className="w-2 h-2 bg-dynasty-orange rounded-full animate-breathe" />
-        <span className="text-white text-xs font-semibold">
-          Next Battle: {nextBattle.title.split(' Box Battle')[0]} — {countdown}
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-900/80 backdrop-blur-sm rounded-full">
+        <span className="text-white/60 text-xs font-medium">
+          Next: {countdown}
         </span>
       </div>
     )
