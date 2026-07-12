@@ -7,76 +7,40 @@ import { useTikTokStats } from '../hooks/useTikTokStats'
 const packages = [
   {
     name: 'Livestream Shout-Out',
-    price: null,
     availability: 'available',
-    features: [
-      'On-screen brand mention during live battle',
-      'Tagged in stream description',
-      'Shared to King Maker\'s TikTok story',
-    ],
-    color: 'border-accent',
+    features: ['On-screen brand mention during live battle', 'Tagged in stream description', 'Shared to King Maker\'s TikTok story'],
+    accent: '#FF6B1A',
   },
   {
     name: 'Homepage Banner',
-    price: null,
     availability: 'limited',
     availabilityNote: '1 slot at a time',
-    features: [
-      'Rotating banner on kmDynasty.com homepage',
-      'Visible to every site visitor',
-      'Link to your site or campaign page',
-    ],
-    color: 'border-gold',
+    features: ['Rotating banner on kmDynasty.com homepage', 'Visible to every site visitor', 'Link to your site or campaign page'],
+    accent: '#E8B94A',
   },
   {
     name: 'Sponsored Content',
-    price: null,
     availability: 'available',
-    features: [
-      'Dedicated TikTok post or shout-out',
-      'Mentioned in box battle description',
-      'Brand tag in video overlay',
-    ],
-    color: 'border-accent',
+    features: ['Dedicated TikTok post or shout-out', 'Mentioned in box battle description', 'Brand tag in video overlay'],
+    accent: '#FF6B1A',
   },
   {
     name: 'Custom / Bundle',
-    price: null,
     availability: 'available',
-    features: [
-      'Mix & match any placement above',
-      'Tailored to your campaign goals',
-      'Contact for a custom quote',
-    ],
-    color: 'border-gold',
+    features: ['Mix & match any placement above', 'Tailored to your campaign goals', 'Contact for a custom quote'],
+    accent: '#E8B94A',
   },
 ]
 
 const availabilityConfig = {
-  available: { label: 'Available', dot: 'bg-emerald-400', text: 'text-emerald-600', bg: 'bg-emerald-50' },
-  limited: { label: '1 Slot Left', dot: 'bg-amber-400', text: 'text-amber-600', bg: 'bg-amber-50' },
-  booked: { label: 'Currently Booked', dot: 'bg-red-400', text: 'text-red-600', bg: 'bg-red-50' },
+  available: { label: 'Available', dot: '#34d399', text: '#34d399', bg: 'rgba(52,211,153,0.1)' },
+  limited: { label: '1 Slot Left', dot: '#fbbf24', text: '#fbbf24', bg: 'rgba(251,191,36,0.1)' },
+  booked: { label: 'Currently Booked', dot: '#f87171', text: '#f87171', bg: 'rgba(248,113,113,0.1)' },
 }
 
-const budgetRanges = [
-  'Under $100',
-  '$100 – $500',
-  '$500 – $1,000',
-  '$1,000 – $5,000',
-  '$5,000+',
-  'Not sure yet',
-]
+const budgetRanges = ['Under $100', '$100 – $500', '$500 – $1,000', '$1,000 – $5,000', '$5,000+', 'Not sure yet']
 
-const initialForm = {
-  businessName: '',
-  contactName: '',
-  email: '',
-  phone: '',
-  website: '',
-  placement: '',
-  budget: '',
-  message: '',
-}
+const initialForm = { businessName: '', contactName: '', email: '', phone: '', website: '', placement: '', budget: '', message: '' }
 
 export default function Advertise() {
   const [form, setForm] = useState(initialForm)
@@ -85,331 +49,241 @@ export default function Advertise() {
   const { stats } = useTikTokStats()
 
   const reachStats = useMemo(() => [
-    { icon: Icons.users, value: stats.followersFormatted || '—', label: 'Followers', color: 'text-gold' },
-    { icon: Icons.play, value: stats.avgViewersFormatted || '—', label: 'Avg. Live Viewers', color: 'text-accent' },
-    { icon: Icons.globe, value: 'US & Canada', label: 'Primary Regions', color: 'text-gold' },
-    { icon: Icons.trophy, value: stats.battlesHostedFormatted || '—', label: 'Battles Hosted', color: 'text-accent' },
+    { icon: Icons.users, value: stats.followersFormatted || '—', label: 'Followers' },
+    { icon: Icons.play, value: stats.avgViewersFormatted || '—', label: 'Avg. Live Viewers' },
+    { icon: Icons.globe, value: 'US & Canada', label: 'Primary Regions' },
+    { icon: Icons.trophy, value: stats.battlesHostedFormatted || '—', label: 'Battles Hosted' },
   ], [stats])
 
-  const update = (field) => (e) => setForm({ ...form, [field]: e.target.value })
+  const update = field => e => setForm({ ...form, [field]: e.target.value })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
     const subject = encodeURIComponent(`Advertising Inquiry — ${form.businessName}`)
     const body = encodeURIComponent(
-      `Business/Brand: ${form.businessName}\n` +
-      `Contact: ${form.contactName}\n` +
-      `Email: ${form.email}\n` +
-      `Phone: ${form.phone || 'N/A'}\n` +
-      `Website: ${form.website || 'N/A'}\n` +
-      `Placement Interest: ${form.placement}\n` +
-      `Budget: ${form.budget || 'N/A'}\n\n` +
-      `Message:\n${form.message}`
+      `Business/Brand: ${form.businessName}\nContact: ${form.contactName}\nEmail: ${form.email}\nPhone: ${form.phone || 'N/A'}\nWebsite: ${form.website || 'N/A'}\nPlacement: ${form.placement}\nBudget: ${form.budget || 'N/A'}\n\nMessage:\n${form.message}`
     )
     window.location.href = `mailto:lagwatinc@gmail.com?subject=${subject}&body=${body}`
     setSubmitted(true)
     setSubmitting(false)
   }
 
+  const scrollToForm = (name) => {
+    document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
+    setForm(f => ({ ...f, placement: name }))
+  }
+
   return (
     <main>
-      {/* Intro */}
-      <section className="bg-brand-900 py-12 sm:py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 text-accent text-xs font-semibold mb-6">
-            <span className="w-3 h-3 block text-gold">{Icons.globe}</span>
-            For Brands & Sponsors
-          </div>
-          <h1 className="font-display font-bold text-4xl sm:text-5xl text-white mb-4">
-            <span className="text-gradient">Advertise With KM DYNASTY</span>
-          </h1>
-          <p className="text-brand-500 text-base sm:text-lg max-w-2xl mx-auto mb-10">
-            Partner with King Maker to reach a fast-growing, highly engaged livestream audience.
-            Choose a placement that fits your brand, and let's make it happen.
-          </p>
+      {/* Hero */}
+      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
+        <img
+          src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1400&q=80"
+          alt="Advertise"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
 
-          {/* Reach stats strip */}
-          <Motion>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
-              {reachStats.map((stat) => (
-                <div key={stat.label} className="bg-white/[0.06] backdrop-blur-sm rounded-xl p-4 border border-white/[0.08]">
-                  <span className={`w-6 h-6 mx-auto mb-2 block ${stat.color}`}>{stat.icon}</span>
-                  <p className="font-display font-bold text-xl sm:text-2xl text-white">{stat.value}</p>
-                  <p className="text-brand-500 text-xs mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-brand-500/50 text-[10px] mt-3 italic">
-              Replace placeholder numbers with verified stats before launch.
-            </p>
-          </Motion>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
+            <Motion delay={0.1}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+                For Brands & Sponsors
+              </span>
+              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
+                Advertise With<br />
+                <span className="text-gradient">KM DYNASTY</span>
+              </h1>
+              <p className="text-white/60 text-sm leading-relaxed max-w-md">
+                Partner with King Maker to reach a fast-growing, highly engaged livestream audience.
+              </p>
+            </Motion>
+
+            <Motion delay={0.2}>
+              <div className="glass rounded-2xl p-6 border border-white/10 grid grid-cols-2 gap-4">
+                {reachStats.map(s => (
+                  <div key={s.label} className="text-center">
+                    <span className="w-5 h-5 block mx-auto mb-2 text-ember">{s.icon}</span>
+                    <p className="font-display font-bold text-xl text-ivory">{s.value}</p>
+                    <p className="text-white/40 text-[10px] uppercase tracking-wider mt-1">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+            </Motion>
+          </div>
         </div>
       </section>
 
-      {/* Placement Packages */}
-      <section className="py-12 sm:py-16 bg-muted">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-8">
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-brand-900 mb-3">
-              Placement Options
+      {/* Packages */}
+      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <Motion delay={0.1} className="text-center mb-12">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3" style={{ letterSpacing: '-0.02em' }}>
+              Placement <span className="text-gradient">Options</span>
             </h2>
-            <p className="text-brand-500 text-sm max-w-xl mx-auto">
-              Pick a package or mix & match. Pricing is confirmed after we review your inquiry.
+            <p className="text-white/50 text-sm max-w-xl mx-auto">
+              Pick a package or mix & match. Pricing confirmed after we review your inquiry.
             </p>
-          </div>
+          </Motion>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {packages.map(({ name, price, availability, availabilityNote, features, color }, i) => {
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {packages.map(({ name, availability, availabilityNote, features, accent }, i) => {
               const avail = availabilityConfig[availability]
-              const isBooked = availability === 'booked'
-
               return (
-                <div
-                  key={i}
-                  className={`bg-white rounded-xl p-6 border-2 ${color} flex flex-col`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-display font-bold text-lg text-brand-900">{name}</h3>
-                  </div>
+                <Motion key={i} delay={0.1 + i * 0.08}>
+                  <div
+                    className="rounded-2xl p-6 flex flex-col border border-white/06 hover:border-white/12 transition-all"
+                    style={{ background: 'rgba(59,16,99,0.2)', borderTop: `2px solid ${accent}` }}
+                  >
+                    <h3 className="font-display font-bold text-base text-ivory mb-3">{name}</h3>
 
-                  {/* Availability status tag */}
-                  <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${avail.bg} ${avail.text} mb-3 self-start`}>
-                    <span className={`w-2 h-2 rounded-full ${avail.dot}`}></span>
-                    {avail.label}
-                    {availabilityNote && <span className="font-normal opacity-70">({availabilityNote})</span>}
-                  </div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold mb-4 self-start" style={{ background: avail.bg, color: avail.text }}>
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: avail.dot }} />
+                      {avail.label}
+                      {availabilityNote && <span className="font-normal opacity-70">({availabilityNote})</span>}
+                    </div>
 
-                  <p className="text-gold font-bold text-sm mb-4">
-                    {price || 'Contact for pricing'}
-                  </p>
-                  <ul className="space-y-2 mb-6 flex-1">
-                    {features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-2 text-sm text-brand-500">
-                        <span className="w-4 h-4 block text-accent mt-0.5 flex-shrink-0">{Icons.check}</span>
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  {isBooked ? (
-                    <a
-                      href="#inquiry-form"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
-                        setForm({ ...form, placement: name })
-                      }}
-                      className="block w-full text-center px-4 py-2.5 bg-brand-50 text-brand-500 font-bold text-sm rounded-md hover:bg-brand-100 transition-colors"
+                    <p className="text-xs font-bold mb-4" style={{ color: accent }}>Contact for pricing</p>
+
+                    <ul className="space-y-2 mb-6 flex-1">
+                      {features.map((f, j) => (
+                        <li key={j} className="flex items-start gap-2 text-xs text-white/50">
+                          <span className="w-3.5 h-3.5 block mt-0.5 flex-shrink-0 text-ember">{Icons.check}</span>
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <button
+                      onClick={() => scrollToForm(name)}
+                      className="w-full py-2.5 text-xs font-bold text-white rounded-lg transition-all hover:scale-105"
+                      style={{ background: availability === 'booked' ? 'rgba(255,255,255,0.06)' : `linear-gradient(135deg, ${accent}, ${accent}cc)`, borderRadius: 6 }}
                     >
-                      Join Waitlist
-                    </a>
-                  ) : (
-                    <a
-                      href="#inquiry-form"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })
-                        setForm({ ...form, placement: name })
-                      }}
-                      className="block w-full text-center px-4 py-2.5 bg-brand-900 text-white font-bold text-sm rounded-md hover:bg-brand-800 transition-colors"
-                    >
-                      Reserve This Slot
-                    </a>
-                  )}
-                </div>
+                      {availability === 'booked' ? 'Join Waitlist' : 'Reserve This Slot'}
+                    </button>
+                  </div>
+                </Motion>
               )
             })}
           </div>
         </div>
       </section>
 
-      {/* As Seen On (placeholder) */}
-      <section className="py-14 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <Motion>
-            <div className="bg-accent/5 rounded-xl border border-accent/10 p-8 text-center">
-              <span className="w-10 h-10 mx-auto mb-3 block text-accent">{Icons.star}</span>
-              <h2 className="font-display font-bold text-xl text-brand-900 mb-2">As Seen On KM DYNASTY</h2>
-              <p className="text-xs text-brand-500 mb-4 max-w-md mx-auto">
-                Past sponsor placements and campaign examples will appear here once live.
-                Real results from real partners &mdash; the best proof for the next one.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto">
-                <div className="bg-white rounded-lg p-5 border border-dashed border-brand-200">
-                  <div className="w-12 h-12 rounded-lg bg-brand-50 flex items-center justify-center mx-auto mb-3">
-                    <span className="w-6 h-6 text-brand-500">{Icons.globe}</span>
-                  </div>
-                  <p className="text-xs text-brand-500 italic">Example: Livestream Shout-Out for [Brand]</p>
-                </div>
-                <div className="bg-white rounded-lg p-5 border border-dashed border-brand-200">
-                  <div className="w-12 h-12 rounded-lg bg-brand-50 flex items-center justify-center mx-auto mb-3">
-                    <span className="w-6 h-6 text-brand-500">{Icons.star}</span>
-                  </div>
-                  <p className="text-xs text-brand-500 italic">Example: Homepage Banner for [Brand]</p>
-                </div>
-              </div>
-              <p className="text-[10px] text-brand-500 mt-4 italic">Phase 2 — replace with real sponsor examples (with permission).</p>
-            </div>
-          </Motion>
-        </div>
-      </section>
-
       {/* Inquiry Form */}
-      <section id="inquiry-form" className="py-12 sm:py-16 bg-muted scroll-mt-20">
+      <section id="inquiry-form" className="py-16 sm:py-24 scroll-mt-20" style={{ background: '#120620' }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-10">
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-brand-900 mb-3">
-              Advertiser Inquiry
+          <Motion delay={0.1} className="text-center mb-10">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3" style={{ letterSpacing: '-0.02em' }}>
+              Advertiser <span className="text-gradient">Inquiry</span>
             </h2>
-            <p className="text-brand-500 text-sm max-w-lg mx-auto">
-              Tell us about your brand and what you're looking for. We'll get back to you within 1–2 business days.
-            </p>
-          </div>
+            <p className="text-white/50 text-sm">We'll get back to you within 1–2 business days.</p>
+          </Motion>
 
           {submitted ? (
-            <div className="bg-white rounded-xl p-10 text-center border border-brand-100">
-              <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                <span className="w-7 h-7 block text-accent">{Icons.check}</span>
+            <Motion delay={0.1}>
+              <div className="rounded-2xl p-10 text-center border border-white/08" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+                <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(255,107,26,0.15)' }}>
+                  <span className="w-7 h-7 block text-ember">{Icons.check}</span>
+                </div>
+                <h3 className="font-display font-bold text-xl text-ivory mb-2">Inquiry Sent</h3>
+                <p className="text-white/50 text-sm mb-6">The KM DYNASTY team will get back to you within 1–2 business days.</p>
+                <Link to="/" className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105" style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}>
+                  Back to Home
+                </Link>
               </div>
-              <h3 className="font-display font-bold text-xl text-brand-900 mb-2">Inquiry Sent</h3>
-              <p className="text-sm text-brand-500 mb-6">
-                Thanks — the KM DYNASTY team will get back to you within 1–2 business days.
-              </p>
-              <Link
-                to="/"
-                className="inline-flex items-center gap-2 px-6 py-2.5 bg-brand-900 text-white font-bold text-sm rounded-md hover:bg-brand-800 transition-colors"
-              >
-                Back to Home
-              </Link>
-            </div>
+            </Motion>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-5 bg-white rounded-xl p-8 border border-brand-100">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <Motion delay={0.15}>
+              <form onSubmit={handleSubmit} className="rounded-2xl p-8 border border-white/08 space-y-5" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {[
+                    { label: 'Business / Brand Name *', field: 'businessName', required: true },
+                    { label: 'Contact Name *', field: 'contactName', required: true },
+                    { label: 'Email *', field: 'email', required: true, type: 'email' },
+                    { label: 'Phone (optional)', field: 'phone', type: 'tel' },
+                  ].map(({ label, field, required, type = 'text' }) => (
+                    <div key={field}>
+                      <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{label}</label>
+                      <input
+                        type={type}
+                        required={required}
+                        value={form[field]}
+                        onChange={update(field)}
+                        className="w-full px-4 py-3 rounded-lg text-sm text-ivory placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-ember/40"
+                        style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                      />
+                    </div>
+                  ))}
+                </div>
+
                 <div>
-                  <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                    Business / Brand Name <span className="text-red-400">*</span>
-                  </label>
+                  <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Website / Social Link (optional)</label>
                   <input
-                    type="text"
+                    type="url"
+                    value={form.website}
+                    onChange={update('website')}
+                    placeholder="https://..."
+                    className="w-full px-4 py-3 rounded-lg text-sm text-ivory placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-ember/40"
+                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Placement Interest</label>
+                    <select
+                      value={form.placement}
+                      onChange={update('placement')}
+                      className="w-full px-4 py-3 rounded-lg text-sm text-ivory focus:outline-none focus:ring-2 focus:ring-ember/40"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                      <option value="" className="bg-[#120620]">Select a package...</option>
+                      {packages.map(({ name }) => <option key={name} value={name} className="bg-[#120620]">{name}</option>)}
+                      <option value="Not sure / Custom quote" className="bg-[#120620]">Not sure / Custom quote</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Budget Range (optional)</label>
+                    <select
+                      value={form.budget}
+                      onChange={update('budget')}
+                      className="w-full px-4 py-3 rounded-lg text-sm text-ivory focus:outline-none focus:ring-2 focus:ring-ember/40"
+                      style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    >
+                      <option value="" className="bg-[#120620]">Select range...</option>
+                      {budgetRanges.map(r => <option key={r} value={r} className="bg-[#120620]">{r}</option>)}
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Message / Campaign Details *</label>
+                  <textarea
                     required
-                    value={form.businessName}
-                    onChange={update('businessName')}
-                    className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
+                    rows={4}
+                    value={form.message}
+                    onChange={update('message')}
+                    placeholder="Tell us about your campaign, goals, and any specific requirements..."
+                    className="w-full px-4 py-3 rounded-lg text-sm text-ivory placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-ember/40 resize-none"
+                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                    Contact Name <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={form.contactName}
-                    onChange={update('contactName')}
-                    className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                    Email <span className="text-red-400">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={form.email}
-                    onChange={update('email')}
-                    className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                    Phone <span className="text-brand-500 font-normal">(optional)</span>
-                  </label>
-                  <input
-                    type="tel"
-                    value={form.phone}
-                    onChange={update('phone')}
-                    className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                  />
-                </div>
-              </div>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="w-full px-6 py-3.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105 disabled:opacity-50"
+                  style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}
+                >
+                  {submitting ? 'Sending...' : 'Send Inquiry'}
+                </button>
 
-              <div>
-                <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                  Website / Social Link <span className="text-brand-500 font-normal">(optional)</span>
-                </label>
-                <input
-                  type="url"
-                  value={form.website}
-                  onChange={update('website')}
-                  placeholder="https://..."
-                  className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                    Placement Interest
-                  </label>
-                  <select
-                    value={form.placement}
-                    onChange={update('placement')}
-                    className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                  >
-                    <option value="">Select a package...</option>
-                    {packages.map(({ name }) => (
-                      <option key={name} value={name}>{name}</option>
-                    ))}
-                    <option value="Not sure / Custom quote">Not sure / Want a custom quote</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                    Budget Range <span className="text-brand-500 font-normal">(optional)</span>
-                  </label>
-                  <select
-                    value={form.budget}
-                    onChange={update('budget')}
-                    className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent"
-                  >
-                    <option value="">Select range...</option>
-                    {budgetRanges.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-brand-900 mb-1.5">
-                  Message / Campaign Details <span className="text-red-400">*</span>
-                </label>
-                <textarea
-                  required
-                  rows={4}
-                  value={form.message}
-                  onChange={update('message')}
-                  placeholder="Tell us about your campaign, goals, and any specific requirements..."
-                  className="w-full px-4 py-2.5 bg-muted border border-brand-100 rounded-md text-sm text-brand-900 focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent resize-none"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="w-full px-6 py-3 bg-brand-900 text-white font-bold text-sm rounded-md hover:bg-brand-800 transition-colors disabled:opacity-50"
-              >
-                {submitting ? 'Sending...' : 'Send Inquiry'}
-              </button>
-
-              <p className="text-xs text-brand-500 text-center">
-                Payment for confirmed packages is handled via PayPal after we review your inquiry.
-              </p>
-            </form>
+                <p className="text-xs text-white/30 text-center">
+                  Payment for confirmed packages is handled via PayPal after we review your inquiry.
+                </p>
+              </form>
+            </Motion>
           )}
         </div>
       </section>

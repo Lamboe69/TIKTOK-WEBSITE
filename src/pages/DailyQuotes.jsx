@@ -4,66 +4,37 @@ import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
 import Motion from '../components/Motion'
 
-const dayAccents = {
-  Monday:    { bg: 'bg-accent/5',  border: 'border-accent/10',  text: 'text-accent' },
-  Tuesday:   { bg: 'bg-gold/5',  border: 'border-gold/10',  text: 'text-gold' },
-  Wednesday: { bg: 'bg-accent/5',  border: 'border-accent/10',  text: 'text-accent' },
-  Thursday:  { bg: 'bg-gold/5',         border: 'border-gold/10',         text: 'text-gold' },
-  Friday:    { bg: 'bg-accent/5',         border: 'border-accent/10',         text: 'text-accent' },
-  Saturday:  { bg: 'bg-gold/5',  border: 'border-gold/10',  text: 'text-gold' },
-  Sunday:    { bg: 'bg-gold/5',          border: 'border-gold/10',          text: 'text-gold' },
-}
-
 function generateQuoteImage(quote, day) {
   const canvas = document.createElement('canvas')
   canvas.width = 1080
   canvas.height = 1920
   const ctx = canvas.getContext('2d')
-
   const grad = ctx.createLinearGradient(0, 0, 1080, 1920)
-  grad.addColorStop(0, '#5B2A86')
-  grad.addColorStop(1, '#3D1A5C')
+  grad.addColorStop(0, '#120620')
+  grad.addColorStop(1, '#3B1063')
   ctx.fillStyle = grad
   ctx.fillRect(0, 0, 1080, 1920)
-
-  ctx.fillStyle = 'rgba(255,122,0,0.08)'
+  ctx.fillStyle = 'rgba(255,107,26,0.08)'
   ctx.beginPath()
   ctx.arc(900, 300, 400, 0, Math.PI * 2)
   ctx.fill()
-
-  ctx.fillStyle = 'rgba(255,255,255,0.05)'
-  ctx.beginPath()
-  ctx.arc(200, 1600, 300, 0, Math.PI * 2)
-  ctx.fill()
-
-  ctx.fillStyle = '#FF7A00'
+  ctx.fillStyle = '#FF6B1A'
   ctx.font = 'bold 36px sans-serif'
   ctx.textAlign = 'center'
   ctx.fillText(day.toUpperCase(), 540, 500)
-
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'
+  ctx.fillStyle = 'rgba(255,247,240,0.9)'
   ctx.font = 'italic 48px Georgia, serif'
   const words = `"${quote}"`.split(' ')
-  let line = ''
-  let y = 650
+  let line = '', y = 650
   for (const word of words) {
     const test = line + word + ' '
-    if (ctx.measureText(test).width > 900) {
-      ctx.fillText(line.trim(), 540, y)
-      line = word + ' '
-      y += 70
-    } else {
-      line = test
-    }
+    if (ctx.measureText(test).width > 900) { ctx.fillText(line.trim(), 540, y); line = word + ' '; y += 70 }
+    else line = test
   }
   ctx.fillText(line.trim(), 540, y)
-
   ctx.fillStyle = 'rgba(255,255,255,0.4)'
   ctx.font = 'bold 28px sans-serif'
   ctx.fillText('KM DYNASTY', 540, 1700)
-  ctx.font = '22px sans-serif'
-  ctx.fillText('King Maker · Daily Godsent Box Battle', 540, 1750)
-
   return canvas
 }
 
@@ -72,131 +43,75 @@ function shareQuote(quote, day) {
   canvas.toBlob(async (blob) => {
     const file = new File([blob], `km-quote-${day.toLowerCase()}.png`, { type: 'image/png' })
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      try {
-        await navigator.share({ files: [file], title: `KM DYNASTY — ${day}'s Quote` })
-      } catch {}
+      try { await navigator.share({ files: [file], title: `KM DYNASTY — ${day}'s Quote` }) } catch {}
     } else {
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = url
-      a.download = `km-quote-${day.toLowerCase()}.png`
-      a.click()
+      a.href = url; a.download = `km-quote-${day.toLowerCase()}.png`; a.click()
       URL.revokeObjectURL(url)
     }
   })
 }
 
-function copyQuote(text) {
-  navigator.clipboard.writeText(text).catch(() => {})
-}
+function QuoteCard({ quote, isToday, index }) {
+  const [copied, setCopied] = useState(false)
 
-function DailyReminder() {
-  const [enabled, setEnabled] = useState(() => {
-    return Notification.permission === 'granted'
-  })
-  const [asked, setAsked] = useState(false)
-
-  const toggle = async () => {
-    if (enabled) {
-      setEnabled(false)
-      return
-    }
-    if (!('Notification' in window)) return
-    if (Notification.permission === 'default') {
-      const result = await Notification.requestPermission()
-      if (result === 'granted') {
-        setEnabled(true)
-        new Notification('KM DYNASTY', { body: 'Daily quote reminders are now on!', icon: '/favicon.ico' })
-      } else {
-        setAsked(true)
-      }
-    } else if (Notification.permission === 'granted') {
-      setEnabled(true)
-    } else {
-      setAsked(true)
-    }
+  const copy = () => {
+    navigator.clipboard.writeText(quote.quote).catch(() => {})
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <button
-        onClick={toggle}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          enabled ? 'bg-gold' : 'bg-gray-200'
-        }`}
+    <Motion delay={0.05 + index * 0.06}>
+      <div
+        className="rounded-2xl p-6 border transition-all relative overflow-hidden"
+        style={isToday
+          ? { background: 'linear-gradient(135deg, rgba(255,107,26,0.15), rgba(59,16,99,0.5))', border: '1px solid rgba(255,107,26,0.3)' }
+          : { background: 'rgba(59,16,99,0.2)', border: '1px solid rgba(255,255,255,0.06)' }
+        }
       >
-        <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-          enabled ? 'translate-x-6' : 'translate-x-1'
-        }`} />
-      </button>
-      <span className="text-sm text-brand-900 font-medium flex items-center gap-1.5">
-        <span className="w-4 h-4 block text-gold">{Icons.star}</span>
-        Remind me daily
-      </span>
-      {asked && (
-        <span className="text-xs text-brand-500">(Allow notifications in your browser)</span>
-      )}
-    </div>
-  )
-}
+        {isToday && (
+          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, #FF6B1A, #E8B94A)' }} />
+        )}
 
-function QuoteCard({ quote, isToday, index }) {
-  const accent = dayAccents[quote.day]
-
-  return (
-    <Motion variant="fade-up" delay={index * 80}>
-      <div className={`rounded-xl p-6 border transition-all ${
-        isToday
-          ? 'bg-brand-900 text-white border-brand-900 shadow-lg scale-[1.02]'
-          : `bg-white ${accent.border} hover:border-brand-200`
-      }`}>
-        <div className="flex items-center justify-between mb-3">
-          <span className={`text-xs font-bold uppercase tracking-wider ${
-            isToday ? 'text-gold' : accent.text
-          }`}>
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-xs font-bold uppercase tracking-widest" style={{ color: isToday ? '#FF6B1A' : 'rgba(255,255,255,0.4)' }}>
             {quote.day}
           </span>
-          <span className="text-lg">{quote.emoji}</span>
+          <div className="flex items-center gap-2">
+            {isToday && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold" style={{ background: 'rgba(255,107,26,0.2)', color: '#FF6B1A' }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-ember animate-pulse" />Today
+              </span>
+            )}
+            <span className="text-lg">{quote.emoji}</span>
+          </div>
         </div>
 
-        <p className={`text-sm leading-relaxed italic mb-4 ${
-          isToday ? 'text-white/90' : 'text-brand-500'
-        }`}>
+        <p className="text-sm leading-relaxed italic mb-5" style={{ color: isToday ? 'rgba(255,247,240,0.9)' : 'rgba(255,255,255,0.6)' }}>
           "{quote.quote}"
         </p>
 
-        {isToday && (
-          <div className="inline-flex items-center gap-1 px-2.5 py-1 bg-gold/20 rounded-full mb-4">
-            <span className="w-2 h-2 rounded-full bg-gold animate-pulse" />
-            <span className="text-xs font-semibold text-gold">Today</span>
-          </div>
-        )}
-
-        <div className="flex items-center gap-2 mt-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => shareQuote(quote.quote, quote.day)}
-            className={`p-2 rounded-lg transition-all ${
-              isToday
-                ? 'bg-white/10 hover:bg-white/20 text-white'
-                : 'bg-muted hover:bg-accent/10 text-accent'
-            }`}
+            className="p-2 rounded-lg transition-all hover:scale-110"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}
             title="Share as image"
           >
-            <span className="w-4 h-4 block">{Icons.globe}</span>
+            <span className="w-4 h-4 block text-white/50">{Icons.globe}</span>
           </button>
           <button
-            onClick={() => copyQuote(quote.quote)}
-            className={`p-2 rounded-lg transition-all ${
-              isToday
-                ? 'bg-white/10 hover:bg-white/20 text-white'
-                : 'bg-muted hover:bg-accent/10 text-accent'
-            }`}
-            title="Copy to clipboard"
+            onClick={copy}
+            className="p-2 rounded-lg transition-all hover:scale-110"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}
+            title="Copy"
           >
-            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-            </svg>
+            {copied
+              ? <span className="w-4 h-4 block text-ember">{Icons.check}</span>
+              : <svg className="w-4 h-4 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            }
           </button>
         </div>
       </div>
@@ -210,66 +125,76 @@ export default function DailyQuotes() {
 
   return (
     <main>
-      <section className="py-12 sm:py-16 bg-muted">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6">
-          <Motion variant="fade-up" className="text-center mb-10">
-            <span className="w-12 h-12 mx-auto mb-4 block text-gold">{Icons.star}</span>
-            <h1 className="font-display font-bold text-3xl sm:text-4xl text-brand-900 mb-3">
-              <span className="text-gradient">Daily KM Quotes</span>
-            </h1>
-            <p className="text-brand-500 text-sm max-w-lg mx-auto">
-              A quote for every day of the week. Fuel your battles with purpose.
-            </p>
-          </Motion>
+      {/* Hero */}
+      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
+        <img
+          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80"
+          alt="Daily Quotes"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
 
-          {/* Quick Reminder */}
-          <Motion variant="fade-up" delay={100}>
-            <div className="bg-gold/10 border border-gold/20 rounded-xl p-5 mb-8 text-center">
-              <p className="text-xs font-semibold text-gold uppercase tracking-wider mb-2">Quick Reminder</p>
-              <p className="text-sm text-brand-900 leading-relaxed mb-3">
-                Scavengers, Country, Most Beautiful &mdash; fill the form. Official Godsent &mdash; bring your taps and prayers. Family first, always.
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
+            <Motion delay={0.1}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+                Daily Inspiration
+              </span>
+              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
+                Daily KM<br />
+                <span className="text-gradient">Quotes</span>
+              </h1>
+              <p className="text-white/60 text-sm leading-relaxed max-w-md">
+                A quote for every day of the week. Fuel your battles with purpose.
               </p>
+            </Motion>
+
+            <Motion delay={0.2}>
+              <div className="glass rounded-2xl p-6 border border-white/10">
+                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-3">Today's Quote</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
+                  <span className="text-ember text-xs font-bold uppercase tracking-wider">{today.day}</span>
+                  <span className="text-lg ml-auto">{today.emoji}</span>
+                </div>
+                <p className="text-ivory/80 text-sm italic leading-relaxed">"{today.quote}"</p>
+              </div>
+            </Motion>
+          </div>
+        </div>
+      </section>
+
+      {/* Reminder callout */}
+      <section className="py-8" style={{ background: '#120620', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <Motion delay={0.1}>
+            <div className="rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(232,185,74,0.08)', border: '1px solid rgba(232,185,74,0.15)' }}>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: '#E8B94A' }}>Quick Reminder</p>
+                <p className="text-white/70 text-sm">
+                  Scavengers, Country, Most Beautiful — fill the form. Official Godsent — bring your taps and prayers.
+                </p>
+              </div>
               <button
                 onClick={openSpecial}
-                className="inline-block px-5 py-2 bg-gold text-white text-xs font-semibold rounded-md hover:bg-gold-dark transition-colors"
+                className="flex-shrink-0 px-5 py-2.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #E8B94A, #CC9A20)', borderRadius: 8 }}
               >
                 Fill Form Here
               </button>
             </div>
           </Motion>
+        </div>
+      </section>
 
-          {/* Reminder Toggle */}
-          <Motion variant="fade-up" delay={150}>
-            <div className="flex justify-center mb-8">
-              <DailyReminder />
-            </div>
-          </Motion>
-
-          {/* Quote Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Quote Grid */}
+      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {quotes.map((q, i) => (
-              <QuoteCard
-                key={q.day}
-                quote={q}
-                isToday={q.day === today.day}
-                index={i}
-              />
+              <QuoteCard key={q.day} quote={q} isToday={q.day === today.day} index={i} />
             ))}
           </div>
-
-          {/* Trust Blurbs */}
-          <Motion variant="fade-up" delay={400}>
-            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-              <div className="bg-white rounded-lg p-5 border border-brand-100 text-center hover:border-brand-200 transition-colors">
-                <p className="text-xs text-brand-500 mb-1">Brand Protection</p>
-                <p className="text-xs text-brand-900 font-medium">KM DYNASTY brand identity is protected. Respect the name, respect the family.</p>
-              </div>
-              <div className="bg-white rounded-lg p-5 border border-brand-100 text-center hover:border-brand-200 transition-colors">
-                <p className="text-xs text-brand-500 mb-1">Creator Support</p>
-                <p className="text-xs text-brand-900 font-medium">Technical and professional support for creators in the US and Canada via La'Gwat Agency.</p>
-              </div>
-            </div>
-          </Motion>
         </div>
       </section>
     </main>
