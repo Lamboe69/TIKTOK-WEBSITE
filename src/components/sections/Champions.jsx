@@ -4,36 +4,61 @@ import Motion from '../Motion'
 
 export default function Champions() {
   return (
-    <section className="py-12 sm:py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-6">
-          <Motion variant="scale-in">
-            <div className="inline-block mb-3">
-              <span className="w-10 h-10 mx-auto block text-gold">{Icons.trophy}</span>
-            </div>
-          </Motion>
+    <section className="relative min-h-[520px] flex items-center overflow-hidden">
+      {/* Full-bleed background */}
+      <img
+        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
+        alt="Champions stage"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.92) 50%, rgba(59,16,99,0.7) 100%)' }} />
 
-          <Motion variant="fade-up" delay={100}>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-2">
-              Champion of the Champions
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left: text */}
+          <Motion delay={0.1}>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-crown-gold" style={{ background: 'rgba(232,185,74,0.1)' }}>
+              <span className="w-3.5 h-3.5 block text-crown-gold">{Icons.trophy}</span>
+              Champion of Champions
+            </span>
+            <h2 className="font-display font-bold text-3xl sm:text-5xl text-ivory mb-4 leading-tight">
+              Only the Best<br />
+              <span className="text-gradient">Survive the Finale</span>
             </h2>
-          </Motion>
-
-          <Motion variant="fade-up" delay={200}>
-            <p className="text-brand-500 text-sm max-w-xl mx-auto leading-relaxed mb-4">
-              Winners from all Official Godsent Box Battles compete in a final
-              KM DYNASTY finale — fierce, fast, respectful, community-first.
+            <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-md">
+              Winners from all Official Godsent Box Battles compete in a final KM DYNASTY finale — fierce, fast, respectful, community-first.
             </p>
-          </Motion>
-
-          <Motion variant="fade-up" delay={300}>
             <Link
               to="/how-to-join"
-              className="inline-flex items-center gap-2 px-5 py-2 bg-brand-50 text-brand-900 text-sm font-semibold rounded-lg border border-brand-100 hover:bg-brand-100 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl border border-white/20 hover:border-ember hover:text-ember transition-all"
             >
               See the Finale Path
               <span className="w-4 h-4 block">{Icons.arrowRight}</span>
             </Link>
+          </Motion>
+
+          {/* Right: viewfinder card */}
+          <Motion delay={0.2}>
+            <div className="glass rounded-2xl p-6 border border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-white/40 text-xs uppercase tracking-widest">Current Champions</p>
+                <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
+              </div>
+              {[
+                { rank: '🥇', name: 'Dynasty King', handle: '@dynastyking', score: '12,400' },
+                { rank: '🥈', name: 'Crown Bearer', handle: '@crownbearer', score: '9,800' },
+                { rank: '🥉', name: 'Battle Boss', handle: '@battleboss', score: '7,200' },
+              ].map(({ rank, name, handle, score }) => (
+                <div key={handle} className="flex items-center gap-3 py-3 border-b border-white/08 last:border-0">
+                  <span className="text-xl w-8 text-center">{rank}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-ivory text-sm font-semibold">{name}</p>
+                    <p className="text-white/40 text-xs">{handle}</p>
+                  </div>
+                  <p className="text-crown-gold text-sm font-bold">{score}</p>
+                </div>
+              ))}
+            </div>
           </Motion>
         </div>
       </div>

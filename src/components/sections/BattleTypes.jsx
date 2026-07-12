@@ -1,68 +1,57 @@
 import { Link } from 'react-router-dom'
-import { Icons } from '../Icons'
 import Motion from '../Motion'
 
 const types = [
   {
-    icon: Icons.swords,
     title: 'Official Godsent Box Battle',
     description: 'The main event. Every creator gets a fair shot at the crown.',
+    img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80',
     to: '/battle-schedule',
-    color: 'text-accent',
-    bg: 'bg-accent/5',
   },
   {
-    icon: Icons.star,
     title: 'Most Beautiful Box Battle',
     description: 'Where creativity meets competition. Beauty in every battle.',
+    img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80',
     to: '/battle-schedule',
-    color: 'text-gold',
-    bg: 'bg-gold/5',
   },
   {
-    icon: Icons.globe,
     title: 'Country Box Battle',
     description: 'Rep your nation. Battle for national pride.',
+    img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80',
     to: '/battle-schedule',
-    color: 'text-accent',
-    bg: 'bg-accent/5',
   },
   {
-    icon: Icons.trophy,
     title: 'Champion of Champions',
     description: 'Winners only. The elite compete for the ultimate crown.',
+    img: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',
     to: '/battle-schedule',
-    color: 'text-gold',
-    bg: 'bg-gold/5',
   },
 ]
 
 export default function BattleTypes() {
   return (
-    <section className="py-12 sm:py-16 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <Motion variant="fade-up" className="text-center mb-8">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-2">
+    <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <Motion delay={0.1} className="text-center mb-12">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3">
             Battle <span className="text-gradient">Types</span>
           </h2>
-          <p className="text-brand-500 text-sm max-w-md mx-auto">
+          <p className="text-white/50 text-sm max-w-md mx-auto">
             Four ways to compete. Each with its own rules and energy.
           </p>
         </Motion>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {types.map(({ icon, title, description, to, color, bg }, i) => (
-            <Motion key={i} variant="fade-up" delay={i * 80}>
-              <Link
-                to={to}
-                className="group flex items-start gap-4 p-5 rounded-xl border border-brand-100 hover:border-brand-200 hover:bg-brand-50 transition-all"
-              >
-                <div className={`w-10 h-10 rounded-lg ${bg} flex items-center justify-center flex-shrink-0`}>
-                  <span className={`w-5 h-5 block ${color}`}>{icon}</span>
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-sm text-brand-900 mb-1 group-hover:text-accent transition-colors">{title}</h3>
-                  <p className="text-brand-500 text-sm leading-relaxed">{description}</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {types.map(({ title, description, img, to }, i) => (
+            <Motion key={i} delay={0.1 + i * 0.08}>
+              <Link to={to} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
+                <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 40%, rgba(18,6,32,0.2) 100%)' }} />
+                {/* Ember top line on hover */}
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-ember scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <h3 className="font-display font-bold text-ivory text-sm mb-1 leading-snug">{title}</h3>
+                  <p className="text-white/50 text-xs leading-relaxed">{description}</p>
                 </div>
               </Link>
             </Motion>

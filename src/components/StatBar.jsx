@@ -4,30 +4,13 @@ import Motion from './Motion'
 import { Icons } from './Icons'
 
 const statIcons = [Icons.users, Icons.heart, Icons.swords, Icons.trophy]
+const accents = ['#FF6B1A', '#3B1063', '#FF6B1A', '#3B1063']
 
 function Counter({ value, numericEnd }) {
   const [ref, count] = useAnimatedCounter(numericEnd || 0, 2000)
-
-  if (value === null || value === undefined) {
-    return (
-      <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-brand-400">
-        —
-      </span>
-    )
-  }
   return (
-    <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-brand-900">
-      {count > 0 ? value : '0'}
-    </span>
-  )
-}
-
-function LiveDot({ source }) {
-  if (source !== 'live-fetch' && source !== 'manual-override') return null
-  return (
-    <span className="inline-flex items-center gap-1 text-[10px] text-emerald-600 font-medium mt-1">
-      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-      Live
+    <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-ivory">
+      {value && count > 0 ? value : (value || '—')}
     </span>
   )
 }
@@ -43,19 +26,29 @@ export default function StatBar() {
   ]
 
   return (
-    <section className="py-8 sm:py-10 bg-white border-b border-brand-100">
+    <section className="py-8 sm:py-10" style={{ background: '#1B1024' }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           {items.map(({ value, numericEnd, label, note }, i) => (
-            <Motion key={i} variant="fade-up" delay={i * 100}>
-              <div className="flex items-center gap-3 px-4 py-4 rounded-xl border border-brand-100 hover:border-brand-200 hover:bg-brand-50 transition-all">
-                <div className="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center flex-shrink-0">
-                  <span className="w-5 h-5 block text-accent">{statIcons[i]}</span>
-                </div>
-                <div className="min-w-0">
-                  <Counter value={value} numericEnd={numericEnd} />
-                  <p className="text-brand-600 text-xs font-medium leading-tight">{label}</p>
-                  {i === 0 && <LiveDot source={stats.source} />}
+            <Motion key={i} variant="fade-up" delay={i * 80}>
+              <div
+                className="relative rounded-xl p-5 overflow-hidden border border-white/06 hover:border-white/12 transition-all"
+                style={{ background: 'rgba(59,16,99,0.2)' }}
+              >
+                {/* Accent top line */}
+                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl" style={{ background: accents[i] }} />
+                <div className="flex items-start gap-3">
+                  <div
+                    className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                    style={{ background: `${accents[i]}20` }}
+                  >
+                    <span className="w-4 h-4 block" style={{ color: accents[i] }}>{statIcons[i]}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <Counter value={value} numericEnd={numericEnd} />
+                    <p className="text-white/50 text-xs font-medium leading-tight mt-0.5">{label}</p>
+                    {note && <p className="text-white/30 text-[10px] mt-0.5">{note}</p>}
+                  </div>
                 </div>
               </div>
             </Motion>

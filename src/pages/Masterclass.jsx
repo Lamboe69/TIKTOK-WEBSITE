@@ -3,84 +3,117 @@ import Motion from '../components/Motion'
 import { tiers, schedule, terms } from '../data/masterclass'
 import { Icons } from '../components/Icons'
 
+const tierImages = [
+  'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80',
+  'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80',
+]
+const tierAccents = ['#3B1063', '#FF6B1A', '#E8B94A']
+
 export default function Masterclass() {
   return (
-    <main className="min-h-screen bg-white">
+    <main>
       {/* Hero */}
-      <section className="bg-brand-900 py-10 sm:py-14">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-          <Motion delay={0.1}>
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/5 text-accent text-xs font-semibold uppercase tracking-wider mb-4">
-              <span className="w-4 h-4 block">{Icons.star}</span>
-              Elite Education
-            </span>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold text-white mb-4">
-              KM Dynasty<br />
-              <span className="text-gold text-gradient">Masterclass</span>
-            </h1>
-            <p className="text-brand-500 max-w-xl mx-auto text-lg">
-              Learn directly from King Maker. Choose the programme that fits your ambition and start your TikTok transformation today.
-            </p>
-          </Motion>
+      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
+        <img
+          src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1400&q=80"
+          alt="Masterclass"
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
+
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
+            <Motion delay={0.1}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-crown-gold" style={{ background: 'rgba(232,185,74,0.1)' }}>
+                <span className="w-3.5 h-3.5 block text-crown-gold">{Icons.star}</span>
+                Elite Education
+              </span>
+              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
+                KM Dynasty<br />
+                <span className="text-gradient">Masterclass</span>
+              </h1>
+              <p className="text-white/60 text-sm max-w-sm leading-relaxed">
+                Learn directly from King Maker. Choose the programme that fits your ambition.
+              </p>
+            </Motion>
+
+            {/* Schedule card */}
+            <Motion delay={0.2}>
+              <div className="glass rounded-2xl p-5 border border-white/10 max-w-xs">
+                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-4">Programme Details</p>
+                {[
+                  { icon: Icons.clock, label: 'Schedule', value: schedule.day },
+                  { icon: Icons.clock, label: 'Time', value: schedule.time },
+                  { icon: Icons.film, label: 'Format', value: 'Live Zoom · 1hr sessions' },
+                ].map(({ icon, label, value }) => (
+                  <div key={label} className="flex items-center gap-3 py-2.5 border-b border-white/06 last:border-0">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,26,0.15)' }}>
+                      <span className="w-3.5 h-3.5 block text-ember">{icon}</span>
+                    </div>
+                    <div>
+                      <p className="text-white/40 text-[10px] uppercase tracking-wider">{label}</p>
+                      <p className="text-ivory text-xs font-semibold">{value}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Motion>
+          </div>
         </div>
       </section>
 
-      {/* Pricing Tiers */}
-      <section className="py-16 sm:py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      {/* Pricing */}
+      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {tiers.map((tier, idx) => (
-              <Motion key={tier.name} delay={0.1 + idx * 0.1}>
-                <div className={`rounded-xl border p-6 h-full flex flex-col transition-colors hover:border-brand-200 ${
-                  tier.badge === 'Popular'
-                    ? 'border-gold bg-gold/[0.03] relative'
-                    : tier.badge === 'Premium'
-                    ? 'border-accent bg-accent/[0.03]'
-                    : 'border-brand-100 bg-muted'
-                }`}>
-                  {tier.badge && (
-                    <div className={`absolute -top-3 left-6 px-3 py-1 rounded-full text-xs font-bold text-white ${
-                      tier.badge === 'Popular' ? 'bg-gold' : 'bg-accent'
-                    }`}>
-                      {tier.badge}
-                    </div>
-                  )}
-
-                  <div className="mb-5">
-                    <h3 className="font-display text-xl font-bold text-brand-900 mb-1">
-                      {tier.name}
-                    </h3>
-                    <p className="text-brand-500 text-sm">{tier.duration}</p>
-                  </div>
-
-                  <div className="mb-6">
-                    <span className="text-3xl font-bold text-brand-900">{tier.price}</span>
-                    {tier.originalPrice && (
-                      <span className="text-brand-500 text-sm line-through ml-2">{tier.originalPrice}</span>
+            {tiers.map((tier, i) => (
+              <Motion key={tier.name} delay={0.1 + i * 0.1}>
+                <div
+                  className="rounded-2xl overflow-hidden border transition-all hover:scale-[1.02]"
+                  style={{
+                    borderColor: tier.badge === 'Popular' ? 'rgba(255,107,26,0.5)' : tier.badge === 'Premium' ? 'rgba(232,185,74,0.5)' : 'rgba(255,255,255,0.08)',
+                    background: '#120620',
+                  }}
+                >
+                  {/* Image header */}
+                  <div className="relative h-44 overflow-hidden">
+                    <img src={tierImages[i]} alt={tier.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 30%, rgba(18,6,32,0.3) 100%)' }} />
+                    <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: tierAccents[i] }} />
+                    {tier.badge && (
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold text-white" style={{ background: tierAccents[i] }}>
+                        {tier.badge}
+                      </div>
                     )}
+                    <div className="absolute bottom-3 left-4">
+                      <p className="font-display font-bold text-ivory text-base">{tier.name}</p>
+                      <p className="text-white/50 text-xs">{tier.duration}</p>
+                    </div>
                   </div>
 
-                  <ul className="space-y-3 mb-8 flex-1">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex items-start gap-2 text-sm text-brand-500">
-                        <span className="w-1.5 h-1.5 rounded-full bg-gold mt-1.5 flex-shrink-0" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-
-                  <Link
-                    to="/contact"
-                    className={`block text-center px-5 py-3 text-sm font-semibold rounded-md transition-colors ${
-                      tier.badge === 'Popular'
-                        ? 'bg-gold text-white hover:bg-gold-dark'
-                        : tier.badge === 'Premium'
-                        ? 'bg-accent text-white hover:bg-accent-dark'
-                        : 'bg-brand-900 text-white hover:bg-brand-800'
-                    }`}
-                  >
-                    {tier.cta}
-                  </Link>
+                  {/* Body */}
+                  <div className="p-5">
+                    <div className="flex items-baseline gap-2 mb-4">
+                      <span className="font-display font-bold text-3xl text-ivory">{tier.price}</span>
+                      {tier.originalPrice && <span className="text-white/30 text-sm line-through">{tier.originalPrice}</span>}
+                    </div>
+                    <ul className="space-y-2 mb-6">
+                      {tier.features.map(f => (
+                        <li key={f} className="flex items-start gap-2 text-xs text-white/60">
+                          <span className="w-1.5 h-1.5 rounded-full bg-ember mt-1 flex-shrink-0" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      to="/contact"
+                      className="block text-center py-2.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+                      style={{ background: tier.badge === 'Popular' ? 'linear-gradient(135deg, #FF6B1A, #CC5200)' : tier.badge === 'Premium' ? 'rgba(232,185,74,0.8)' : 'rgba(59,16,99,0.6)', borderRadius: 6 }}
+                    >
+                      {tier.cta}
+                    </Link>
+                  </div>
                 </div>
               </Motion>
             ))}
@@ -88,81 +121,54 @@ export default function Masterclass() {
         </div>
       </section>
 
-      {/* Schedule & Terms */}
-      <section className="py-10 bg-muted">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Schedule */}
+      {/* Terms */}
+      <section className="relative min-h-[360px] flex items-center overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1400&q=80"
+          alt="Terms"
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+        />
+        <div className="absolute inset-0" style={{ background: 'rgba(18,6,32,0.9)' }} />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <Motion delay={0.1}>
-              <div className="rounded-xl border border-brand-100 bg-white p-6">
-                <h3 className="font-display text-lg font-bold text-brand-900 mb-4">
-                  Programme Details
-                </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <span className="w-4 h-4 block text-accent">{Icons.clock}</span>
-                    </span>
-                    <div>
-                      <p className="text-brand-500 text-xs">Schedule</p>
-                      <p className="text-brand-900 font-medium">{schedule.day}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <span className="w-4 h-4 block text-accent">{Icons.clock}</span>
-                    </span>
-                    <div>
-                      <p className="text-brand-500 text-xs">Time</p>
-                      <p className="text-brand-900 font-medium">{schedule.time}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                      <span className="w-4 h-4 block text-accent">{Icons.film}</span>
-                    </span>
-                    <div>
-                      <p className="text-brand-500 text-xs">Format</p>
-                      <p className="text-brand-900 font-medium">{schedule.format}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3" style={{ letterSpacing: '-0.02em' }}>
+                Terms & Conditions
+              </h2>
+              <p className="text-white/50 text-sm">Please read before enrolling.</p>
             </Motion>
-
-            {/* Terms */}
             <Motion delay={0.2}>
-              <div className="rounded-xl border border-brand-100 bg-white p-6">
-                <h3 className="font-display text-lg font-bold text-brand-900 mb-4">
-                  Terms & Conditions
-                </h3>
-                <ul className="space-y-3">
-                  {terms.map((t, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-brand-500">
-                      <span className="w-1.5 h-1.5 rounded-full bg-gold mt-1.5 flex-shrink-0" />
-                      {t}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <ul className="space-y-3">
+                {terms.map((t, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-white/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-ember mt-1.5 flex-shrink-0" />
+                    {t}
+                  </li>
+                ))}
+              </ul>
             </Motion>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-10 sm:py-14">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+      <section className="relative min-h-[280px] flex items-center overflow-hidden">
+        <img
+          src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1400&q=80"
+          alt="Start your transformation"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0" style={{ background: 'rgba(59,16,99,0.85)' }} />
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 text-center">
           <Motion delay={0.1}>
-            <h2 className="font-display text-3xl font-bold text-brand-900 mb-4">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4" style={{ letterSpacing: '-0.02em' }}>
               Start Your Transformation
             </h2>
-            <p className="text-brand-500 mb-8 max-w-lg mx-auto">
-              Have questions? Contact us and we'll help you choose the right programme.
-            </p>
+            <p className="text-white/60 text-sm mb-6">Have questions? Contact us and we'll help you choose the right programme.</p>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-gold text-white font-semibold rounded-md hover:bg-gold-dark transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 6 }}
             >
               <span className="w-4 h-4 block">{Icons.mail}</span>
               Contact Us

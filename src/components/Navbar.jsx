@@ -36,81 +36,93 @@ export default function Navbar() {
   }, [])
 
   const isSpecialPage = pathname === '/daily-quotes'
-  const ctaLabel = isSpecialPage ? 'Fill Form Here' : 'Sign Up — Box Battle'
   const ctaAction = isSpecialPage ? openSpecial : openOfficial
 
   return (
-    <header className={`sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-brand-200 transition-shadow duration-300 ${scrolled ? 'nav-scrolled' : ''}`}>
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <span className="w-7 h-7 rounded-md bg-brand-900 flex items-center justify-center text-white">
+    <header
+      className="sticky top-0 z-50 transition-all duration-300"
+      style={{
+        background: scrolled
+          ? 'rgba(18, 6, 32, 0.92)'
+          : 'rgba(18, 6, 32, 0.75)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+      }}
+    >
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
+          <span className="w-8 h-8 rounded-lg bg-ember flex items-center justify-center text-white">
             <span className="w-4 h-4 block">{Icons.crown}</span>
           </span>
-          <span className="font-display font-bold text-base text-brand-900 tracking-tight">
-            KM DYNASTY
-          </span>
+          <div className="leading-none">
+            <span className="block font-display font-bold text-sm text-ivory tracking-widest">KM DYNASTY</span>
+            <span className="block font-body text-[9px] text-white/40 tracking-[0.2em] uppercase">Godsent Box Battles</span>
+          </div>
         </Link>
 
-        <div className="hidden md:flex items-center gap-0.5">
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-0.5 flex-1 justify-center">
           {navLinks.map(({ to, label }) => (
             <Link
               key={to}
               to={to}
               className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
                 pathname === to
-                  ? 'bg-brand-900 text-white'
-                  : 'text-brand-600 hover:bg-brand-50 hover:text-brand-900'
+                  ? 'text-ember'
+                  : 'text-white/60 hover:text-white'
               }`}
             >
               {label}
             </Link>
           ))}
-          <button
-            onClick={ctaAction}
-            className="ml-2 px-4 py-1.5 text-sm font-semibold bg-brand-900 text-white rounded-md hover:bg-brand-800 transition-colors"
-          >
-            {ctaLabel}
-          </button>
         </div>
+
+        {/* CTA */}
+        <button
+          onClick={ctaAction}
+          className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-lg text-white flex-shrink-0 transition-all hover:scale-105"
+          style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+        >
+          <span className="w-3.5 h-3.5 block">{Icons.swords}</span>
+          Sign Up
+        </button>
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-brand-700 hover:text-brand-900 transition-colors"
+          className="md:hidden p-2 text-white/70 hover:text-white transition-colors"
           aria-label="Toggle menu"
-          aria-expanded={mobileOpen}
         >
           <span className="w-5 h-5 block">{mobileOpen ? Icons.close : Icons.menu}</span>
         </button>
       </nav>
 
       {mobileOpen && (
-        <div className="md:hidden bg-white border-t border-brand-200 shadow-lg animate-fade-in">
-          <div className="px-4 py-3 space-y-1">
-            {navLinks.map(({ to, label }) => (
-              <Link
-                key={to}
-                to={to}
-                onClick={() => setMobileOpen(false)}
-                className={`block px-3 py-2 text-sm font-medium rounded-md transition-all ${
-                  pathname === to
-                    ? 'bg-brand-900 text-white'
-                    : 'text-brand-700 hover:bg-brand-50'
-                }`}
-              >
-                {label}
-              </Link>
-            ))}
-            <div className="border-t border-brand-100 my-2 pt-2">
+        <div className="md:hidden border-t border-white/06 animate-fade-in" style={{ background: 'rgba(18,6,32,0.97)' }}>
+          <div className="px-4 py-4">
+            <div className="grid grid-cols-2 gap-1 mb-3">
+              {navLinks.map(({ to, label }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setMobileOpen(false)}
+                  className={`px-3 py-2 text-sm font-medium rounded-md transition-all ${
+                    pathname === to ? 'bg-ember/20 text-ember' : 'text-white/70 hover:bg-white/05 hover:text-white'
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+            <p className="text-white/30 text-[10px] uppercase tracking-widest mb-2 px-1">More Pages</p>
+            <div className="grid grid-cols-2 gap-1 mb-4">
               {moreLinks.map(({ to, label }) => (
                 <Link
                   key={to}
                   to={to}
                   onClick={() => setMobileOpen(false)}
-                  className={`block px-3 py-2 text-sm font-medium rounded-md transition-all ${
-                    pathname === to
-                      ? 'bg-brand-900 text-white'
-                      : 'text-brand-600 hover:bg-brand-50'
-                  }`}
+                  className="px-3 py-2 text-xs text-white/50 hover:text-white rounded-md hover:bg-white/05 transition-all"
                 >
                   {label}
                 </Link>
@@ -118,9 +130,10 @@ export default function Navbar() {
             </div>
             <button
               onClick={() => { ctaAction(); setMobileOpen(false) }}
-              className="block w-full px-3 py-2.5 text-sm font-semibold bg-brand-900 text-white rounded-md text-center hover:bg-brand-800 transition-colors"
+              className="w-full py-3 text-sm font-bold text-white rounded-lg"
+              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
             >
-              {ctaLabel}
+              Sign Up — Box Battle
             </button>
           </div>
         </div>
