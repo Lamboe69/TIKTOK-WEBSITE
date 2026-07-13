@@ -7,6 +7,7 @@ import Champions from '../components/sections/Champions'
 import CommunityRecognition from '../components/sections/CommunityRecognition'
 import Testimonials from '../components/sections/Testimonials'
 import MasterclassTeaser from '../components/sections/MasterclassTeaser'
+import GiveBack from '../components/sections/GiveBack'
 import TimezoneStrip from '../components/sections/TimezoneStrip'
 import CTA from '../components/sections/CTA'
 
@@ -17,12 +18,13 @@ export default function Home() {
       <StatBar />
       <HowItWorks />
       <BattleTypes />
-      <TimezoneStrip />
       <BrandIdentity />
       <Champions />
       <CommunityRecognition />
       <Testimonials />
       <MasterclassTeaser />
+      <GiveBack />
+      <TimezoneStrip />
       <CTA />
     </main>
   )

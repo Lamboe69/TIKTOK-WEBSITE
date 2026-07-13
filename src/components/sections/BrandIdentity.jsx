@@ -8,8 +8,9 @@ const steps = [
 
 export default function BrandIdentity() {
   return (
-    <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#1B1024' }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 0% 50%, rgba(59,16,99,0.35) 0%, transparent 70%)' }} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Image with floating card */}
           <Motion delay={0.1}>

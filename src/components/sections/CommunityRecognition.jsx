@@ -20,8 +20,10 @@ export default function CommunityRecognition() {
   const rest = gifters.slice(3)
 
   return (
-    <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#120620' }}>
+      {/* Ambient purple glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,16,99,0.5) 0%, transparent 70%)' }} />
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1} className="text-center mb-12">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
             <span className="w-3.5 h-3.5 block">{Icons.award}</span>

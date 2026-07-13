@@ -10,6 +10,14 @@ import LiveStatus from '../LiveStatus'
 import { Icons } from '../Icons'
 import CountdownTicker from '../CountdownTicker'
 
+// Real face photos for social proof avatars
+const avatarPhotos = [
+  '/gifters/brittany.jpg',
+  '/gifters/gregory.jpg',
+  '/gifters/ailinda.jpg',
+  '/team/maker.jpg',
+]
+
 export default function Hero() {
   const { openOfficial } = useSignUp()
   const swiperRef = useRef(null)
@@ -32,7 +40,7 @@ export default function Hero() {
 
   return (
     <section
-      className="relative h-[520px] sm:h-[600px] md:h-[680px] overflow-hidden"
+      className="relative h-[560px] sm:h-[640px] md:h-[720px] overflow-hidden"
       style={{ background: '#120620' }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -63,64 +71,93 @@ export default function Hero() {
       </Swiper>
 
       {/* Multi-layer overlay */}
-      <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.92) 40%, rgba(59,16,99,0.6) 100%)' }} />
-      <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(to top, rgba(18,6,32,1) 0%, transparent 50%)' }} />
+      <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.94) 40%, rgba(59,16,99,0.55) 100%)' }} />
+      <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(to top, rgba(18,6,32,1) 0%, transparent 55%)' }} />
+      {/* Ambient ember glow bottom-right */}
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] z-[1] pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 65%)', transform: 'translate(20%, 20%)' }} />
 
       {/* Content */}
-      <div className="absolute inset-0 z-[2] flex items-end pb-14 sm:pb-20 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-end">
+      <div className="absolute inset-0 z-[2] flex items-end pb-16 sm:pb-24 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
           {/* Left: headline */}
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5 text-xs font-semibold uppercase tracking-wider text-ivory" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)' }}>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6 text-xs font-semibold uppercase tracking-wider text-ivory" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
               <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
               The Official Hub
             </div>
-            <h1 className="font-display font-extrabold text-ivory mb-4 leading-[0.95]" style={{ fontSize: 'clamp(48px, 8vw, 96px)', letterSpacing: '-0.02em' }}>
-              KM<br />DYNASTY
+
+            <h1 className="font-display font-extrabold text-ivory mb-2 leading-none" style={{ fontSize: 'clamp(52px, 9vw, 100px)', letterSpacing: '-0.03em' }}>
+              KM
             </h1>
-            <p className="text-white/60 text-sm sm:text-base max-w-sm mb-7 leading-relaxed">
+            <h1 className="font-display font-extrabold mb-5 leading-none" style={{ fontSize: 'clamp(52px, 9vw, 100px)', letterSpacing: '-0.03em', WebkitTextStroke: '1px rgba(255,107,26,0.6)', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #FF6B1A 0%, #ffffff 60%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              DYNASTY
+            </h1>
+
+            <p className="text-white/60 text-sm sm:text-base max-w-sm mb-8 leading-relaxed">
               Join the family. Compete in Godsent Box Battles.<br />Rise with King Maker.
             </p>
-            <div className="flex flex-wrap items-center gap-3">
+
+            <div className="flex flex-wrap items-center gap-3 mb-8">
               <button
                 onClick={openOfficial}
-                className="px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105 active:scale-95"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 6 }}
+                className="px-7 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.3)' }}
               >
                 Join the Box Battle
               </button>
               <a
                 href="/battle-schedule"
-                className="px-6 py-3 text-sm font-medium text-white rounded-lg border border-white/20 hover:border-white/40 transition-all"
+                className="px-7 py-3.5 text-sm font-medium text-white rounded-xl border border-white/20 hover:border-white/40 transition-all"
                 style={{ backdropFilter: 'blur(8px)', background: 'rgba(255,255,255,0.06)' }}
               >
                 See Schedule
               </a>
             </div>
-            {/* Social proof */}
-            <div className="flex items-center gap-3 mt-6">
-              <div className="flex -space-x-2">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="w-7 h-7 rounded-full border-2 border-dynasty-purple-deep bg-dynasty-purple/60 flex items-center justify-center text-[10px] text-white/60 font-bold">
-                    {['K','M','D','F'][i]}
+
+            {/* Social proof — real photos */}
+            <div className="flex items-center gap-3">
+              <div className="flex -space-x-2.5">
+                {avatarPhotos.map((src, i) => (
+                  <div
+                    key={i}
+                    className="w-8 h-8 rounded-full overflow-hidden border-2 flex-shrink-0"
+                    style={{ borderColor: '#120620' }}
+                  >
+                    <img
+                      src={src}
+                      alt="Community member"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                        e.target.parentNode.style.background = 'rgba(59,16,99,0.6)'
+                      }}
+                    />
                   </div>
                 ))}
               </div>
-              <p className="text-white/40 text-xs">Thousands of creators competing</p>
+              <div>
+                <p className="text-white/70 text-xs font-semibold">Thousands of creators competing</p>
+                <div className="flex items-center gap-1 mt-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <span key={i} className="text-ember text-[10px]">★</span>
+                  ))}
+                  <span className="text-white/30 text-[10px] ml-1">Community rated</span>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Right: countdown */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:flex justify-end">
             <CountdownTicker />
           </div>
         </div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-1 opacity-40">
-        <span className="text-white text-[10px] uppercase tracking-widest">scroll</span>
-        <div className="w-px h-8 bg-white/40" />
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-1.5 opacity-30">
+        <span className="text-white text-[9px] uppercase tracking-[0.2em]">scroll</span>
+        <div className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent" />
       </div>
 
       {/* Live badge */}

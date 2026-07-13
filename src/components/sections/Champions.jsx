@@ -12,6 +12,8 @@ export default function Champions() {
         className="absolute inset-0 w-full h-full object-cover"
       />
       <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.92) 50%, rgba(59,16,99,0.7) 100%)' }} />
+      {/* Ember glow bottom-left */}
+      <div className="absolute bottom-0 left-0 w-96 h-96 pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.07) 0%, transparent 70%)' }} />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

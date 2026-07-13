@@ -13,10 +13,14 @@ export default function StickyCTA() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden p-3 bg-white/95 backdrop-blur-sm border-t border-brand-200">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 md:hidden p-3"
+      style={{ background: 'rgba(18,6,32,0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.08)' }}
+    >
       <button
         onClick={isSpecialPage ? openSpecial : openOfficial}
-        className="block w-full py-2.5 text-center bg-brand-900 text-white font-semibold rounded-lg text-sm hover:bg-brand-800 transition-colors"
+        className="block w-full py-3 text-center text-white font-bold rounded-xl text-sm transition-all hover:scale-[1.02] active:scale-95"
+        style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
       >
         {label}
       </button>

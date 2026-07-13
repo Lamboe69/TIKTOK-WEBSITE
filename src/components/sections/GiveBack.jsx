@@ -23,87 +23,103 @@ export default function GiveBack() {
   }
 
   return (
-    <section className="py-12 sm:py-16 bg-brand-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8">
-          <Motion variant="fade-up">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-ember/10 rounded-full text-ember text-xs font-semibold mb-3">
-              <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
-              Giving Back
-            </div>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-brand-900 mb-2">
-              We Give Back to the Community
-            </h2>
-            <p className="text-sm text-brand-500 leading-relaxed max-w-lg mx-auto">
-              KM DYNASTY isn't just about battles — it's about lifting people up.
-            </p>
-          </Motion>
-        </div>
+    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#120620' }}>
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 50% at 50% 100%, rgba(59,16,99,0.4) 0%, transparent 70%)' }} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        <Motion delay={0.05} className="text-center mb-12">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+            <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
+            Giving Back
+          </span>
+          <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3" style={{ letterSpacing: '-0.02em' }}>
+            We Give Back to the <span className="text-gradient">Community</span>
+          </h2>
+          <p className="text-white/50 text-sm leading-relaxed max-w-lg mx-auto">
+            KM DYNASTY isn't just about battles — it's about lifting people up.
+          </p>
+        </Motion>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
           {charityWork.map(({ icon, title, description }, i) => (
-            <Motion key={i} variant="fade-up" delay={i * 100}>
-              <div className="bg-white rounded-xl p-5 border border-brand-100 text-center hover:border-brand-200 transition-colors h-full">
-                <div className="w-10 h-10 rounded-lg bg-accent/5 flex items-center justify-center mx-auto mb-3">
-                  <span className="w-5 h-5 block text-accent">{icon}</span>
+            <Motion key={i} delay={0.1 + i * 0.08}>
+              <div
+                className="rounded-2xl p-6 text-center border border-white/06 hover:border-white/12 transition-all"
+                style={{ background: 'rgba(59,16,99,0.2)' }}
+              >
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(255,107,26,0.12)' }}>
+                  <span className="w-5 h-5 block text-ember">{icon}</span>
                 </div>
-                <h3 className="font-display font-bold text-sm text-brand-900 mb-1">{title}</h3>
-                <p className="text-brand-500 text-sm leading-relaxed">{description}</p>
+                <h3 className="font-display font-bold text-ivory text-sm mb-2">{title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{description}</p>
               </div>
             </Motion>
           ))}
         </div>
 
-        {/* GoFundMe */}
-        <Motion variant="fade-up" className="mb-8">
-          <div className="bg-white rounded-xl border border-brand-100 p-6 text-center">
-            <h3 className="font-display font-bold text-lg text-brand-900 mb-2">Support Our Mission</h3>
-            <p className="text-brand-500 text-sm mb-4">Help us expand the Dynasty and support more creators.</p>
-            <a
-              href="https://gofundme.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-ember text-white text-sm font-semibold rounded-lg hover:bg-ember-dark transition-colors"
-            >
-              Donate on GoFundMe
-            </a>
-          </div>
-        </Motion>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* GoFundMe */}
+          <Motion delay={0.25}>
+            <div className="rounded-2xl p-6 border border-white/08 flex flex-col justify-between" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+              <div>
+                <h3 className="font-display font-bold text-xl text-ivory mb-2">Support Our Mission</h3>
+                <p className="text-white/50 text-sm mb-6">Help us expand the Dynasty and support more creators around the world.</p>
+              </div>
+              <a
+                href="https://gofundme.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 self-start"
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+              >
+                <span className="w-4 h-4 block">{Icons.heart}</span>
+                Donate on GoFundMe
+              </a>
+            </div>
+          </Motion>
 
-        {/* Request Support Form */}
-        <Motion variant="fade-up">
-          <div className="bg-white rounded-xl border border-brand-100 p-6 max-w-lg mx-auto">
-            <h3 className="font-display font-bold text-base text-brand-900 mb-3">Request Support</h3>
-            {submitted ? (
-              <p className="text-accent text-sm font-medium text-center py-4">Email opened — thank you!</p>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  required
-                  className="w-full px-3 py-2.5 text-sm border border-brand-200 rounded-md focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors"
-                />
-                <textarea
-                  placeholder="Tell us how we can help..."
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  required
-                  rows={4}
-                  className="w-full px-3 py-2.5 text-sm border border-brand-200 rounded-md focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/20 transition-colors resize-none"
-                />
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-brand-900 text-white text-sm font-semibold rounded-md hover:bg-brand-800 transition-colors"
-                >
-                  Send Request
-                </button>
-              </form>
-            )}
-          </div>
-        </Motion>
+          {/* Request Support Form */}
+          <Motion delay={0.3}>
+            <div className="rounded-2xl p-6 border border-white/08" style={{ background: 'rgba(59,16,99,0.2)' }}>
+              <h3 className="font-display font-bold text-lg text-ivory mb-4">Request Support</h3>
+              {submitted ? (
+                <div className="flex items-center gap-3 py-4">
+                  <span className="w-5 h-5 block text-ember">{Icons.check}</span>
+                  <p className="text-ember text-sm font-medium">Email opened — thank you!</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    required
+                    className="w-full px-4 py-2.5 text-sm text-ivory placeholder-white/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-ember/40"
+                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  />
+                  <textarea
+                    placeholder="Tell us how we can help..."
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    required
+                    rows={4}
+                    className="w-full px-4 py-2.5 text-sm text-ivory placeholder-white/25 rounded-lg focus:outline-none focus:ring-2 focus:ring-ember/40 resize-none"
+                    style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  />
+                  <button
+                    type="submit"
+                    className="w-full py-3 text-white text-sm font-bold rounded-xl transition-all hover:scale-[1.02]"
+                    style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)' }}
+                  >
+                    Send Request
+                  </button>
+                </form>
+              )}
+            </div>
+          </Motion>
+        </div>
       </div>
     </section>
   )

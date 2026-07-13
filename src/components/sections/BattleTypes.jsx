@@ -30,8 +30,10 @@ const types = [
 
 export default function BattleTypes() {
   return (
-    <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#120620' }}>
+      {/* Ambient glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(59,16,99,0.45) 0%, transparent 70%)' }} />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <Motion delay={0.1} className="text-center mb-12">
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3">
             Battle <span className="text-gradient">Types</span>

@@ -40,9 +40,7 @@ export default function LiveStatus() {
     const updateCountdown = () => {
       const next = getNextBattle()
       setNextBattle(next)
-      if (next) {
-        setCountdown(getCountdown(next.dateObj))
-      }
+      if (next) setCountdown(getCountdown(next.dateObj))
     }
 
     checkLive()
@@ -57,20 +55,23 @@ export default function LiveStatus() {
         href="https://www.tiktok.com/@kingmakernevergivesup"
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-50 border border-red-200 rounded-full text-red-600 text-xs font-semibold hover:bg-red-100 transition-colors"
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-white text-xs font-bold transition-all hover:scale-105"
+        style={{ background: 'rgba(239,68,68,0.25)', border: '1px solid rgba(239,68,68,0.5)', backdropFilter: 'blur(8px)' }}
       >
-        <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
-        LIVE
+        <span className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse" />
+        LIVE NOW
       </a>
     )
   }
 
   if (nextBattle && countdown) {
     return (
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-900/80 backdrop-blur-sm rounded-full">
-        <span className="text-white/60 text-xs font-medium">
-          Next: {countdown}
-        </span>
+      <div
+        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-white text-xs font-medium"
+        style={{ background: 'rgba(59,16,99,0.6)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)' }}
+      >
+        <span className="w-1.5 h-1.5 rounded-full bg-ember" />
+        Next: <span className="font-bold text-ember">{countdown}</span>
       </div>
     )
   }

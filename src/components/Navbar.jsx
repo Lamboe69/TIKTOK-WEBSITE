@@ -68,13 +68,16 @@ export default function Navbar() {
             <Link
               key={to}
               to={to}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+              className={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
                 pathname === to
                   ? 'text-ember'
                   : 'text-white/60 hover:text-white'
               }`}
             >
               {label}
+              {pathname === to && (
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-ember" />
+              )}
             </Link>
           ))}
         </div>

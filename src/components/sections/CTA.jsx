@@ -21,7 +21,12 @@ export default function CTA() {
       {/* Subtle ember orb */}
       <div
         className="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.12) 0%, transparent 70%)', transform: 'translate(30%, 30%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.15) 0%, transparent 70%)', transform: 'translate(30%, 30%)' }}
+      />
+      {/* Purple orb top-left */}
+      <div
+        className="absolute top-0 left-0 w-80 h-80 rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(107,63,160,0.2) 0%, transparent 70%)', transform: 'translate(-30%, -30%)' }}
       />
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-24 text-center">
