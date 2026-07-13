@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { battleTypes, schedule } from '../data/schedule'
 import { Icons } from '../components/Icons'
@@ -88,6 +88,84 @@ function BattleCard({ battle, onSignUp }) {
   )
 }
 
+// ─── Arena Date Rail ───────────────────────────────────────────────────────
+function ArenaRail({ onSignUp }) {
+  const railRef = useRef(null)
+  const sorted = [...schedule].sort((a, b) => new Date(a.date) - new Date(b.date))
+
+  return (
+    <section className="py-10 overflow-hidden" style={{ background: '#120620' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-6">
+        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+          Upcoming Arena
+        </span>
+      </div>
+      {/* Rail with scroll-progress indicator */}
+      <div className="relative">
+        <div
+          ref={railRef}
+          className="flex gap-3 overflow-x-auto scrollbar-hide snap-x snap-mandatory px-4 sm:px-6 pb-3"
+          onScroll={(e) => {
+            const el = e.currentTarget
+            const pct = el.scrollLeft / (el.scrollWidth - el.clientWidth)
+            el.parentElement.querySelector('.arena-progress-fill').style.width = `${pct * 100}%`
+          }}
+        >
+          {sorted.map((b) => {
+            const d = new Date(b.date + 'T00:00:00')
+            const status = getBattleStatus(b.date, b.time)
+            const isOfficial = b.type === 'Daily Godsent' || b.type === 'Champion of Champions'
+            return (
+              <div
+                key={b.id}
+                className="flex-shrink-0 w-44 snap-start rounded-2xl p-4 flex flex-col gap-2 cursor-pointer transition-all hover:scale-[1.03]"
+                style={{
+                  background: status === 'live' ? 'rgba(255,107,26,0.12)' : 'rgba(59,16,99,0.22)',
+                  border: `1px solid ${status === 'live' ? 'rgba(255,107,26,0.4)' : 'rgba(255,255,255,0.07)'}`,
+                  borderTop: `2px solid ${typeAccent[b.type] || '#FF6B1A'}`,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                }}
+                onClick={() => onSignUp(b)}
+              >
+                {/* Day + Date */}
+                <div>
+                  <p className="font-display font-bold text-3xl text-ivory leading-none tabular-nums">
+                    {d.getDate().toString().padStart(2, '0')}
+                  </p>
+                  <p className="text-white/40 text-[11px] uppercase tracking-wider">
+                    {d.toLocaleDateString('en-US', { weekday: 'short', month: 'short' })}
+                  </p>
+                </div>
+                {/* Status badge */}
+                {status === 'live' ? (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-500 text-white text-[9px] font-bold rounded-full w-fit">
+                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />LIVE
+                  </span>
+                ) : status === 'today' ? (
+                  <span className="px-2 py-0.5 text-[9px] font-bold rounded-full text-white w-fit" style={{ background: '#FF6B1A' }}>TODAY</span>
+                ) : null}
+                {/* Battle type */}
+                <div className="mt-auto">
+                  <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: typeAccent[b.type] || '#FF6B1A' }}>
+                    {typeEmoji[b.type]} {b.type}
+                  </p>
+                  <p className="text-white/40 text-[10px] mt-0.5">{b.time}</p>
+                </div>
+              </div>
+            )
+          })}
+          <div className="flex-shrink-0 w-4" />
+        </div>
+        {/* Scroll progress bar */}
+        <div className="mx-4 sm:mx-6 mt-2 h-0.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+          <div className="arena-progress-fill h-full rounded-full transition-all" style={{ width: '0%', background: 'linear-gradient(90deg, #FF6B1A, #E8B94A)' }} />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ─── Main Page ───────────────────────────────────────────────────────────────
 export default function BattleSchedule() {
   const [activeType, setActiveType] = useState('All')
   const { openOfficial, openSpecial } = useSignUp()
@@ -163,6 +241,9 @@ export default function BattleSchedule() {
           </div>
         </div>
       </section>
+
+      {/* ── Arena Date Rail ── */}
+      <ArenaRail onSignUp={(b) => (b.type === 'Daily Godsent' || b.type === 'Champion of Champions' ? openOfficial() : openSpecial())} />
 
       {/* Filter tabs */}
       <section className="py-8" style={{ background: '#1B1024' }}>

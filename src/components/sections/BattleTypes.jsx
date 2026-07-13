@@ -35,8 +35,11 @@ export default function BattleTypes() {
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 80% 60% at 50% 100%, rgba(59,16,99,0.45) 0%, transparent 70%)' }} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <Motion delay={0.1} className="text-center mb-12">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3">
-            Battle <span className="text-gradient">Types</span>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+            Arena
+          </span>
+          <h2 className="font-display font-bold text-ivory mb-3" style={{ fontSize: 'clamp(28px, 4vw, 48px)', letterSpacing: '-0.02em' }}>
+            Choose Your <span className="text-gradient">Battle</span>
           </h2>
           <p className="text-white/50 text-sm max-w-md mx-auto">
             Four ways to compete. Each with its own rules and energy.

@@ -68,16 +68,21 @@ export default function Navbar() {
             <Link
               key={to}
               to={to}
-              className={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+              className={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all nav-link ${
                 pathname === to
                   ? 'text-ember'
                   : 'text-white/60 hover:text-white'
               }`}
             >
               {label}
-              {pathname === to && (
-                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-ember" />
-              )}
+              <span
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px rounded-full transition-all duration-300"
+                style={{
+                  width: pathname === to ? '60%' : '0%',
+                  background: 'linear-gradient(90deg, transparent, #FF6B1A, transparent)',
+                  opacity: pathname === to ? 1 : 0,
+                }}
+              />
             </Link>
           ))}
         </div>

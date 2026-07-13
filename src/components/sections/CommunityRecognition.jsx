@@ -40,7 +40,14 @@ export default function CommunityRecognition() {
         <div className="grid grid-cols-3 gap-4 mb-4">
           {top3.map((g, i) => (
             <Motion key={g.name} delay={0.15 + i * 0.08}>
-              <div className={`relative rounded-2xl overflow-hidden aspect-square group glow-card ${i === 0 ? 'gold-aura' : ''}`}>
+              <div className={`relative rounded-2xl overflow-hidden aspect-square group glow-card ${i === 0 ? 'gold-aura' : ''}`}
+                style={{
+                  boxShadow: i === 0
+                    ? '0 0 0 1px rgba(232,185,74,0.3), 0 0 30px rgba(232,185,74,0.15), 0 8px 32px rgba(0,0,0,0.4)'
+                    : '0 8px 32px rgba(0,0,0,0.35)',
+                  borderTop: `2px solid ${i === 0 ? '#E8B94A' : 'rgba(255,107,26,0.3)'}`,
+                }}
+              >
                 {g.photo ? (
                   <img loading="lazy" src={g.photo} alt={g.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 ) : (
@@ -48,9 +55,9 @@ export default function CommunityRecognition() {
                     <span className="font-display font-bold text-4xl text-white/20">{g.name[0]}</span>
                   </div>
                 )}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.92) 40%, transparent 100%)' }} />
-                <div className="absolute inset-0 rounded-2xl" style={{ boxShadow: i === 0 ? 'inset 0 0 0 1px rgba(232,185,74,0.3)' : 'inset 0 0 0 1px rgba(255,107,26,0.12)' }} />
-                {i === 0 && <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, #E8B94A, transparent)' }} />}
+                {/* Photo gradient overlay — always legible */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 35%, rgba(18,6,32,0.2) 70%, transparent 100%)' }} />
+                <div className="absolute inset-0 rounded-2xl" style={{ boxShadow: i === 0 ? 'inset 0 0 0 1px rgba(232,185,74,0.25)' : 'inset 0 0 0 1px rgba(255,107,26,0.1)' }} />
                 <div className="absolute top-3 left-3 text-2xl">{rankEmoji[i]}</div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
                   <p className={`font-display font-bold text-sm ${i === 0 ? 'text-crown-gold' : 'text-ivory'}`}>{g.name}</p>

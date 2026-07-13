@@ -282,6 +282,23 @@ body {
   }
 }
 
+/* ─── Nav link animated underline ─── */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 1px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, #FF6B1A, transparent);
+  transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-link:hover::after {
+  width: 60%;
+}
+
 /* ─── Swiper overrides ─── */
 .hero-swiper .swiper-button-next,
 .hero-swiper .swiper-button-prev {
