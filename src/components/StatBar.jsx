@@ -8,9 +8,11 @@ const accents = ['#FF6B1A', '#3B1063', '#FF6B1A', '#3B1063']
 
 function Counter({ value, numericEnd }) {
   const [ref, count] = useAnimatedCounter(numericEnd || 0, 2000)
+  const suffix = value ? value.replace(/[\d]/g, '') : ''
+  const display = count > 0 ? `${count}${suffix}` : '0'
   return (
     <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-ivory">
-      {value && count > 0 ? value : (value || '—')}
+      {display}
     </span>
   )
 }

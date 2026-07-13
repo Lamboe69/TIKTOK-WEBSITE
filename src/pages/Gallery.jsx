@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Motion from '../components/Motion'
 import photos, { galleryCategories } from '../data/gallery'
 import { Icons } from '../components/Icons'
@@ -8,6 +8,27 @@ export default function Gallery() {
   const [selectedPhoto, setSelectedPhoto] = useState(null)
 
   const filtered = activeCategory === 'All' ? photos : photos.filter(p => p.category === activeCategory)
+
+  const selectedIndex = selectedPhoto ? filtered.findIndex(p => p.id === selectedPhoto.id) : -1
+
+  const goPrev = useCallback(() => {
+    if (selectedIndex > 0) setSelectedPhoto(filtered[selectedIndex - 1])
+  }, [selectedIndex, filtered])
+
+  const goNext = useCallback(() => {
+    if (selectedIndex < filtered.length - 1) setSelectedPhoto(filtered[selectedIndex + 1])
+  }, [selectedIndex, filtered])
+
+  useEffect(() => {
+    if (!selectedPhoto) return
+    const handler = (e) => {
+      if (e.key === 'ArrowLeft') goPrev()
+      if (e.key === 'ArrowRight') goNext()
+      if (e.key === 'Escape') setSelectedPhoto(null)
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [selectedPhoto, goPrev, goNext])
 
   return (
     <main>
@@ -123,6 +144,29 @@ export default function Gallery() {
           >
             <span className="w-5 h-5 block">{Icons.close}</span>
           </button>
+
+          {selectedIndex > 0 && (
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white transition-all hover:scale-110 z-10"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              onClick={e => { e.stopPropagation(); goPrev() }}
+              aria-label="Previous photo"
+            >
+              <span className="w-5 h-5 block rotate-180">{Icons.arrowRight}</span>
+            </button>
+          )}
+
+          {selectedIndex < filtered.length - 1 && (
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white transition-all hover:scale-110 z-10"
+              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              onClick={e => { e.stopPropagation(); goNext() }}
+              aria-label="Next photo"
+            >
+              <span className="w-5 h-5 block">{Icons.arrowRight}</span>
+            </button>
+          )}
+
           <div className="max-w-4xl w-full" onClick={e => e.stopPropagation()}>
             <img
               src={selectedPhoto.src}
@@ -133,6 +177,7 @@ export default function Gallery() {
             <div className="mt-4 text-center">
               <h3 className="font-display font-bold text-ivory text-lg">{selectedPhoto.title}</h3>
               <p className="text-white/40 text-sm mt-1">{selectedPhoto.category} · {selectedPhoto.year}</p>
+              <p className="text-white/25 text-xs mt-2">{selectedIndex + 1} / {filtered.length} &nbsp;·&nbsp; ← → to navigate</p>
             </div>
           </div>
         </div>

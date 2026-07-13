@@ -44,11 +44,11 @@ export default function FAQ() {
                 Got Questions?
               </span>
               <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
-                Frequently Asked<br />
-                <span className="text-gradient">Questions</span>
+                KM DYNASTY &amp; La'Gwat<br />
+                <span className="text-gradient">Creator Network — FAQs</span>
               </h1>
               <p className="text-white/60 text-sm leading-relaxed max-w-md">
-                Everything you need to know about KM DYNASTY, La'Gwat Agency, and how to join the family.
+                Answers to your questions about KM DYNASTY &amp; La'Gwat Creator Network.
               </p>
             </Motion>
 

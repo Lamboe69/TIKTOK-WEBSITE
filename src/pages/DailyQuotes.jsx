@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { quotes, getTodayQuote } from '../data/quotes'
 import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
@@ -194,6 +194,48 @@ export default function DailyQuotes() {
             {quotes.map((q, i) => (
               <QuoteCard key={q.day} quote={q} isToday={q.day === today.day} index={i} />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quotes Meaning — La'Gwat teaser */}
+      <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <Motion delay={0.1}>
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
+                <img
+                  src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80"
+                  alt="Brand strategy"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.5), rgba(255,107,26,0.2))' }} />
+              </div>
+            </Motion>
+            <div>
+              <Motion delay={0.15}>
+                <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+                  Quotes Meaning
+                </span>
+                <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4 leading-tight">
+                  Daily KM <span className="text-gradient">Quotes</span>
+                </h2>
+              </Motion>
+              <Motion delay={0.2}>
+                <div className="space-y-4">
+                  <div className="p-4 rounded-xl border border-white/06" style={{ background: 'rgba(59,16,99,0.2)' }}>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      We safeguard your brand identity and ensure your creative vision stays protected.
+                    </p>
+                  </div>
+                  <div className="p-4 rounded-xl border border-white/06" style={{ background: 'rgba(59,16,99,0.2)' }}>
+                    <p className="text-white/70 text-sm leading-relaxed">
+                      Technical and professional support tailored to creators in the US and Canada.
+                    </p>
+                  </div>
+                </div>
+              </Motion>
+            </div>
           </div>
         </div>
       </section>

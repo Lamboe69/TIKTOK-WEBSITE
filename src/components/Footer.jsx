@@ -200,6 +200,21 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Follow King Maker CTA */}
+        <div className="border-t border-white/04 py-8 text-center">
+          <p className="text-white/40 text-xs uppercase tracking-widest mb-4">Follow King Maker</p>
+          <a
+            href="https://www.tiktok.com/@kingmakernevergivesup"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
+            style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.25)' }}
+          >
+            <span className="w-4 h-4 block">{Icons.tiktok}</span>
+            Follow King Maker on TikTok
+          </a>
+        </div>
+
         {/* Bottom bar */}
         <div className="border-t border-white/04 pt-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2">

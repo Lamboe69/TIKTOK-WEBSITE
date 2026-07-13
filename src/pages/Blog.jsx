@@ -109,7 +109,9 @@ export default function Blog() {
                     <p className="text-white/60 text-sm leading-relaxed mb-4">{post.excerpt}</p>
 
                     {expandedId === post.id ? (
-                      <div>
+                      <div
+                        style={{ maxHeight: 600, overflowY: 'auto', transition: 'max-height 0.4s ease' }}
+                      >
                         <div className="text-white/70 text-sm leading-relaxed whitespace-pre-line mb-4 border-t border-white/04 pt-4">
                           {post.content}
                         </div>

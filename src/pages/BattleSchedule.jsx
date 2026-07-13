@@ -170,8 +170,8 @@ export default function BattleSchedule() {
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
             <button
               onClick={() => setActiveType('All')}
-              className={`flex-shrink-0 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === 'All' ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/08'}`}
-              style={activeType === 'All' ? { background: 'rgba(255,107,26,0.15)' } : {}}
+              className={`flex-shrink-0 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === 'All' ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/30 hover:text-white/80'}`}
+              style={activeType === 'All' ? { background: 'rgba(255,107,26,0.15)' } : { background: 'rgba(255,255,255,0.04)' }}
             >
               All
             </button>
@@ -179,15 +179,11 @@ export default function BattleSchedule() {
               <button
                 key={type}
                 onClick={() => setActiveType(type)}
-                className={`flex-shrink-0 relative rounded-xl overflow-hidden transition-all ${activeType === type ? 'ring-2 ring-ember' : 'opacity-60 hover:opacity-90'}`}
-                style={{ width: 100, height: 56 }}
+                className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === type ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/30 hover:text-white/80'}`}
+                style={activeType === type ? { background: 'rgba(255,107,26,0.15)' } : { background: 'rgba(255,255,255,0.04)' }}
               >
-                <img src={typeImages[type]} alt={type} className="w-full h-full object-cover" />
-                <div className="absolute inset-0" style={{ background: 'rgba(18,6,32,0.6)' }} />
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
-                  <span className="text-base">{typeEmoji[type]}</span>
-                  <span className="text-white text-[9px] font-bold">{type.split(' ')[0]}</span>
-                </div>
+                <span>{typeEmoji[type]}</span>
+                <span>{type}</span>
               </button>
             ))}
           </div>

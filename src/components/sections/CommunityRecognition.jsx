@@ -20,8 +20,7 @@ export default function CommunityRecognition() {
   const rest = gifters.slice(3)
 
   return (
-    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#120620' }}>
-      {/* Ambient purple glow */}
+    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#1B1024' }}>
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,16,99,0.5) 0%, transparent 70%)' }} />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
         <Motion delay={0.1} className="text-center mb-12">
@@ -45,8 +44,8 @@ export default function CommunityRecognition() {
                 {g.photo ? (
                   <img src={g.photo} alt={g.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ background: 'rgba(59,16,99,0.4)' }}>
-                    <span className="text-5xl font-display font-bold text-white/10">{g.name[0]}</span>
+                  <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.6), rgba(255,107,26,0.15))' }}>
+                    <span className="font-display font-bold text-4xl text-white/20">{g.name[0]}</span>
                   </div>
                 )}
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 40%, transparent 100%)' }} />

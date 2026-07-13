@@ -43,10 +43,10 @@ export default function SignUpModal({ type = 'official', isOpen, onClose }) {
   // Close on Escape key
   useEffect(() => {
     if (!isOpen) return
-    const handler = (e) => { if (e.key === 'Escape') handleClose() }
+    const handler = (e) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [isOpen])
+  }, [isOpen, onClose])
 
   // Lock body scroll when open
   useEffect(() => {

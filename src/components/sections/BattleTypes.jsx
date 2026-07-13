@@ -3,7 +3,7 @@ import Motion from '../Motion'
 
 const types = [
   {
-    title: 'Official Godsent Box Battle',
+    title: 'Daily Godsent Box Battle',
     description: 'The main event. Every creator gets a fair shot at the crown.',
     img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80',
     to: '/battle-schedule',
@@ -21,8 +21,8 @@ const types = [
     to: '/battle-schedule',
   },
   {
-    title: 'Champion of Champions',
-    description: 'Winners only. The elite compete for the ultimate crown.',
+    title: 'Community First',
+    description: "It's not about who has the most coins. It's about who lifts others. A pro battle where the winner is chosen by the community — not just box value.",
     img: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',
     to: '/battle-schedule',
   },

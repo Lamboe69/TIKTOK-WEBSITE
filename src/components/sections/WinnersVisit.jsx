@@ -1,52 +1,48 @@
-import { Icons } from '../Icons'
 import Motion from '../Motion'
 
 export default function WinnersVisit() {
   return (
-    <section className="py-20 sm:py-28 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="relative bg-dynasty-charcoal rounded-3xl p-8 sm:p-12 overflow-hidden group">
-          {/* Background accents */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 right-0 w-[300px] h-[300px] bg-dynasty-orange/10 rounded-full blur-[80px]" />
-            <div className="absolute bottom-0 left-0 w-[250px] h-[250px] bg-dynasty-purple/10 rounded-full blur-[80px]" />
-            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-          </div>
+    <section className="relative min-h-[360px] flex items-center overflow-hidden" style={{ background: '#1B1024' }}>
+      <img
+        src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80"
+        alt="Winners Livestream Visit"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.92) 50%, rgba(59,16,99,0.75) 100%)' }} />
 
-          <div className="relative flex flex-col sm:flex-row items-center gap-8">
-            {/* Icon */}
-            <Motion variant="scale-in" delay={100}>
-              <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-dynasty-orange to-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-dynasty-orange/20 group-hover:rotate-6 group-hover:scale-110 transition-all duration-300">
-                <span className="w-10 h-10 block">{Icons.film}</span>
-              </div>
-            </Motion>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <Motion delay={0.1}>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-crown-gold" style={{ background: 'rgba(232,185,74,0.1)' }}>
+              🎥 Winners' Livestream Visit
+            </span>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4 leading-tight">
+              Win. Claim Your<br />
+              <span className="text-gradient">Spotlight</span>
+            </h2>
+            <p className="text-white/60 text-sm leading-relaxed">
+              Winners from OFFICIAL GODSENT BOX BATTLE get a scheduled livestream visit with KM DYNASTY. Champion gets priority. Be the winner, claim your spotlight!
+            </p>
+          </Motion>
 
-            {/* Content */}
-            <div className="text-center sm:text-left flex-1">
-              <Motion variant="fade-left" delay={200}>
-                <h2 className="font-display font-bold text-2xl sm:text-3xl text-white mb-3">
-                  Winners' Livestream <span className="text-dynasty-orange">Visit</span>
-                </h2>
-              </Motion>
-              <Motion variant="fade-left" delay={300}>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-6 max-w-xl">
-                  Winners from official Godsent Box Battles get a scheduled livestream visit with KM DYNASTY.
-                  The Champion gets priority. <span className="text-white font-medium">Your moment in the spotlight.</span>
-                </p>
-              </Motion>
-              <Motion variant="fade-left" delay={400}>
-                <a
-                  href="https://www.tiktok.com/@kingmakernevergivesup"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-dynasty-orange text-white font-bold text-sm rounded-xl btn-glow shadow-lg shadow-dynasty-orange/30 hover:bg-dynasty-orange/90 transition-colors"
-                >
-                  Follow King Maker
-                  <span className="w-4 h-4 block">{Icons.arrowRight}</span>
-                </a>
-              </Motion>
+          <Motion delay={0.2}>
+            <div className="glass rounded-2xl p-6 border border-white/10">
+              <p className="text-white/40 text-[10px] uppercase tracking-widest mb-4">How It Works</p>
+              {[
+                { step: '1', text: 'Win an Official Godsent Box Battle' },
+                { step: '2', text: 'Get scheduled for a KM DYNASTY livestream visit' },
+                { step: '3', text: 'Champion of Champions gets priority placement' },
+                { step: '4', text: 'Claim your spotlight in front of the entire dynasty' },
+              ].map(({ step, text }) => (
+                <div key={step} className="flex items-center gap-3 py-3 border-b border-white/06 last:border-0">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold text-white flex-shrink-0" style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}>
+                    {step}
+                  </div>
+                  <p className="text-ivory text-sm">{text}</p>
+                </div>
+              ))}
             </div>
-          </div>
+          </Motion>
         </div>
       </div>
     </section>

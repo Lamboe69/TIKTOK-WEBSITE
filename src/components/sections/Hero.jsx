@@ -94,7 +94,7 @@ export default function Hero() {
             </h1>
 
             <p className="text-white/60 text-sm sm:text-base max-w-sm mb-8 leading-relaxed">
-              Join the family. Compete in Godsent Box Battles.<br />Rise with King Maker.
+              🔥 Daily Box Battles &nbsp;|&nbsp; 💎 Pro Strategies &amp; Tips &nbsp;|&nbsp; Creator Livestream Visit
             </p>
 
             <div className="flex flex-wrap items-center gap-3 mb-8">

@@ -18,8 +18,8 @@ const values = [
 ]
 
 const team = [
-  { name: 'King Maker', role: 'Founder', tag: 'Pro Livestreamer · Box Battle Host', url: 'https://www.tiktok.com/@kingmakernevergivesup', photo: '/team/maker.jpg', accent: '#FF6B1A' },
-  { name: 'King Mufasa', role: 'Manager', tag: 'General Manager', url: 'https://www.tiktok.com/@kingmufasa781', photo: '/team/mufasa.jpg', accent: '#3B1063' },
+  { name: 'King Maker', role: 'Pro Livestreamer / Godsent Box Battle Host', tag: 'Founder · @kingmakernevergivesup', url: 'https://www.tiktok.com/@kingmakernevergivesup', photo: '/team/maker.jpg', accent: '#FF6B1A' },
+  { name: 'King Mufasa', role: 'General Manager', tag: 'KM DYNASTY Management', url: 'https://www.tiktok.com/@kingmufasa781', photo: '/team/mufasa.jpg', accent: '#3B1063' },
 ]
 
 function AnimatedStat({ value, label }) {
@@ -125,7 +125,7 @@ export default function About() {
                 <span className="text-gradient">Global Dynasty</span>
               </h2>
               <p className="text-white/60 text-sm leading-relaxed mb-6">
-                King Maker saw what TikTok box battles could be — not just a game of coins, but an interactive arena where engagement, community, and heart determine who rises.
+                King Maker saw what TikTok box battles could be — not just a game of coins, but an interactive arena where engagement, community, and heart determine who rises. The rooted $30 dream that gazed towards a TikTok Universe surprise became a whole solid driver of progress.
               </p>
               <ul className="space-y-3">
                 {['Gamified battle format that keeps audiences locked in', 'Community spanning 6 global regions', 'Champion of Champions — the ultimate finale'].map(item => (
@@ -140,8 +140,51 @@ export default function About() {
         </div>
       </section>
 
-      {/* Values */}
+      {/* King Maker at a Glance */}
       <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <Motion delay={0.1}>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
+                King Maker at a Glance
+              </span>
+              <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4 leading-tight">
+                Rewriting the Rules of<br />
+                <span className="text-gradient">Live Streaming</span>
+              </h2>
+              <p className="text-white/60 text-sm leading-relaxed mb-4">
+                The rooted $30 dream gazed towards a TikTok Universe surprise — then came a whole solid driver of progress.
+              </p>
+              <p className="text-white/60 text-sm leading-relaxed mb-4">
+                King Maker isn't just a host; he's an architect of engagement. He has pioneered a new wave of interactive entertainment by reimagining the traditional "battle" format — complete with custom sound effects, rapid-fire commentary, and narrative arcs that keep tens of thousands of viewers glued to their screens.
+              </p>
+              <p className="text-white/60 text-sm leading-relaxed">
+                He leverages TikTok's latest tools like TikTok Market Scope to read real-time audience sentiment, and uses Symphony to repurpose epic battle moments into short highlight reels that draw new followers into the lore of his arena.
+              </p>
+            </Motion>
+            <Motion delay={0.2}>
+              <div className="space-y-3">
+                {[
+                  { icon: '🎮', title: 'The Innovator', desc: 'One of the first to integrate interactive polls and AR effects directly into battles — letting the audience vote on dares and influence point multipliers.' },
+                  { icon: '🎥', title: 'The Pro Livestreamer', desc: 'With the stamina of a marathon runner and the wit of a stand-up comedian, King Maker commands a room for hours with unpredictable twists.' },
+                  { icon: '👑', title: 'He Builds Kings & Queens', desc: 'In his arena, everyone has a chance to claim the throne. He doesn\'t just host battles — he builds champions.' },
+                ].map(({ icon, title, desc }) => (
+                  <div key={title} className="flex items-start gap-4 p-4 rounded-xl border border-white/06" style={{ background: 'rgba(59,16,99,0.2)' }}>
+                    <span className="text-2xl flex-shrink-0">{icon}</span>
+                    <div>
+                      <p className="font-display font-bold text-ivory text-sm mb-1">{title}</p>
+                      <p className="text-white/55 text-xs leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Motion>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <Motion delay={0.1} className="text-center mb-12">
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3" style={{ letterSpacing: '-0.02em' }}>
@@ -166,7 +209,7 @@ export default function About() {
       </section>
 
       {/* Mission / Vision */}
-      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+      <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
