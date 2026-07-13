@@ -72,7 +72,7 @@ function QuoteCard({ quote, isToday, index }) {
         }
       >
         {isToday && (
-          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, #FF6B1A, #ffffff)' }} />
+          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, rgba(255,107,26,0.6), transparent)' }} />
         )}
 
         <div className="flex items-center justify-between mb-4">

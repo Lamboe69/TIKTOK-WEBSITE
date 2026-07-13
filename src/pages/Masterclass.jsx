@@ -47,7 +47,7 @@ export default function Masterclass() {
                   { icon: Icons.clock, label: 'Time', value: schedule.time },
                   { icon: Icons.film, label: 'Format', value: 'Live Zoom · 1hr sessions' },
                 ].map(({ icon, label, value }) => (
-                  <div key={label} className="flex items-center gap-3 py-2.5 border-b border-white/06 last:border-0">
+                  <div key={label} className="flex items-center gap-3 py-2.5 border-b border-white/04 last:border-0">
                     <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,26,0.15)' }}>
                       <span className="w-3.5 h-3.5 block text-ember">{icon}</span>
                     </div>

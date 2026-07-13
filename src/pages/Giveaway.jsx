@@ -66,7 +66,7 @@ export default function Giveaway() {
       <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
         <div className="max-w-md mx-auto px-4 sm:px-6">
           <Motion delay={0.1}>
-            <div className="rounded-2xl p-8 border border-white/08" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+            <div className="rounded-2xl p-8 border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
               {submitted ? (
                 <div className="text-center py-8">
                   <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(255,107,26,0.15)' }}>

@@ -50,7 +50,7 @@ export default function BrandIdentity() {
             <div className="space-y-0">
               {steps.map(({ num, title, description }, i) => (
                 <Motion key={num} delay={0.2 + i * 0.1}>
-                  <div className={`flex gap-5 py-5 ${i < steps.length - 1 ? 'border-b border-white/08' : ''}`}>
+                  <div className={`flex gap-5 py-5 ${i < steps.length - 1 ? 'border-b border-white/04' : ''}`}>
                     <div className="w-8 h-8 rounded-lg bg-ember flex items-center justify-center text-white text-xs font-bold flex-shrink-0">{num}</div>
                     <div>
                       <h3 className="font-display font-bold text-ivory text-sm mb-1">{title}</h3>

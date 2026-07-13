@@ -32,7 +32,7 @@ export default function StatBar() {
           {items.map(({ value, numericEnd, label, note }, i) => (
             <Motion key={i} variant="fade-up" delay={i * 80}>
               <div
-                className="relative rounded-xl p-5 overflow-hidden border border-white/06 hover:border-white/12 transition-all"
+                className="relative rounded-xl p-5 overflow-hidden border border-white/04 hover:border-white/08 transition-all"
                 style={{ background: 'rgba(59,16,99,0.2)' }}
               >
                 {/* Accent top line */}

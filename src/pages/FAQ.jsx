@@ -101,7 +101,7 @@ export default function FAQ() {
 
           {/* Still have a question */}
           <Motion delay={0.3}>
-            <div className="mt-12 rounded-2xl p-8 text-center border border-white/08" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+            <div className="mt-12 rounded-2xl p-8 text-center border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(255,107,26,0.15)' }}>
                 <span className="w-6 h-6 block text-ember">{Icons.users}</span>
               </div>

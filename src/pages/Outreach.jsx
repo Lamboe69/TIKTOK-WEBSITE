@@ -100,7 +100,7 @@ export default function Outreach() {
               </Motion>
 
               <Motion delay={0.2}>
-                <div className="rounded-2xl p-6 border border-white/08" style={{ background: 'rgba(232,185,74,0.06)' }}>
+                <div className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(232,185,74,0.06)' }}>
                   <h3 className="font-display font-bold text-lg text-ivory mb-4">How Your Donations Help</h3>
                   <ul className="space-y-3">
                     {[
@@ -119,7 +119,7 @@ export default function Outreach() {
               </Motion>
 
               <Motion delay={0.25}>
-                <div className="rounded-2xl p-6 border border-white/08" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+                <div className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
                   <h3 className="font-display font-bold text-lg text-ivory mb-2">Donate via GoFundMe</h3>
                   <p className="text-white/50 text-sm mb-4">Support the KM Dynasty Outreach fund. Every dollar helps a family in need.</p>
                   <a
@@ -138,7 +138,7 @@ export default function Outreach() {
 
             {/* Right — Form */}
             <Motion delay={0.15}>
-              <div className="rounded-2xl p-8 border border-white/08 sticky top-24" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+              <div className="rounded-2xl p-8 border border-white/04 sticky top-24" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
                 <h2 className="font-display font-bold text-2xl text-ivory mb-2">Request Support</h2>
                 <p className="text-white/50 text-sm mb-6">Going through a difficult time? Submit your application and our team will review it personally.</p>
 

@@ -26,7 +26,7 @@ function BattleCard({ battle, onSignUp }) {
 
   return (
     <Motion variant="fade-up">
-      <div className="rounded-2xl overflow-hidden border border-white/06 hover:border-white/12 transition-all" style={{ background: 'rgba(59,16,99,0.2)' }}>
+      <div className="rounded-2xl overflow-hidden border border-white/04 hover:border-white/08 transition-all" style={{ background: 'rgba(59,16,99,0.2)' }}>
         {/* Image header */}
         <div className="relative h-40 overflow-hidden">
           <img src={img} alt={battle.type} className="w-full h-full object-cover" />
@@ -76,7 +76,7 @@ function BattleCard({ battle, onSignUp }) {
             </button>
             <button
               onClick={() => downloadICS(battle)}
-              className="px-3 py-2 text-xs text-white/50 rounded-lg border border-white/10 hover:border-white/20 transition-all"
+              className="px-3 py-2 text-xs text-white/50 rounded-lg border border-white/10 hover:border-white/08 transition-all"
               title="Add to calendar"
             >
               📅
@@ -170,7 +170,7 @@ export default function BattleSchedule() {
           <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
             <button
               onClick={() => setActiveType('All')}
-              className={`flex-shrink-0 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === 'All' ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/20'}`}
+              className={`flex-shrink-0 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === 'All' ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/08'}`}
               style={activeType === 'All' ? { background: 'rgba(255,107,26,0.15)' } : {}}
             >
               All

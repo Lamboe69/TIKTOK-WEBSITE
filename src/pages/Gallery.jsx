@@ -83,7 +83,7 @@ export default function Gallery() {
               <Motion key={photo.id} delay={0.04 + idx * 0.03}>
                 <button
                   onClick={() => setSelectedPhoto(photo)}
-                  className="group relative aspect-square rounded-2xl overflow-hidden border border-white/06 hover:border-white/15 transition-all"
+                  className="group relative aspect-square rounded-2xl overflow-hidden border border-white/04 hover:border-white/08 transition-all"
                 >
                   <img
                     src={photo.src}

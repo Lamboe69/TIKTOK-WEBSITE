@@ -142,7 +142,7 @@ export default function Footer() {
         </div>
 
         {/* Newsletter + socials */}
-        <div className="border-t border-white/08 pt-6 pb-6">
+        <div className="border-t border-white/04 pt-6 pb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
             <div>
               <h4 className="font-body font-semibold text-[10px] uppercase tracking-widest text-white/30 mb-2">Stay Updated</h4>
@@ -201,7 +201,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/08 pt-4">
+        <div className="border-t border-white/04 pt-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="text-white/25 text-xs">
               &copy; {new Date().getFullYear()} KM DYNASTY. All rights reserved.

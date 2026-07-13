@@ -172,7 +172,7 @@ export default function HowToJoin() {
 
           {/* Prayer callout */}
           <Motion delay={0.5}>
-            <div className="mt-8 rounded-xl p-5 border border-white/08" style={{ background: 'rgba(59,16,99,0.2)' }}>
+            <div className="mt-8 rounded-xl p-5 border border-white/04" style={{ background: 'rgba(59,16,99,0.2)' }}>
               <p className="text-ember text-xs font-bold uppercase tracking-wider mb-2">Sample Prayer (Step 2)</p>
               <p className="text-white/60 text-sm italic leading-relaxed">
                 "Dear God, guide my box to the right battle. Let my effort be seen and my support counted. Amen."

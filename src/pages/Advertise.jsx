@@ -133,7 +133,7 @@ export default function Advertise() {
               return (
                 <Motion key={i} delay={0.1 + i * 0.08}>
                   <div
-                    className="rounded-2xl p-6 flex flex-col border border-white/06 hover:border-white/12 transition-all"
+                    className="rounded-2xl p-6 flex flex-col border border-white/04 hover:border-white/08 transition-all"
                     style={{ background: 'rgba(59,16,99,0.2)', borderTop: `2px solid ${accent}` }}
                   >
                     <h3 className="font-display font-bold text-base text-ivory mb-3">{name}</h3>
@@ -182,7 +182,7 @@ export default function Advertise() {
 
           {submitted ? (
             <Motion delay={0.1}>
-              <div className="rounded-2xl p-10 text-center border border-white/08" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+              <div className="rounded-2xl p-10 text-center border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
                 <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(255,107,26,0.15)' }}>
                   <span className="w-7 h-7 block text-ember">{Icons.check}</span>
                 </div>
@@ -195,7 +195,7 @@ export default function Advertise() {
             </Motion>
           ) : (
             <Motion delay={0.15}>
-              <form onSubmit={handleSubmit} className="rounded-2xl p-8 border border-white/08 space-y-5" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+              <form onSubmit={handleSubmit} className="rounded-2xl p-8 border border-white/04 space-y-5" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   {[
                     { label: 'Business / Brand Name *', field: 'businessName', required: true },

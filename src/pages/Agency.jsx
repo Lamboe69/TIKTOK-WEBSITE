@@ -75,7 +75,7 @@ export default function Agency() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {regions.map((region, i) => (
               <Motion key={region.name} delay={0.1 + i * 0.1}>
-                <div className="group rounded-2xl overflow-hidden border border-white/06 hover:border-ember/30 transition-all" style={{ background: '#120620' }}>
+                <div className="group rounded-2xl overflow-hidden border border-white/04 hover:border-ember/30 transition-all" style={{ background: '#120620' }}>
                   {/* Image header */}
                   <div className="relative h-52 overflow-hidden">
                     <img src={regionImages[i]} alt={region.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -130,7 +130,7 @@ export default function Agency() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {benefits.map(({ icon, title, desc }, i) => (
               <Motion key={title} delay={0.1 + i * 0.08}>
-                <div className="glass rounded-xl p-5 border border-white/08 text-center hover:border-ember/20 transition-all">
+                <div className="glass rounded-xl p-5 border border-white/04 text-center hover:border-ember/20 transition-all">
                   <div className="w-11 h-11 rounded-lg flex items-center justify-center mx-auto mb-3" style={{ background: 'rgba(255,107,26,0.15)' }}>
                     <span className="w-5 h-5 block text-ember">{icon}</span>
                   </div>

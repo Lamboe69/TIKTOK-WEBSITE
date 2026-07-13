@@ -47,7 +47,7 @@ export default function Navbar() {
           : 'rgba(18, 6, 32, 0.75)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        borderBottom: '1px solid rgba(59,16,99,0.5)',
       }}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
@@ -102,7 +102,7 @@ export default function Navbar() {
       </nav>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-white/06 animate-fade-in" style={{ background: 'rgba(18,6,32,0.97)' }}>
+        <div className="md:hidden border-t border-white/04 animate-fade-in" style={{ background: 'rgba(18,6,32,0.97)' }}>
           <div className="px-4 py-4">
             <div className="grid grid-cols-2 gap-1 mb-3">
               {navLinks.map(({ to, label }) => (

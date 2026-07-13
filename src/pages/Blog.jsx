@@ -79,7 +79,7 @@ export default function Blog() {
             {filtered.map((post, idx) => (
               <Motion key={post.id} delay={0.1 + idx * 0.08}>
                 <article
-                  className="group rounded-2xl overflow-hidden border border-white/06 hover:border-white/12 transition-all"
+                  className="group rounded-2xl overflow-hidden border border-white/04 hover:border-white/08 transition-all"
                   style={{ background: 'rgba(59,16,99,0.2)' }}
                 >
                   <div className="relative h-52 overflow-hidden">
@@ -110,7 +110,7 @@ export default function Blog() {
 
                     {expandedId === post.id ? (
                       <div>
-                        <div className="text-white/70 text-sm leading-relaxed whitespace-pre-line mb-4 border-t border-white/08 pt-4">
+                        <div className="text-white/70 text-sm leading-relaxed whitespace-pre-line mb-4 border-t border-white/04 pt-4">
                           {post.content}
                         </div>
                         <button onClick={() => setExpandedId(null)} className="text-ember text-sm font-semibold hover:underline">

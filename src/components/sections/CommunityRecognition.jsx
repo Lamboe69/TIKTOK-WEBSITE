@@ -64,7 +64,7 @@ export default function CommunityRecognition() {
         <div className="space-y-2">
           {rest.map((g, i) => (
             <Motion key={g.name} delay={0.35 + i * 0.06}>
-              <div className="flex items-center gap-4 px-5 py-3 rounded-xl border border-white/06 hover:border-white/12 transition-colors" style={{ background: 'rgba(59,16,99,0.15)' }}>
+              <div className="flex items-center gap-4 px-5 py-3 rounded-xl border border-white/04 hover:border-white/08 transition-colors" style={{ background: 'rgba(59,16,99,0.15)' }}>
                 <span className="text-white/30 font-display font-bold text-sm w-6">{i + 4}</span>
                 <div className="w-8 h-8 rounded-full bg-dynasty-purple/40 flex items-center justify-center flex-shrink-0">
                   <span className="text-white/60 text-xs font-bold">{g.name[0]}</span>

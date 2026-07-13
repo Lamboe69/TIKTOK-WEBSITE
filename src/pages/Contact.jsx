@@ -70,7 +70,7 @@ export default function Contact() {
                   { icon: Icons.mapPin, text: 'Dallas, Texas, USA' },
                   { icon: Icons.clock, text: '9am–6pm CT, Mon–Fri' },
                 ].map(({ icon, text, href }) => (
-                  <div key={text} className="flex items-center gap-3 py-2 border-b border-white/06 last:border-0">
+                  <div key={text} className="flex items-center gap-3 py-2 border-b border-white/04 last:border-0">
                     <span className="w-3.5 h-3.5 block text-ember flex-shrink-0">{icon}</span>
                     {href ? (
                       <a href={href} className="text-ivory text-xs hover:text-ember transition-colors">{text}</a>
@@ -120,8 +120,8 @@ export default function Contact() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Form */}
             <Motion delay={0.1}>
-              <div className="rounded-2xl p-6 sm:p-8 border border-white/08" style={{ background: 'rgba(59,16,99,0.2)' }}>
-                <div className="h-0.5 rounded-full mb-6" style={{ background: 'linear-gradient(90deg, #FF6B1A, #ffffff)' }} />
+              <div className="rounded-2xl p-6 sm:p-8 border border-white/04" style={{ background: 'rgba(59,16,99,0.2)' }}>
+                <div className="h-0.5 rounded-full mb-6" style={{ background: 'linear-gradient(90deg, rgba(255,107,26,0.5), transparent)' }} />
                 <h2 className="font-display font-bold text-2xl text-ivory mb-6">Send a Message</h2>
 
                 {submitted ? (
@@ -179,7 +179,7 @@ export default function Contact() {
             {/* Map + info */}
             <div className="space-y-4">
               <Motion delay={0.2}>
-                <div className="rounded-2xl overflow-hidden border border-white/08" style={{ height: 220 }}>
+                <div className="rounded-2xl overflow-hidden border border-white/04" style={{ height: 220 }}>
                   <iframe
                     title="KM DYNASTY — Dallas, Texas"
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107440.60493614768!2d-96.844958!3d32.78761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c197d8735a3a9%3A0x7e7a2b70e7a6a2a7!2sDallas%2C%20TX!5e0!3m2!1sen!2sus!4v1"
@@ -196,7 +196,7 @@ export default function Contact() {
                 { icon: Icons.clock, label: 'Hours', lines: ['9am–6pm CT, Mon–Fri'] },
               ].map(({ icon, label, lines }, i) => (
                 <Motion key={label} delay={0.25 + i * 0.05}>
-                  <div className="flex items-start gap-4 p-4 rounded-xl border border-white/06 hover:border-white/12 transition-all" style={{ background: 'rgba(59,16,99,0.15)' }}>
+                  <div className="flex items-start gap-4 p-4 rounded-xl border border-white/04 hover:border-white/08 transition-all" style={{ background: 'rgba(59,16,99,0.15)' }}>
                     <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,26,0.15)' }}>
                       <span className="w-4 h-4 block text-ember">{icon}</span>
                     </div>

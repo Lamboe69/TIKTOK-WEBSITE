@@ -33,7 +33,7 @@ export default function NotFound() {
           </Link>
           <Link
             to="/battle-schedule"
-            className="px-6 py-3 text-sm font-medium text-white/70 rounded-lg border border-white/10 hover:border-white/20 transition-all"
+            className="px-6 py-3 text-sm font-medium text-white/70 rounded-lg border border-white/10 hover:border-white/08 transition-all"
           >
             View Battles
           </Link>

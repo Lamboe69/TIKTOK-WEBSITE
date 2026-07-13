@@ -45,7 +45,7 @@ export default function GiveBack() {
           {charityWork.map(({ icon, title, description }, i) => (
             <Motion key={i} delay={0.1 + i * 0.08}>
               <div
-                className="rounded-2xl p-6 text-center border border-white/06 hover:border-white/12 transition-all"
+                className="rounded-2xl p-6 text-center border border-white/04 hover:border-white/08 transition-all"
                 style={{ background: 'rgba(59,16,99,0.2)' }}
               >
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(255,107,26,0.12)' }}>
@@ -61,7 +61,7 @@ export default function GiveBack() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* GoFundMe */}
           <Motion delay={0.25}>
-            <div className="rounded-2xl p-6 border border-white/08 flex flex-col justify-between" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+            <div className="rounded-2xl p-6 border border-white/04 flex flex-col justify-between" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
               <div>
                 <h3 className="font-display font-bold text-xl text-ivory mb-2">Support Our Mission</h3>
                 <p className="text-white/50 text-sm mb-6">Help us expand the Dynasty and support more creators around the world.</p>
@@ -81,7 +81,7 @@ export default function GiveBack() {
 
           {/* Request Support Form */}
           <Motion delay={0.3}>
-            <div className="rounded-2xl p-6 border border-white/08" style={{ background: 'rgba(59,16,99,0.2)' }}>
+            <div className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(59,16,99,0.2)' }}>
               <h3 className="font-display font-bold text-lg text-ivory mb-4">Request Support</h3>
               {submitted ? (
                 <div className="flex items-center gap-3 py-4">

@@ -58,7 +58,7 @@ export default function Privacy() {
 
               {sections.map(({ title, body, email }) => (
                 <div key={title}>
-                  <div className="h-px mb-6" style={{ background: 'rgba(255,255,255,0.06)' }} />
+                  <div className="h-px mb-6" style={{ background: 'rgba(59,16,99,0.5)' }} />
                   <h2 className="font-display font-bold text-lg text-ivory mb-3">{title}</h2>
                   {body && <p className="text-white/60 text-sm leading-relaxed">{body}</p>}
                   {email && (

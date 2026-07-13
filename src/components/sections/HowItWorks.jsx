@@ -63,7 +63,7 @@ export default function HowItWorks() {
             <div className="space-y-0">
               {steps.map(({ num, title, description }, i) => (
                 <Motion key={num} delay={0.2 + i * 0.1}>
-                  <div className={`flex gap-5 py-5 ${i < steps.length - 1 ? 'border-b border-white/08' : ''}`}>
+                  <div className={`flex gap-5 py-5 ${i < steps.length - 1 ? 'border-b border-white/04' : ''}`}>
                     <span className="font-display font-bold text-3xl text-ember/30 w-10 flex-shrink-0 leading-none mt-1">{num}</span>
                     <div>
                       <h3 className="font-display font-bold text-ivory text-base mb-1">{title}</h3>

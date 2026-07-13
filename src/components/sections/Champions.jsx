@@ -51,7 +51,7 @@ export default function Champions() {
                 { rank: '🥈', name: 'Crown Bearer', handle: '@crownbearer', score: '9,800' },
                 { rank: '🥉', name: 'Battle Boss', handle: '@battleboss', score: '7,200' },
               ].map(({ rank, name, handle, score }) => (
-                <div key={handle} className="flex items-center gap-3 py-3 border-b border-white/08 last:border-0">
+                <div key={handle} className="flex items-center gap-3 py-3 border-b border-white/04 last:border-0">
                   <span className="text-xl w-8 text-center">{rank}</span>
                   <div className="flex-1 min-w-0">
                     <p className="text-ivory text-sm font-semibold">{name}</p>
