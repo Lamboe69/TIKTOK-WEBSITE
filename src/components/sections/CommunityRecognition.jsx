@@ -40,18 +40,20 @@ export default function CommunityRecognition() {
         <div className="grid grid-cols-3 gap-4 mb-4">
           {top3.map((g, i) => (
             <Motion key={g.name} delay={0.15 + i * 0.08}>
-              <div className="relative rounded-2xl overflow-hidden aspect-square group">
+              <div className={`relative rounded-2xl overflow-hidden aspect-square group glow-card ${i === 0 ? 'gold-aura' : ''}`}>
                 {g.photo ? (
-                  <img src={g.photo} alt={g.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img loading="lazy" src={g.photo} alt={g.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.6), rgba(255,107,26,0.15))' }}>
                     <span className="font-display font-bold text-4xl text-white/20">{g.name[0]}</span>
                   </div>
                 )}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 40%, transparent 100%)' }} />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.92) 40%, transparent 100%)' }} />
+                <div className="absolute inset-0 rounded-2xl" style={{ boxShadow: i === 0 ? 'inset 0 0 0 1px rgba(232,185,74,0.3)' : 'inset 0 0 0 1px rgba(255,107,26,0.12)' }} />
+                {i === 0 && <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, #E8B94A, transparent)' }} />}
                 <div className="absolute top-3 left-3 text-2xl">{rankEmoji[i]}</div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className="text-ivory font-display font-bold text-sm">{g.name}</p>
+                  <p className={`font-display font-bold text-sm ${i === 0 ? 'text-crown-gold' : 'text-ivory'}`}>{g.name}</p>
                   <p className="text-white/50 text-xs">{g.tiktokHandle}</p>
                 </div>
               </div>
@@ -70,7 +72,7 @@ export default function CommunityRecognition() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-ivory text-sm font-semibold">{g.name}</p>
-                  <p className="text-white/40 text-xs">{g.tiktokHandle}</p>
+                  <p className="text-white/40 text-xs">{g.handle}</p>
                 </div>
               </div>
             </Motion>

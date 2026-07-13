@@ -1,17 +1,21 @@
 import { useSignUp } from '../SignUpContext'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
+import useParallax from '../../hooks/useParallax'
 
 export default function CTA() {
   const { openOfficial } = useSignUp()
+  const [parallaxRef, parallaxStyle] = useParallax({ factor: 0.12 })
 
   return (
     <section className="relative overflow-hidden" style={{ minHeight: 360 }}>
       {/* Background image */}
-      <img
-        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
+      <img loading="lazy"
+        src="/battles-photos/daily-godsent.jpg"
         alt="Join the Dynasty"
         className="absolute inset-0 w-full h-full object-cover"
+        ref={parallaxRef}
+        style={parallaxStyle}
       />
       {/* Deep overlay — stage gradient */}
       <div
@@ -54,8 +58,8 @@ export default function CTA() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={openOfficial}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95"
-              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8, boxShadow: '0 0 0 0 rgba(255,107,26,0)' }}
+              className="btn-shimmer btn-glow w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95"
+              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8, boxShadow: '0 8px 32px rgba(255,107,26,0.35)' }}
             >
               <span className="w-4 h-4 block">{Icons.swords}</span>
               Sign Up — Box Battle

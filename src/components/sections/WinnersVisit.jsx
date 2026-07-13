@@ -3,8 +3,8 @@ import Motion from '../Motion'
 export default function WinnersVisit() {
   return (
     <section className="relative min-h-[360px] flex items-center overflow-hidden" style={{ background: '#1B1024' }}>
-      <img
-        src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80"
+      <img loading="lazy"
+        src="/battles-photos/most-beautiful.jpg"
         alt="Winners Livestream Visit"
         className="absolute inset-0 w-full h-full object-cover"
       />
@@ -26,7 +26,7 @@ export default function WinnersVisit() {
           </Motion>
 
           <Motion delay={0.2}>
-            <div className="glass rounded-2xl p-6 border border-white/10">
+            <div className="glass-premium rounded-2xl p-6">
               <p className="text-white/40 text-[10px] uppercase tracking-widest mb-4">How It Works</p>
               {[
                 { step: '1', text: 'Win an Official Godsent Box Battle' },

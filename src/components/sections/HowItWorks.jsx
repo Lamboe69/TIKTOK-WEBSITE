@@ -31,8 +31,8 @@ export default function HowItWorks() {
           {/* Image */}
           <Motion delay={0.1}>
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
-                src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=800&q=80"
+              <img loading="lazy"
+                src="/battles-photos/daily-godsent.jpg"
                 alt="TikTok live battle"
                 className="w-full h-full object-cover"
               />
@@ -77,8 +77,8 @@ export default function HowItWorks() {
             <Motion delay={0.5}>
               <button
                 onClick={openOfficial}
-                className="mt-8 inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+                className="btn-shimmer btn-glow mt-8 inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.3)' }}
               >
                 Sign Up — Box Battle
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>

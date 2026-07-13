@@ -11,9 +11,9 @@ export default function FAQAccordion({ items, dark = false }) {
         {items.map((item, i) => (
           <div
             key={i}
-            className="rounded-2xl overflow-hidden transition-all"
+            className="rounded-2xl overflow-hidden transition-all glow-card"
             style={openIndex === i
-              ? { background: 'rgba(59,16,99,0.4)', border: '1px solid rgba(255,107,26,0.25)' }
+              ? { background: 'rgba(59,16,99,0.45)', border: '1px solid rgba(255,107,26,0.3)', boxShadow: '0 0 0 1px rgba(255,107,26,0.1), 0 8px 32px rgba(255,107,26,0.08)' }
               : { background: 'rgba(59,16,99,0.2)', border: '1px solid rgba(255,255,255,0.06)' }
             }
           >

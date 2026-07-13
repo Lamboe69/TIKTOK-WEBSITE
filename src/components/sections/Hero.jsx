@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useCallback } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -9,6 +9,7 @@ import { photos } from '../../data/photos'
 import LiveStatus from '../LiveStatus'
 import { Icons } from '../Icons'
 import CountdownTicker from '../CountdownTicker'
+import HeroCanvas from '../HeroCanvas'
 
 // Real face photos for social proof avatars
 const avatarPhotos = [
@@ -23,6 +24,7 @@ export default function Hero() {
   const swiperRef = useRef(null)
   const [paused, setPaused] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -31,6 +33,13 @@ export default function Hero() {
     mq.addEventListener('change', handler)
     return () => mq.removeEventListener('change', handler)
   }, [])
+
+  useEffect(() => {
+    if (reducedMotion) return
+    const onScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [reducedMotion])
 
   useEffect(() => {
     if (!swiperRef.current) return
@@ -45,7 +54,18 @@ export default function Hero() {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Photo carousel */}
+      {/* Starfield canvas background */}
+      <HeroCanvas />
+
+      {/* Floating ambient orbs */}
+      <div className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full z-[1] pointer-events-none animate-float-slow" style={{ background: 'radial-gradient(circle, rgba(107,63,160,0.15) 0%, transparent 65%)' }} />
+      <div className="absolute bottom-1/3 right-1/4 w-96 h-96 rounded-full z-[1] pointer-events-none animate-float" style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 65%)' }} />
+
+      {/* Photo carousel — parallax wrapper */}
+      <div
+        className="absolute inset-0"
+        style={{ transform: `translateY(${scrollY * 0.15}px)`, willChange: 'transform' }}
+      >
       <Swiper
         modules={[Autoplay, EffectFade, Pagination]}
         effect="fade"
@@ -69,7 +89,7 @@ export default function Hero() {
           </SwiperSlide>
         ))}
       </Swiper>
-
+      </div>
       {/* Multi-layer overlay */}
       <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.94) 40%, rgba(59,16,99,0.55) 100%)' }} />
       <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(to top, rgba(18,6,32,1) 0%, transparent 55%)' }} />
@@ -86,10 +106,10 @@ export default function Hero() {
               The Official Hub
             </div>
 
-            <h1 className="font-display font-extrabold text-ivory mb-2 leading-none" style={{ fontSize: 'clamp(52px, 9vw, 100px)', letterSpacing: '-0.03em' }}>
+            <h1 className="font-display font-extrabold text-ivory mb-2 leading-none" style={{ fontSize: 'clamp(64px, 10vw, 110px)', letterSpacing: '-0.03em' }}>
               KM
             </h1>
-            <h1 className="font-display font-extrabold mb-5 leading-none" style={{ fontSize: 'clamp(52px, 9vw, 100px)', letterSpacing: '-0.03em', WebkitTextStroke: '1px rgba(255,107,26,0.6)', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #FF6B1A 0%, #ffffff 60%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            <h1 className="font-display font-extrabold mb-5 leading-none" style={{ fontSize: 'clamp(64px, 10vw, 110px)', letterSpacing: '-0.03em', WebkitTextStroke: '1px rgba(255,107,26,0.5)', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #FF6B1A 0%, #E8B94A 45%, #ffffff 100%)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', animation: 'gradient-shift 9s ease-in-out infinite' }}>
               DYNASTY
             </h1>
 
@@ -100,8 +120,8 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-3 mb-8">
               <button
                 onClick={openOfficial}
-                className="px-7 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 active:scale-95"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.3)' }}
+                className="btn-shimmer btn-glow px-7 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 active:scale-95"
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.35)' }}
               >
                 Join the Box Battle
               </button>

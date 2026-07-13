@@ -64,7 +64,7 @@ export default function About() {
         className="relative min-h-[560px] flex items-end pb-16 overflow-hidden"
         style={{ background: '#120620' }}
       >
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
           alt="KM Dynasty"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -108,7 +108,7 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <Motion delay={0.1}>
               <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-                <img
+                <img loading="lazy"
                   src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=800&q=80"
                   alt="King Maker story"
                   className="w-full h-full object-cover"
@@ -195,7 +195,7 @@ export default function About() {
             {values.map(({ emoji, title, img }, i) => (
               <Motion key={title} delay={0.1 + i * 0.08}>
                 <div className="group relative rounded-2xl overflow-hidden aspect-square">
-                  <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img loading="lazy" src={img} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 40%, rgba(18,6,32,0.3) 100%)' }} />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
                     <p className="text-2xl mb-1">{emoji}</p>
@@ -218,7 +218,7 @@ export default function About() {
             ].map(({ label, title, body, img }, i) => (
               <Motion key={label} delay={0.1 + i * 0.1}>
                 <div className="relative rounded-2xl overflow-hidden min-h-[240px] flex items-end">
-                  <img src={img} alt={label} className="absolute inset-0 w-full h-full object-cover" />
+                  <img loading="lazy" src={img} alt={label} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 50%, rgba(18,6,32,0.4) 100%)' }} />
                   <div className="relative z-10 p-6">
                     <span className="text-xs font-bold text-ember uppercase tracking-widest mb-2 block">{label}</span>
@@ -244,7 +244,7 @@ export default function About() {
             {team.map(({ name, role, tag, url, photo, accent }, i) => (
               <Motion key={name} delay={0.15 + i * 0.1}>
                 <a href={url} target="_blank" rel="noopener noreferrer" className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
-                  <img
+                  <img loading="lazy"
                     src={photo}
                     alt={name}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -269,7 +269,7 @@ export default function About() {
 
       {/* CTA */}
       <section className="relative min-h-[280px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1400&q=80"
           alt="Join the dynasty"
           className="absolute inset-0 w-full h-full object-cover"

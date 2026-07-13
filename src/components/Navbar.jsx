@@ -85,8 +85,8 @@ export default function Navbar() {
         {/* CTA */}
         <button
           onClick={ctaAction}
-          className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-lg text-white flex-shrink-0 transition-all hover:scale-105"
-          style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+          className="btn-shimmer hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-lg text-white flex-shrink-0 transition-all hover:scale-105"
+          style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 4px 16px rgba(255,107,26,0.3)' }}
         >
           <span className="w-3.5 h-3.5 block">{Icons.swords}</span>
           Sign Up

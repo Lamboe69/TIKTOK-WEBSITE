@@ -43,6 +43,19 @@ export default {
         display: ['Playfair Display', 'Georgia', 'serif'],
         body: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
+      fontSize: {
+        'hero': ['clamp(64px, 10vw, 110px)', { lineHeight: '0.95', letterSpacing: '-0.03em' }],
+        'hero-sm': ['clamp(40px, 6vw, 72px)', { lineHeight: '1', letterSpacing: '-0.025em' }],
+      },
+      letterSpacing: {
+        'widest-xl': '0.15em',
+      },
+      boxShadow: {
+        'ember': '0 8px 32px rgba(255,107,26,0.25)',
+        'ember-lg': '0 20px 60px rgba(255,107,26,0.2)',
+        'gold': '0 8px 32px rgba(232,185,74,0.2)',
+        'purple': '0 8px 32px rgba(59,16,99,0.4)',
+      },
     },
   },
   plugins: [],

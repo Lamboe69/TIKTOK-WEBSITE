@@ -1,17 +1,18 @@
+import { useState } from 'react'
 import Motion from '../Motion'
+import TestimonialModal from '../TestimonialModal'
 import testimonials from '../../data/testimonials'
 
-function Card({ name, handle, text, photo }) {
+function Card({ name, handle, text, photo, onClick }) {
   return (
-    <div
-      className="group flex-shrink-0 w-80 rounded-2xl p-5 mx-2 transition-all duration-300 hover:scale-[1.02]"
+    <button
+      onClick={onClick}
+      className="group flex-shrink-0 w-80 rounded-2xl p-5 mx-2 transition-all duration-300 hover:scale-[1.02] text-left cursor-pointer"
       style={{
         background: 'rgba(59,16,99,0.28)',
         border: '1px solid rgba(255,255,255,0.07)',
         borderLeft: '3px solid rgba(255,107,26,0.15)',
       }}
-      onMouseEnter={e => { e.currentTarget.style.borderLeft = '3px solid rgba(255,107,26,0.7)'; e.currentTarget.style.background = 'rgba(59,16,99,0.42)' }}
-      onMouseLeave={e => { e.currentTarget.style.borderLeft = '3px solid rgba(255,107,26,0.15)'; e.currentTarget.style.background = 'rgba(59,16,99,0.28)' }}
     >
       {/* Stars */}
       <div className="flex gap-0.5 mb-3">
@@ -24,7 +25,7 @@ function Card({ name, handle, text, photo }) {
       {/* Author */}
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 border border-white/10" style={{ background: 'rgba(59,16,99,0.6)' }}>
-          <img
+          <img loading="lazy"
             src={photo}
             alt={name}
             className="w-full h-full object-cover"
@@ -36,11 +37,12 @@ function Card({ name, handle, text, photo }) {
           <p className="text-white/40 text-xs">{handle}</p>
         </div>
       </div>
-    </div>
+    </button>
   )
 }
 
 export default function Testimonials() {
+  const [selected, setSelected] = useState(null)
   const all = testimonials && testimonials.length ? testimonials : []
   const doubled = [...all, ...all]
   const row2 = [...all.slice(Math.floor(all.length / 2)), ...all.slice(0, Math.floor(all.length / 2)), ...all.slice(Math.floor(all.length / 2)), ...all.slice(0, Math.floor(all.length / 2))]
@@ -72,13 +74,16 @@ export default function Testimonials() {
 
       {/* Row 1 — scrolls left */}
       <div className="flex animate-marquee-left mb-4">
-        {doubled.map((t, i) => <Card key={i} {...t} />)}
+        {doubled.map((t, i) => <Card key={i} {...t} onClick={() => setSelected(t)} />)}
       </div>
 
       {/* Row 2 — scrolls right */}
       <div className="flex animate-marquee-right">
-        {row2.map((t, i) => <Card key={i} {...t} />)}
+        {row2.map((t, i) => <Card key={i} {...t} onClick={() => setSelected(t)} />)}
       </div>
+
+      {/* Testimonial modal */}
+      <TestimonialModal testimonial={selected} onClose={() => setSelected(null)} />
     </section>
   )
 }

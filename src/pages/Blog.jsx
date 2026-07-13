@@ -13,7 +13,7 @@ export default function Blog() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1400&q=80"
           alt="Dynasty Blog"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -83,7 +83,7 @@ export default function Blog() {
                   style={{ background: 'rgba(59,16,99,0.2)' }}
                 >
                   <div className="relative h-52 overflow-hidden">
-                    <img
+                    <img loading="lazy"
                       src={post.cover}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

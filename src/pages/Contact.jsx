@@ -38,7 +38,7 @@ export default function Contact() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1400&q=80"
           alt="Contact"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -100,7 +100,7 @@ export default function Contact() {
                   onClick={!href ? (e) => { e.preventDefault(); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }) } : undefined}
                   className="group relative rounded-2xl overflow-hidden h-32 flex items-end block"
                 >
-                  <img src={img} alt={title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <img loading="lazy" src={img} alt={title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 50%, rgba(18,6,32,0.3) 100%)' }} />
                   <div className="absolute top-0 left-0 right-0 h-0.5 bg-ember scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                   <div className="relative z-10 p-4">

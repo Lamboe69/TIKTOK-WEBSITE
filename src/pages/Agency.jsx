@@ -21,7 +21,7 @@ export default function Agency() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
           alt="Agency"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -78,7 +78,7 @@ export default function Agency() {
                 <div className="group rounded-2xl overflow-hidden border border-white/04 hover:border-ember/30 transition-all" style={{ background: '#120620' }}>
                   {/* Image header */}
                   <div className="relative h-52 overflow-hidden">
-                    <img src={regionImages[i]} alt={region.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <img loading="lazy" src={regionImages[i]} alt={region.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                     <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 40%, rgba(18,6,32,0.3) 100%)' }} />
                     <div className="absolute top-0 left-0 right-0 h-0.5 bg-ember scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
                     <div className="absolute bottom-4 left-4">
@@ -115,7 +115,7 @@ export default function Agency() {
 
       {/* Why Join */}
       <section className="relative min-h-[400px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=1400&q=80"
           alt="Why join"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
@@ -145,7 +145,7 @@ export default function Agency() {
 
       {/* CTA */}
       <section className="relative min-h-[280px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1400&q=80"
           alt="Apply"
           className="absolute inset-0 w-full h-full object-cover"

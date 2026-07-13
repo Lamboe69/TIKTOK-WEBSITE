@@ -1,6 +1,8 @@
+import { useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
+import useParallax from '../../hooks/useParallax'
 
 const plans = [
   {
@@ -29,12 +31,36 @@ const plans = [
 ]
 
 export default function MasterclassTeaser() {
+  const [parallaxRef, parallaxStyle] = useParallax({ factor: 0.1 })
+  const tiltRefs = useRef([])
+
+  const handleTilt = useCallback((i, e) => {
+    const card = tiltRefs.current[i]
+    if (!card) return
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const centerX = rect.width / 2
+    const centerY = rect.height / 2
+    const rotateY = ((x - centerX) / centerX) * 5
+    const rotateX = -((y - centerY) / centerY) * 5
+    card.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+  }, [])
+
+  const resetTilt = useCallback((i) => {
+    const card = tiltRefs.current[i]
+    if (!card) return
+    card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)'
+  }, [])
+
   return (
     <section className="relative overflow-hidden" style={{ minHeight: 560 }}>
-      <img
-        src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1400&q=80"
+      <img loading="lazy"
+        src="/battles-photos/most-beautiful.jpg"
         alt="Masterclass"
         className="absolute inset-0 w-full h-full object-cover"
+        ref={parallaxRef}
+        style={parallaxStyle}
       />
       <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.97) 40%, rgba(59,16,99,0.85) 100%)' }} />
 
@@ -75,8 +101,13 @@ export default function MasterclassTeaser() {
             {plans.map(({ title, price, duration, icon, highlight, badge }, i) => (
               <Motion key={title} delay={0.2 + i * 0.1}>
                 <div
-                  className="relative rounded-2xl p-4 flex flex-col items-center text-center transition-all hover:scale-[1.03]"
+                  ref={el => { tiltRefs.current[i] = el }}
+                  onMouseMove={(e) => handleTilt(i, e)}
+                  onMouseLeave={() => resetTilt(i)}
+                  className="relative rounded-2xl p-4 flex flex-col items-center text-center transition-transform hover:scale-[1.03]"
                   style={{
+                    transformStyle: 'preserve-3d',
+                    willChange: 'transform',
                     background: highlight ? 'rgba(255,107,26,0.12)' : 'rgba(59,16,99,0.35)',
                     border: `1px solid ${highlight ? 'rgba(255,107,26,0.35)' : badge === 'Premium' ? 'rgba(232,185,74,0.25)' : 'rgba(255,255,255,0.07)'}`,
                     backdropFilter: 'blur(12px)',

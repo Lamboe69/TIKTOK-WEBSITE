@@ -6,8 +6,8 @@ export default function Champions() {
   return (
     <section className="relative min-h-[520px] flex items-center overflow-hidden">
       {/* Full-bleed background */}
-      <img
-        src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
+      <img loading="lazy"
+        src="/battles-photos/champion-of-champions.jpg"
         alt="Champions stage"
         className="absolute inset-0 w-full h-full object-cover"
       />
@@ -39,25 +39,29 @@ export default function Champions() {
             </Link>
           </Motion>
 
-          {/* Right: viewfinder card */}
+          {/* Right: leaderboard card */}
           <Motion delay={0.2}>
-            <div className="glass rounded-2xl p-6 border border-white/10">
-              <div className="flex items-center justify-between mb-4">
+            <div className="glass-premium rounded-2xl p-6 border border-white/10">
+              <div className="flex items-center justify-between mb-5">
                 <p className="text-white/40 text-xs uppercase tracking-widest">Current Champions</p>
                 <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
               </div>
               {[
-                { rank: '🥇', name: 'Dynasty King', handle: '@dynastyking', score: '12,400' },
-                { rank: '🥈', name: 'Crown Bearer', handle: '@crownbearer', score: '9,800' },
-                { rank: '🥉', name: 'Battle Boss', handle: '@battleboss', score: '7,200' },
-              ].map(({ rank, name, handle, score }) => (
-                <div key={handle} className="flex items-center gap-3 py-3 border-b border-white/04 last:border-0">
+                { rank: '🥇', name: 'Dynasty King', handle: '@dynastyking', score: '12,400', gold: true },
+                { rank: '🥈', name: 'Crown Bearer', handle: '@crownbearer', score: '9,800', gold: false },
+                { rank: '🥉', name: 'Battle Boss', handle: '@battleboss', score: '7,200', gold: false },
+              ].map(({ rank, name, handle, score, gold }) => (
+                <div
+                  key={handle}
+                  className="flex items-center gap-3 py-3 border-b border-white/04 last:border-0"
+                  style={gold ? { background: 'rgba(232,185,74,0.04)', borderRadius: 8, padding: '10px 8px', marginBottom: 2 } : {}}
+                >
                   <span className="text-xl w-8 text-center">{rank}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-ivory text-sm font-semibold">{name}</p>
+                    <p className={`text-sm font-semibold ${gold ? 'text-crown-gold' : 'text-ivory'}`}>{name}</p>
                     <p className="text-white/40 text-xs">{handle}</p>
                   </div>
-                  <p className="text-ember text-sm font-bold">{score}</p>
+                  <p className={`text-sm font-bold tabular-nums ${gold ? 'text-crown-gold' : 'text-ember'}`}>{score}</p>
                 </div>
               ))}
             </div>

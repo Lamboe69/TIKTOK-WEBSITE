@@ -15,8 +15,8 @@ export default function BrandIdentity() {
           {/* Image with floating card */}
           <Motion delay={0.1}>
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
-                src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80"
+              <img loading="lazy"
+                src="/battles-photos/country.jpg"
                 alt="TikTok creator"
                 className="w-full h-full object-cover"
               />

@@ -36,7 +36,7 @@ export default function Outreach() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1400&q=80"
           alt="Outreach"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -80,7 +80,7 @@ export default function Outreach() {
             <div className="space-y-6">
               <Motion delay={0.1}>
                 <div className="relative rounded-2xl overflow-hidden aspect-[16/9]">
-                  <img
+                  <img loading="lazy"
                     src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&q=80"
                     alt="Outreach mission"
                     className="w-full h-full object-cover"

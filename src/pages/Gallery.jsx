@@ -34,7 +34,7 @@ export default function Gallery() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1400&q=80"
           alt="Gallery"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -106,7 +106,7 @@ export default function Gallery() {
                   onClick={() => setSelectedPhoto(photo)}
                   className="group relative aspect-square rounded-2xl overflow-hidden border border-white/04 hover:border-white/08 transition-all"
                 >
-                  <img
+                  <img loading="lazy"
                     src={photo.src}
                     alt={photo.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -168,7 +168,7 @@ export default function Gallery() {
           )}
 
           <div className="max-w-4xl w-full" onClick={e => e.stopPropagation()}>
-            <img
+            <img loading="lazy"
               src={selectedPhoto.src}
               alt={selectedPhoto.title}
               className="w-full h-auto max-h-[80vh] object-contain rounded-2xl"

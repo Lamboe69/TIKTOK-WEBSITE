@@ -15,7 +15,7 @@ export default function Masterclass() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1400&q=80"
           alt="Masterclass"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -78,7 +78,7 @@ export default function Masterclass() {
                 >
                   {/* Image header */}
                   <div className="relative h-44 overflow-hidden">
-                    <img src={tierImages[i]} alt={tier.name} className="w-full h-full object-cover" />
+                    <img loading="lazy" src={tierImages[i]} alt={tier.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 30%, rgba(18,6,32,0.3) 100%)' }} />
                     <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: tierAccents[i] }} />
                     {tier.badge && (
@@ -123,7 +123,7 @@ export default function Masterclass() {
 
       {/* Terms */}
       <section className="relative min-h-[360px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1400&q=80"
           alt="Terms"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
@@ -153,7 +153,7 @@ export default function Masterclass() {
 
       {/* CTA */}
       <section className="relative min-h-[280px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1400&q=80"
           alt="Start your transformation"
           className="absolute inset-0 w-full h-full object-cover"

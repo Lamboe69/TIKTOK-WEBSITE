@@ -98,7 +98,7 @@ export default function HowToJoin() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=1400&q=80"
           alt="How to Join"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -149,7 +149,7 @@ export default function HowToJoin() {
                   onClick={() => toggle(i)}
                   className="group relative rounded-2xl overflow-hidden aspect-[4/3] text-left w-full transition-all hover:scale-[1.02]"
                 >
-                  <img
+                  <img loading="lazy"
                     src={stepImages[i]}
                     alt={title}
                     className={`w-full h-full object-cover transition-all duration-500 ${done[i] ? 'grayscale opacity-50' : 'group-hover:scale-105'}`}
@@ -199,7 +199,7 @@ export default function HowToJoin() {
 
       {/* Track B */}
       <section className="relative min-h-[400px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80"
           alt="Special Battles"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -245,7 +245,7 @@ export default function HowToJoin() {
 
       {/* CTA */}
       <section className="relative min-h-[280px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
           alt="Sign up"
           className="absolute inset-0 w-full h-full object-cover"

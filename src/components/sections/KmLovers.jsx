@@ -11,7 +11,7 @@ export default function KmLovers() {
           {/* Image */}
           <Motion delay={0.1}>
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
+              <img loading="lazy"
                 src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
                 alt="KM Lovers community"
                 className="w-full h-full object-cover"
@@ -74,8 +74,8 @@ export default function KmLovers() {
             <Motion delay={0.35}>
               <button
                 onClick={openOfficial}
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+                className="btn-shimmer btn-glow inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.3)' }}
               >
                 Sign Up — Box Battle
               </button>

@@ -46,8 +46,8 @@ export default function BattleTypes() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {types.map(({ title, description, img, to }, i) => (
             <Motion key={i} delay={0.1 + i * 0.08}>
-              <Link to={to} className="group block relative rounded-2xl overflow-hidden aspect-[3/4]">
-                <img src={img} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <Link to={to} className="glow-card group block relative rounded-2xl overflow-hidden aspect-[3/4]">
+                <img loading="lazy" src={img} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 40%, rgba(18,6,32,0.2) 100%)' }} />
                 {/* Ember top line on hover */}
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-ember scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />

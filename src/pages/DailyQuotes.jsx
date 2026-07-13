@@ -127,7 +127,7 @@ export default function DailyQuotes() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80"
           alt="Daily Quotes"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -204,7 +204,7 @@ export default function DailyQuotes() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <Motion delay={0.1}>
               <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-                <img
+                <img loading="lazy"
                   src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80"
                   alt="Brand strategy"
                   className="w-full h-full object-cover"

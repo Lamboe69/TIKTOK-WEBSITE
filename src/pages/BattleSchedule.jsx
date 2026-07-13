@@ -29,7 +29,7 @@ function BattleCard({ battle, onSignUp }) {
       <div className="rounded-2xl overflow-hidden border border-white/04 hover:border-white/08 transition-all" style={{ background: 'rgba(59,16,99,0.2)' }}>
         {/* Image header */}
         <div className="relative h-40 overflow-hidden">
-          <img src={img} alt={battle.type} className="w-full h-full object-cover" />
+          <img loading="lazy" src={img} alt={battle.type} className="w-full h-full object-cover" />
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 30%, rgba(18,6,32,0.3) 100%)' }} />
           <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: accent }} />
           <div className="absolute top-3 left-3">
@@ -120,7 +120,7 @@ export default function BattleSchedule() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
           alt="Battle Schedule"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
@@ -210,7 +210,7 @@ export default function BattleSchedule() {
 
       {/* Champion of Champions */}
       <section className="relative min-h-[320px] flex items-center overflow-hidden">
-        <img
+        <img loading="lazy"
           src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=1400&q=80"
           alt="Champion of Champions"
           className="absolute inset-0 w-full h-full object-cover"

@@ -12,23 +12,28 @@ import Testimonials from '../components/sections/Testimonials'
 import MasterclassTeaser from '../components/sections/MasterclassTeaser'
 import TimezoneStrip from '../components/sections/TimezoneStrip'
 import CTA from '../components/sections/CTA'
+import SectionDivider from '../components/SectionDivider'
 
 export default function Home() {
   return (
     <main>
       <Hero />
       <StatBar />
+      <SectionDivider spacing="sm" />
       <HowItWorks />
       <BattleTypes />
       <BrandIdentity />
+      <SectionDivider />
       <KmLovers />
       <Champions />
       <WinnersVisit />
       <CommunityRecognition />
       <GiveBack />
+      <SectionDivider />
       <Testimonials />
       <MasterclassTeaser />
       <TimezoneStrip />
+      <SectionDivider spacing="sm" />
       <CTA />
     </main>
   )

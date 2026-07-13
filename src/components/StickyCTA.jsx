@@ -19,8 +19,8 @@ export default function StickyCTA() {
     >
       <button
         onClick={isSpecialPage ? openSpecial : openOfficial}
-        className="block w-full py-3 text-center text-white font-bold rounded-xl text-sm transition-all hover:scale-[1.02] active:scale-95"
-        style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+        className="btn-shimmer block w-full py-3 text-center text-white font-bold rounded-xl text-sm transition-all hover:scale-[1.02] active:scale-95"
+        style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 4px 20px rgba(255,107,26,0.4)' }}
       >
         {label}
       </button>
