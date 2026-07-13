@@ -211,6 +211,68 @@ body {
 }
 .animate-breathe { animation: breathe 4s ease-in-out infinite; }
 
+/* ─── Glow breathe — box-shadow pulse for LIVE badge / featured CTA ─── */
+@keyframes glow-breathe {
+  0%, 100% { box-shadow: 0 0 8px rgba(255,107,26,0.3), 0 0 20px rgba(255,107,26,0.1); }
+  50%      { box-shadow: 0 0 20px rgba(255,107,26,0.6), 0 0 40px rgba(255,107,26,0.25); }
+}
+.animate-glow-breathe { animation: glow-breathe 2.5s ease-in-out infinite; }
+
+/* ─── Pulse ring — expanding ring for live indicator ─── */
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+.animate-pulse-ring {
+  animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ─── Shimmer line — one-time sweep across premium cards ─── */
+@keyframes shimmer-line {
+  0%   { transform: translateX(-100%) skewX(-20deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(300%) skewX(-20deg); opacity: 0; }
+}
+.animate-shimmer-line {
+  position: relative;
+  overflow: hidden;
+}
+.animate-shimmer-line::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.12) 50%, transparent 100%);
+  transform: translateX(-100%) skewX(-20deg);
+  animation: shimmer-line 2.4s ease-in-out 0.6s 1 forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── Spin slow — 12s gentle rotation for crest/emblem ─── */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+/* ─── Card tilt — 3D perspective hover ─── */
+.card-tilt {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ─── Text gradient animated (alias for hero headline) ─── */
+.text-gradient-animated {
+  background: linear-gradient(135deg, #FF6B1A 0%, #E8B94A 40%, #ffffff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 9s ease-in-out infinite;
+}
+
 @keyframes subtle-zoom {
   from { transform: scale(1); }
   to   { transform: scale(1.06); }

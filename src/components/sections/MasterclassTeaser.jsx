@@ -104,13 +104,12 @@ export default function MasterclassTeaser() {
                   ref={el => { tiltRefs.current[i] = el }}
                   onMouseMove={(e) => handleTilt(i, e)}
                   onMouseLeave={() => resetTilt(i)}
-                  className="relative rounded-2xl p-4 flex flex-col items-center text-center transition-transform hover:scale-[1.03]"
+                  className={`card-tilt relative rounded-2xl p-4 flex flex-col items-center text-center hover:scale-[1.03] ${highlight ? 'animate-shimmer-line' : ''}`}
                   style={{
-                    transformStyle: 'preserve-3d',
-                    willChange: 'transform',
                     background: highlight ? 'rgba(255,107,26,0.12)' : 'rgba(59,16,99,0.35)',
                     border: `1px solid ${highlight ? 'rgba(255,107,26,0.35)' : badge === 'Premium' ? 'rgba(232,185,74,0.25)' : 'rgba(255,255,255,0.07)'}`,
                     backdropFilter: 'blur(12px)',
+                    boxShadow: highlight ? '0 8px 32px rgba(255,107,26,0.25)' : badge === 'Premium' ? '0 8px 32px rgba(232,185,74,0.2)' : '0 8px 32px rgba(59,16,99,0.4)',
                   }}
                 >
                   {badge && (

@@ -40,7 +40,7 @@ export default function CommunityRecognition() {
         <div className="grid grid-cols-3 gap-4 mb-4">
           {top3.map((g, i) => (
             <Motion key={g.name} delay={0.15 + i * 0.08}>
-              <div className={`relative rounded-2xl overflow-hidden aspect-square group glow-card ${i === 0 ? 'gold-aura' : ''}`}
+              <div className={`relative rounded-2xl overflow-hidden aspect-square group glow-card card-tilt ${i === 0 ? 'gold-aura animate-shimmer-line' : ''}`}
                 style={{
                   boxShadow: i === 0
                     ? '0 0 0 1px rgba(232,185,74,0.3), 0 0 30px rgba(232,185,74,0.15), 0 8px 32px rgba(0,0,0,0.4)'

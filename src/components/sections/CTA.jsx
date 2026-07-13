@@ -40,7 +40,7 @@ export default function CTA() {
             className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6"
             style={{ background: 'rgba(255,107,26,0.15)', border: '1px solid rgba(255,107,26,0.25)' }}
           >
-            <span className="w-7 h-7 block text-ember">{Icons.crown}</span>
+            <span className="w-7 h-7 block text-ember animate-spin-slow">{Icons.crown}</span>
           </div>
 
           <h2
@@ -58,7 +58,7 @@ export default function CTA() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={openOfficial}
-              className="btn-shimmer btn-glow w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95"
+              className="btn-shimmer btn-glow w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-ember hover:shadow-ember-lg"
               style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8, boxShadow: '0 8px 32px rgba(255,107,26,0.35)' }}
             >
               <span className="w-4 h-4 block">{Icons.swords}</span>

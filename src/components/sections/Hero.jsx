@@ -107,14 +107,14 @@ export default function Hero() {
           {/* Left: headline */}
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6 text-xs font-semibold uppercase tracking-wider text-ivory" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-ember animate-pulse-ring" />
               The Official Hub
             </div>
 
-            <h1 className="font-display font-extrabold text-ivory mb-2 leading-none" style={{ fontSize: 'clamp(64px, 10vw, 110px)', letterSpacing: '-0.03em' }}>
+            <h1 className="font-display font-extrabold text-ivory mb-2 leading-none text-hero">
               KM
             </h1>
-            <h1 className="font-display font-extrabold mb-5 leading-none" style={{ fontSize: 'clamp(64px, 10vw, 110px)', letterSpacing: '-0.03em', WebkitTextStroke: '1px rgba(255,107,26,0.5)', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #FF6B1A 0%, #E8B94A 45%, #ffffff 100%)', backgroundSize: '200% 200%', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', animation: 'gradient-shift 9s ease-in-out infinite' }}>
+            <h1 className="font-display font-extrabold mb-5 leading-none text-gradient-animated text-hero">
               DYNASTY
             </h1>
 
@@ -125,7 +125,7 @@ export default function Hero() {
             <div className="flex flex-wrap items-center gap-3 mb-8">
               <button
                 onClick={openOfficial}
-                className="btn-shimmer btn-glow px-7 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 active:scale-95"
+                className="btn-shimmer btn-glow px-7 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 active:scale-95 shadow-ember hover:shadow-ember-lg animate-glow-breathe"
                 style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.35)' }}
               >
                 Join the Box Battle

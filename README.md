@@ -13,7 +13,7 @@ The official hub for King Maker's Godsent Box Battles — a multi-page React web
 | Framework | React 19 + Vite 8 |
 | Styling | Tailwind CSS 3.4 |
 | Routing | React Router DOM 7 |
-| Animations | Framer Motion (via `Motion` component) |
+| Animations | Hand-rolled `Motion.jsx` + CSS keyframes |
 | Carousel | Swiper.js 14 |
 | Language | JavaScript (JSX) |
 | Linting | OxLint |
@@ -90,7 +90,7 @@ The official hub for King Maker's Godsent Box Battles — a multi-page React web
 │   │   ├── LiveStatus.jsx
 │   │   ├── Icons.jsx             # 38+ SVG icon components
 │   │   ├── Motion.jsx            # Scroll-triggered animation wrapper
-│   │   ├── Particles.jsx         # Floating dot particles
+│   │   ├── HeroCanvas.jsx        # Canvas particle background (hero)
 │   │   ├── PayPalDonate.jsx      # PayPal donate button
 │   │   ├── FAQAccordion.jsx
 │   │   ├── TimezoneRotator.jsx
@@ -145,12 +145,42 @@ npm run preview
 
 | Token | Hex | Usage |
 |-------|-----|-------|
-| `dynasty-purple` | `#5B2A86` | Primary brand |
-| `dynasty-purple-dark` | `#3D1A5C` | Dark purple |
-| `dynasty-orange` | `#FF7A00` | Accent / CTA |
-| `dynasty-orange-dark` | `#CC6200` | Dark orange |
-| `dynasty-cream` | `#F8F6FB` | Light background |
-| `dynasty-charcoal` | `#221934` | Dark background |
+| `ember` | `#FF6B1A` | Primary CTA / accent |
+| `ember-dark` | `#CC5200` | CTA hover / gradient end |
+| `ivory` | `#FFF7F0` | Primary text on dark |
+| `dynasty-purple` | `#3B1063` | Cards, glass panels |
+| `dynasty-purple-light` | `#6B3FA0` | Secondary accents |
+| `dynasty-purple-deep` | `#1F0A38` | Deepest dark panels |
+| `dynasty-purple-mid` | `#2D1050` | Mid-depth panels |
+| `crown-gold` | `#E8B94A` | Winners, premium badges (small accents only) |
+| `ink` | `#1B1024` | Alternate section background |
+| `brand-900` | `#1B1024` | Darkest brand scale |
+| `brand-800` | `#2D1050` | Card borders, dividers |
+| `brand-700` | `#3B1063` | Hover borders |
+| `brand-600` | `#6B3FA0` | Muted accents |
+| `brand-500` | `#9B7EC8` | Subtle text |
+| `accent` | `#FF6B1A` | Alias for ember |
+| `accent-light` | `#FFB380` | Hover tints |
+| `accent-dark` | `#CC5200` | Active states |
+| `gold` | `#E8B94A` | Alias for crown-gold |
+| `gold-light` | `#F5D98A` | Gold hover tints |
+| `gold-dark` | `#B8891A` | Gold active states |
+
+### Shadow tokens
+
+| Token | Usage |
+|-------|-------|
+| `shadow-ember` | Standard CTA glow |
+| `shadow-ember-lg` | Hover CTA glow |
+| `shadow-gold` | Winner / premium card glow |
+| `shadow-purple` | Elevated dark card depth |
+
+### Font size utilities
+
+| Class | Value | Usage |
+|-------|-------|-------|
+| `text-hero` | `clamp(64px, 10vw, 110px)` | Hero h1 |
+| `text-hero-sm` | `clamp(40px, 6vw, 72px)` | Inner page h1 |
 
 ### Fonts
 
