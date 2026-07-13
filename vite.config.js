@@ -31,4 +31,19 @@ function apiDevPlugin() {
 
 export default defineConfig({
   plugins: [react(), apiDevPlugin()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
+            return 'vendor-react'
+          }
+          if (id.includes('node_modules/swiper')) {
+            return 'vendor-swiper'
+          }
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 })

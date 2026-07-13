@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect, lazy, Suspense } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -9,7 +9,8 @@ import { photos } from '../../data/photos'
 import LiveStatus from '../LiveStatus'
 import { Icons } from '../Icons'
 import CountdownTicker from '../CountdownTicker'
-import HeroCanvas from '../HeroCanvas'
+
+const HeroCanvas = lazy(() => import('../HeroCanvas'))
 
 // Real face photos for social proof avatars
 const avatarPhotos = [
@@ -55,7 +56,9 @@ export default function Hero() {
       onMouseLeave={() => setPaused(false)}
     >
       {/* Starfield canvas background */}
-      <HeroCanvas />
+      <Suspense fallback={null}>
+        <HeroCanvas />
+      </Suspense>
 
       {/* Floating ambient orbs */}
       <div className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full z-[1] pointer-events-none animate-float-slow" style={{ background: 'radial-gradient(circle, rgba(107,63,160,0.15) 0%, transparent 65%)' }} />
@@ -82,7 +85,9 @@ export default function Hero() {
             <img
               src={src}
               alt={alt}
-              loading={i < 2 ? 'eager' : 'lazy'}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'low'}
+              decoding={i === 0 ? 'sync' : 'async'}
               className="absolute inset-0 w-full h-full object-cover"
               onError={(e) => { e.target.style.display = 'none' }}
             />

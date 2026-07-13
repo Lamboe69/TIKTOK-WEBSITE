@@ -15,6 +15,9 @@ export default function HeroCanvas() {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
+    const FRAME_MS = 1000 / 30  // cap to 30fps
+    let lastFrame = 0
+
     function resize() {
       const dpr = window.devicePixelRatio || 1
       const rect = canvas.parentElement.getBoundingClientRect()
@@ -47,33 +50,30 @@ export default function HeroCanvas() {
 
     let lastTime = 0
     function tick(now) {
-      if (!hidden) {
-        const dt = Math.min(now - lastTime, 50) // cap at ~20fps equivalent
-        lastTime = now
-
-        ctx.clearRect(0, 0, width, height)
-
-        for (const p of particles) {
-          p.x += p.vx * (dt / 16)
-          p.y += p.vy * (dt / 16)
-
-          // Wrap
-          if (p.x < -5) p.x = width + 5
-          if (p.x > width + 5) p.x = -5
-          if (p.y < -5) p.y = height + 5
-
-          ctx.beginPath()
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-          if (p.hue === 25) {
-            ctx.fillStyle = `rgba(255, 107, 26, ${p.opacity})`
-          } else {
-            ctx.fillStyle = `rgba(255, 255, 255, ${p.opacity * 0.6})`
-          }
-          ctx.fill()
-        }
-      }
-
       animId = requestAnimationFrame(tick)
+      if (hidden || now - lastFrame < FRAME_MS) return
+      lastFrame = now
+
+      const dt = Math.min(now - lastTime, 50)
+      lastTime = now
+
+      ctx.clearRect(0, 0, width, height)
+
+      for (const p of particles) {
+        p.x += p.vx * (dt / 16)
+        p.y += p.vy * (dt / 16)
+
+        if (p.x < -5) p.x = width + 5
+        if (p.x > width + 5) p.x = -5
+        if (p.y < -5) p.y = height + 5
+
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = p.hue === 25
+          ? `rgba(255, 107, 26, ${p.opacity})`
+          : `rgba(255, 255, 255, ${p.opacity * 0.6})`
+        ctx.fill()
+      }
     }
 
     animId = requestAnimationFrame(tick)
