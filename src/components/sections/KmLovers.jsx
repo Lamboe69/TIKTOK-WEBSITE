@@ -1,5 +1,6 @@
 import { useSignUp } from '../SignUpContext'
 import Motion from '../Motion'
+import { Icons } from '../Icons'
 
 export default function KmLovers() {
   const { openOfficial } = useSignUp()
@@ -12,7 +13,7 @@ export default function KmLovers() {
           <Motion delay={0.1}>
             <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
               <img loading="lazy"
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
+                src="/photos/community-meetup.jpg"
                 alt="KM Lovers community"
                 className="w-full h-full object-cover"
               />
@@ -42,11 +43,11 @@ export default function KmLovers() {
             <Motion delay={0.2}>
               <div className="space-y-3 mb-8">
                 {[
-                  { emoji: '✅', text: 'Keep the community\'s esteem high – reminding every member they matter, whether they send big boxes or small.' },
-                  { emoji: '✅', text: 'Push forward positively – no hate, no toxicity, just family energy, even in the hottest battles.' },
-                ].map(({ emoji, text }, i) => (
+                  { text: 'Keep the community\'s esteem high – reminding every member they matter, whether they send big boxes or small.' },
+                  { text: 'Push forward positively – no hate, no toxicity, just family energy, even in the hottest battles.' },
+                ].map(({ text }, i) => (
                   <div key={i} className="flex items-start gap-3 p-4 rounded-xl border border-white/06" style={{ background: 'rgba(59,16,99,0.2)' }}>
-                    <span className="text-lg flex-shrink-0">{emoji}</span>
+                    <span className="w-4 h-4 block text-ember flex-shrink-0 mt-0.5">{Icons.check}</span>
                     <p className="text-white/70 text-sm leading-relaxed">{text}</p>
                   </div>
                 ))}

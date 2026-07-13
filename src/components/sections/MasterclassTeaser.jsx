@@ -94,6 +94,28 @@ export default function MasterclassTeaser() {
               Explore Full Masterclass
               <span className="w-4 h-4 block">{Icons.arrowRight}</span>
             </Link>
+
+            {/* Supporting quote */}
+            <div className="mt-8 rounded-xl p-4 border-l-2 border-ember" style={{ background: 'rgba(255,107,26,0.06)' }}>
+              <p className="text-white/60 text-sm leading-relaxed italic mb-2">
+                &ldquo;I started with $30 and a dream. Everything I know about building a community on TikTok — I'm putting it in this masterclass.&rdquo;
+              </p>
+              <p className="text-ember text-xs font-bold uppercase tracking-wider">— King Maker</p>
+            </div>
+
+            {/* Feature bullets */}
+            <ul className="mt-5 space-y-2">
+              {[
+                'Live battle strategy & gifting psychology',
+                'How to grow from 0 to 50K+ on TikTok LIVE',
+                'Community building & dynasty culture',
+              ].map(item => (
+                <li key={item} className="flex items-center gap-2 text-sm text-white/55">
+                  <span className="w-3.5 h-3.5 block text-ember flex-shrink-0">{Icons.check}</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </Motion>
 
           {/* Right: pricing cards */}

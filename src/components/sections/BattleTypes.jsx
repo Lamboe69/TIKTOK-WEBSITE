@@ -5,25 +5,25 @@ const types = [
   {
     title: 'Daily Godsent Box Battle',
     description: 'The main event. Every creator gets a fair shot at the crown.',
-    img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80',
+    img: '/battles-photos/daily-godsent.jpg',
     to: '/battle-schedule',
   },
   {
     title: 'Most Beautiful Box Battle',
     description: 'Where creativity meets competition. Beauty in every battle.',
-    img: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80',
+    img: '/battles-photos/most-beautiful.jpg',
     to: '/battle-schedule',
   },
   {
     title: 'Country Box Battle',
     description: 'Rep your nation. Battle for national pride.',
-    img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80',
+    img: '/battles-photos/country.jpg',
     to: '/battle-schedule',
   },
   {
     title: 'Community First',
     description: "It's not about who has the most coins. It's about who lifts others. A pro battle where the winner is chosen by the community — not just box value.",
-    img: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',
+    img: '/battles-photos/scavengers.jpg',
     to: '/battle-schedule',
   },
 ]

@@ -11,7 +11,7 @@ export default function Champions() {
         alt="Champions stage"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.92) 50%, rgba(59,16,99,0.7) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.97) 50%, rgba(59,16,99,0.88) 100%)' }} />
       {/* Ember glow bottom-left */}
       <div className="absolute bottom-0 left-0 w-96 h-96 pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.07) 0%, transparent 70%)' }} />
 
@@ -41,22 +41,22 @@ export default function Champions() {
 
           {/* Right: leaderboard card */}
           <Motion delay={0.2}>
-            <div className="glass-premium rounded-2xl p-6 border border-white/10">
+            <div className="glass-premium rounded-2xl p-6 border border-white/10 shadow-purple">
               <div className="flex items-center justify-between mb-5">
                 <p className="text-white/40 text-xs uppercase tracking-widest">Current Champions</p>
                 <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
               </div>
               {[
-                { rank: '🥇', name: 'Dynasty King', handle: '@dynastyking', score: '12,400', gold: true },
-                { rank: '🥈', name: 'Crown Bearer', handle: '@crownbearer', score: '9,800', gold: false },
-                { rank: '🥉', name: 'Battle Boss', handle: '@battleboss', score: '7,200', gold: false },
-              ].map(({ rank, name, handle, score, gold }) => (
+                { rank: 1, icon: Icons.trophy, name: 'Dynasty King', handle: '@dynastyking', score: '12,400', gold: true },
+                { rank: 2, icon: Icons.award, name: 'Crown Bearer', handle: '@crownbearer', score: '9,800', gold: false },
+                { rank: 3, icon: Icons.shield, name: 'Battle Boss', handle: '@battleboss', score: '7,200', gold: false },
+              ].map(({ rank, icon, name, handle, score, gold }) => (
                 <div
                   key={handle}
                   className="flex items-center gap-3 py-3 border-b border-white/04 last:border-0"
-                  style={gold ? { background: 'rgba(232,185,74,0.04)', borderRadius: 8, padding: '10px 8px', marginBottom: 2 } : {}}
+                  style={gold ? { background: 'rgba(232,185,74,0.06)', borderRadius: 8, padding: '10px 8px', marginBottom: 2 } : {}}
                 >
-                  <span className="text-xl w-8 text-center">{rank}</span>
+                  <span className={`w-5 h-5 block flex-shrink-0 ${gold ? 'text-crown-gold' : rank === 2 ? 'text-brand-500' : 'text-white/40'}`}>{icon}</span>
                   <div className="flex-1 min-w-0">
                     <p className={`text-sm font-semibold ${gold ? 'text-crown-gold' : 'text-ivory'}`}>{name}</p>
                     <p className="text-white/40 text-xs">{handle}</p>

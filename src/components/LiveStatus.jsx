@@ -64,17 +64,6 @@ export default function LiveStatus() {
     )
   }
 
-  if (nextBattle && countdown) {
-    return (
-      <div
-        className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-white text-xs font-medium"
-        style={{ background: 'rgba(59,16,99,0.6)', border: '1px solid rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)' }}
-      >
-        <span className="w-1.5 h-1.5 rounded-full bg-ember" />
-        Next: <span className="font-bold text-ember">{countdown}</span>
-      </div>
-    )
-  }
-
+  // CountdownTicker in the hero is the source of truth for next battle — don't duplicate
   return null
 }

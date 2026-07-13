@@ -47,7 +47,10 @@ export default function CountdownTicker() {
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
+          <span className="relative flex h-2 w-2">
+            <span className="animate-pulse-ring absolute inline-flex h-full w-full rounded-full bg-ember opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-ember" />
+          </span>
           <span className="text-white/50 text-[10px] uppercase tracking-widest font-semibold">Next Battle</span>
         </div>
         <span className="text-base">{emoji}</span>
@@ -60,7 +63,7 @@ export default function CountdownTicker() {
       {/* Countdown display */}
       <div className="rounded-xl p-3 mb-4" style={{ background: 'rgba(255,107,26,0.08)', border: '1px solid rgba(255,107,26,0.15)' }}>
         <p className="text-white/40 text-[10px] uppercase tracking-widest mb-1">Starts in</p>
-        <p className="font-display font-bold text-2xl text-ember leading-none tabular-nums">{countdown}</p>
+        <p className="font-display font-bold text-2xl text-ember leading-none tabular-nums animate-glow-breathe">{countdown}</p>
       </div>
 
       {/* CTA */}

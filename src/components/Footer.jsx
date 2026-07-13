@@ -92,19 +92,9 @@ export default function Footer() {
             </Link>
             {/* Ember accent bar */}
             <div className="w-8 h-0.5 bg-ember mb-3 rounded-full" />
-            <p className="text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
+            <p className="text-white/40 text-sm leading-relaxed mb-4 max-w-xs">
               The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise.
             </p>
-            <a
-              href="https://www.tiktok.com/@kingmakernevergivesup"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
-            >
-              <span className="w-4 h-4 block">{Icons.tiktok}</span>
-              Follow King Maker
-            </a>
           </div>
 
           <LinkColumn title="Explore" links={columns.explore} />

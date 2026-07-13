@@ -55,8 +55,8 @@ export default function CommunityRecognition() {
                     <span className="font-display font-bold text-4xl text-white/20">{g.name[0]}</span>
                   </div>
                 )}
-                {/* Photo gradient overlay — always legible */}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 35%, rgba(18,6,32,0.2) 70%, transparent 100%)' }} />
+                {/* Photo gradient overlay — lighter so photos pop */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.88) 25%, rgba(18,6,32,0.1) 60%, transparent 100%)' }} />
                 <div className="absolute inset-0 rounded-2xl" style={{ boxShadow: i === 0 ? 'inset 0 0 0 1px rgba(232,185,74,0.25)' : 'inset 0 0 0 1px rgba(255,107,26,0.1)' }} />
                 <div className="absolute top-3 left-3 text-2xl">{rankEmoji[i]}</div>
                 <div className="absolute bottom-0 left-0 right-0 p-4">
