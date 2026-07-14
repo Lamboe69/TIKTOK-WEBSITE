@@ -17,14 +17,20 @@ const fallbackCodes = ['NA-01', 'UK-02', 'EA-03']
 
 const meridians = [
   { n: 'I', title: 'Box Battle Access', desc: 'Priority placement in official and special box battles.' },
-  { n: 'II', title: 'Inner Circle', desc: 'Direct access to the KM Dynasty community network.' },
+  { n: 'II', title: 'Inner Circle', desc: 'Direct access to the Dynasty community network.' },
   { n: 'III', title: 'Masterclass', desc: 'Exclusive training and mentorship under King Maker.' },
   { n: 'IV', title: 'Growth Support', desc: 'Personalised strategy for your live presence.' },
 ]
 
 export default function Agency() {
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('agency')
+  const atlasHeading = page.atlasHeading || 'The Atlas'
+  const atlasDescription = page.atlasDescription || 'Select your embassy. Walk the corridor. Apply for citizenship under the Dynasty banner.'
+  const oathHeading = page.oathHeading || 'Ready to represent?'
+  const oathBody = page.oathBody || 'Tell us who you are, what you create, and which embassy you claim. Applications move through Contact.'
+  const oathImage = page.oathImage || '/battles-photos/daily-godsent.jpg'
   const regions = useMemo(() => {
     const fromCms = normalizeAgencyRegions(collections.agencyRegions || [])
     return fromCms.length ? fromCms : fallbackRegions
@@ -37,10 +43,10 @@ export default function Agency() {
   return (
     <main className="embassy-page">
       {/* Hero — Meridian Throne: full-bleed + orbital atlas + brand core */}
-      <section className="embassy-hero" aria-label="KM Dynasty Agency">
+      <section className="embassy-hero" aria-label={`${siteName} Agency`}>
         <div className="embassy-hero__media" aria-hidden>
           <img
-            src={page.heroImage || '/photos/community-meetup.jpg'}
+            src={page.heroImage || '/photos/agency-partners.jpg'}
             alt=""
             className="embassy-hero__photo"
           />
@@ -65,7 +71,7 @@ export default function Agency() {
 
         <div className="embassy-hero__core">
           <Motion delay={60} className="embassy-hero__lockup">
-            <p className="embassy-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="embassy-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="embassy-hero__title">{page.heroTitle || 'Agency'}</h1>
             <p className="embassy-hero__lede">
               {page.heroLede ||
@@ -106,10 +112,8 @@ export default function Agency() {
       {/* Atlas — interactive corridor */}
       <section id="embassy-atlas" className="embassy-atlas">
         <Motion delay={40} className="embassy-pad embassy-atlas__head">
-          <h2>
-            The <span className="text-gradient">Atlas</span>
-          </h2>
-          <p>Select your embassy. Walk the corridor. Apply for citizenship under the Dynasty banner.</p>
+          <h2>{atlasHeading}</h2>
+          <p>{atlasDescription}</p>
         </Motion>
 
         <Motion delay={80} className="embassy-pad embassy-atlas__body">
@@ -168,15 +172,13 @@ export default function Agency() {
       {/* Oath */}
       <section className="embassy-oath">
         <div className="embassy-oath__bg" aria-hidden>
-          <img src="/battles-photos/daily-godsent.jpg" alt="" />
+          <img src={oathImage} alt="" />
           <div className="embassy-oath__veil" />
         </div>
         <Motion delay={60} className="embassy-oath__inner">
-          <p className="embassy-oath__brand">KM DYNASTY</p>
-          <h2>Ready to represent?</h2>
-          <p>
-            Tell us who you are, what you create, and which embassy you claim. Applications move through Contact.
-          </p>
+          <p className="embassy-oath__brand">{siteName}</p>
+          <h2>{oathHeading}</h2>
+          <p>{oathBody}</p>
           <Link to="/contact" className="embassy-cta">
             Submit application
             <span className="w-4 h-4 block">{Icons.arrowRight}</span>

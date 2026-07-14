@@ -1,7 +1,10 @@
 import { Icons } from './Icons'
 import { Link } from 'react-router-dom'
+import { useContent } from '../cms/ContentContext'
 
 function WinnersVisit() {
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const steps = [
     { step: '01', title: 'Win the Battle', description: 'Compete in daily box battles and come out on top.', icon: Icons.trophy },
     { step: '02', title: 'Get Featured', description: 'Top winners get highlighted on our TikTok and social channels.', icon: Icons.smartphone },
@@ -28,7 +31,7 @@ function WinnersVisit() {
             </span>
           </h2>
           <p className="text-gray-600 mt-4 max-w-xl mx-auto">
-            From battle champion to spotlight — here's how winners rise through KM Dynasty.
+            From battle champion to spotlight — here's how winners rise through {siteName}.
           </p>
         </div>
 

@@ -1,6 +1,7 @@
 import { useTikTokStats, STAT_LABELS } from '../hooks/useTikTokStats'
 import useAnimatedCounter from '../hooks/useAnimatedCounter'
 import Motion from './Motion'
+import { useContent } from '../cms/ContentContext'
 
 function Counter({ value, numericEnd }) {
   const [ref, count] = useAnimatedCounter(numericEnd || 0, 2200)
@@ -17,9 +18,11 @@ function Counter({ value, numericEnd }) {
 
 export default function StatBar() {
   const { stats } = useTikTokStats()
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
 
   const items = [
-    { value: stats.followersFormatted, numericEnd: 50, label: STAT_LABELS.followers.label },
+    { value: stats.followersFormatted, numericEnd: 50, label: `${siteName} Family` },
     { value: stats.likesFormatted, numericEnd: 100, label: STAT_LABELS.likes.label },
     { value: stats.battlesHostedFormatted, numericEnd: 100, label: STAT_LABELS.battlesHosted.label },
     { value: stats.winnersCrownedFormatted, numericEnd: 50, label: STAT_LABELS.winnersCrowned.label },

@@ -2,7 +2,7 @@ import { useState, useEffect, createContext, useContext, useCallback } from 'rea
 
 // How stats are labeled site-wide
 const STAT_LABELS = {
-  followers: { label: 'KM DYNASTY Family', note: 'TikTok followers' },
+  followers: { label: 'Family', note: 'TikTok followers' },
   likes: { label: 'TikTok Likes', note: 'and counting' },
   battlesHosted: { label: 'Box Battles Hosted', note: 'and growing' },
   winnersCrowned: { label: 'Winners Crowned', note: 'official champions' },

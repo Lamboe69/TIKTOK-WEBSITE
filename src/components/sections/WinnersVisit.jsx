@@ -1,19 +1,28 @@
 import Motion from '../Motion'
+import { useContent } from '../../cms/ContentContext'
 
-const steps = [
+const defaultSteps = [
   'Win an Official Godsent Box Battle',
-  'Get scheduled for a KM DYNASTY livestream visit',
+  'Get scheduled for a livestream visit',
   'Champion of Champions earns priority placement',
   'Claim your spotlight before the whole family',
 ]
 
 export default function WinnersVisit() {
+  const { getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const homePage = getPage('home')
+  const sectionTitle = homePage.winnersTitle || 'Win. Claim your spotlight'
+  const sectionSubtitle = homePage.winnersSubtitle || `Official Godsent winners earn a scheduled livestream visit with ${siteName}. Champions go first.`
+  const steps = homePage.winnersSteps ? homePage.winnersSteps.split('\n').filter(Boolean) : defaultSteps
+  const winnersKicker = homePage.winnersKicker || "Winners' Livestream Visit"
+  const winnersImage = homePage.winnersImage || '/photos/community-meetup.jpg'
   return (
     <section className="relative overflow-hidden home-band-ember home-band-sep">
       <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[520px]">
         <div className="relative min-h-[300px] order-2 lg:order-1">
           <img
-            src="/photos/community-meetup.jpg"
+            src={winnersImage}
             alt="Winners livestream visit"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -29,17 +38,21 @@ export default function WinnersVisit() {
         <div className="order-1 lg:order-2 px-5 sm:px-10 lg:px-14 py-16 sm:py-20 flex flex-col justify-center">
           <Motion delay={60}>
             <p className="sec-kicker mb-4" style={{ color: 'rgba(232,185,74,0.95)' }}>
-              Winners’ Livestream Visit
+              {winnersKicker}
             </p>
             <h2
               className="font-display font-bold text-ivory leading-[0.95] tracking-tight mb-4"
               style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)' }}
             >
-              Win. Claim your<br />
-              <span className="text-gradient">spotlight</span>
+              {sectionTitle.includes(' ') ? (
+                <>
+                  {sectionTitle.split(' ').slice(0, Math.ceil(sectionTitle.split(' ').length / 2)).join(' ')}<br />
+                  <span className="text-gradient">{sectionTitle.split(' ').slice(Math.ceil(sectionTitle.split(' ').length / 2)).join(' ')}</span>
+                </>
+              ) : sectionTitle}
             </h2>
             <p className="text-white/70 text-sm leading-relaxed max-w-md mb-10">
-              Official Godsent winners earn a scheduled livestream visit with KM DYNASTY. Champions go first.
+              {sectionSubtitle}
             </p>
           </Motion>
 

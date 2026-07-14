@@ -8,7 +8,7 @@ const posts = [
     date: '2026-07-12',
     readTime: '3 min',
     cover: '/battles-photos/daily-godsent.jpg',
-    content: `The Official Godsent Box Battle on July 12th brought together some of the most dedicated members of the KM Dynasty family. The energy was electric from start to finish.
+    content: `The Official Godsent Box Battle on July 12th brought together some of the most dedicated members of the Dynasty family. The energy was electric from start to finish.
 
 **Winner:** Champion of the night claimed their spot with an incredible display of support and dedication. Over 50,000 taps recorded across the session.
 
@@ -57,7 +57,7 @@ const posts = [
 - Community rallied behind their favorites
 - Cross-border connections made
 
-**Why It Matters:** The Country Box Battle shows that the KM Dynasty family is truly global. We're not just a community — we're a movement.`,
+**Why It Matters:** The Country Box Battle shows that the Dynasty family is truly global. We're not just a community — we're a movement.`,
   },
   {
     id: 4,
@@ -88,10 +88,10 @@ const posts = [
     date: '2026-07-20',
     readTime: '4 min',
     cover: '/battles-photos/champion-of-champions.jpg',
-    content: `The Champion of Champions is the pinnacle of KM Dynasty competition. Only battle winners from throughout the month earn the right to compete.
+    content: `The Champion of Champions is the pinnacle of Dynasty competition. Only battle winners from throughout the month earn the right to compete.
 
 **The Stakes:**
-- Winner receives a special feature on KM DYNASTY
+- Winner receives a special feature on the Dynasty
 - Priority entry into future premium battles
 - Recognition as the Dynasty's finest
 
@@ -100,7 +100,7 @@ Every competitor brought their A-game. The energy was unmatched, the engagement 
 
 **The Champion:** Crowned after an incredible performance that set new records for engagement and support.
 
-**What It Means:** The Champion of Champions isn't just a battle — it's a testament to dedication, consistency, and the unbreakable spirit of the KM Dynasty family.`,
+**What It Means:** The Champion of Champions isn't just a battle — it's a testament to dedication, consistency, and the unbreakable spirit of the Dynasty family.`,
   },
 ]
 

@@ -1,38 +1,44 @@
 import { Link } from 'react-router-dom'
 import { Icons } from '../components/Icons'
 import Motion from '../components/Motion'
+import { useContent } from '../cms/ContentContext'
 
-const sections = [
-  {
-    title: 'Use of the Website',
-    body: 'You agree to use this website only for lawful purposes and in accordance with these Terms. You are responsible for maintaining the confidentiality of any account information.',
-  },
-  {
-    title: 'Content',
-    body: 'All content on this website, including text, graphics, logos, and trademarks, is the property of KM DYNASTY or its content suppliers and is protected by applicable intellectual property laws.',
-  },
-  {
-    title: 'External Links',
-    body: 'This website contains links to external sites (TikTok, Google Forms). KM DYNASTY is not responsible for the content, accuracy, or practices of these third-party sites.',
-  },
-  {
-    title: 'Disclaimer',
-    body: 'This is an independent fan/community platform and is not officially affiliated with, endorsed by, or sponsored by TikTok or ByteDance Ltd.',
-  },
-  {
-    title: 'Contact Us',
-    body: null,
-    email: 'lagwatinc@gmail.com',
-  },
-]
+function getSections(siteName) {
+  return [
+    {
+      title: 'Use of the Website',
+      body: 'You agree to use this website only for lawful purposes and in accordance with these Terms. You are responsible for maintaining the confidentiality of any account information.',
+    },
+    {
+      title: 'Content',
+      body: `All content on this website, including text, graphics, logos, and trademarks, is the property of ${siteName} or its content suppliers and is protected by applicable intellectual property laws.`,
+    },
+    {
+      title: 'External Links',
+      body: `This website contains links to external sites (TikTok, Google Forms). ${siteName} is not responsible for the content, accuracy, or practices of these third-party sites.`,
+    },
+    {
+      title: 'Disclaimer',
+      body: 'This is an independent fan/community platform and is not officially affiliated with, endorsed by, or sponsored by TikTok or ByteDance Ltd.',
+    },
+    {
+      title: 'Contact Us',
+      body: null,
+      email: 'lagwatinc@gmail.com',
+    },
+  ]
+}
 
 export default function Terms() {
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const sections = getSections(siteName)
   return (
     <main>
       {/* Hero */}
       <section className="relative min-h-[360px] flex items-end pb-14 overflow-hidden" style={{ background: '#120620' }}>
         <img
-          src="/photos/team-dallas.jpg"
+          src="/photos/about-team.jpg"
           alt="Terms of Service"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
@@ -56,7 +62,7 @@ export default function Terms() {
           <Motion delay={0.1}>
             <div className="rounded-2xl p-8 border border-white/08 space-y-8" style={{ background: 'rgba(59,16,99,0.25)' }}>
               <p className="text-white/60 text-sm leading-relaxed">
-                Welcome to KM DYNASTY. By accessing or using our website, you agree to comply with and be bound by these Terms of Service.
+                Welcome to {siteName}. By accessing or using our website, you agree to comply with and be bound by these Terms of Service.
               </p>
 
               {sections.map(({ title, body, email }) => (

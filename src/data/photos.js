@@ -15,7 +15,7 @@ export const photos = [
   },
   {
     src: '/photos/team-dallas.jpg',
-    alt: 'KM DYNASTY team in Dallas TX',
+    alt: 'Dynasty team in Dallas TX',
     caption: 'Dallas TX — Dynasty Home',
     line: 'From Texas soil to a global TikTok movement.',
     cta: { label: 'Join My Box Battle', action: 'openOfficial' },

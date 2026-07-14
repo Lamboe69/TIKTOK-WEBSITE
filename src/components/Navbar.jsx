@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
+import { useContent } from '../cms/ContentContext'
 import './Navbar.css'
 
-const navLinks = [
+const defaultNavLinks = [
   { to: '/', label: 'Home' },
   { to: '/how-to-join', label: 'How to Join' },
   { to: '/battle-schedule', label: 'Schedule' },
@@ -13,7 +14,7 @@ const navLinks = [
   { to: '/contact', label: 'Contact' },
 ]
 
-const moreLinks = [
+const defaultMoreLinks = [
   { to: '/daily-quotes', label: 'Daily Quotes', blurb: 'Week of inspiration', icon: 'lightbulb' },
   { to: '/blog', label: 'Blog', blurb: 'Reports & stories', icon: 'film' },
   { to: '/gallery', label: 'Gallery', blurb: 'Captured moments', icon: 'star' },
@@ -34,6 +35,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
   const moreRef = useRef(null)
+  const { settings, collections } = useContent()
+
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const tagline = settings.tagline || 'Godsent Box Battles'
+  const paypalEmail = settings.paypalEmail || ''
+  const navLinks = (collections.navLinks?.length ? collections.navLinks : defaultNavLinks)
+  const moreLinks = (collections.navMoreLinks?.length ? collections.navMoreLinks : defaultMoreLinks)
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 12)
@@ -94,10 +102,10 @@ export default function Navbar() {
           <span className="site-nav__mark" aria-hidden>
             <span>{Icons.crown}</span>
           </span>
-          <span className="site-nav__wordmark">
-            <span className="site-nav__name">KM DYNASTY</span>
-            <span className="site-nav__tag">Godsent Box Battles</span>
-          </span>
+            <span className="site-nav__wordmark">
+              <span className="site-nav__name">{siteName}</span>
+              <span className="site-nav__tag">{tagline}</span>
+            </span>
         </Link>
 
         <div className="site-nav__links">
@@ -147,8 +155,23 @@ export default function Navbar() {
                     </span>
                   </Link>
                 ))}
-              </div>
-            </div>
+          </div>
+
+          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__donate" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+              <input type="hidden" name="business" value={paypalEmail} />
+              <input type="hidden" name="no_recurring" value="0" />
+              <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+              <input type="hidden" name="currency_code" value="USD" />
+              <input type="hidden" name="amount" value="" />
+              <button
+                type="submit"
+                className="site-nav__donate-btn"
+              >
+                <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
+                Donate
+              </button>
+            </form>
+        </div>
           </div>
         </div>
 
@@ -193,6 +216,20 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
+          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__panel-donate" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+              <input type="hidden" name="business" value={paypalEmail} />
+              <input type="hidden" name="no_recurring" value="0" />
+              <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+              <input type="hidden" name="currency_code" value="USD" />
+              <input type="hidden" name="amount" value="" />
+              <button
+                type="submit"
+                className="site-nav__donate-btn site-nav__donate-btn--mobile"
+              >
+                <span className="w-4 h-4 block">{Icons.heart}</span>
+                Donate with PayPal
+              </button>
+            </form>
         </div>
       </div>
     </header>

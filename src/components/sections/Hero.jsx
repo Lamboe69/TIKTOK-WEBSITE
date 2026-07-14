@@ -10,7 +10,9 @@ const SWIPE_THRESHOLD = 40
 
 export default function Hero() {
   const { openOfficial, openSpecial } = useSignUp()
-  const { collections } = useContent()
+  const { collections, settings, getPage } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const homePage = getPage('home')
   const photos = useMemo(() => {
     const fromCms = normalizeHeroSlides(collections.heroSlides)
     return fromCms.length ? fromCms : fallbackPhotos
@@ -171,7 +173,7 @@ export default function Hero() {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       aria-roledescription="carousel"
-      aria-label="KM Dynasty battle showcase"
+      aria-label={`${siteName} battle showcase`}
     >
       {/* ═══ Full-bleed track — slides LEFT every 3s ═══ */}
       <div className="absolute inset-0 overflow-hidden">
@@ -250,18 +252,18 @@ export default function Hero() {
         <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 pb-28 sm:pb-32 pt-24">
           <div className="max-w-xl pointer-events-auto">
             <p className="font-body text-[11px] tracking-[0.35em] uppercase text-white/45 mb-4">
-              Godsent Box Battles
+              {homePage.heroTagline || (settings.tagline ? settings.tagline.split('.')[0] : 'Godsent Box Battles')}
             </p>
 
             <h1 className="font-display font-extrabold leading-[0.88] tracking-[-0.03em]">
               <span className="block text-ivory" style={{ fontSize: 'clamp(3.25rem, 11vw, 7rem)' }}>
-                KM
+                {siteName.split(' ').length > 1 ? siteName.split(' ')[0] : siteName}
               </span>
               <span
                 className="block hero-brand-outline"
                 style={{ fontSize: 'clamp(3.25rem, 11vw, 7rem)' }}
               >
-                DYNASTY
+                {siteName.split(' ').length > 1 ? siteName.split(' ').slice(1).join(' ') : ''}
               </span>
             </h1>
 

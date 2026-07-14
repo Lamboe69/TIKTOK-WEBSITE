@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: '#120620' }}>
       <img
-        src="/battles-photos/champion-of-champions.jpg"
+        src="/photos/victory-celebration.jpg"
         alt=""
         className="absolute inset-0 w-full h-full object-cover opacity-20"
       />

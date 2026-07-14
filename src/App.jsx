@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import StickyCTA from './components/StickyCTA'
 import ScrollProgress from './components/ScrollProgress'
+import SEO from './components/SEO'
 import Home from './pages/Home'
 import HowToJoin from './pages/HowToJoin'
 import BattleSchedule from './pages/BattleSchedule'
@@ -113,6 +114,7 @@ export default function App() {
       <ContentProvider>
         <SignUpProvider>
           <StatsProvider>
+            <SEO />
             <ScrollToTop />
             <AppRoutes />
           </StatsProvider>

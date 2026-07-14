@@ -6,7 +6,10 @@ import { useContent } from '../../cms/ContentContext'
 const ROTATE_MS = 8000
 
 export default function Testimonials() {
-  const { collections } = useContent()
+  const { collections, getPage } = useContent()
+  const homePage = getPage('home')
+  const testimonialsTitle = homePage.testimonialsTitle || 'Voices from the family'
+  const testimonialsKicker = homePage.testimonialsKicker || 'Testimony'
   const voices =
     collections.testimonials?.length > 0
       ? collections.testimonials
@@ -37,12 +40,17 @@ export default function Testimonials() {
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <Motion delay={40}>
-            <p className="sec-kicker mb-2">Testimony</p>
+            <p className="sec-kicker mb-2">{testimonialsKicker}</p>
             <h2
               className="font-display font-bold text-ivory leading-[0.95] tracking-tight"
               style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}
             >
-              Voices from <span className="text-gradient">the family</span>
+              {testimonialsTitle.split(' ').length > 1 ? (
+                <>
+                  {testimonialsTitle.split(' ').slice(0, -1).join(' ')}{' '}
+                  <span className="text-gradient">{testimonialsTitle.split(' ').slice(-1)}</span>
+                </>
+              ) : testimonialsTitle}
             </h2>
           </Motion>
 

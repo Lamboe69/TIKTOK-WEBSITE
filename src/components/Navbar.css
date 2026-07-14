@@ -473,3 +473,37 @@
     letter-spacing: 0.2em;
   }
 }
+
+/* Donate button */
+.site-nav__donate {
+  margin-left: 0.4rem;
+}
+.site-nav__donate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #0070BA, #005ea6);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  white-space: nowrap;
+}
+.site-nav__donate-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 12px rgba(0, 112, 186, 0.4);
+}
+.site-nav__panel-donate {
+  margin-top: 1rem;
+}
+.site-nav__donate-btn--mobile {
+  width: 100%;
+  justify-content: center;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}

@@ -6,7 +6,8 @@ import { useContent } from '../cms/ContentContext'
 import './morePages.css'
 
 export default function Gallery() {
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('gallery')
   const photos = collections.gallery?.length ? collections.gallery : fallbackPhotos
   const galleryCategories = collections.galleryCategories?.length
@@ -43,14 +44,14 @@ export default function Gallery() {
       {/* Hero — Film Gate */}
       <section className="gallery-hero" aria-label="Photo Gallery">
         <div className="gallery-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/scavengers-battle.jpg'} alt="" />
+          <img src={page.heroImage || '/photos/gallery-camera.jpg'} alt="" />
           <div className="gallery-hero__veil" />
         </div>
         <div className="gallery-hero__sprockets gallery-hero__sprockets--l" aria-hidden />
         <div className="gallery-hero__sprockets gallery-hero__sprockets--r" aria-hidden />
         <div className="gallery-hero__core">
           <Motion delay={60}>
-            <p className="gallery-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="gallery-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="gallery-hero__title">{page.heroTitle || 'Gallery'}</h1>
             <p className="gallery-hero__lede">
               {page.heroLede ||

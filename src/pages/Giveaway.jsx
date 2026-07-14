@@ -24,15 +24,19 @@ const steps = [
 
 export default function Giveaway() {
   const { getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('giveaway')
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
+
+  const vaultTitle = page.vaultTitle || 'Claim vault'
+  const vaultSubtitle = page.vaultSubtitle || "Code is announced during King Maker's livestream."
   const [code, setCode] = useState('')
   const [phone, setPhone] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const subject = encodeURIComponent('KM DYNASTY - Giveaway Claim')
+    const subject = encodeURIComponent(`${siteName} - Giveaway Claim`)
     const body = encodeURIComponent(`Code: ${code}\nPhone: ${phone}`)
     window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`
     setSubmitted(true)
@@ -42,13 +46,13 @@ export default function Giveaway() {
     <main className="give-page">
       <section className="give-hero" aria-label="Claim your reward">
         <div className="give-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/champion-crowning.jpg'} alt="" />
+          <img src={page.heroImage || '/photos/giveaway-gift.jpg'} alt="" />
           <div className="give-hero__veil" />
           <div className="give-hero__burst" />
         </div>
         <div className="give-hero__core">
           <Motion delay={60}>
-            <p className="give-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="give-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="give-hero__title">{page.heroTitle || 'Claim Your Reward'}</h1>
             <p className="give-hero__lede">
               {page.heroLede ||
@@ -79,8 +83,8 @@ export default function Giveaway() {
       <section id="giveaway-claim" className="give-vault afg-pad">
         <div className="give-vault__shell">
           <Motion delay={50} className="give-vault__head">
-            <h2>Claim vault</h2>
-            <p>Code is announced during King Maker&apos;s livestream.</p>
+            <h2>{vaultTitle}</h2>
+            <p>{vaultSubtitle}</p>
           </Motion>
 
           <Motion delay={90}>

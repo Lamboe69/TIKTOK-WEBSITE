@@ -39,7 +39,7 @@ export const schedule = [
     type: 'Champion of Champions',
     date: '2026-07-20',
     time: '9:00 PM CT',
-    description: 'Winners from ALL Official Godsent Battles compete in the grand KM DYNASTY finale.',
+    description: 'Winners from ALL Official Godsent Battles compete in the grand Dynasty finale.',
   },
   {
     id: 6,

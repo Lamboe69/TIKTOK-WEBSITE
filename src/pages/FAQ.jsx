@@ -16,8 +16,13 @@ const fallbackCategories = [
 const romans = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII']
 
 export default function FAQ() {
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('faq')
+  const closingKicker = page.closingKicker || 'Still looking'
+  const closingTitle = page.closingTitle || "Your question isn't in the codex?"
+  const closingBody = page.closingBody || 'Write to the Dynasty — we reply personally.'
+  const closingImage = page.closingImage || '/photos/community-meetup.jpg'
   const faqItems = collections.faq?.length ? collections.faq : []
   const categories = (collections.faqCategories?.length
     ? collections.faqCategories.map((c) =>
@@ -46,7 +51,7 @@ export default function FAQ() {
       {/* Hero — Answer Quire */}
       <section className="codex-hero" aria-label="Frequently asked questions">
         <div className="codex-hero__media" aria-hidden>
-          <img src={page.heroImage || '/battles-photos/most-beautiful.jpg'} alt="" />
+          <img src={page.heroImage || '/photos/faq-support.jpg'} alt="" />
           <div className="codex-hero__veil" />
           <div className="codex-hero__sheet" />
         </div>
@@ -59,7 +64,7 @@ export default function FAQ() {
 
         <div className="codex-hero__core">
           <Motion delay={50}>
-            <p className="codex-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="codex-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="codex-hero__title">{page.heroTitle || 'Answers'}</h1>
             <p className="codex-hero__lede">
               {page.heroLede ||
@@ -149,13 +154,13 @@ export default function FAQ() {
       {/* Closing invite */}
       <section className="codex-invite">
         <div className="codex-invite__media" aria-hidden>
-          <img src="/photos/community-meetup.jpg" alt="" />
+          <img src={closingImage} alt="" />
           <div className="codex-invite__veil" />
         </div>
         <Motion delay={50} className="codex-invite__copy">
-          <p className="codex-kicker">Still looking</p>
-          <h2>Your question isn&apos;t in the codex?</h2>
-          <p>Write to the Dynasty — we reply personally.</p>
+          <p className="codex-kicker">{closingKicker}</p>
+          <h2>{closingTitle}</h2>
+          <p>{closingBody}</p>
           <Link to="/contact" className="codex-cta">
             Contact us
             <span className="w-4 h-4 block">{Icons.arrowRight}</span>

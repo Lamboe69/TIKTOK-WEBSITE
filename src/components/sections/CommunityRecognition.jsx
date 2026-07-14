@@ -11,11 +11,20 @@ const tabs = [
 ]
 
 export default function CommunityRecognition() {
-  const { collections } = useContent()
+  const { collections, settings, getPage } = useContent()
+  const homePage = getPage('home')
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const paypalEmail = settings.paypalEmail || ''
+  const contactEmail = settings.email || 'lagwatinc@gmail.com'
   const topGifters = collections.topGifters?.length ? collections.topGifters : fallbackGifters
   const topFans = collections.topFans?.length ? collections.topFans : fallbackFans
   const [tab, setTab] = useState('gifters')
   const list = (tab === 'gifters' ? topGifters : topFans).slice(0, 3)
+  const recognitionTitle = homePage.recognitionTitle || 'Honor the'
+  const recognitionKicker = homePage.recognitionKicker || 'Kingdom Family'
+  const recognitionMissionTitle = homePage.recognitionMissionTitle || 'Support the mission'
+  const recognitionMissionBody = homePage.recognitionMissionBody || 'Expand the Dynasty. Lift creators. Fund what matters.'
+  const recognitionMissionImage = homePage.recognitionMissionImage || '/testimonials/grace.jpg'
   const accent = tabs.find((t) => t.id === tab)?.accent || '#FF6B1A'
 
   return (
@@ -23,12 +32,12 @@ export default function CommunityRecognition() {
       <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-5">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
           <Motion delay={40}>
-            <p className="sec-kicker mb-2">Kingdom Family</p>
+            <p className="sec-kicker mb-2">{recognitionKicker}</p>
             <h2
               className="font-display font-bold text-ivory leading-none tracking-tight"
               style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.5rem)' }}
             >
-              Honor the{' '}
+              {recognitionTitle}{' '}
               <span className="text-gradient">{tab === 'gifters' ? 'gifters' : 'fans'}</span>
             </h2>
           </Motion>
@@ -119,7 +128,7 @@ export default function CommunityRecognition() {
             style={{ background: 'linear-gradient(160deg, rgba(255,107,26,0.35) 0%, rgba(90,40,160,0.55) 45%, #32185C 100%)' }}
           >
             <img
-              src="/testimonials/grace.jpg"
+              src={recognitionMissionImage}
               alt=""
               className="absolute inset-0 w-full h-full object-cover opacity-30"
             />
@@ -128,26 +137,31 @@ export default function CommunityRecognition() {
             <div className="relative z-10">
               <p className="text-[9px] uppercase tracking-[0.28em] text-ember mb-2">Giving Back</p>
               <h3 className="font-display font-bold text-ivory text-base sm:text-lg lg:text-xl leading-tight mb-2">
-                Support the mission
+                {recognitionMissionTitle}
               </h3>
               <p className="text-white/65 text-[11px] sm:text-xs leading-relaxed line-clamp-3">
-                Expand the Dynasty. Lift creators. Fund what matters.
+                {recognitionMissionBody}
               </p>
             </div>
 
             <div className="relative z-10 flex flex-col gap-2.5 mt-4">
+              <form action="https://www.paypal.com/donate" method="post" target="_blank" className="flex flex-col gap-2.5" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+                  <input type="hidden" name="business" value={paypalEmail} />
+                  <input type="hidden" name="no_recurring" value="0" />
+                  <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+                  <input type="hidden" name="currency_code" value="USD" />
+                  <input type="hidden" name="amount" value="" />
+                  <button
+                    type="submit"
+                    className="inline-flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold text-white"
+                    style={{ background: 'linear-gradient(135deg, #0070BA, #005ea6)' }}
+                  >
+                    <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
+                    Donate
+                  </button>
+                </form>
               <a
-                href="https://gofundme.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold text-white"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
-              >
-                <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
-                Donate
-              </a>
-              <a
-                href="mailto:lagwatinc@gmail.com?subject=KM%20DYNASTY%20%E2%80%94%20Request%20Support"
+                href={`mailto:${contactEmail}?subject=${encodeURIComponent(siteName + ' — Request Support')}`}
                 className="sec-cta-ghost justify-center text-[11px] py-1"
               >
                 Request support

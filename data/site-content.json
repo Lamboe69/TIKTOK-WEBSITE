@@ -7,98 +7,217 @@
     "email": "lagwatinc@gmail.com",
     "phoneUS": "+1 (469) 664-1195",
     "phoneUG": "+256-200-947-070",
+    "location": "Dallas, Texas, USA",
+    "copyright": "KM DYNASTY. All rights reserved.",
+    "disclaimer": "Independent fan/community platform. Not affiliated with TikTok or ByteDance.",
     "tiktokHandle": "@kingmakernevergivesup",
     "tiktokUrl": "https://www.tiktok.com/@kingmakernevergivesup",
-    "ctaLabel": "Join My Box Battle"
+    "instagramUrl": "",
+    "youtubeUrl": "",
+    "whatsappUrl": "",
+    "facebookUrl": "",
+    "twitchUrl": "",
+    "ctaLabel": "Join My Box Battle",
+    "paypalEmail": ""
   },
   "pages": {
     "home": {
-      "heroImage": "/photos/battle-highlights.jpg"
+      "heroImage": "/photos/home-hero-stage.jpg",
+      "heroTagline": "Godsent Box Battles",
+      "howItWorksTitle": "Three steps to the crown",
+      "howItWorksSubtitle": "From first tap to spotlight — the path every Dynasty challenger walks.",
+      "howItWorksKicker": "How It Works",
+      "howItWorksImage": "/photos/tiktok.png",
+      "battleTypesTitle": "Battle types",
+      "battleTypesKicker": "The Arena",
+      "battleTypesLink": "Full schedule",
+      "kmLoversTitle": "They don't just watch — they protect",
+      "kmLoversDescription": "KM DYNASTY LOVERS are the heartbeat of the Dynasty — shielding livestreams, lifting each other, and carrying the culture forward.",
+      "kmLoversPillars": "Like, share, follow, report — protect the livestream.\nKeep esteem high — big box or small, every member matters.\nPush forward positively — family energy, even in the hottest battles.",
+      "kmLoversPerks": "Priority shout-outs during livestreams\nExclusive community giveaways\nWinners' Livestream Visit recognition",
+      "kmLoversKicker": "KM Lovers",
+      "kmLoversPerksLabel": "KM Lovers get",
+      "kmLoversImage": "/photos/community-friends.jpg",
+      "kmLoversFaces": "/gifters/brittany.jpg,/gifters/gregory.jpg,/gifters/ailinda.jpg,/gifters/charles.jpg,/photos/community-friends.jpg",
+      "winnersTitle": "Win. Claim your spotlight",
+      "winnersSubtitle": "Official Godsent winners earn a scheduled livestream visit with KM DYNASTY. Champions go first.",
+      "winnersSteps": "Win an Official Godsent Box Battle\nGet scheduled for a livestream visit\nChampion of Champions earns priority placement\nClaim your spotlight before the whole family",
+      "winnersKicker": "Winners' Livestream Visit",
+      "winnersImage": "/photos/trophy-winners.jpg",
+      "recognitionTitle": "Honor the gifters",
+      "recognitionKicker": "Kingdom Family",
+      "recognitionMissionTitle": "Support the mission",
+      "recognitionMissionBody": "Expand the Dynasty. Lift creators. Fund what matters.",
+      "recognitionMissionImage": "/photos/community-giving.jpg",
+      "masterclassTitle": "Master your craft",
+      "masterclassSubtitle": "The exact systems, livestream strategy, and dynasty mindset — taught live by the source.",
+      "masterclassQuote": "I started with $30 and a dream. Everything I know about building a community on TikTok — I'm putting it in this masterclass.",
+      "masterclassKicker": "Masterclass \u00b7 With King Maker",
+      "masterclassFeatures": "Live battle strategy & gifting psychology\nHow to grow from 0 to 50K+ on TikTok LIVE\nCommunity building & dynasty culture",
+      "masterclassPrice": "$500",
+      "masterclassDuration": "5 weeks",
+      "masterclassSchedule": "Saturdays \u00b7 2:00 PM CT",
+      "masterclassInstructor": "King Maker",
+      "masterclassInstructorRole": "Live instructor \u00b7 Dallas",
+      "masterclassCtaLabel": "Enter the Masterclass",
+      "masterclassImage": "/photos/workshop-mentor.jpg",
+      "testimonialsTitle": "Voices from the family",
+      "testimonialsKicker": "Testimony",
+      "ctaTitle": "Ready to join the Dynasty?",
+      "ctaSubtitle": "Creator, supporter, or curious newcomer — there's a place for you here.",
+      "ctaFollowLabel": "Follow King Maker"
     },
     "howToJoin": {
-      "heroImage": "/photos/champion-crowning.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/competition-energy.jpg",
       "heroTitle": "How to Join",
-      "heroLede": "Nine steps through the cathedral. Enter clean. Compete honest. Rise with the dynasty."
+      "heroLede": "Nine steps through the cathedral. Enter clean. Compete honest. Rise with the dynasty.",
+      "heroCtaLink": "Walk the nine steps",
+      "gateTitle": "Prove the floor",
+      "gateSubtitle": "Two checks. Then the path opens.",
+      "introTitle": "Nine steps to the crown",
+      "introBody": "Path A \u00b7 Official Godsent",
+      "ascentCtaLink": "Follow King Maker",
+      "ascentCtaButton": "Ready \u2014 join a battle",
+      "pathBKicker": "Path B \u00b7 Special Arenas",
+      "pathBTitle": "Scavengers.\nCountry.\nMost Beautiful.",
+      "pathBBody": "Parallel doors into the Dynasty \u2014 filled on their own form, with their own fire.",
+      "pathBButton": "Apply for special battle",
+      "pathBImage": "/photos/content-creation.jpg",
+      "closingTitle": "Enter the Dynasty",
+      "closingBody": "Bring your taps, your faith, and your fire. The arena is waiting.",
+      "closingImage": "/photos/victory-celebration.jpg"
     },
     "faq": {
-      "heroImage": "/battles-photos/most-beautiful.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/faq-support.jpg",
       "heroTitle": "FAQ",
-      "heroLede": "Answers from the dynasty — search the chapters below."
+      "heroLede": "Answers from the dynasty \u2014 search the chapters below.",
+      "closingKicker": "Still looking",
+      "closingTitle": "Your question isn't in the codex?",
+      "closingBody": "Write to the Dynasty \u2014 we reply personally.",
+      "closingImage": "/photos/group-discussion.jpg"
     },
     "advertise": {
-      "heroImage": "/photos/scavengers-battle.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/business-ads.jpg",
       "heroTitle": "Advertise",
-      "heroLede": "Put your brand in the livestream — King Maker's arena, your message."
+      "heroLede": "Put your brand in the livestream \u2014 King Maker's arena, your message.",
+      "boardKicker": "Airtime board",
+      "boardTitle": "Choose your slot",
+      "boardSubtitle": "Four placements. One brief. Pricing confirmed after we review.",
+      "briefKicker": "Production brief",
+      "briefTitle": "Tell us what you want on air",
+      "briefSubtitle": "Share your brand, placement, and campaign goals. We reply within 1\u20132 business days \u2014 then lock pricing and PayPal payment.",
+      "formSubmitLabel": "Send brief",
+      "formHint": "Confirmed packages settle via PayPal after approval."
     },
     "masterclass": {
-      "heroImage": "/photos/battle-highlights.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/learning-class.jpg",
       "heroTitle": "Masterclass",
-      "heroLede": "Five flames. One seminary. Monetise the live arena with King Maker."
+      "heroLede": "Five flames. One seminary. Monetise the live arena with King Maker.",
+      "curriculumKicker": "The Five Weeks",
+      "curriculumSubtitle": "A curriculum built for the arena",
+      "tiersKicker": "Choose your fire",
+      "tiersTitle": "Three doors into the studio",
+      "tiersHint": "Hover a path \u00b7 claim your seat",
+      "termsKicker": "Before you enrol",
+      "termsTitle": "House rules",
+      "termsImage": "/photos/professional-contract.jpg",
+      "closingKicker": "The Invitation",
+      "closingTitle": "Start the transformation",
+      "closingBody": "Questions about which path fits? Reach out \u2014 we'll help you choose.",
+      "closingImage": "/photos/achievement-grad.jpg"
     },
     "contact": {
-      "heroImage": "/photos/team-dallas.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/contact-message.jpg",
       "heroTitle": "Contact",
-      "heroLede": "Reach the dynasty — business, creator support, or just say hello."
+      "heroLede": "Reach the dynasty \u2014 business, creator support, or just say hello.",
+      "formHeading": "Write to us",
+      "formSubtitle": "Two steps \u2014 pick a topic, then fill in your details. We reply within 1\u20132 business days.",
+      "formSubmitLabel": "Send message",
+      "hqTitle": "Headquarters",
+      "hqCity": "Dallas, Texas",
+      "hqDescription": "Dual lines across the US and Uganda \u2014 La'Gwat Agency."
     },
     "agency": {
-      "heroImage": "/photos/community-meetup.jpg",
+      "heroImage": "/photos/agency-partners.jpg",
       "heroBrand": "LA'GWAT AGENCY",
       "heroTitle": "Agency",
-      "heroLede": "Territory meridians for creators ready to grow under the Dynasty banner."
+      "heroLede": "Territory meridians for creators ready to grow under the Dynasty banner.",
+      "atlasHeading": "The Atlas",
+      "atlasDescription": "Select your embassy. Walk the corridor. Apply for citizenship under the Dynasty banner.",
+      "oathHeading": "Ready to represent?",
+      "oathBody": "Tell us who you are, what you create, and which embassy you claim. Applications move through Contact.",
+      "oathImage": "/photos/oath-commitment.jpg"
     },
     "gallery": {
-      "heroImage": "/photos/scavengers-battle.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/gallery-camera.jpg",
       "heroTitle": "Gallery",
       "heroLede": "Frames from the arena — battles, livestreams, and dynasty nights."
     },
     "blog": {
-      "heroImage": "/photos/battle-highlights.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/blog-writing.jpg",
       "heroTitle": "Blog",
       "heroLede": "Battle recaps, community stories, and dynasty dispatches."
     },
     "quotes": {
-      "heroImage": "/photos/battle-highlights.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/quote-inspire.jpg",
       "heroTitle": "Daily Quotes",
-      "heroLede": "Seven days. Seven truths. Fuel for the Dynasty's grind."
+      "heroLede": "Seven days. Seven truths. Fuel for the Dynasty's grind.",
+      "reminderKicker": "Quick Reminder",
+      "reminderBody": "Scavengers, Country, Most Beautiful \u2014 fill the form. Official Godsent \u2014 bring your taps and prayers.",
+      "meaningKicker": "Quotes Meaning",
+      "meaningTitle": "Daily KM Quotes",
+      "meaningImage": "/photos/meaning-purpose.jpg"
     },
     "schedule": {
-      "heroImage": "/battles-photos/daily-godsent.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/schedule-calendar.jpg",
       "heroTitle": "Battle Schedule",
-      "heroLede": "Know when the arena opens. Show up ready."
+      "heroLede": "Know when the arena opens. Show up ready.",
+      "boardKicker": "The Arena Board",
+      "boardTitle": "Choose your fire",
+      "finaleKicker": "Path to the crown",
+      "finaleTitle": "Champion of Champions",
+      "finaleBody": "Official winners collide in one finale. Win your night \u2014 then claim your seat.",
+      "finaleImage": "/photos/finale-championship.jpg"
     },
     "outreach": {
-      "heroImage": "/photos/community-meetup.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/outreach-mission.jpg",
       "heroTitle": "Outreach",
-      "heroLede": "Stories of support — the dynasty gives back."
+      "heroLede": "Stories of support \u2014 the dynasty gives back.",
+      "missionHeading": "Our Mission",
+      "missionBody": "King Maker believes in giving back. Through the Dynasty Outreach program, we support individuals and families in need across the globe \u2014 from medical emergencies to education fees.",
+      "missionImage": "/photos/giving-back.jpg",
+      "donationsHeading": "How Your Donations Help",
+      "donationsItems": "Medical support for families in crisis\nSchool fees and educational supplies\nFood packages for struggling households\nEmergency shelter and housing support",
+      "formHeading": "Request Support",
+      "formSubtitle": "Going through a difficult time? Submit your application and our team will review it personally."
     },
     "giveaway": {
-      "heroImage": "/photos/champion-crowning.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/giveaway-gift.jpg",
       "heroTitle": "Giveaway",
-      "heroLede": "Claim your vault reward when codes drop."
+      "heroLede": "Claim your vault reward when codes drop.",
+      "vaultTitle": "Claim vault",
+      "vaultSubtitle": "Code is announced during King Maker's livestream.",
+      "steps": "Watch live: King Maker announces the giveaway code during the livestream.\nEnter details: Drop the code and your phone number in the claim vault below.\nReceive reward: We process claims and deliver airtime or prizes directly."
     },
     "about": {
-      "heroImage": "/photos/team-dallas.jpg",
-      "heroBrand": "KM DYNASTY",
+      "heroImage": "/photos/about-team.jpg",
       "heroTitle": "About",
-      "heroLede": "The story of King Maker and the dynasty family."
+      "heroLede": "The story of King Maker and the dynasty family.",
+      "storyTitle": "The Dynasty Origin",
+      "storyBody": "From a $30 dream to a global movement \u2014 King Maker built the Dynasty one battle at a time.",
+      "reelHeading": "Four scenes. One dynasty.",
+      "creedHeading": "The Creed",
+      "castHeading": "Opening Credits",
+      "castDescription": "The hands that hold the crown.",
+      "endHeading": "Ready for the next frame?",
+      "stats": "50K+ | Followers\n100+ | Battles Hosted\n50+ | Winners Crowned\n6 | Global Regions"
     }
   },
   "collections": {
     "heroSlides": [
       {
         "id": 1,
-        "src": "/photos/battle-highlights.jpg",
+        "src": "/photos/home-hero-stage.jpg",
         "alt": "Box battle highlights and reactions",
         "caption": "Where Every Tap Counts",
         "line": "Engagement is the currency. Heart is the crown.",
@@ -111,7 +230,7 @@
       },
       {
         "id": 2,
-        "src": "/photos/champion-crowning.jpg",
+        "src": "/photos/competition-energy.jpg",
         "alt": "Champion of Champions crowning moment",
         "caption": "Champion of Champions",
         "line": "Win the night. Earn the title. Claim the dynasty spotlight.",
@@ -124,7 +243,7 @@
       },
       {
         "id": 3,
-        "src": "/photos/team-dallas.jpg",
+        "src": "/photos/about-team.jpg",
         "alt": "KM DYNASTY team in Dallas TX",
         "caption": "Dallas TX — Dynasty Home",
         "line": "From Texas soil to a global TikTok movement.",
@@ -137,7 +256,7 @@
       },
       {
         "id": 4,
-        "src": "/photos/community-meetup.jpg",
+        "src": "/photos/community-friends.jpg",
         "alt": "Community meetup and creator visit",
         "caption": "Creator Livestream Visits",
         "line": "Winners don’t just rank — they get face time with the dynasty.",
@@ -150,7 +269,7 @@
       },
       {
         "id": 5,
-        "src": "/photos/scavengers-battle.jpg",
+        "src": "/photos/business-ads.jpg",
         "alt": "Scavengers Box Battle night",
         "caption": "Scavengers Box Battle",
         "line": "No tap minimum. Pure hunger. Underdogs rewrite the night.",
@@ -1003,6 +1122,46 @@
       "/battles-photos/champion-of-champions.jpg",
       "/team/maker.jpg",
       "/team/mufasa.jpg"
+    ],
+    "navLinks": [
+      { "id": 1, "to": "/", "label": "Home" },
+      { "id": 2, "to": "/how-to-join", "label": "How to Join" },
+      { "id": 3, "to": "/battle-schedule", "label": "Schedule" },
+      { "id": 4, "to": "/masterclass", "label": "Masterclass" },
+      { "id": 5, "to": "/agency", "label": "Agency" },
+      { "id": 6, "to": "/about", "label": "About" },
+      { "id": 7, "to": "/contact", "label": "Contact" }
+    ],
+    "navMoreLinks": [
+      { "id": 1, "to": "/daily-quotes", "label": "Daily Quotes", "blurb": "Week of inspiration", "icon": "lightbulb" },
+      { "id": 2, "to": "/blog", "label": "Blog", "blurb": "Reports & stories", "icon": "film" },
+      { "id": 3, "to": "/gallery", "label": "Gallery", "blurb": "Captured moments", "icon": "star" },
+      { "id": 4, "to": "/outreach", "label": "Outreach", "blurb": "Giving back", "icon": "heart" },
+      { "id": 5, "to": "/giveaway", "label": "Giveaway", "blurb": "Claim your reward", "icon": "gift" },
+      { "id": 6, "to": "/faq", "label": "FAQ", "blurb": "Answers & guidance", "icon": "clipboard" },
+      { "id": 7, "to": "/advertise", "label": "Advertise", "blurb": "Partner with us", "icon": "target" }
+    ],
+    "footerExploreLinks": [
+      { "id": 1, "to": "/", "label": "Home" },
+      { "id": 2, "to": "/how-to-join", "label": "How to Join" },
+      { "id": 3, "to": "/battle-schedule", "label": "Battle Schedule" },
+      { "id": 4, "to": "/daily-quotes", "label": "Daily Quotes" },
+      { "id": 5, "to": "/blog", "label": "Blog" },
+      { "id": 6, "to": "/gallery", "label": "Gallery" }
+    ],
+    "footerCommunityLinks": [
+      { "id": 1, "to": "/outreach", "label": "Outreach" },
+      { "id": 2, "to": "/giveaway", "label": "Giveaway" },
+      { "id": 3, "to": "/about", "label": "About" },
+      { "id": 4, "to": "/agency", "label": "Agency" },
+      { "id": 5, "to": "/masterclass", "label": "Masterclass" },
+      { "id": 6, "to": "/advertise", "label": "Advertise" }
+    ],
+    "footerSupportLinks": [
+      { "id": 1, "to": "/faq", "label": "FAQ" },
+      { "id": 2, "to": "/contact", "label": "Contact" },
+      { "id": 3, "to": "/privacy", "label": "Privacy Policy" },
+      { "id": 4, "to": "/terms", "label": "Terms of Use" }
     ]
   }
 }

@@ -23,7 +23,8 @@ const fallbackSteps = [
 
 export default function HowItWorks() {
   const { openOfficial } = useSignUp()
-  const { collections, settings } = useContent()
+  const { collections, settings, getPage } = useContent()
+  const homePage = getPage('home')
   const steps = (collections.howItWorks?.length
     ? collections.howItWorks.map((s) => ({
         num: s.num,
@@ -31,6 +32,10 @@ export default function HowItWorks() {
         description: s.body || s.description,
       }))
     : fallbackSteps)
+  const sectionTitle = homePage.howItWorksTitle || 'Three steps to the crown'
+  const sectionSubtitle = homePage.howItWorksSubtitle || 'From first tap to spotlight — the path every Dynasty challenger walks.'
+  const sectionKicker = homePage.howItWorksKicker || 'How It Works'
+  const sectionImage = homePage.howItWorksImage || '/photos/tiktok.png'
 
   return (
     <section className="relative overflow-hidden home-band-ink home-band-sep">
@@ -38,7 +43,7 @@ export default function HowItWorks() {
         {/* Full-height local photo plane */}
         <div className="relative lg:col-span-5 min-h-[280px] lg:min-h-full">
           <img
-            src="/photos/tiktok.png"
+            src={sectionImage}
             alt="King Maker live on TikTok"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -50,24 +55,28 @@ export default function HowItWorks() {
             }}
           />
           <div className="absolute bottom-8 left-6 right-6 lg:hidden">
-            <p className="sec-kicker mb-2">How It Works</p>
-            <p className="font-display font-bold text-ivory text-2xl">Three steps to the crown</p>
+            <p className="sec-kicker mb-2">{sectionKicker}</p>
+            <p className="font-display font-bold text-ivory text-2xl">{sectionTitle}</p>
           </div>
         </div>
 
         {/* Timeline */}
         <div className="lg:col-span-7 px-5 sm:px-10 lg:px-14 py-16 sm:py-20 flex flex-col justify-center">
           <Motion delay={80}>
-            <p className="sec-kicker mb-4 hidden lg:block">How It Works</p>
+            <p className="sec-kicker mb-4 hidden lg:block">{sectionKicker}</p>
             <h2
               className="font-display font-bold text-ivory mb-3 leading-[0.95] tracking-tight hidden lg:block"
               style={{ fontSize: 'clamp(2.25rem, 4vw, 3.5rem)' }}
             >
-              Three steps to<br />
-              <span className="text-gradient">the crown</span>
+              {sectionTitle.split(' ').length > 1 ? (
+                <>
+                  {sectionTitle.split(' ').slice(0, Math.ceil(sectionTitle.split(' ').length / 2)).join(' ')}<br />
+                  <span className="text-gradient">{sectionTitle.split(' ').slice(Math.ceil(sectionTitle.split(' ').length / 2)).join(' ')}</span>
+                </>
+              ) : sectionTitle}
             </h2>
             <p className="text-white/70 text-sm mb-10 max-w-md leading-relaxed hidden lg:block">
-              From first tap to spotlight — the path every Dynasty challenger walks.
+              {sectionSubtitle}
             </p>
           </Motion>
 

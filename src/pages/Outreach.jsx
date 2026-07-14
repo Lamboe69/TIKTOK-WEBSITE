@@ -15,14 +15,23 @@ const supportReasons = [
 
 export default function Outreach() {
   const { getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('outreach')
+  const missionHeading = page.missionHeading || 'Our Mission'
+  const missionBody = page.missionBody || `King Maker believes in giving back. Through the ${siteName} Outreach program, we support individuals and families in need across the globe — from medical emergencies to education fees.`
+  const missionImage = page.missionImage || '/photos/community-meetup.jpg'
+  const donationsHeading = page.donationsHeading || 'How Your Donations Help'
+  const donationsItems = page.donationsItems ? page.donationsItems.split('\n').filter(Boolean) : ['Medical support for families in crisis', 'School fees and educational supplies', 'Food packages for struggling households', 'Emergency shelter and housing support']
+  const outreachFormHeading = page.formHeading || 'Request Support'
+  const outreachFormSubtitle = page.formSubtitle || 'Going through a difficult time? Submit your application and our team will review it personally.'
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
+  const paypalEmail = settings.paypalEmail || ''
   const [form, setForm] = useState({ name: '', email: '', country: '', reason: '', story: '' })
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const subject = encodeURIComponent('KM DYNASTY - Support Request')
+    const subject = encodeURIComponent(`${siteName} - Support Request`)
     const body = encodeURIComponent(
       'Name: ' + form.name + '\nEmail: ' + form.email + '\nCountry: ' + form.country + '\nReason: ' + form.reason + '\n\nStory:\n' + form.story
     )
@@ -33,15 +42,15 @@ export default function Outreach() {
   return (
     <main>
       {/* Hero — Giving Horizon */}
-      <section className="outreach-hero" aria-label="KM Dynasty Outreach">
+      <section className="outreach-hero" aria-label={`${siteName} Outreach`}>
         <div className="outreach-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/community-meetup.jpg'} alt="" />
+          <img src={page.heroImage || '/photos/outreach-mission.jpg'} alt="" />
           <div className="outreach-hero__veil" />
           <div className="outreach-hero__warm" />
         </div>
         <div className="outreach-hero__lockup">
           <Motion delay={60}>
-            <p className="outreach-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="outreach-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="outreach-hero__title">{page.heroTitle || 'Outreach'}</h1>
             <p className="outreach-hero__lede">
               {page.heroLede ||
@@ -53,7 +62,7 @@ export default function Outreach() {
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </a>
               <a href="#outreach-donate" className="mp-link">
-                Donate on GoFundMe
+                Donate with PayPal
               </a>
             </div>
           </Motion>
@@ -69,7 +78,7 @@ export default function Outreach() {
               <Motion delay={0.1}>
                 <div className="relative rounded-2xl overflow-hidden aspect-[16/9]">
                   <img
-                    src="/photos/community-meetup.jpg"
+                    src={missionImage}
                     alt="Outreach mission"
                     className="w-full h-full object-cover"
                   />
@@ -79,27 +88,21 @@ export default function Outreach() {
 
               <Motion delay={0.15}>
                 <h2 className="font-display font-bold text-3xl text-ivory" style={{ letterSpacing: '-0.02em' }}>
-                  Our <span className="text-gradient">Mission</span>
+                  {missionHeading}
                 </h2>
                 <p className="text-white/60 text-sm leading-relaxed mt-3">
-                  King Maker believes in giving back. Through the KM Dynasty Outreach program, we support
-                  individuals and families in need across the globe — from medical emergencies to education fees.
+                  {missionBody}
                 </p>
               </Motion>
 
               <Motion delay={0.2}>
                 <div className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(232,185,74,0.06)' }}>
-                  <h3 className="font-display font-bold text-lg text-ivory mb-4">How Your Donations Help</h3>
+                  <h3 className="font-display font-bold text-lg text-ivory mb-4">{donationsHeading}</h3>
                   <ul className="space-y-3">
-                    {[
-                      { icon: Icons.heart, text: 'Medical support for families in crisis' },
-                      { icon: Icons.star, text: 'School fees and educational supplies' },
-                      { icon: Icons.gift, text: 'Food packages for struggling households' },
-                      { icon: Icons.shield, text: 'Emergency shelter and housing support' },
-                    ].map((item, idx) => (
+                    {donationsItems.map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3 text-sm text-white/60">
-                        <span className="w-5 h-5 block mt-0.5 flex-shrink-0 text-ember">{item.icon}</span>
-                        {item.text}
+                        <span className="w-5 h-5 block mt-0.5 flex-shrink-0 text-ember">{[Icons.heart, Icons.star, Icons.gift, Icons.shield][idx]}</span>
+                        {item}
                       </li>
                     ))}
                   </ul>
@@ -108,18 +111,23 @@ export default function Outreach() {
 
               <Motion delay={0.25}>
                 <div id="outreach-donate" className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
-                  <h3 className="font-display font-bold text-lg text-ivory mb-2">Donate via GoFundMe</h3>
-                  <p className="text-white/50 text-sm mb-4">Support the KM Dynasty Outreach fund. Every dollar helps a family in need.</p>
-                  <a
-                    href="#"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                    style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}
-                  >
-                    Donate on GoFundMe
-                    <span className="w-4 h-4 block">{Icons.arrowRight}</span>
-                  </a>
+                  <h3 className="font-display font-bold text-lg text-ivory mb-2">Donate with PayPal</h3>
+                  <p className="text-white/50 text-sm mb-4">Support the {siteName} Outreach fund. Every dollar helps a family in need.</p>
+                   <form action="https://www.paypal.com/donate" method="post" target="_blank" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+                      <input type="hidden" name="business" value={paypalEmail} />
+                      <input type="hidden" name="no_recurring" value="0" />
+                      <input type="hidden" name="item_name" value={`${siteName} Outreach Donation`} />
+                      <input type="hidden" name="currency_code" value="USD" />
+                      <input type="hidden" name="amount" value="" />
+                      <button
+                        type="submit"
+                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+                        style={{ background: 'linear-gradient(135deg, #0070BA, #005ea6)', borderRadius: 8 }}
+                      >
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" /></svg>
+                        Donate with PayPal
+                      </button>
+                    </form>
                 </div>
               </Motion>
             </div>
@@ -127,8 +135,8 @@ export default function Outreach() {
             {/* Right — Form */}
             <Motion delay={0.15}>
               <div className="rounded-2xl p-8 border border-white/04 sticky top-24" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
-                <h2 className="font-display font-bold text-2xl text-ivory mb-2">Request Support</h2>
-                <p className="text-white/50 text-sm mb-6">Going through a difficult time? Submit your application and our team will review it personally.</p>
+                <h2 className="font-display font-bold text-2xl text-ivory mb-2">{outreachFormHeading}</h2>
+                <p className="text-white/50 text-sm mb-6">{outreachFormSubtitle}</p>
 
                 {submitted ? (
                   <div className="rounded-xl p-6 text-center" style={{ background: 'rgba(255,107,26,0.08)', border: '1px solid rgba(255,107,26,0.2)' }}>

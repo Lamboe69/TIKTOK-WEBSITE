@@ -54,7 +54,11 @@ const fallbackTypes = [
 const accents = ['#FF6B1A', '#E8B94A', '#C4A0FF', '#FF8A3D', '#E8B94A']
 
 export default function BattleTypes() {
-  const { collections } = useContent()
+  const { collections, getPage } = useContent()
+  const homePage = getPage('home')
+  const battleTypesTitle = homePage.battleTypesTitle || 'Battle types'
+  const battleTypesKicker = homePage.battleTypesKicker || 'The Arena'
+  const battleTypesLink = homePage.battleTypesLink || 'Full schedule'
   const types =
     collections.battleCatalog?.length > 0
       ? collections.battleCatalog.map((t, i) => ({
@@ -83,16 +87,16 @@ export default function BattleTypes() {
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
         <Motion delay={40} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
           <div>
-            <p className="sec-kicker mb-2">The Arena</p>
+            <p className="sec-kicker mb-2">{battleTypesKicker}</p>
             <h2
               className="font-display font-bold text-ivory leading-[0.95] tracking-tight"
               style={{ fontSize: 'clamp(1.85rem, 4vw, 2.75rem)' }}
             >
-              Battle <span className="text-gradient">types</span>
+              Battle <span className="text-gradient">{battleTypesTitle.replace(/^Battle\s*/i, '') || 'types'}</span>
             </h2>
           </div>
           <Link to="/battle-schedule" className="sec-cta-ghost self-start sm:self-auto">
-            Full schedule
+            {battleTypesLink}
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
               <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
             </svg>

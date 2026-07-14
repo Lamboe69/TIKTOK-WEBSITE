@@ -60,7 +60,7 @@ const specialDiffs = [
   { n: '03', label: 'Own crown', copy: 'Own rules, own schedule, own winner.' },
 ]
 
-function Gate({ ready, answers, setAnswers }) {
+function Gate({ ready, answers, setAnswers, gateTitle, gateSubtitle }) {
   const allAnswered = answers.taps !== null && answers.following !== null
 
   return (
@@ -68,10 +68,10 @@ function Gate({ ready, answers, setAnswers }) {
       <div className="join-gate__head">
         <p className="sec-kicker">The Gate</p>
         <h2 className="join-gate__title font-display font-bold text-ivory tracking-tight">
-          Prove the floor
+          {gateTitle || 'Prove the floor'}
         </h2>
         <p className="join-gate__hint">
-          Two checks. Then the path opens.
+          {gateSubtitle || 'Two checks. Then the path opens.'}
         </p>
       </div>
 
@@ -117,6 +117,7 @@ export default function HowToJoin() {
   const { openOfficial, openSpecial } = useSignUp()
   const { collections, getPage, settings } = useContent()
   const page = getPage('howToJoin')
+  const siteName = settings.siteName || 'KM DYNASTY'
   const steps =
     collections.joinSteps?.length > 0
       ? collections.joinSteps.map((s) => ({
@@ -125,7 +126,7 @@ export default function HowToJoin() {
           img: s.img,
           prayer: s.prayer,
         }))
-      : fallbackSteps
+      : fallbackSteps.map(s => ({ ...s, desc: s.desc.replace(/KM DYNASTY/g, siteName) }))
   const [active, setActive] = useState(0)
   const [done, setDone] = useState({})
   const [paused, setPaused] = useState(false)
@@ -154,7 +155,7 @@ export default function HowToJoin() {
       <section className="join-hero" aria-label="How to Join">
         <div className="join-hero__media" aria-hidden>
           <img
-            src={page.heroImage || '/photos/champion-crowning.jpg'}
+            src={page.heroImage || '/photos/competition-energy.jpg'}
             alt=""
             className="join-hero__photo"
           />
@@ -175,7 +176,7 @@ export default function HowToJoin() {
 
         <div className="join-hero__portal">
           <Motion delay={50} className="join-hero__copy">
-            <p className="join-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="join-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="join-hero__title">
               <span className="join-hero__how">How to</span>
               <span className="join-hero__join">{page.heroTitle?.replace(/^How to\s*/i, '') || 'Join'}</span>
@@ -190,7 +191,7 @@ export default function HowToJoin() {
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </button>
               <a href="#join-ascent" className="join-hero__link">
-                Walk the nine steps
+                {page.heroCtaLink || 'Walk the nine steps'}
               </a>
             </div>
           </Motion>
@@ -211,7 +212,7 @@ export default function HowToJoin() {
       {/* ═══ Gate ═══ */}
       <section id="join-gate" className="join-band join-band--gate">
         <Motion delay={40} className="join-pad">
-          <Gate ready={ready} answers={answers} setAnswers={setAnswers} />
+          <Gate ready={ready} answers={answers} setAnswers={setAnswers} gateTitle={page.gateTitle} gateSubtitle={page.gateSubtitle} />
         </Motion>
       </section>
 
@@ -219,10 +220,10 @@ export default function HowToJoin() {
       <section id="join-ascent" className="join-band join-band--ascent">
         <div className="join-pad join-ascent__intro">
           <Motion delay={40}>
-            <p className="sec-kicker mb-2">Path A · Official Godsent</p>
+            <p className="sec-kicker mb-2">{page.introBody || 'Path A · Official Godsent'}</p>
             <div className="join-ascent__intro-row">
               <h2 className="join-ascent__heading font-display font-bold text-ivory tracking-tight">
-                Nine steps to the <span className="text-gradient">crown</span>
+                {page.introTitle || 'Nine steps to the crown'}
               </h2>
               <p className="join-ascent__count">
                 {doneCount > 0 ? (
@@ -317,11 +318,11 @@ export default function HowToJoin() {
               rel="noopener noreferrer"
               className="sec-cta"
             >
-              Follow King Maker
+              {page.ascentCtaLink || 'Follow King Maker'}
               <span className="w-4 h-4 block">{Icons.arrowRight}</span>
             </a>
             <button type="button" onClick={openOfficial} className="sec-cta-ghost">
-              Ready — join a battle
+              {page.ascentCtaButton || 'Ready — join a battle'}
             </button>
           </Motion>
         </div>
@@ -332,7 +333,7 @@ export default function HowToJoin() {
         <div className="join-special__grid">
           <div className="join-special__media">
             <img
-              src="/battles-photos/most-beautiful.jpg"
+              src={page.pathBImage || '/photos/content-creation.jpg'}
               alt=""
               aria-hidden
             />
@@ -341,14 +342,17 @@ export default function HowToJoin() {
 
           <div className="join-special__copy join-pad">
             <Motion delay={60}>
-              <p className="sec-kicker mb-4" style={{ color: '#C4A0FF' }}>Path B · Special Arenas</p>
+              <p className="sec-kicker mb-4" style={{ color: '#C4A0FF' }}>{page.pathBKicker || 'Path B · Special Arenas'}</p>
               <h2 className="join-special__title font-display font-bold text-ivory tracking-tight">
-                Scavengers.<br />
-                Country.<br />
-                <span className="text-gradient">Most Beautiful.</span>
+                {(page.pathBTitle || 'Scavengers.\nCountry.\nMost Beautiful.').split('\n').map((line, i, arr) => (
+                  <span key={i}>
+                    {i === arr.length - 1 ? <span className="text-gradient">{line}</span> : line}
+                    {i < arr.length - 1 && <br />}
+                  </span>
+                ))}
               </h2>
               <p className="join-special__lede">
-                Parallel doors into the Dynasty — filled on their own form, with their own fire.
+                {page.pathBBody || 'Parallel doors into the Dynasty — filled on their own form, with their own fire.'}
               </p>
               <button
                 type="button"
@@ -356,7 +360,7 @@ export default function HowToJoin() {
                 className="sec-cta"
                 style={{ background: 'linear-gradient(135deg, #6B3FA0, #FF6B1A)' }}
               >
-                Apply for special battle
+                {page.pathBButton || 'Apply for special battle'}
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </button>
 
@@ -379,7 +383,7 @@ export default function HowToJoin() {
       {/* ═══ Closing invitation ═══ */}
       <section className="join-close">
         <img
-          src="/battles-photos/champion-of-champions.jpg"
+          src={page.closingImage || '/photos/victory-celebration.jpg'}
           alt=""
           className="join-close__img"
           aria-hidden
@@ -389,10 +393,15 @@ export default function HowToJoin() {
           <Motion delay={60}>
             <p className="sec-kicker mb-5">The Invitation</p>
             <h2 className="join-close__title font-display font-bold text-ivory tracking-tight">
-              Enter the <span className="text-gradient">Dynasty</span>
+              {(page.closingTitle || 'Enter the Dynasty').includes('Dynasty') ? (
+                <>
+                  {(page.closingTitle || 'Enter the Dynasty').split('Dynasty')[0]}
+                  <span className="text-gradient">Dynasty</span>
+                </>
+              ) : (page.closingTitle || 'Enter the Dynasty')}
             </h2>
             <p className="join-close__lede">
-              Bring your taps, your faith, and your fire. The arena is waiting.
+              {page.closingBody || 'Bring your taps, your faith, and your fire. The arena is waiting.'}
             </p>
             <button type="button" onClick={openOfficial} className="sec-cta">
               {settings.ctaLabel || 'Join My Box Battle'}

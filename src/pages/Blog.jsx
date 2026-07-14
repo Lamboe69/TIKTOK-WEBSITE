@@ -6,7 +6,8 @@ import { useContent } from '../cms/ContentContext'
 import './morePages.css'
 
 export default function Blog() {
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('blog')
   const posts = collections.blogPosts?.length ? collections.blogPosts : fallbackPosts
   const categories = collections.blogCategories?.length
@@ -22,13 +23,13 @@ export default function Blog() {
       {/* Hero — Press Folio */}
       <section className="blog-hero" aria-label="Dynasty Blog">
         <div className="blog-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/battle-highlights.jpg'} alt="" />
+          <img src={page.heroImage || '/photos/blog-writing.jpg'} alt="" />
           <div className="blog-hero__veil" />
         </div>
         <div className="blog-hero__folio">
           <Motion delay={60}>
             <div className="blog-hero__rule">
-              <p className="blog-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+              <p className="blog-hero__brand">{page.heroBrand || siteName}</p>
             </div>
             <h1 className="blog-hero__title">{page.heroTitle || 'Blog'}</h1>
             <p className="blog-hero__lede">

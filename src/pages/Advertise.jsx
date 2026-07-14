@@ -26,7 +26,7 @@ const fallbackPackages = [
     availability: 'limited',
     availabilityNote: '1 slot at a time',
     features: [
-      'Rotating banner on kmDynasty.com',
+      'Rotating banner on this site',
       'Seen by every site visitor',
       'Link out to your campaign',
     ],
@@ -81,12 +81,21 @@ export default function Advertise() {
   const [submitting, setSubmitting] = useState(false)
   const [active, setActive] = useState(0)
   const { stats } = useTikTokStats()
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('advertise')
   const packages = collections.adPackages?.length
     ? normalizeAdPackages(collections.adPackages)
     : fallbackPackages
   const pack = packages[active] || packages[0]
+  const boardKicker = page.boardKicker || 'Airtime board'
+  const boardTitle = page.boardTitle || 'Choose your slot'
+  const boardSubtitle = page.boardSubtitle || 'Four placements. One brief. Pricing confirmed after we review.'
+  const briefKicker = page.briefKicker || 'Production brief'
+  const briefTitle = page.briefTitle || 'Tell us what you want on air'
+  const briefSubtitle = page.briefSubtitle || 'Share your brand, placement, and campaign goals. We reply within 1–2 business days — then lock pricing and PayPal payment.'
+  const formSubmitLabel = page.formSubmitLabel || 'Send brief'
+  const formHint = page.formHint || 'Confirmed packages settle via PayPal after approval.'
 
   const update = (field) => (e) => setForm({ ...form, [field]: e.target.value })
 
@@ -111,9 +120,9 @@ export default function Advertise() {
   return (
     <main className="prime-page">
       {/* Hero — Prime Time Marquee */}
-      <section className="prime-hero" aria-label="Advertise with KM Dynasty">
+      <section className="prime-hero" aria-label={`Advertise with ${siteName}`}>
         <div className="prime-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/scavengers-battle.jpg'} alt="" className="prime-hero__photo" />
+          <img src={page.heroImage || '/photos/business-ads.jpg'} alt="" className="prime-hero__photo" />
           <div className="prime-hero__grain" />
           <div className="prime-hero__veil" />
         </div>
@@ -137,7 +146,7 @@ export default function Advertise() {
 
         <div className="prime-hero__marquee">
           <Motion delay={50} className="prime-hero__lockup">
-            <p className="prime-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="prime-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="prime-hero__title">{page.heroTitle || 'Advertise'}</h1>
             <p className="prime-hero__lede">
               {page.heroLede ||
@@ -164,11 +173,9 @@ export default function Advertise() {
       <section id="airtime-board" className="prime-board">
         <div className="prime-pad">
           <Motion delay={40} className="prime-board__head">
-            <p className="prime-kicker">Airtime board</p>
-            <h2>
-              Choose your <span className="text-gradient">slot</span>
-            </h2>
-            <p>Four placements. One brief. Pricing confirmed after we review.</p>
+            <p className="prime-kicker">{boardKicker}</p>
+              <h2>{boardTitle}</h2>
+              <p>{boardSubtitle}</p>
           </Motion>
 
           <div className="prime-board__stage">
@@ -233,14 +240,9 @@ export default function Advertise() {
       <section id="inquiry-form" className="prime-brief scroll-mt-24">
         <div className="prime-brief__grid prime-pad">
           <Motion delay={40} className="prime-brief__aside">
-            <p className="prime-kicker">Production brief</p>
-            <h2>
-              Tell us what you want <span className="text-gradient">on air</span>
-            </h2>
-            <p>
-              Share your brand, placement, and campaign goals. We reply within 1–2 business days —
-              then lock pricing and PayPal payment.
-            </p>
+            <p className="prime-kicker">{briefKicker}</p>
+            <h2>{briefTitle}</h2>
+            <p>{briefSubtitle}</p>
             <div className="prime-brief__meta" aria-hidden>
               <span>01 · Brand</span>
               <span>02 · Placement</span>
@@ -255,7 +257,7 @@ export default function Advertise() {
                   <span className="w-6 h-6 block">{Icons.check}</span>
                 </div>
                 <h3>Brief received</h3>
-                <p>The KM Dynasty team will get back to you within 1–2 business days.</p>
+                <p>The {siteName} team will get back to you within 1–2 business days.</p>
                 <Link to="/" className="prime-cta">
                   Back to home
                 </Link>
@@ -337,11 +339,11 @@ export default function Advertise() {
                   </div>
 
                   <button type="submit" disabled={submitting} className="prime-cta prime-cta--wide">
-                    {submitting ? 'Sending…' : 'Send brief'}
+                    {submitting ? 'Sending…' : formSubmitLabel}
                     <span className="w-4 h-4 block">{Icons.arrowRight}</span>
                   </button>
                   <p className="prime-form__hint">
-                    Confirmed packages settle via PayPal after approval.
+                    {formHint}
                   </p>
                 </form>
               </Motion>

@@ -7,7 +7,7 @@ import { useContent } from '../cms/ContentContext'
 import { getTodayQuoteFromList } from '../cms/normalize'
 import './morePages.css'
 
-function generateQuoteImage(quote, day) {
+function generateQuoteImage(quote, day, siteName) {
   const canvas = document.createElement('canvas')
   canvas.width = 1080
   canvas.height = 1920
@@ -37,16 +37,16 @@ function generateQuoteImage(quote, day) {
   ctx.fillText(line.trim(), 540, y)
   ctx.fillStyle = 'rgba(255,255,255,0.4)'
   ctx.font = 'bold 28px sans-serif'
-  ctx.fillText('KM DYNASTY', 540, 1700)
+  ctx.fillText(siteName || 'KM DYNASTY', 540, 1700)
   return canvas
 }
 
-function shareQuote(quote, day) {
-  const canvas = generateQuoteImage(quote, day)
+function shareQuote(quote, day, siteName) {
+  const canvas = generateQuoteImage(quote, day, siteName)
   canvas.toBlob(async (blob) => {
     const file = new File([blob], `km-quote-${day.toLowerCase()}.png`, { type: 'image/png' })
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: `KM DYNASTY — ${day}'s Quote` }) } catch {}
+      try { await navigator.share({ files: [file], title: `${siteName || 'KM DYNASTY'} — ${day}'s Quote` }) } catch {}
     } else {
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -56,7 +56,7 @@ function shareQuote(quote, day) {
   })
 }
 
-function QuoteCard({ quote, isToday, index }) {
+function QuoteCard({ quote, isToday, index, siteName }) {
   const [copied, setCopied] = useState(false)
 
   const copy = () => {
@@ -98,7 +98,7 @@ function QuoteCard({ quote, isToday, index }) {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => shareQuote(quote.quote, quote.day)}
+            onClick={() => shareQuote(quote.quote, quote.day, siteName)}
             className="p-2 rounded-lg transition-all hover:scale-110"
             style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}
             title="Share as image"
@@ -123,8 +123,15 @@ function QuoteCard({ quote, isToday, index }) {
 }
 
 export default function DailyQuotes() {
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
   const page = getPage('quotes')
+  const siteName = settings.siteName || 'KM DYNASTY'
+
+  const reminderKicker = page.reminderKicker || 'Quick Reminder'
+  const reminderBody = page.reminderBody || 'Scavengers, Country, Most Beautiful — fill the form. Official Godsent — bring your taps and prayers.'
+  const meaningKicker = page.meaningKicker || 'Quotes Meaning'
+  const meaningTitle = page.meaningTitle || 'Daily KM Quotes'
+  const meaningImage = page.meaningImage || '/team/maker.jpg'
   const quotes = collections.quotes?.length ? collections.quotes : fallbackQuotes
   const today = getTodayQuoteFromList(quotes) || fallbackToday()
   const { openSpecial } = useSignUp()
@@ -132,9 +139,9 @@ export default function DailyQuotes() {
   return (
     <main>
       {/* Hero — Quote Reliquary */}
-      <section className="quotes-hero" aria-label="Daily KM Quotes">
+      <section className="quotes-hero" aria-label="Daily Quotes">
         <div className="quotes-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/battle-highlights.jpg'} alt="" />
+          <img src={page.heroImage || '/photos/quote-inspire.jpg'} alt="" />
           <div className="quotes-hero__veil" />
         </div>
         <div className="quotes-hero__marks" aria-hidden>
@@ -143,7 +150,7 @@ export default function DailyQuotes() {
         </div>
         <div className="quotes-hero__core">
           <Motion delay={60}>
-            <p className="quotes-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="quotes-hero__brand">{page.heroBrand || siteName}</p>
             <p className="quotes-hero__day">{today.day}</p>
             <blockquote className="quotes-hero__quote">“{today.quote}”</blockquote>
             <h1 className="quotes-hero__title">{page.heroTitle || 'Daily Quotes'}</h1>
@@ -163,9 +170,9 @@ export default function DailyQuotes() {
           <Motion delay={0.1}>
             <div className="rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4" style={{ background: 'rgba(232,185,74,0.08)', border: '1px solid rgba(232,185,74,0.15)' }}>
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider mb-1 text-ember">Quick Reminder</p>
+                <p className="text-xs font-bold uppercase tracking-wider mb-1 text-ember">{reminderKicker}</p>
                 <p className="text-white/70 text-sm">
-                  Scavengers, Country, Most Beautiful — fill the form. Official Godsent — bring your taps and prayers.
+                  {reminderBody}
                 </p>
               </div>
               <button
@@ -185,7 +192,7 @@ export default function DailyQuotes() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {quotes.map((q, i) => (
-              <QuoteCard key={q.day} quote={q} isToday={q.day === today.day} index={i} />
+              <QuoteCard key={q.day} quote={q} isToday={q.day === today.day} index={i} siteName={siteName} />
             ))}
           </div>
         </div>
@@ -198,7 +205,7 @@ export default function DailyQuotes() {
             <Motion delay={0.1}>
               <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
                 <img
-                  src="/team/maker.jpg"
+                  src={meaningImage}
                   alt="Brand strategy"
                   className="w-full h-full object-cover"
                 />
@@ -208,10 +215,10 @@ export default function DailyQuotes() {
             <div>
               <Motion delay={0.15}>
                 <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                  Quotes Meaning
+                  {meaningKicker}
                 </span>
                 <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4 leading-tight">
-                  Daily KM <span className="text-gradient">Quotes</span>
+                  {meaningTitle}
                 </h2>
               </Motion>
               <Motion delay={0.2}>

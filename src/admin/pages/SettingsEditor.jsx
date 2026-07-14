@@ -4,6 +4,14 @@ import { saveContent, saveSettings, uploadImage, useContent } from '../../cms/Co
 import { SETTINGS_FIELDS } from '../../cms/schema'
 import { AdminPage } from '../AdminLayout'
 
+const SECTIONS = [
+  { title: 'Brand & Identity', keys: ['siteName', 'tagline', 'ctaLabel'] },
+  { title: 'Contact Information', keys: ['email', 'phoneUS', 'phoneUG', 'location'] },
+  { title: 'Footer Text', keys: ['copyright', 'disclaimer'] },
+  { title: 'Social Media', keys: ['tiktokHandle', 'tiktokUrl', 'instagramUrl', 'youtubeUrl', 'whatsappUrl', 'facebookUrl', 'twitchUrl'] },
+  { title: 'Payments', keys: ['paypalEmail'] },
+]
+
 export default function SettingsEditor() {
   const { content, loading, refresh } = useContent()
   const [draft, setDraft] = useState(null)
@@ -36,10 +44,12 @@ export default function SettingsEditor() {
     }
   }
 
+  const fieldMap = Object.fromEntries(SETTINGS_FIELDS.map((f) => [f.key, f]))
+
   return (
     <AdminPage
       title="Site settings"
-      lede="Global brand, contact, and CTA defaults."
+      lede="Global brand, contact, social, and footer defaults. Changes here update the navbar, footer, and everywhere the site name appears."
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <button className="admin-btn" type="button" disabled={busy} onClick={save}>
@@ -52,25 +62,34 @@ export default function SettingsEditor() {
       }
     >
       <form className="admin-form" onSubmit={save}>
-        {SETTINGS_FIELDS.map((field) =>
-          field.type === 'textarea' ? (
-            <div className="admin-field" key={field.key}>
-              <label>{field.label}</label>
-              <textarea
-                value={draft[field.key] || ''}
-                onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
-              />
-            </div>
-          ) : (
-            <div className="admin-field" key={field.key}>
-              <label>{field.label}</label>
-              <input
-                value={draft[field.key] || ''}
-                onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
-              />
-            </div>
-          ),
-        )}
+        {SECTIONS.map((section) => (
+          <div key={section.title} style={{ marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              {section.title}
+            </h3>
+            {section.keys.map((key) => {
+              const field = fieldMap[key]
+              if (!field) return null
+              return field.type === 'textarea' ? (
+                <div className="admin-field" key={field.key}>
+                  <label>{field.label}</label>
+                  <textarea
+                    value={draft[field.key] || ''}
+                    onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+                  />
+                </div>
+              ) : (
+                <div className="admin-field" key={field.key}>
+                  <label>{field.label}</label>
+                  <input
+                    value={draft[field.key] || ''}
+                    onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+                  />
+                </div>
+              )
+            })}
+          </div>
+        ))}
       </form>
       {toast ? <div className="admin-toast">{toast}</div> : null}
     </AdminPage>

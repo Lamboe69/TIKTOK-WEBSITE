@@ -29,13 +29,16 @@ export default function PageEditor() {
 
   if (loading || !draft) {
     return (
-      <AdminPage title={pageSchema.label} lede="Hero wording and imagery for this page.">
+      <AdminPage title={pageSchema.label} lede="Edit this page's content.">
         <p className="lede">Loading…</p>
       </AdminPage>
     )
   }
 
   const media = content?.collections?.mediaLibrary || []
+
+  const heroFields = pageSchema.fields.filter((f) => f.key.startsWith('hero'))
+  const bodyFields = pageSchema.fields.filter((f) => !f.key.startsWith('hero'))
 
   const save = async (e) => {
     e.preventDefault()
@@ -51,10 +54,80 @@ export default function PageEditor() {
     }
   }
 
+  const renderField = (field) => {
+    if (field.type === 'image') {
+      return (
+        <div className="admin-field" key={field.key}>
+          <label>{field.label}</label>
+          <div className="admin-image-row">
+            {draft[field.key] ? <img src={draft[field.key]} alt="" /> : <div />}
+            <div>
+              <input
+                value={draft[field.key] || ''}
+                onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+              />
+              <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                <label className="admin-btn admin-btn--ghost" style={{ cursor: 'pointer' }}>
+                  Upload
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0]
+                      if (!file) return
+                      const { path } = await uploadImage(file)
+                      setDraft((d) => ({ ...d, [field.key]: path }))
+                    }}
+                  />
+                </label>
+                <select
+                  value=""
+                  onChange={(e) => {
+                    if (e.target.value) setDraft({ ...draft, [field.key]: e.target.value })
+                  }}
+                >
+                  <option value="">Pick from library…</option>
+                  {media.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (field.type === 'textarea') {
+      return (
+        <div className="admin-field" key={field.key}>
+          <label>{field.label}</label>
+          <textarea
+            value={draft[field.key] || ''}
+            onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+          />
+        </div>
+      )
+    }
+
+    return (
+      <div className="admin-field" key={field.key}>
+        <label>{field.label}</label>
+        <input
+          value={draft[field.key] || ''}
+          onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+        />
+      </div>
+    )
+  }
+
   return (
     <AdminPage
       title={pageSchema.label}
-      lede="Hero wording and imagery for this page."
+      lede="Edit hero and body content for this page."
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <button className="admin-btn" type="button" disabled={busy} onClick={save}>
@@ -67,75 +140,25 @@ export default function PageEditor() {
       }
     >
       <form className="admin-form" onSubmit={save}>
-        {pageSchema.fields.map((field) => {
-          if (field.type === 'image') {
-            return (
-              <div className="admin-field" key={field.key}>
-                <label>{field.label}</label>
-                <div className="admin-image-row">
-                  {draft[field.key] ? <img src={draft[field.key]} alt="" /> : <div />}
-                  <div>
-                    <input
-                      value={draft[field.key] || ''}
-                      onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
-                    />
-                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-                      <label className="admin-btn admin-btn--ghost" style={{ cursor: 'pointer' }}>
-                        Upload
-                        <input
-                          type="file"
-                          accept="image/*"
-                          hidden
-                          onChange={async (e) => {
-                            const file = e.target.files?.[0]
-                            if (!file) return
-                            const { path } = await uploadImage(file)
-                            setDraft((d) => ({ ...d, [field.key]: path }))
-                          }}
-                        />
-                      </label>
-                      <select
-                        value=""
-                        onChange={(e) => {
-                          if (e.target.value) setDraft({ ...draft, [field.key]: e.target.value })
-                        }}
-                      >
-                        <option value="">Pick from library…</option>
-                        {media.map((m) => (
-                          <option key={m} value={m}>
-                            {m}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )
-          }
-
-          if (field.type === 'textarea') {
-            return (
-              <div className="admin-field" key={field.key}>
-                <label>{field.label}</label>
-                <textarea
-                  value={draft[field.key] || ''}
-                  onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
-                />
-              </div>
-            )
-          }
-
-          return (
-            <div className="admin-field" key={field.key}>
-              <label>{field.label}</label>
-              <input
-                value={draft[field.key] || ''}
-                onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
-              />
-            </div>
-          )
-        })}
+        {heroFields.length > 0 && (
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Hero Section
+            </h3>
+            {heroFields.map(renderField)}
+          </div>
+        )}
+        {bodyFields.length > 0 && (
+          <div style={{ marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Body Content
+            </h3>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '1rem' }}>
+              Edit the text copy on this page. Leave blank to use defaults.
+            </p>
+            {bodyFields.map(renderField)}
+          </div>
+        )}
       </form>
       {toast ? <div className="admin-toast">{toast}</div> : null}
     </AdminPage>

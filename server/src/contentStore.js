@@ -19,6 +19,11 @@ export const ITEM_COLLECTIONS = [
   'howItWorks',
   'battleCatalog',
   'contactLines',
+  'navLinks',
+  'navMoreLinks',
+  'footerExploreLinks',
+  'footerCommunityLinks',
+  'footerSupportLinks',
 ]
 
 export const BLOB_COLLECTIONS = [

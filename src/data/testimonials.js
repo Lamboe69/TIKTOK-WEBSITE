@@ -12,7 +12,7 @@ const testimonials = [
     handle: '@diamondprincess42',
     url: 'https://www.tiktok.com/@diamondprincess42',
     photo: '/testimonials/diamond.jpg',
-    text: 'Since joining KM Dynasty Box Battles, my life has completely changed. I got to 20,000 followers and the income from competing allowed me to get my own apartment, a new iPhone, and my dream streaming setup. I never imagined TikTok could do all of this.',
+    text: 'Since joining the Dynasty Box Battles, my life has completely changed. I got to 20,000 followers and the income from competing allowed me to get my own apartment, a new iPhone, and my dream streaming setup. I never imagined TikTok could do all of this.',
   },
   {
     name: 'Caesar',

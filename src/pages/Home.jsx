@@ -14,7 +14,6 @@ export default function Home() {
     <main>
       <Hero />
       <StatBar />
-      <SectionDivider spacing="sm" />
       <HowItWorks />
       <BattleTypes />
       <KmLovers />

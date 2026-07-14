@@ -70,7 +70,7 @@ export function downloadICS(battle) {
   const ics = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//KM DYNASTY//Battle Schedule//EN',
+    'PRODID:-//Dynasty//Battle Schedule//EN',
     'BEGIN:VEVENT',
     `DTSTART:${fmt(date)}`,
     `DTEND:${fmt(end)}`,

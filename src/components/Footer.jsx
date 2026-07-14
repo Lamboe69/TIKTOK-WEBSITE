@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
 import { useContent } from '../cms/ContentContext'
 
-const columns = {
+const defaultColumns = {
   explore: [
     { to: '/', label: 'Home' },
     { to: '/how-to-join', label: 'How to Join' },
@@ -28,15 +28,6 @@ const columns = {
   ],
 }
 
-const socials = [
-  { href: 'https://www.tiktok.com/@kingmakernevergivesup', icon: 'tiktok', label: 'TikTok', highlight: true },
-  { href: '#', icon: 'instagram', label: 'Instagram', comingSoon: true },
-  { href: '#', icon: 'youtube', label: 'YouTube', comingSoon: true },
-  { href: '#', icon: 'whatsapp', label: 'WhatsApp', comingSoon: true },
-  { href: '#', icon: 'facebook', label: 'Facebook', comingSoon: true },
-  { href: '#', icon: 'twitch', label: 'Twitch', comingSoon: true },
-]
-
 function LinkColumn({ title, links }) {
   const { pathname } = useLocation()
   return (
@@ -59,20 +50,39 @@ function LinkColumn({ title, links }) {
 }
 
 export default function Footer() {
-  const { settings } = useContent()
+  const { settings, collections } = useContent()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
   const phoneUS = settings.phoneUS || '+1 (469) 664-1195'
   const phoneUG = settings.phoneUG || '+256-200-947-070'
-  const tiktokUrl = settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'
   const siteName = settings.siteName || 'KM DYNASTY'
   const tagline = settings.tagline || "The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise."
+  const location = settings.location || 'Dallas, Texas, USA'
+  const copyright = settings.copyright || `${siteName}. All rights reserved.`
+  const disclaimer = settings.disclaimer || 'Independent fan/community platform. Not affiliated with TikTok or ByteDance.'
+
+  const columns = {
+    explore: collections.footerExploreLinks?.length ? collections.footerExploreLinks : defaultColumns.explore,
+    community: collections.footerCommunityLinks?.length ? collections.footerCommunityLinks : defaultColumns.community,
+    support: collections.footerSupportLinks?.length ? collections.footerSupportLinks : defaultColumns.support,
+  }
+
+  const tiktokUrl = settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'
+  const paypalEmail = settings.paypalEmail || ''
+  const socials = [
+    { href: tiktokUrl, icon: 'tiktok', label: 'TikTok', highlight: true },
+    { href: settings.instagramUrl || '#', icon: 'instagram', label: 'Instagram', comingSoon: !settings.instagramUrl },
+    { href: settings.youtubeUrl || '#', icon: 'youtube', label: 'YouTube', comingSoon: !settings.youtubeUrl },
+    { href: settings.whatsappUrl || '#', icon: 'whatsapp', label: 'WhatsApp', comingSoon: !settings.whatsappUrl },
+    { href: settings.facebookUrl || '#', icon: 'facebook', label: 'Facebook', comingSoon: !settings.facebookUrl },
+    { href: settings.twitchUrl || '#', icon: 'twitch', label: 'Twitch', comingSoon: !settings.twitchUrl },
+  ]
 
   const handleSubscribe = (e) => {
     e.preventDefault()
     if (!email) return
-    const subject = encodeURIComponent('KM DYNASTY — Newsletter')
+    const subject = encodeURIComponent(`${siteName} — Newsletter`)
     const body = encodeURIComponent(`New subscriber: ${email}`)
     window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`
     setSubscribed(true)
@@ -95,7 +105,7 @@ export default function Footer() {
               </span>
               <div className="leading-none">
                 <span className="block font-display font-bold text-sm text-ivory tracking-widest">{siteName}</span>
-                <span className="block font-body text-[9px] text-white/30 tracking-[0.2em] uppercase">Godsent Box Battles</span>
+                <span className="block font-body text-[9px] text-white/30 tracking-[0.2em] uppercase">{tagline.split('.')[0]}</span>
               </div>
             </Link>
             {/* Ember accent bar */}
@@ -113,6 +123,21 @@ export default function Footer() {
               <span className="w-5 h-5 block rounded-sm overflow-hidden shrink-0">{Icons.tiktok}</span>
               Follow King Maker
             </a>
+            <form action="https://www.paypal.com/donate" method="post" target="_blank" className="mt-3" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+                <input type="hidden" name="business" value={paypalEmail} />
+                <input type="hidden" name="no_recurring" value="0" />
+                <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+                <input type="hidden" name="currency_code" value="USD" />
+                <input type="hidden" name="amount" value="" />
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+                  style={{ background: 'linear-gradient(135deg, #0070BA, #005ea6)' }}
+                >
+                  <span className="w-4 h-4 block">{Icons.heart}</span>
+                  Donate with PayPal
+                </button>
+              </form>
           </div>
 
           <LinkColumn title="Explore" links={columns.explore} />
@@ -143,7 +168,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2 text-sm text-white/40">
                 <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.mapPin}</span>
-                Dallas, Texas, USA
+                {location}
               </li>
             </ul>
           </div>
@@ -229,7 +254,7 @@ export default function Footer() {
         <div className="border-t border-white/04 pt-4">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
             <p className="text-white/25 text-xs">
-              &copy; {new Date().getFullYear()} KM DYNASTY. All rights reserved.
+              &copy; {new Date().getFullYear()} {copyright}
             </p>
             <p className="text-white/25 text-xs">
               Want to reach our audience?{' '}
@@ -239,7 +264,7 @@ export default function Footer() {
             </p>
           </div>
           <p className="text-white/15 text-[10px] text-center mt-2">
-            Independent fan/community platform. Not affiliated with TikTok or ByteDance.
+            {disclaimer}
           </p>
         </div>
       </div>

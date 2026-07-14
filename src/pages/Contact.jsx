@@ -10,7 +10,7 @@ const FORMSPREE_CONTACT = ''
 const topics = [
   {
     title: 'General Question',
-    desc: 'Ask anything about KM DYNASTY',
+    desc: 'Ask anything about the Dynasty',
     value: 'General Question',
   },
   {
@@ -39,7 +39,14 @@ const fallbackLines = [
 
 export default function Contact() {
   const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('contact')
+  const formHeading = page.formHeading || 'Write to us'
+  const formSubtitle = page.formSubtitle || 'Two steps — pick a topic, then fill in your details. We reply within 1–2 business days.'
+  const formSubmitLabel = page.formSubmitLabel || 'Send message'
+  const hqTitle = page.hqTitle || 'Headquarters'
+  const hqCity = page.hqCity || 'Dallas, Texas'
+  const hqDescription = page.hqDescription || "Dual lines across the US and Uganda — La'Gwat Agency."
   const lines = useMemo(() => {
     if (collections.contactLines?.length) {
       return collections.contactLines.map((l) => ({
@@ -90,7 +97,7 @@ export default function Contact() {
         })
       } catch { /* ignore */ }
     } else {
-      const subject = encodeURIComponent(`KM DYNASTY Contact — ${selected.value} — ${form.name}`)
+      const subject = encodeURIComponent(`${siteName} Contact — ${selected.value} — ${form.name}`)
       const body = encodeURIComponent(
         `Name: ${form.name}\nEmail: ${form.email}\nReason: ${selected.value}\n\n${form.message}`,
       )
@@ -105,10 +112,10 @@ export default function Contact() {
   return (
     <main className="contact-page">
       {/* Hero — Call Cut: full-bleed photo punched through the word */}
-      <section className="contact-hero" aria-label="Contact KM Dynasty">
+      <section className="contact-hero" aria-label={`Contact ${siteName}`}>
         <div className="contact-hero__media" aria-hidden>
           <img
-            src={page.heroImage || '/photos/team-dallas.jpg'}
+            src={page.heroImage || '/photos/contact-message.jpg'}
             alt=""
             className="contact-hero__photo"
           />
@@ -123,13 +130,13 @@ export default function Contact() {
 
         <div className="contact-hero__punch" aria-hidden>
           <div className="contact-hero__punch-ink">
-            <p className="contact-hero__punch-word">DYNASTY</p>
+            <p className="contact-hero__punch-word">CONNECT</p>
           </div>
         </div>
 
         <div className="contact-hero__stage">
           <Motion delay={50} className="contact-hero__top">
-            <p className="contact-hero__brand">{page.heroBrand || settings.siteName || 'KM DYNASTY'}</p>
+            <p className="contact-hero__brand">{page.heroBrand || siteName}</p>
           </Motion>
 
           <div className="contact-hero__cut-spacer" aria-hidden />
@@ -170,10 +177,10 @@ export default function Contact() {
       <section id="contact-write" className="contact-write">
         <Motion delay={40} className="contact-pad contact-write__head">
           <h2 className="contact-write__heading">
-            Write to <span className="text-gradient">us</span>
+            {formHeading}
           </h2>
           <p className="contact-write__sub">
-            Two steps — pick a topic, then fill in your details. We reply within 1–2 business days.
+            {formSubtitle}
           </p>
         </Motion>
 
@@ -281,7 +288,7 @@ export default function Contact() {
                     Sends to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
                   </p>
                   <button type="submit" disabled={submitting} className="contact-btn contact-btn--wide">
-                    {submitting ? 'Sending…' : 'Send message'}
+                    {submitting ? 'Sending…' : formSubmitLabel}
                     <span className="w-4 h-4 block">{Icons.arrowRight}</span>
                   </button>
                 </div>
@@ -294,7 +301,7 @@ export default function Contact() {
       {/* Map / HQ */}
       <section className="contact-hq" aria-label="Location">
         <iframe
-          title="KM DYNASTY — Dallas, Texas"
+          title={`${siteName} — Dallas, Texas`}
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107440.60493614768!2d-96.844958!3d32.78761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c197d8735a3a9%3A0x7e7a2b70e7a6a2a7!2sDallas%2C%20TX!5e0!3m2!1sen!2sus!4v1"
           allowFullScreen
           loading="lazy"
@@ -302,9 +309,9 @@ export default function Contact() {
         />
         <div className="contact-hq__veil" aria-hidden />
         <Motion delay={50} className="contact-hq__panel">
-          <p className="contact-hq__label">Headquarters</p>
-          <h2>Dallas, Texas</h2>
-          <p>Dual lines across the US and Uganda — La&apos;Gwat Agency.</p>
+          <p className="contact-hq__label">{hqTitle}</p>
+          <h2>{hqCity}</h2>
+          <p>{hqDescription}</p>
           <div className="contact-hq__links">
             <a href="tel:+14696641195">+1 (469) 664-1195</a>
             <a href="tel:+256200947070">+256-200-947-070</a>

@@ -1,34 +1,40 @@
 import { Link } from 'react-router-dom'
 import { Icons } from '../components/Icons'
 import Motion from '../components/Motion'
+import { useContent } from '../cms/ContentContext'
 
-const sections = [
-  {
-    title: 'Information We Collect',
-    body: 'We collect information you provide directly to us, such as when you fill out a contact form, join a box battle, or communicate with us. This may include your name, email address, and any other information you choose to provide.',
-  },
-  {
-    title: 'How We Use Your Information',
-    body: 'We use the information we collect to respond to your inquiries, provide you with information about KM DYNASTY events and battles, and improve our services.',
-  },
-  {
-    title: 'Third-Party Services',
-    body: 'Our site may contain links to third-party services (TikTok, Google Forms). We are not responsible for the privacy practices of these external services. We encourage you to review their privacy policies.',
-  },
-  {
-    title: 'Contact Us',
-    body: null,
-    email: 'lagwatinc@gmail.com',
-  },
-]
+function getSections(siteName) {
+  return [
+    {
+      title: 'Information We Collect',
+      body: 'We collect information you provide directly to us, such as when you fill out a contact form, join a box battle, or communicate with us. This may include your name, email address, and any other information you choose to provide.',
+    },
+    {
+      title: 'How We Use Your Information',
+      body: `We use the information we collect to respond to your inquiries, provide you with information about ${siteName} events and battles, and improve our services.`,
+    },
+    {
+      title: 'Third-Party Services',
+      body: 'Our site may contain links to third-party services (TikTok, Google Forms). We are not responsible for the privacy practices of these external services. We encourage you to review their privacy policies.',
+    },
+    {
+      title: 'Contact Us',
+      body: null,
+      email: 'lagwatinc@gmail.com',
+    },
+  ]
+}
 
 export default function Privacy() {
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const sections = getSections(siteName)
   return (
     <main>
       {/* Hero */}
       <section className="relative min-h-[360px] flex items-end pb-14 overflow-hidden" style={{ background: '#120620' }}>
         <img
-          src="/photos/team-dallas.jpg"
+          src="/photos/about-team.jpg"
           alt="Privacy Policy"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />
@@ -52,7 +58,7 @@ export default function Privacy() {
           <Motion delay={0.1}>
             <div className="rounded-2xl p-8 border border-white/08 space-y-8" style={{ background: 'rgba(59,16,99,0.25)' }}>
               <p className="text-white/60 text-sm leading-relaxed">
-                KM DYNASTY ("we," "our," or "us") operates the KM DYNASTY website. This page informs you of our policies
+                {siteName} ("we," "our," or "us") operates the {siteName} website. This page informs you of our policies
                 regarding the collection, use, and disclosure of personal information when you use our service.
               </p>
 

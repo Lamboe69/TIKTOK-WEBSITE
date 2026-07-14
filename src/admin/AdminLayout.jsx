@@ -25,6 +25,8 @@ function useAuthGate() {
 
 export function AdminLogin() {
   const nav = useNavigate()
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -56,7 +58,7 @@ export function AdminLogin() {
   return (
     <div className="admin-root admin-login">
       <form className="admin-login__card" onSubmit={submit}>
-        <p className="admin-login__brand">KM Dynasty</p>
+        <p className="admin-login__brand">{siteName}</p>
         <p className="admin-login__sub">
           Admin console — manage pages, copy, images, schedule, and more.
         </p>
@@ -98,7 +100,7 @@ function AdminShell() {
   const location = useLocation()
   const nav = useNavigate()
   const auth = useAuthGate()
-  const { refresh } = useContent()
+  const { settings, refresh } = useContent()
 
   useEffect(() => {
     document.documentElement.classList.add('admin-lock')
@@ -128,7 +130,7 @@ function AdminShell() {
     <div className="admin-root admin-shell">
       <aside className="admin-side">
         <Link to="/admin" className="admin-side__brand">
-          KM Admin
+          {(settings.siteName || 'KM DYNASTY')} Admin
         </Link>
         <div className="admin-side__scroll">
           <nav className="admin-side__nav">

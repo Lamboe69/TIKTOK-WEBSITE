@@ -4,13 +4,6 @@ import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
 import './About.css'
 
-const ticker = [
-  { em: '50K+', label: 'Followers' },
-  { em: '100+', label: 'Battles Hosted' },
-  { em: '50+', label: 'Winners Crowned' },
-  { em: '6', label: 'Global Regions' },
-]
-
 const chapters = [
   {
     n: 'Scene 01',
@@ -62,7 +55,7 @@ const cast = [
   {
     name: 'King Mufasa',
     role: 'General Manager',
-    tag: 'KM DYNASTY Management',
+    tag: 'Dynasty Management',
     url: 'https://www.tiktok.com/@kingmufasa781',
     photo: '/team/mufasa.jpg',
   },
@@ -70,28 +63,39 @@ const cast = [
 
 export default function About() {
   const { getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('about')
-  const tickerLoop = [...ticker, ...ticker]
+  const statsRaw = page.stats || '50K+ | Followers\n100+ | Battles Hosted\n50+ | Winners Crowned\n6 | Global Regions'
+  const stats = statsRaw.split('\n').filter(Boolean).map(line => {
+    const [value, label] = line.split('|').map(s => s.trim())
+    return { value, label }
+  })
+  const reelHeading = page.reelHeading || 'Four scenes. One dynasty.'
+  const creedHeading = page.creedHeading || 'The Creed'
+  const castHeading = page.castHeading || 'Opening Credits'
+  const castDescription = page.castDescription || 'The hands that hold the crown.'
+  const endHeading = page.endHeading || 'Ready for the next frame?'
+  const tickerLoop = [...stats, ...stats]
 
   return (
     <main className="origin-page">
       {/* Hero — brand as photo-cut type (unique vs every other page) */}
-      <section className="origin-hero" aria-label="About KM Dynasty">
+      <section className="origin-hero" aria-label={`About ${siteName}`}>
         <div className="origin-hero__cut">
           <p className="origin-hero__cut-fill font-display" aria-hidden>
-            <span>KM</span>
-            <span>DYNASTY</span>
+            <span>{siteName.split(' ').length > 1 ? siteName.split(' ')[0] : siteName}</span>
+            <span>{siteName.split(' ').length > 1 ? siteName.split(' ').slice(1).join(' ') : ''}</span>
           </p>
           <p className="origin-hero__cut-stroke font-display" aria-hidden>
-            <span>KM</span>
-            <span>DYNASTY</span>
+            <span>{siteName.split(' ').length > 1 ? siteName.split(' ')[0] : siteName}</span>
+            <span>{siteName.split(' ').length > 1 ? siteName.split(' ').slice(1).join(' ') : ''}</span>
           </p>
         </div>
 
         <div className="origin-hero__footing">
           <Motion delay={80} className="origin-hero__footing-inner">
             <div className="origin-hero__footing-copy">
-              <p className="origin-hero__sr-brand">{page.heroBrand || settings.siteName || 'KM Dynasty'}</p>
+              <p className="origin-hero__sr-brand">{page.heroBrand || siteName}</p>
               <h1 className="origin-hero__about">{page.heroTitle || 'About'}</h1>
               <p className="origin-hero__lede">
                 {page.heroLede ||
@@ -118,7 +122,7 @@ export default function About() {
         <div className="origin-hero__ticker-track">
           {tickerLoop.map((t, i) => (
             <span key={`${t.label}-${i}`}>
-              <em>{t.em}</em>
+              <em>{t.value}</em>
               {t.label}
             </span>
           ))}
@@ -129,9 +133,9 @@ export default function About() {
       <section id="origin-reel" className="origin-reel">
         <Motion delay={40} className="origin-pad origin-reel__head">
           <h2>
-            Four scenes. <span className="text-gradient">One dynasty.</span>
+            {reelHeading.split('. ')[0]}. <span className="text-gradient">{reelHeading.split('. ').slice(1).join('. ')}</span>
           </h2>
-          <p>Scroll the reel — each frame is a chapter in the rise of KM DYNASTY.</p>
+          <p>Scroll the reel — each frame is a chapter in the rise of {siteName}.</p>
         </Motion>
 
         <div className="origin-chapters">
@@ -160,7 +164,7 @@ export default function About() {
       <section className="origin-creed" aria-label="What we stand for">
         <Motion delay={40} className="origin-pad origin-creed__intro">
           <h2>
-            The <span className="text-gradient">Creed</span>
+            {creedHeading.split(' ').slice(0, -1).join(' ')} <span className="text-gradient">{creedHeading.split(' ').slice(-1)}</span>
           </h2>
         </Motion>
         <div className="origin-creed__track">
@@ -177,9 +181,9 @@ export default function About() {
       <section className="origin-cast" aria-label="The team">
         <Motion delay={40} className="origin-pad origin-cast__head">
           <h2>
-            Opening <span className="text-gradient">Credits</span>
+            {castHeading.split(' ').slice(0, -1).join(' ')} <span className="text-gradient">{castHeading.split(' ').slice(-1)}</span>
           </h2>
-          <p>The hands that hold the crown.</p>
+          <p>{castDescription}</p>
         </Motion>
         <div className="origin-pad origin-cast__roll">
           {cast.map(({ name, role, tag, url, photo }, i) => (
@@ -207,12 +211,12 @@ export default function About() {
       {/* End title card */}
       <section className="origin-end">
         <div className="origin-end__bg" aria-hidden>
-          <img src="/battles-photos/daily-godsent.jpg" alt="" />
+          <img src="/photos/about-team.jpg" alt="" />
           <div className="origin-end__veil" />
         </div>
         <Motion delay={60} className="origin-end__inner">
-          <p className="origin-end__brand">KM DYNASTY</p>
-          <h2>Ready for the next frame?</h2>
+          <p className="origin-end__brand">{siteName}</p>
+          <h2>{endHeading}</h2>
           <div className="origin-end__actions">
             <a
               href="https://www.tiktok.com/@kingmakernevergivesup"

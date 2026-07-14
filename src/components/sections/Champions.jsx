@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
+import { useContent } from '../../cms/ContentContext'
 
 export default function Champions() {
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   return (
     <section className="relative min-h-[70vh] flex items-end overflow-hidden home-band-sep">
       <img
-        src="/photos/champion-crowning.jpg"
+        src="/photos/competition-energy.jpg"
         alt="Champion of Champions"
         className="absolute inset-0 w-full h-full object-cover scale-105"
       />
@@ -29,7 +32,7 @@ export default function Champions() {
             <span className="text-gradient">survive the finale</span>
           </h2>
           <p className="text-white/75 text-sm sm:text-base leading-relaxed max-w-md mb-10">
-            Winners from Official Godsent Box Battles collide in one KM DYNASTY finale — fierce, fast, respectful, community-first.
+            Winners from Official Godsent Box Battles collide in one {siteName} finale — fierce, fast, respectful, community-first.
           </p>
           <Link to="/how-to-join" className="sec-cta-ghost">
             See the Finale Path

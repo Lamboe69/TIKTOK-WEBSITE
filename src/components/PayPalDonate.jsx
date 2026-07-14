@@ -1,11 +1,26 @@
+import { useContent } from '../cms/ContentContext'
+
 export default function PayPalDonate({ variant = 'compact' }) {
-  const paypalEmail = 'YOUR_PAYPAL_EMAIL'
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const paypalEmail = settings.paypalEmail || ''
+
+  if (!paypalEmail) {
+    return (
+      <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
+        <h3 className="font-display font-bold text-lg text-dynasty-charcoal mb-2">
+          Support {siteName}
+        </h3>
+        <p className="text-xs text-gray-400 italic">Donations coming soon.</p>
+      </div>
+    )
+  }
 
   const form = (
     <form action="https://www.paypal.com/donate" method="post" target="_blank">
       <input type="hidden" name="business" value={paypalEmail} />
       <input type="hidden" name="no_recurring" value="0" />
-      <input type="hidden" name="item_name" value="KM DYNASTY Donation" />
+      <input type="hidden" name="item_name" value={`${siteName} Donation`} />
       <input type="hidden" name="currency_code" value="USD" />
       <input type="hidden" name="amount" value="" />
       <button
@@ -47,7 +62,7 @@ export default function PayPalDonate({ variant = 'compact' }) {
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm text-center">
       <h3 className="font-display font-bold text-lg text-dynasty-charcoal mb-2">
-        Support KM DYNASTY
+        Support {siteName}
       </h3>
       <p className="text-xs text-gray-500 mb-5 max-w-sm mx-auto">
         Your donations help keep the dynasty running — better battles, bigger prizes, stronger community.

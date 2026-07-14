@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
+import { useContent } from '../../cms/ContentContext'
 
 const previewCards = [
   {
@@ -10,12 +11,14 @@ const previewCards = [
   },
   {
     label: 'Homepage Banner',
-    description: 'Your brand featured on kmDynasty.com — seen by every visitor.',
+    description: 'Your brand featured on this site — seen by every visitor.',
     color: 'bg-dynasty-orange',
   },
 ]
 
 export default function AdvertiseSection() {
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   return (
     <section className="py-20 sm:py-28 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -25,7 +28,7 @@ export default function AdvertiseSection() {
             For Brands & Sponsors
           </div>
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-dynasty-charcoal mb-4">
-            Advertise With KM DYNASTY
+            Advertise With {siteName}
           </h2>
           <p className="text-gray-500 text-sm max-w-xl mx-auto">
             Reach a fast-growing, highly engaged livestream audience across the US, Canada, and beyond.

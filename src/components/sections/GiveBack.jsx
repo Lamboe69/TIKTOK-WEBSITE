@@ -1,14 +1,18 @@
 import { useState } from 'react'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
+import { useContent } from '../../cms/ContentContext'
 
 export default function GiveBack() {
+  const { settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const paypalEmail = settings.paypalEmail || ''
   const [form, setForm] = useState({ name: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    const subject = encodeURIComponent('KM DYNASTY — Request Support')
+    const subject = encodeURIComponent(`${siteName} — Request Support`)
     const body = encodeURIComponent(`Name: ${form.name}\n\n${form.message}`)
     window.location.href = `mailto:lagwatinc@gmail.com?subject=${subject}&body=${body}`
     setSubmitted(true)
@@ -22,7 +26,7 @@ export default function GiveBack() {
         {/* Story plane */}
         <div className="relative min-h-[320px]">
           <img
-            src="/testimonials/grace.jpg"
+            src="/photos/community-giving.jpg"
             alt="Community impact"
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -52,15 +56,20 @@ export default function GiveBack() {
               <p className="text-white/45 text-sm mb-5 max-w-sm leading-relaxed">
                 Help expand the Dynasty and support creators worldwide.
               </p>
-              <a
-                href="https://gofundme.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="sec-cta"
-              >
-                <span className="w-4 h-4 block">{Icons.heart}</span>
-                Donate on GoFundMe
-              </a>
+              <form action="https://www.paypal.com/donate" method="post" target="_blank" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+                  <input type="hidden" name="business" value={paypalEmail} />
+                  <input type="hidden" name="no_recurring" value="0" />
+                  <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+                  <input type="hidden" name="currency_code" value="USD" />
+                  <input type="hidden" name="amount" value="" />
+                  <button
+                    type="submit"
+                    className="sec-cta"
+                  >
+                    <span className="w-4 h-4 block">{Icons.heart}</span>
+                    Donate with PayPal
+                  </button>
+                </form>
             </div>
           </Motion>
 

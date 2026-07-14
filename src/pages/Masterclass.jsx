@@ -26,7 +26,8 @@ const weeks = [
 ]
 
 export default function Masterclass() {
-  const { collections, getPage } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const siteName = settings.siteName || 'KM DYNASTY'
   const page = getPage('masterclass')
   const tiers = useMemo(() => {
     const fromCms = normalizeMasterclassTiers(collections.masterclassTiers || [])
@@ -41,6 +42,19 @@ export default function Masterclass() {
       .filter(Boolean)
     return fromCms.length ? fromCms : fallbackTerms
   }, [collections.masterclassTerms])
+
+  const curriculumKicker = page.curriculumKicker || 'The Five Weeks'
+  const curriculumSubtitle = page.curriculumSubtitle || 'A curriculum built for the arena'
+  const tiersKicker = page.tiersKicker || 'Choose your fire'
+  const tiersTitle = page.tiersTitle || 'Three doors into the studio'
+  const tiersHint = page.tiersHint || 'Hover a path · claim your seat'
+  const termsKicker = page.termsKicker || 'Before you enrol'
+  const termsTitle = page.termsTitle || 'House rules'
+  const termsImage = page.termsImage || '/photos/king-maker-live.jpg'
+  const mcClosingKicker = page.closingKicker || 'The Invitation'
+  const mcClosingTitle = page.closingTitle || 'Start the transformation'
+  const mcClosingBody = page.closingBody || "Questions about which path fits? Reach out — we'll help you choose."
+  const mcClosingImage = page.closingImage || '/photos/champion-crowning.jpg'
 
   const [active, setActive] = useState(Math.min(1, Math.max(0, tiers.length - 1)))
   const [week, setWeek] = useState(0)
@@ -58,10 +72,10 @@ export default function Masterclass() {
   return (
     <main className="mc-page">
       {/* ═══ Hero — Five Flames ═══ */}
-      <section className="mc-hero" aria-label="KM Dynasty Masterclass">
+      <section className="mc-hero" aria-label={`${siteName} Masterclass`}>
         <div className="mc-hero__media" aria-hidden>
           <img
-            src={page.heroImage || '/photos/battle-highlights.jpg'}
+            src={page.heroImage || '/photos/learning-class.jpg'}
             alt=""
             className="mc-hero__photo"
           />
@@ -86,7 +100,7 @@ export default function Masterclass() {
 
         <div className="mc-hero__core">
           <Motion delay={50} className="mc-hero__copy">
-            <p className="mc-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="mc-hero__brand">{page.heroBrand || siteName}</p>
             <h1 className="mc-hero__title">{page.heroTitle || 'Masterclass'}</h1>
             <p className="mc-hero__lede">
               {page.heroLede ||
@@ -116,9 +130,9 @@ export default function Masterclass() {
       <section id="mc-curriculum" className="mc-curriculum">
         <div className="mc-pad mc-curriculum__intro">
           <Motion delay={40}>
-            <p className="sec-kicker mb-2">The Five Weeks</p>
+            <p className="sec-kicker mb-2">{curriculumKicker}</p>
             <h2 className="mc-heading font-display font-bold text-ivory tracking-tight">
-              A curriculum built for <span className="text-gradient">the arena</span>
+              {curriculumSubtitle}
             </h2>
           </Motion>
         </div>
@@ -160,12 +174,12 @@ export default function Masterclass() {
       <section id="mc-tiers" className="mc-tiers">
         <div className="mc-pad mc-tiers__intro">
           <Motion delay={40}>
-            <p className="sec-kicker mb-2">Choose your fire</p>
+            <p className="sec-kicker mb-2">{tiersKicker}</p>
             <div className="mc-tiers__intro-row">
               <h2 className="mc-heading font-display font-bold text-ivory tracking-tight">
-                Three doors into the <span className="text-gradient">studio</span>
+                {tiersTitle}
               </h2>
-              <p className="mc-tiers__hint">Hover a path · claim your seat</p>
+              <p className="mc-tiers__hint">{tiersHint}</p>
             </div>
           </Motion>
         </div>
@@ -262,13 +276,13 @@ export default function Masterclass() {
       <section className="mc-terms">
         <div className="mc-terms__grid">
           <div className="mc-terms__media">
-            <img src="/photos/king-maker-live.jpg" alt="" aria-hidden />
+            <img src={termsImage} alt="" aria-hidden />
           </div>
           <div className="mc-terms__copy mc-pad">
             <Motion delay={50}>
-              <p className="sec-kicker mb-3">Before you enrol</p>
+              <p className="sec-kicker mb-3">{termsKicker}</p>
               <h2 className="mc-heading font-display font-bold text-ivory tracking-tight mb-6">
-                House <span className="text-gradient">rules</span>
+                {termsTitle}
               </h2>
               <div className="mc-terms__list">
                 {terms.map((t, i) => (
@@ -287,16 +301,16 @@ export default function Masterclass() {
 
       {/* ═══ Close ═══ */}
       <section className="mc-close">
-        <img src="/photos/champion-crowning.jpg" alt="" className="mc-close__img" aria-hidden />
+        <img src={mcClosingImage} alt="" className="mc-close__img" aria-hidden />
         <div className="mc-close__veil" />
         <div className="mc-close__content mc-pad">
           <Motion delay={60}>
-            <p className="sec-kicker mb-4">The Invitation</p>
+            <p className="sec-kicker mb-4">{mcClosingKicker}</p>
             <h2 className="mc-close__title font-display font-bold text-ivory tracking-tight">
-              Start the <span className="text-gradient">transformation</span>
+              {mcClosingTitle}
             </h2>
             <p className="mc-close__lede">
-              Questions about which path fits? Reach out — we’ll help you choose.
+              {mcClosingBody}
             </p>
             <Link to="/contact" className="mc-cta">
               Contact us

@@ -129,9 +129,19 @@ export default function BattleSchedule() {
   const [activeId, setActiveId] = useState(null)
   const [paused, setPaused] = useState(false)
   const { openOfficial, openSpecial } = useSignUp()
-  const { collections } = useContent()
+  const { collections, getPage, settings } = useContent()
+  const page = getPage('schedule')
+  const siteName = settings.siteName || 'KM DYNASTY'
   const schedule = collections.schedule?.length ? collections.schedule : fallbackSchedule
   const filters = collections.battleTypes?.length ? collections.battleTypes : fallbackTypes
+
+  const boardKicker = page.boardKicker || 'The Arena Board'
+  const boardTitle = page.boardTitle || 'Choose your fire'
+  const finaleKicker = page.finaleKicker || 'Path to the crown'
+  const finaleTitle = page.finaleTitle || 'Champion of Champions'
+  const finaleBody = page.finaleBody || 'Official winners collide in one finale. Win your night — then claim your seat.'
+  const finaleImage = page.finaleImage || '/photos/victory-celebration.jpg'
+
   const [next, setNext] = useState(null)
   const [countdown, setCountdown] = useState('')
 
@@ -213,7 +223,7 @@ export default function BattleSchedule() {
         <div className="sched-hero__frame">
           <div className="sched-hero__column">
             <Motion delay={70}>
-              <p className="sched-hero__brand">KM DYNASTY</p>
+              <p className="sched-hero__brand">{siteName}</p>
               <h1 className="sched-hero__title">
                 <span className="sched-hero__title-soft">The</span>
                 <span className="sched-hero__title-hard">Schedule</span>
@@ -284,10 +294,10 @@ export default function BattleSchedule() {
       <section id="sched-board" className="sched-board">
         <div className="sched-pad sched-board__intro">
           <Motion delay={40}>
-            <p className="sec-kicker mb-2">The Arena Board</p>
+            <p className="sec-kicker mb-2">{boardKicker}</p>
             <div className="sched-board__intro-row">
               <h2 className="sched-board__heading font-display font-bold text-ivory tracking-tight">
-                Choose your <span className="text-gradient">fire</span>
+                {boardTitle}
               </h2>
               <p className="sched-board__count">
                 {filtered.length} {filtered.length === 1 ? 'battle' : 'battles'}
@@ -431,7 +441,7 @@ export default function BattleSchedule() {
         <div className="sched-finale__grid">
           <div className="sched-finale__media">
             <img
-              src="/battles-photos/champion-of-champions.jpg"
+              src={finaleImage}
               alt="Champion of Champions"
               className="sched-finale__img"
             />
@@ -443,14 +453,13 @@ export default function BattleSchedule() {
           <div className="sched-finale__copy sched-pad">
             <Motion delay={60}>
               <p className="sec-kicker mb-4" style={{ color: '#E8B94A' }}>
-                Path to the crown
+                {finaleKicker}
               </p>
               <h2 className="sched-finale__title font-display font-bold text-ivory tracking-tight">
-                Champion of
-                <span className="block text-gradient">Champions</span>
+                {finaleTitle}
               </h2>
               <p className="sched-finale__lede">
-                Official winners collide in one finale. Win your night — then claim your seat.
+                {finaleBody}
               </p>
               <div className="sched-finale__rules">
                 {[
