@@ -5,7 +5,7 @@ import Motion from '../components/Motion'
 const sections = [
   {
     title: 'Information We Collect',
-    body: 'We collect information you provide directly to us, such as when you fill out a contact form, sign up for box battles, or communicate with us. This may include your name, email address, and any other information you choose to provide.',
+    body: 'We collect information you provide directly to us, such as when you fill out a contact form, join a box battle, or communicate with us. This may include your name, email address, and any other information you choose to provide.',
   },
   {
     title: 'How We Use Your Information',
@@ -28,7 +28,7 @@ export default function Privacy() {
       {/* Hero */}
       <section className="relative min-h-[360px] flex items-end pb-14 overflow-hidden" style={{ background: '#120620' }}>
         <img
-          src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1400&q=80"
+          src="/photos/team-dallas.jpg"
           alt="Privacy Policy"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />

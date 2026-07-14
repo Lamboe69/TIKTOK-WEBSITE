@@ -1,0 +1,819 @@
+/* ─── Battle Schedule — full-bleed arena board ─── */
+
+.sched-page {
+  --sched-ink: #10081C;
+  --sched-ember: #FF8A3D;
+  --sched-pad: clamp(1.25rem, 4vw, 4.5rem);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  background: var(--sched-ink);
+}
+
+.sched-pad {
+  padding-left: var(--sched-pad);
+  padding-right: var(--sched-pad);
+}
+
+/* ═══ Hero — Fight Gate (angled plane, sharp photo) ═══ */
+.sched-hero {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  min-height: 100svh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #0A0414;
+}
+
+.sched-hero__photo-plane {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.sched-hero__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 62% center;
+  display: block;
+  filter: none;
+  transform: scale(1.03);
+  animation: sched-drift 40s ease-in-out infinite alternate;
+}
+@keyframes sched-drift {
+  from { transform: scale(1.03) translate3d(0, 0, 0); }
+  to   { transform: scale(1.06) translate3d(-1%, 0, 0); }
+}
+
+/* Geometric ink wedge — type lives here; photo stays crisp outside it */
+.sched-hero__gate {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(155deg, #140A24 0%, #1A0E34 55%, #12081F 100%);
+  clip-path: polygon(0 0, 56% 0, 42% 100%, 0 100%);
+}
+@media (max-width: 899px) {
+  .sched-hero__gate {
+    clip-path: polygon(0 0, 100% 0, 100% 58%, 0 72%);
+    background:
+      linear-gradient(180deg, rgba(14, 6, 28, 0.92) 0%, rgba(14, 6, 28, 0.78) 70%, transparent 100%);
+  }
+}
+@media (min-width: 900px) {
+  .sched-hero__gate::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 52%;
+    width: 2px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(255, 107, 26, 0.85) 30%,
+      rgba(255, 138, 61, 0.9) 50%,
+      rgba(255, 107, 26, 0.85) 70%,
+      transparent
+    );
+    transform: skewX(-8deg);
+    box-shadow: 0 0 24px rgba(255, 107, 26, 0.35);
+  }
+}
+
+.sched-hero__frame {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  min-height: 100svh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 5.5rem var(--sched-pad) 3rem;
+  align-items: end;
+}
+@media (min-width: 900px) {
+  .sched-hero__frame {
+    grid-template-columns: minmax(280px, 0.95fr) auto;
+    align-items: stretch;
+    padding: 0;
+  }
+}
+
+.sched-hero__column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+  max-width: 34rem;
+  padding-bottom: 1rem;
+}
+@media (min-width: 900px) {
+  .sched-hero__column {
+    padding: 5rem clamp(2rem, 5vw, 4.5rem) 5rem var(--sched-pad);
+    max-width: none;
+    width: min(36rem, 100%);
+  }
+}
+
+.sched-hero__brand {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.2rem, 2.8vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #FFF7F0;
+  margin-bottom: 0.85rem;
+  animation: sched-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.sched-hero__title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.02em;
+  overflow: visible;
+}
+
+.sched-hero__title-soft {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  color: rgba(255, 247, 240, 0.72);
+  animation: sched-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+}
+
+.sched-hero__title-hard {
+  display: inline-block;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  font-size: clamp(3.4rem, 11vw, 7rem);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  padding: 0.05em 0.08em 0.12em 0.02em;
+  background: linear-gradient(135deg, #FF9A4A 0%, #FFE0BE 45%, #FFFFFF 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 8px 28px rgba(255, 107, 26, 0.28));
+  animation: sched-rise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.16s both;
+}
+
+.sched-hero__lede {
+  margin: 0.85rem 0 0;
+  max-width: 22rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 247, 240, 0.7);
+  animation: sched-rise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+}
+
+@keyframes sched-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Giant countdown — main visual signal */
+.sched-hero__clock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  padding-top: 0.35rem;
+}
+
+.sched-hero__clock-cell {
+  min-width: 4.25rem;
+  padding: 0.7rem 0.85rem 0.55rem;
+  border-left: 2px solid #FF6B1A;
+  background: rgba(255, 107, 26, 0.08);
+}
+
+.sched-hero__clock-val {
+  display: block;
+  font-size: clamp(1.85rem, 4.5vw, 2.75rem);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  color: #FFF7F0;
+}
+
+.sched-hero__clock-unit {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #FF8A3D;
+}
+
+.sched-hero__next-type {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.sched-hero__next-title {
+  font-size: clamp(1.25rem, 2.6vw, 1.7rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #FFF7F0;
+  margin-bottom: 0.35rem;
+}
+
+.sched-hero__next-meta {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 247, 240, 0.55);
+}
+
+.sched-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding-top: 0.25rem;
+}
+
+.sched-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 1.85rem 1rem 1.6rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #FF6B1A 0%, #CC5200 100%);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 0 100%);
+  transition: transform 0.25s ease, filter 0.25s ease;
+  box-shadow: 0 12px 40px rgba(255, 107, 26, 0.3);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+.sched-hero__cta:hover { transform: translateY(-2px); filter: brightness(1.06); }
+
+.sched-hero__link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 247, 240, 0.7);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 138, 61, 0.45);
+  padding-bottom: 2px;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.sched-hero__link:hover {
+  color: #FFF7F0;
+  border-color: rgba(255, 138, 61, 0.95);
+}
+
+/* Vertical timezone spine on the photo side */
+.sched-hero__spine {
+  display: none;
+}
+@media (min-width: 900px) {
+  .sched-hero__spine {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.1rem;
+    align-self: center;
+    justify-self: end;
+    margin-right: var(--sched-pad);
+    padding: 1.25rem 1.1rem;
+    background: rgba(8, 4, 20, 0.45);
+    border-left: 1px solid rgba(255, 138, 61, 0.4);
+    backdrop-filter: blur(0);
+  }
+}
+
+.sched-hero__spine-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 4.5rem;
+}
+.sched-hero__spine-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(255, 247, 240, 0.45);
+}
+.sched-hero__spine-item.is-home .sched-hero__spine-label {
+  color: #FF8A3D;
+}
+.sched-hero__spine-time {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #FFF7F0;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sched-hero__photo { animation: none; transform: none; }
+  .sched-hero__brand,
+  .sched-hero__title-soft,
+  .sched-hero__title-hard,
+  .sched-hero__lede { animation: none; }
+}
+
+/* Keep legacy countdown class for board if referenced */
+.sched-countdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+.sched-countdown__cell {
+  min-width: 3.35rem;
+  padding: 0.5rem 0.65rem 0.4rem;
+  border-top: 1px solid rgba(255, 138, 61, 0.5);
+  background: rgba(8, 4, 20, 0.35);
+}
+.sched-countdown__val {
+  display: block;
+  font-size: clamp(1.25rem, 2.8vw, 1.75rem);
+  font-weight: 800;
+  line-height: 1;
+  color: #FFF7F0;
+  letter-spacing: -0.03em;
+}
+.sched-countdown__unit {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 138, 61, 0.85);
+}
+
+/* ═══ Board ═══ */
+.sched-board {
+  width: 100%;
+  background: #1C0E38;
+  border-top: 1px solid rgba(255, 138, 61, 0.22);
+  padding-top: clamp(2.25rem, 4vw, 3.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.sched-board__intro { margin-bottom: 1.35rem; }
+.sched-board__intro-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+@media (min-width: 700px) {
+  .sched-board__intro-row {
+    flex-direction: row;
+    align-items: end;
+    justify-content: space-between;
+  }
+}
+.sched-board__heading {
+  font-size: clamp(1.85rem, 4.5vw, 3.1rem);
+  line-height: 0.95;
+}
+.sched-board__count {
+  font-size: 0.85rem;
+  color: rgba(255, 247, 240, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+.sched-ribbon {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-top: 1px solid rgba(255, 138, 61, 0.28);
+  border-bottom: 1px solid rgba(255, 138, 61, 0.28);
+  background: rgba(8, 4, 20, 0.4);
+}
+.sched-ribbon::-webkit-scrollbar { display: none; }
+
+.sched-ribbon__btn {
+  --sched-accent: #FF8A3D;
+  flex: 1 0 auto;
+  min-width: 7.5rem;
+  padding: 0.95rem 1.1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 247, 240, 0.45);
+  background: transparent;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s ease, background 0.25s ease;
+}
+.sched-ribbon__btn:last-child { border-right: none; }
+.sched-ribbon__btn:hover {
+  color: #FFF7F0;
+  background: rgba(255, 255, 255, 0.04);
+}
+.sched-ribbon__btn.is-active {
+  color: #FFF7F0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--sched-accent) 28%, transparent), transparent);
+  box-shadow: inset 0 -3px 0 var(--sched-accent);
+}
+
+/* Stage + chronologue */
+.sched-stage {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  isolation: isolate;
+}
+@media (min-width: 980px) {
+  .sched-stage {
+    grid-template-columns: 1fr minmax(280px, 340px);
+    min-height: 560px;
+  }
+}
+
+.sched-stage__visual {
+  position: relative;
+  min-height: clamp(440px, 62vw, 600px);
+  overflow: hidden;
+}
+@media (min-width: 980px) {
+  .sched-stage__visual {
+    min-height: 560px;
+    height: 100%;
+  }
+}
+
+.sched-stage__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.55s ease, transform 1.1s ease;
+}
+.sched-stage__img.is-on {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.sched-stage__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(105deg, rgba(16, 8, 28, 0.94) 0%, rgba(16, 8, 28, 0.55) 42%, rgba(16, 8, 28, 0.15) 72%),
+    linear-gradient(to top, rgba(16, 8, 28, 0.9) 0%, transparent 48%);
+  pointer-events: none;
+}
+
+.sched-stage__copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  min-height: inherit;
+  padding-top: 3rem;
+  padding-bottom: 2.25rem;
+  animation: sched-copy-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.sched-stage__copy-inner { max-width: 36rem; }
+
+@keyframes sched-copy-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sched-stage__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.sched-status {
+  --sched-accent: #FF6B1A;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--sched-accent);
+  padding-bottom: 2px;
+  border-bottom: 1px solid color-mix(in srgb, var(--sched-accent) 55%, transparent);
+}
+.sched-status[data-status='live'] { color: #ff5a5a; border-color: rgba(255, 90, 90, 0.55); }
+
+.sched-type {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.sched-stage__date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem 0.85rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  font-weight: 600;
+  color: rgba(255, 247, 240, 0.55);
+  margin-bottom: 0.55rem;
+}
+.sched-stage__date-em {
+  font-weight: 800;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+}
+
+.sched-stage__title {
+  font-size: clamp(1.7rem, 4vw, 2.75rem);
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+}
+
+.sched-stage__desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 247, 240, 0.72);
+  max-width: 28rem;
+  margin-bottom: 1.35rem;
+}
+
+.sched-zones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(4.5rem, 1fr));
+  gap: 0.5rem;
+  max-width: 28rem;
+  margin-bottom: 1.5rem;
+  border-top: 1px solid rgba(255, 138, 61, 0.28);
+  padding-top: 0.85rem;
+}
+.sched-zones__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.sched-zones__time {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+}
+.sched-zones__label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 138, 61, 0.75);
+}
+
+.sched-stage__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+/* Chronologue */
+.sched-chrono {
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 4, 20, 0.55);
+  border-top: 1px solid rgba(255, 138, 61, 0.22);
+  max-height: 320px;
+  overflow-y: auto;
+}
+@media (min-width: 980px) {
+  .sched-chrono {
+    border-top: none;
+    border-left: 1px solid rgba(255, 138, 61, 0.22);
+    max-height: none;
+  }
+}
+
+.sched-chrono__row {
+  --sched-accent: #FF6B1A;
+  display: grid;
+  grid-template-columns: auto auto 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  color: rgba(255, 247, 240, 0.5);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.25s ease;
+}
+.sched-chrono__row:last-child { border-bottom: none; }
+.sched-chrono__row:hover,
+.sched-chrono__row:focus-visible {
+  color: #FFF7F0;
+  background: rgba(255, 255, 255, 0.04);
+  outline: none;
+}
+.sched-chrono__row.is-active {
+  color: #FFF7F0;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--sched-accent) 22%, transparent), transparent 90%);
+  box-shadow: inset 3px 0 0 var(--sched-accent);
+}
+
+.sched-chrono__idx {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: rgba(255, 138, 61, 0.4);
+}
+.sched-chrono__row.is-active .sched-chrono__idx { color: var(--sched-accent); }
+
+.sched-chrono__date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 2.25rem;
+  line-height: 1;
+}
+.sched-chrono__day {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: inherit;
+}
+.sched-chrono__mon {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.sched-chrono__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+.sched-chrono__type {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sched-accent);
+  opacity: 0.75;
+}
+.sched-chrono__row.is-active .sched-chrono__type { opacity: 1; }
+.sched-chrono__title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sched-chrono__time {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+
+.sched-empty {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  text-align: center;
+  color: rgba(255, 247, 240, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ═══ Finale — crisp split crown path ═══ */
+.sched-finale {
+  width: 100%;
+  border-top: 1px solid rgba(232, 185, 74, 0.35);
+  background: #160B2C;
+  overflow: hidden;
+}
+
+.sched-finale__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  min-height: min(70svh, 580px);
+}
+@media (min-width: 900px) {
+  .sched-finale__grid {
+    grid-template-columns: 52% 48%;
+  }
+}
+
+.sched-finale__media {
+  position: relative;
+  min-height: 280px;
+  overflow: hidden;
+  background: #1A0E34;
+}
+@media (min-width: 900px) {
+  .sched-finale__media {
+    min-height: 100%;
+  }
+}
+
+.sched-finale__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: none;
+}
+
+.sched-finale__echo {
+  position: absolute;
+  left: -2%;
+  bottom: -8%;
+  z-index: 1;
+  font-weight: 800;
+  font-size: clamp(5rem, 14vw, 11rem);
+  line-height: 0.72;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(232, 185, 74, 0.28);
+  pointer-events: none;
+  user-select: none;
+}
+
+.sched-finale__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: clamp(2.75rem, 6vw, 4.5rem);
+  padding-bottom: clamp(2.75rem, 6vw, 4.5rem);
+  background:
+    radial-gradient(ellipse 55% 45% at 100% 0%, rgba(232, 185, 74, 0.1), transparent 55%),
+    linear-gradient(165deg, #1A0E34 0%, #160B2C 55%, #12081F 100%);
+}
+
+.sched-finale__title {
+  font-size: clamp(2.35rem, 5.5vw, 4.25rem);
+  line-height: 0.95;
+  margin-bottom: 1.15rem;
+}
+
+.sched-finale__lede {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 247, 240, 0.72);
+  max-width: 26rem;
+  margin-bottom: 1.75rem;
+}
+
+.sched-finale__rules {
+  display: flex;
+  flex-direction: column;
+  max-width: 22rem;
+  margin-bottom: 2rem;
+  border-top: 1px solid rgba(232, 185, 74, 0.35);
+}
+
+.sched-finale__rule {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr;
+  gap: 0.85rem;
+  align-items: baseline;
+  padding: 0.9rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sched-finale__rule-n {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: rgba(232, 185, 74, 0.7);
+}
+
+.sched-finale__rule-t {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 247, 240, 0.85);
+}

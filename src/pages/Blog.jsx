@@ -1,9 +1,17 @@
 import { useState } from 'react'
 import Motion from '../components/Motion'
-import posts, { categories } from '../data/blog'
+import fallbackPosts, { categories as fallbackCategories } from '../data/blog'
 import { Icons } from '../components/Icons'
+import { useContent } from '../cms/ContentContext'
+import './morePages.css'
 
 export default function Blog() {
+  const { collections, getPage } = useContent()
+  const page = getPage('blog')
+  const posts = collections.blogPosts?.length ? collections.blogPosts : fallbackPosts
+  const categories = collections.blogCategories?.length
+    ? collections.blogCategories
+    : fallbackCategories
   const [activeCategory, setActiveCategory] = useState('All')
   const [expandedId, setExpandedId] = useState(null)
 
@@ -11,50 +19,40 @@ export default function Blog() {
 
   return (
     <main>
-      {/* Hero */}
-      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img
-          src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1400&q=80"
-          alt="Dynasty Blog"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <Motion delay={0.1}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                Battle Reports & Stories
-              </span>
-              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
-                The Dynasty<br />
-                <span className="text-gradient">Blog</span>
-              </h1>
-              <p className="text-white/60 text-sm leading-relaxed max-w-md">
-                Battle results, community stories, and updates from the KM Dynasty family.
+      {/* Hero — Press Folio */}
+      <section className="blog-hero" aria-label="Dynasty Blog">
+        <div className="blog-hero__media" aria-hidden>
+          <img src={page.heroImage || '/photos/battle-highlights.jpg'} alt="" />
+          <div className="blog-hero__veil" />
+        </div>
+        <div className="blog-hero__folio">
+          <Motion delay={60}>
+            <div className="blog-hero__rule">
+              <p className="blog-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            </div>
+            <h1 className="blog-hero__title">{page.heroTitle || 'Blog'}</h1>
+            <p className="blog-hero__lede">
+              {page.heroLede ||
+                'Battle results, community stories, and updates from the Dynasty family.'}
+            </p>
+            {posts[0] && (
+              <p className="blog-hero__latest">
+                <strong>{posts[0].title}</strong>
+                Latest · {new Date(posts[0].date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {posts[0].readTime}
               </p>
-            </Motion>
-
-            <Motion delay={0.2}>
-              <div className="glass rounded-2xl p-6 border border-white/10">
-                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-4">Latest Post</p>
-                {posts[0] && (
-                  <>
-                    <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold mb-2" style={{ background: 'rgba(255,107,26,0.15)', color: '#FF6B1A' }}>
-                      {posts[0].category}
-                    </span>
-                    <p className="font-display font-bold text-ivory text-base leading-snug mb-2">{posts[0].title}</p>
-                    <p className="text-white/40 text-xs">{new Date(posts[0].date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · {posts[0].readTime}</p>
-                  </>
-                )}
-              </div>
-            </Motion>
-          </div>
+            )}
+            <div className="blog-hero__actions">
+              <a href="#blog-posts" className="mp-cta">
+                Read posts
+                <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+              </a>
+            </div>
+          </Motion>
         </div>
       </section>
 
       {/* Posts */}
-      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+      <section id="blog-posts" className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           {/* Filters */}
           <Motion delay={0.1}>
@@ -87,7 +85,7 @@ export default function Blog() {
                       src={post.cover}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      onError={e => { e.target.src = 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80' }}
+                      onError={e => { e.target.src = '/battles-photos/daily-godsent.jpg' }}
                     />
                     <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 30%, rgba(18,6,32,0.2) 100%)' }} />
                     <div className="absolute top-3 left-3">

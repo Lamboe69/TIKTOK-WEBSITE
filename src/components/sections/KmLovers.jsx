@@ -1,86 +1,108 @@
 import { useSignUp } from '../SignUpContext'
+import { Icons } from '../Icons'
 import Motion from '../Motion'
+
+const pillars = [
+  'Like, share, follow, report — protect the livestream.',
+  'Keep esteem high — big box or small, every member matters.',
+  'Push forward positively — family energy, even in the hottest battles.',
+]
+
+const perks = [
+  'Priority shout-outs during livestreams',
+  'Exclusive community giveaways',
+  "Winners' Livestream Visit recognition",
+]
+
+const faces = [
+  '/gifters/brittany.jpg',
+  '/gifters/gregory.jpg',
+  '/gifters/ailinda.jpg',
+  '/gifters/charles.jpg',
+  '/photos/community-meetup.jpg',
+]
 
 export default function KmLovers() {
   const { openOfficial } = useSignUp()
 
   return (
-    <section className="py-16 sm:py-24" style={{ background: '#120620' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Image */}
-          <Motion delay={0.1}>
-            <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-              <img
-                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80"
-                alt="KM Lovers community"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.5), rgba(255,107,26,0.2))' }} />
-              <div className="absolute bottom-6 left-6 glass rounded-xl px-4 py-3">
-                <p className="text-ivory font-display font-bold text-lg">💖 KM LOVERS</p>
-                <p className="text-white/60 text-xs">The heart of the dynasty</p>
-              </div>
-            </div>
-          </Motion>
+    <section className="relative min-h-[640px] overflow-hidden flex items-end home-band-sep">
+      <img
+        src="/photos/community-meetup.jpg"
+        alt="KM Lovers community"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(105deg, rgba(42,20,80,0.94) 0%, rgba(58,26,106,0.78) 38%, rgba(255,107,26,0.22) 70%, rgba(28,14,56,0.55) 100%), linear-gradient(to top, rgba(22,11,44,0.92) 0%, transparent 50%)',
+        }}
+      />
 
-          {/* Content */}
-          <div>
-            <Motion delay={0.15}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                💖 Join KM Dynasty Box Battle
-              </span>
-              <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4 leading-tight">
-                KM LOVERS Don't Just<br />
-                <span className="text-gradient">Watch — They Protect</span>
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 py-20 sm:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+          <div className="lg:col-span-7">
+            <Motion delay={60}>
+              <p className="sec-kicker mb-5">KM Lovers</p>
+              <h2
+                className="font-display font-bold text-ivory leading-[0.95] tracking-tight mb-5"
+                style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)' }}
+              >
+                They don’t just watch —<br />
+                <span className="text-gradient">they protect</span>
               </h2>
-              <p className="text-white/60 text-sm leading-relaxed mb-6">
-                "Like, share, follow, report – KM LOVERS don't just watch, they PROTECT the dynasty." By liking the page, sharing, following the King Maker host, and reporting the livestream (to keep us safe).
+              <p className="text-white/75 text-sm sm:text-base leading-relaxed max-w-lg mb-8">
+                KM LOVERS are the heartbeat of the Dynasty — shielding livestreams, lifting each other, and carrying the culture forward.
               </p>
             </Motion>
 
-            <Motion delay={0.2}>
-              <div className="space-y-3 mb-8">
-                {[
-                  { emoji: '✅', text: 'Keep the community\'s esteem high – reminding every member they matter, whether they send big boxes or small.' },
-                  { emoji: '✅', text: 'Push forward positively – no hate, no toxicity, just family energy, even in the hottest battles.' },
-                ].map(({ emoji, text }, i) => (
-                  <div key={i} className="flex items-start gap-3 p-4 rounded-xl border border-white/06" style={{ background: 'rgba(59,16,99,0.2)' }}>
-                    <span className="text-lg flex-shrink-0">{emoji}</span>
+            <div className="space-y-4 mb-10 max-w-lg">
+              {pillars.map((text, i) => (
+                <Motion key={text} delay={120 + i * 70}>
+                  <div className="flex gap-4 items-start">
+                    <span className="font-display text-ember/50 text-sm tabular-nums mt-0.5">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
                     <p className="text-white/70 text-sm leading-relaxed">{text}</p>
                   </div>
-                ))}
-              </div>
-            </Motion>
+                </Motion>
+              ))}
+            </div>
 
-            <Motion delay={0.3}>
-              <div className="rounded-xl p-4 mb-6 border border-white/06" style={{ background: 'rgba(255,107,26,0.08)' }}>
-                <p className="text-ember text-xs font-bold uppercase tracking-wider mb-2">KM LOVERS Get</p>
-                <ul className="space-y-1.5">
-                  {[
-                    'Priority shout-outs during livestreams',
-                    'Entry into exclusive community giveaways',
-                    'Special recognition during the Winners\' Livestream Visit',
-                  ].map(item => (
-                    <li key={item} className="flex items-center gap-2 text-sm text-white/60">
-                      <span className="w-1.5 h-1.5 rounded-full bg-ember flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Motion>
-
-            <Motion delay={0.35}>
-              <button
-                onClick={openOfficial}
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
-              >
-                Sign Up — Box Battle
+            <Motion delay={360}>
+              <button type="button" onClick={openOfficial} className="sec-cta">
+                Join KM Dynasty Box Battle
+                <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </button>
             </Motion>
           </div>
+
+          <Motion delay={200} className="lg:col-span-5">
+            <div className="lg:pl-8">
+              {/* Face strip */}
+              <div className="flex -space-x-3 mb-6">
+                {faces.map((src, i) => (
+                  <div
+                    key={src}
+                    className="w-14 h-14 sm:w-16 sm:h-16 overflow-hidden border-2 border-[#2A1450] relative"
+                    style={{ zIndex: faces.length - i }}
+                  >
+                    <img src={src} alt="" className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
+              <p className="sec-kicker mb-3" style={{ color: 'rgba(232,185,74,0.9)' }}>KM Lovers get</p>
+              <ul className="space-y-2.5">
+                {perks.map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-sm text-white/65">
+                    <span className="w-1.5 h-1.5 bg-ember flex-shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Motion>
         </div>
       </div>
     </section>

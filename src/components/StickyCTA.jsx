@@ -1,12 +1,14 @@
 import { useLocation } from 'react-router-dom'
 import { useSignUp } from './SignUpContext'
+import { useContent } from '../cms/ContentContext'
 
 export default function StickyCTA() {
   const { pathname } = useLocation()
   const { openOfficial, openSpecial } = useSignUp()
+  const { settings } = useContent()
 
   const isSpecialPage = pathname === '/daily-quotes'
-  const label = isSpecialPage ? 'Fill Form Here' : 'Sign Up — Box Battle'
+  const label = isSpecialPage ? 'Fill Form Here' : settings.ctaLabel || 'Join My Box Battle'
 
   if (pathname !== '/' && pathname !== '/how-to-join' && pathname !== '/battle-schedule' && pathname !== '/daily-quotes') {
     return null
@@ -15,7 +17,7 @@ export default function StickyCTA() {
   return (
     <div
       className="fixed bottom-0 left-0 right-0 z-50 md:hidden p-3"
-      style={{ background: 'rgba(18,6,32,0.95)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,255,255,0.08)' }}
+      style={{ background: 'rgba(42,20,80,0.96)', backdropFilter: 'blur(16px)', borderTop: '1px solid rgba(255,138,61,0.35)' }}
     >
       <button
         onClick={isSpecialPage ? openSpecial : openOfficial}

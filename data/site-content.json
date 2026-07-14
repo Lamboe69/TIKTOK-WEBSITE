@@ -1,0 +1,1008 @@
+{
+  "version": 1,
+  "updatedAt": "2026-07-14T05:15:25.448Z",
+  "settings": {
+    "siteName": "KM DYNASTY",
+    "tagline": "Official hub for King Maker's Godsent Box Battles",
+    "email": "lagwatinc@gmail.com",
+    "phoneUS": "+1 (469) 664-1195",
+    "phoneUG": "+256-200-947-070",
+    "tiktokHandle": "@kingmakernevergivesup",
+    "tiktokUrl": "https://www.tiktok.com/@kingmakernevergivesup",
+    "ctaLabel": "Join My Box Battle"
+  },
+  "pages": {
+    "home": {
+      "heroImage": "/photos/battle-highlights.jpg"
+    },
+    "howToJoin": {
+      "heroImage": "/photos/champion-crowning.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "How to Join",
+      "heroLede": "Nine steps through the cathedral. Enter clean. Compete honest. Rise with the dynasty."
+    },
+    "faq": {
+      "heroImage": "/battles-photos/most-beautiful.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "FAQ",
+      "heroLede": "Answers from the dynasty — search the chapters below."
+    },
+    "advertise": {
+      "heroImage": "/photos/scavengers-battle.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Advertise",
+      "heroLede": "Put your brand in the livestream — King Maker's arena, your message."
+    },
+    "masterclass": {
+      "heroImage": "/photos/battle-highlights.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Masterclass",
+      "heroLede": "Five flames. One seminary. Monetise the live arena with King Maker."
+    },
+    "contact": {
+      "heroImage": "/photos/team-dallas.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Contact",
+      "heroLede": "Reach the dynasty — business, creator support, or just say hello."
+    },
+    "agency": {
+      "heroImage": "/photos/community-meetup.jpg",
+      "heroBrand": "LA'GWAT AGENCY",
+      "heroTitle": "Agency",
+      "heroLede": "Territory meridians for creators ready to grow under the Dynasty banner."
+    },
+    "gallery": {
+      "heroImage": "/photos/scavengers-battle.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Gallery",
+      "heroLede": "Frames from the arena — battles, livestreams, and dynasty nights."
+    },
+    "blog": {
+      "heroImage": "/photos/battle-highlights.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Blog",
+      "heroLede": "Battle recaps, community stories, and dynasty dispatches."
+    },
+    "quotes": {
+      "heroImage": "/photos/battle-highlights.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Daily Quotes",
+      "heroLede": "Seven days. Seven truths. Fuel for the Dynasty's grind."
+    },
+    "schedule": {
+      "heroImage": "/battles-photos/daily-godsent.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Battle Schedule",
+      "heroLede": "Know when the arena opens. Show up ready."
+    },
+    "outreach": {
+      "heroImage": "/photos/community-meetup.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Outreach",
+      "heroLede": "Stories of support — the dynasty gives back."
+    },
+    "giveaway": {
+      "heroImage": "/photos/champion-crowning.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "Giveaway",
+      "heroLede": "Claim your vault reward when codes drop."
+    },
+    "about": {
+      "heroImage": "/photos/team-dallas.jpg",
+      "heroBrand": "KM DYNASTY",
+      "heroTitle": "About",
+      "heroLede": "The story of King Maker and the dynasty family."
+    }
+  },
+  "collections": {
+    "heroSlides": [
+      {
+        "id": 1,
+        "src": "/photos/battle-highlights.jpg",
+        "alt": "Box battle highlights and reactions",
+        "caption": "Where Every Tap Counts",
+        "line": "Engagement is the currency. Heart is the crown.",
+        "cta": {
+          "label": "Join My Box Battle",
+          "action": "openOfficial"
+        },
+        "ctaLabel": "Join My Box Battle",
+        "ctaAction": "openOfficial"
+      },
+      {
+        "id": 2,
+        "src": "/photos/champion-crowning.jpg",
+        "alt": "Champion of Champions crowning moment",
+        "caption": "Champion of Champions",
+        "line": "Win the night. Earn the title. Claim the dynasty spotlight.",
+        "cta": {
+          "label": "Join My Box Battle",
+          "action": "openOfficial"
+        },
+        "ctaLabel": "Join My Box Battle",
+        "ctaAction": "openOfficial"
+      },
+      {
+        "id": 3,
+        "src": "/photos/team-dallas.jpg",
+        "alt": "KM DYNASTY team in Dallas TX",
+        "caption": "Dallas TX — Dynasty Home",
+        "line": "From Texas soil to a global TikTok movement.",
+        "cta": {
+          "label": "Join My Box Battle",
+          "action": "openOfficial"
+        },
+        "ctaLabel": "Join My Box Battle",
+        "ctaAction": "openOfficial"
+      },
+      {
+        "id": 4,
+        "src": "/photos/community-meetup.jpg",
+        "alt": "Community meetup and creator visit",
+        "caption": "Creator Livestream Visits",
+        "line": "Winners don’t just rank — they get face time with the dynasty.",
+        "cta": {
+          "label": "Join My Box Battle",
+          "action": "openOfficial"
+        },
+        "ctaLabel": "Join My Box Battle",
+        "ctaAction": "openOfficial"
+      },
+      {
+        "id": 5,
+        "src": "/photos/scavengers-battle.jpg",
+        "alt": "Scavengers Box Battle night",
+        "caption": "Scavengers Box Battle",
+        "line": "No tap minimum. Pure hunger. Underdogs rewrite the night.",
+        "cta": {
+          "label": "Join the Battle",
+          "action": "openSpecial"
+        },
+        "ctaLabel": "Join the Battle",
+        "ctaAction": "openSpecial"
+      }
+    ],
+    "quotes": [
+      {
+        "id": 1,
+        "day": "Monday",
+        "short": "Mon",
+        "quote": "New week, same dynasty. Tap with purpose, pray with heart – Godsent sees every effort.",
+        "emoji": "🙏📱"
+      },
+      {
+        "id": 2,
+        "day": "Tuesday",
+        "short": "Tue",
+        "quote": "You don't need the biggest box to be a king. Just show up, support, and stay kind.",
+        "emoji": "👑💖"
+      },
+      {
+        "id": 3,
+        "day": "Wednesday",
+        "short": "Wed",
+        "quote": "5000 taps is a promise – to yourself, to the family, to the battle ahead.",
+        "emoji": "📈⚡"
+      },
+      {
+        "id": 4,
+        "day": "Thursday",
+        "short": "Thu",
+        "quote": "Helping the host win co-host battles? That's not teamwork. That's KM blood.",
+        "emoji": "🩸🤝"
+      },
+      {
+        "id": 5,
+        "day": "Friday",
+        "short": "Fri",
+        "quote": "Top seven isn't a rank. It's a mindset – lift others as you rise.",
+        "emoji": "🔝✨"
+      },
+      {
+        "id": 6,
+        "day": "Saturday",
+        "short": "Sat",
+        "quote": "Daily win leads to Sunday. Sunday win leads to Champions. Champions lead with love.",
+        "emoji": "🏆❤️"
+      },
+      {
+        "id": 7,
+        "day": "Sunday",
+        "short": "Sun",
+        "quote": "Rest if you must, but never quit. The dynasty keeps going because YOU keep going.",
+        "emoji": "🛌➡️🔥"
+      }
+    ],
+    "schedule": [
+      {
+        "id": 1,
+        "title": "Daily Godsent Box Battle",
+        "type": "Daily Godsent",
+        "date": "2026-07-12",
+        "time": "8:00 PM CT",
+        "description": "The daily grind. Bring your taps, prayers, and energy."
+      },
+      {
+        "id": 2,
+        "title": "Daily Godsent Box Battle",
+        "type": "Daily Godsent",
+        "date": "2026-07-13",
+        "time": "8:00 PM CT",
+        "description": "Sunday finale – weekly winners compete for the crown."
+      },
+      {
+        "id": 3,
+        "title": "Most Beautiful Box Battle",
+        "type": "Most Beautiful",
+        "date": "2026-07-14",
+        "time": "7:00 PM CT",
+        "description": "Beauty meets battle. Show your sparkle in the box."
+      },
+      {
+        "id": 6,
+        "title": "Daily Godsent Box Battle",
+        "type": "Daily Godsent",
+        "date": "2026-07-15",
+        "time": "8:00 PM CT",
+        "description": "Midweek battle. Keep the momentum alive."
+      },
+      {
+        "id": 4,
+        "title": "Country Box Battle",
+        "type": "Country",
+        "date": "2026-07-16",
+        "time": "7:30 PM CT",
+        "description": "Rep your nation. Country pride in the box battle arena."
+      },
+      {
+        "id": 7,
+        "title": "Scavengers Box Battle",
+        "type": "Scavengers",
+        "date": "2026-07-17",
+        "time": "7:00 PM CT",
+        "description": "Scavengers edition. For those who hunt for the win."
+      },
+      {
+        "id": 8,
+        "title": "Daily Godsent Box Battle",
+        "type": "Daily Godsent",
+        "date": "2026-07-18",
+        "time": "8:00 PM CT",
+        "description": "Friday night battle. End the week strong."
+      },
+      {
+        "id": 5,
+        "title": "Champion of Champions",
+        "type": "Champion of Champions",
+        "date": "2026-07-20",
+        "time": "9:00 PM CT",
+        "description": "Winners from ALL Official Godsent Battles compete in the grand KM DYNASTY finale."
+      }
+    ],
+    "battleTypes": [
+      "All",
+      "Daily Godsent",
+      "Scavengers",
+      "Most Beautiful",
+      "Country",
+      "Champion of Champions"
+    ],
+    "blogPosts": [
+      {
+        "id": 1,
+        "slug": "official-box-battle-july-12",
+        "title": "Official Box Battle Results — July 12, 2026",
+        "excerpt": "Another night of intense battles as the Dynasty family showed up and showed out. Here's how it went down.",
+        "category": "Battle Results",
+        "date": "2026-07-12",
+        "readTime": "3 min",
+        "cover": "/battles-photos/daily-godsent.jpg",
+        "content": "The Official Godsent Box Battle on July 12th brought together some of the most dedicated members of the KM Dynasty family. The energy was electric from start to finish.\n\n**Winner:** Champion of the night claimed their spot with an incredible display of support and dedication. Over 50,000 taps recorded across the session.\n\n**Highlights:**\n- Record-breaking engagement in the first 30 minutes\n- Three new members crossed the 5,000 tap threshold\n- The Champion of Champions bracket continues to heat up\n\n**What's Next:** The next Official Box Battle is scheduled for July 14th. Make sure you've hit your 5,000 taps and are following King Maker on TikTok."
+      },
+      {
+        "id": 2,
+        "slug": "most-beautiful-battle-july-13",
+        "title": "Most Beautiful Box Battle — July 13, 2026",
+        "excerpt": "The Most Beautiful Box Battle brought grace and glamour to the arena. See who took the crown.",
+        "category": "Battle Results",
+        "date": "2026-07-13",
+        "readTime": "2 min",
+        "cover": "/battles-photos/most-beautiful.jpg",
+        "content": "The Most Beautiful Box Battle is always a fan favorite. This edition didn't disappoint.\n\n**Winner:** A stunning performance that left no doubt. The community spoke and the results were clear.\n\n**Top Moments:**\n- Incredible energy from all participants\n- Community engagement through the roof\n- New faces joining the Dynasty family\n\n**Next Battle:** The next Most Beautiful Box Battle is coming soon. Apply through the website form — no tap minimum required."
+      },
+      {
+        "id": 3,
+        "slug": "country-box-battle-recap",
+        "title": "Country Box Battle — The Nations Collide",
+        "excerpt": "Creators from across the globe came together for the ultimate country showdown.",
+        "category": "Battle Results",
+        "date": "2026-07-10",
+        "readTime": "3 min",
+        "cover": "/battles-photos/country.jpg",
+        "content": "The Country Box Battle is where national pride meets TikTok talent. This edition featured creators from Nigeria, Uganda, UK, and the US.\n\n**Winner:** Representing their country with pride and taking the victory home.\n\n**Standout Performances:**\n- Incredible international representation\n- Community rallied behind their favorites\n- Cross-border connections made\n\n**Why It Matters:** The Country Box Battle shows that the KM Dynasty family is truly global. We're not just a community — we're a movement."
+      },
+      {
+        "id": 4,
+        "slug": "scavengers-battle-july-11",
+        "title": "Scavengers Box Battle — Underdogs Rise",
+        "excerpt": "The Scavengers battle gave new creators their shot. Some serious talent emerged.",
+        "category": "Battle Results",
+        "date": "2026-07-11",
+        "readTime": "2 min",
+        "cover": "/battles-photos/scavengers.jpg",
+        "content": "The Scavengers Box Battle is designed for new and emerging creators. No tap minimum, no pressure — just pure talent and determination.\n\n**Winner:** A newcomer who proved that you don't need thousands of taps to make an impact.\n\n**Key Takeaways:**\n- Fresh faces brought fresh energy\n- Community welcomed new members with open arms\n- The future of the Dynasty is bright\n\n**Want to Join?** The Scavengers battle is open to everyone. Apply through the Special Battles form on our website."
+      },
+      {
+        "id": 5,
+        "slug": "champion-of-champions-july-20",
+        "title": "Champion of Champions — The Ultimate Showdown",
+        "excerpt": "The biggest battle of the month. Only the best of the best compete for the ultimate title.",
+        "category": "Battle Results",
+        "date": "2026-07-20",
+        "readTime": "4 min",
+        "cover": "/battles-photos/champion-of-champions.jpg",
+        "content": "The Champion of Champions is the pinnacle of KM Dynasty competition. Only battle winners from throughout the month earn the right to compete.\n\n**The Stakes:**\n- Winner receives a special feature on KM DYNASTY\n- Priority entry into future premium battles\n- Recognition as the Dynasty's finest\n\n**The Battle:**\nEvery competitor brought their A-game. The energy was unmatched, the engagement was through the roof, and the community witnessed history.\n\n**The Champion:** Crowned after an incredible performance that set new records for engagement and support.\n\n**What It Means:** The Champion of Champions isn't just a battle — it's a testament to dedication, consistency, and the unbreakable spirit of the KM Dynasty family."
+      }
+    ],
+    "blogCategories": [
+      "All",
+      "Battle Results",
+      "Community",
+      "Stories"
+    ],
+    "gallery": [
+      {
+        "id": 1,
+        "src": "/battles-photos/daily-godsent.jpg",
+        "title": "Official Box Battle Night",
+        "category": "Box Battles",
+        "year": "2026"
+      },
+      {
+        "id": 2,
+        "src": "/battles-photos/most-beautiful.jpg",
+        "title": "Most Beautiful Showcase",
+        "category": "Box Battles",
+        "year": "2026"
+      },
+      {
+        "id": 3,
+        "src": "/battles-photos/country.jpg",
+        "title": "Country Battle — Nations United",
+        "category": "Box Battles",
+        "year": "2026"
+      },
+      {
+        "id": 4,
+        "src": "/battles-photos/scavengers.jpg",
+        "title": "Scavengers Rise",
+        "category": "Box Battles",
+        "year": "2026"
+      },
+      {
+        "id": 5,
+        "src": "/battles-photos/champion-of-champions.jpg",
+        "title": "Champion of Champions",
+        "category": "Box Battles",
+        "year": "2026"
+      },
+      {
+        "id": 6,
+        "src": "/photos/king-maker-live.jpg",
+        "title": "King Maker Live",
+        "category": "Livestreams",
+        "year": "2026"
+      },
+      {
+        "id": 7,
+        "src": "/photos/battle-highlights.jpg",
+        "title": "Battle Highlights",
+        "category": "Livestreams",
+        "year": "2026"
+      },
+      {
+        "id": 8,
+        "src": "/photos/champion-crowning.jpg",
+        "title": "The Champion Crowning",
+        "category": "Highlights",
+        "year": "2026"
+      },
+      {
+        "id": 9,
+        "src": "/photos/team-dallas.jpg",
+        "title": "Dallas Team Meetup",
+        "category": "Meet & Greets",
+        "year": "2026"
+      },
+      {
+        "id": 10,
+        "src": "/photos/community-meetup.jpg",
+        "title": "Community Meetup",
+        "category": "Meet & Greets",
+        "year": "2026"
+      },
+      {
+        "id": 11,
+        "src": "/photos/scavengers-battle.jpg",
+        "title": "Scavengers Battle Energy",
+        "category": "Box Battles",
+        "year": "2026"
+      },
+      {
+        "id": 12,
+        "src": "/gifters/brittany.jpg",
+        "title": "Royal Supporter Brittany",
+        "category": "Community",
+        "year": "2026"
+      },
+      {
+        "id": 13,
+        "src": "/gifters/gregory.jpg",
+        "title": "Dynasty Pillar Gregory",
+        "category": "Community",
+        "year": "2026"
+      },
+      {
+        "id": 14,
+        "src": "/gifters/ailinda.jpg",
+        "title": "Community Member Ailinda",
+        "category": "Community",
+        "year": "2026"
+      },
+      {
+        "id": 15,
+        "src": "/team/mufasa.jpg",
+        "title": "King Mufasa",
+        "category": "Team",
+        "year": "2026"
+      },
+      {
+        "id": 16,
+        "src": "/team/maker.jpg",
+        "title": "King Maker",
+        "category": "Team",
+        "year": "2026"
+      }
+    ],
+    "galleryCategories": [
+      "All",
+      "Box Battles",
+      "Livestreams",
+      "Highlights",
+      "Meet & Greets",
+      "Community",
+      "Team"
+    ],
+    "testimonials": [
+      {
+        "id": 1,
+        "name": "Grace",
+        "location": "Abuja, Nigeria",
+        "handle": "@amazing56987",
+        "url": "https://www.tiktok.com/@amazing56987",
+        "photo": "/testimonials/grace.jpg",
+        "text": "You showed up when I had lost all hope. I want to say a very big thank you not just for the support, but for seeing me. I was at my lowest, battling with ulcer, struggling to keep my sisters fed and in school, with no parents and no place to truly call home. The support you gave me didn't just help me — it helped my whole family. God will reward you for this."
+      },
+      {
+        "id": 2,
+        "name": "diamondprincess",
+        "handle": "@diamondprincess42",
+        "url": "https://www.tiktok.com/@diamondprincess42",
+        "photo": "/testimonials/diamond.jpg",
+        "text": "Since joining KM Dynasty Box Battles, my life has completely changed. I got to 20,000 followers and the income from competing allowed me to get my own apartment, a new iPhone, and my dream streaming setup. I never imagined TikTok could do all of this."
+      },
+      {
+        "id": 3,
+        "name": "Caesar",
+        "handle": "@caesar.m8",
+        "url": "https://www.tiktok.com/@caesar.m8",
+        "photo": "/testimonials/caesar.jpg",
+        "text": "King, thank you so much for having me in your box. I really appreciate it. I always want to be there and meet my destiny helper."
+      },
+      {
+        "id": 4,
+        "name": "Eyram El-shadai",
+        "handle": "@eyram.elshadai",
+        "url": "https://www.tiktok.com/@eyram.elshadai",
+        "photo": "/testimonials/eyram.jpg",
+        "text": "Good morning boss, thanks so much for giving me the privilege to enter your box for the 2nd time. I really appreciate it. It's so fun being in your box!"
+      },
+      {
+        "id": 5,
+        "name": "Ark Browser",
+        "handle": "@arkbrowser",
+        "url": "https://www.tiktok.com/@arkbrowser",
+        "photo": "/testimonials/ark.jpg",
+        "text": "I want to say thank you so much for the opportunity to be in your box. I appreciate it so much — it really means a lot to me. I will definitely try it again. Keep up the good work and keep making an impact in so many people's lives."
+      },
+      {
+        "id": 6,
+        "name": "Kcee",
+        "handle": "@chocomilo570",
+        "url": "https://www.tiktok.com/@chocomilo570",
+        "photo": "/testimonials/kcee.jpg",
+        "text": "Hello, I would like to sincerely thank you for giving me the opportunity to participate in the Box Battle. Yesterday's experience was very valuable and motivating. It helped me grow, gain confidence, and push myself to do better."
+      }
+    ],
+    "topGifters": [
+      {
+        "id": 1,
+        "name": "Brittany Dillard",
+        "handle": "@britdillard",
+        "url": "https://www.tiktok.com/@britdillard",
+        "role": "Royal Supporter",
+        "badge": "👑",
+        "photo": "/gifters/brittany.jpg",
+        "bio": "The undisputed Queen of the Dynasty. As the first member to reach Level 50, she leads with unmatched loyalty."
+      },
+      {
+        "id": 2,
+        "name": "Gregory Pizzaro Jr",
+        "handle": "@gregpizarrojr",
+        "url": "https://www.tiktok.com/@gregpizarrojr",
+        "role": "Dynasty Pillar",
+        "badge": "💎",
+        "photo": "/gifters/gregory.jpg",
+        "bio": "A renowned business mogul and philanthropist. Gregory serves as a true Destiny Helper, extending his generosity to transform lives."
+      },
+      {
+        "id": 3,
+        "name": "Ailinda60",
+        "handle": "@ailinda60",
+        "url": "https://www.tiktok.com/@ailinda60",
+        "role": "Loyal Supporter",
+        "badge": "🔱",
+        "photo": "/gifters/ailinda.jpg",
+        "bio": "Creates funny AI videos to make your day with fun storytelling and happy endings."
+      },
+      {
+        "id": 4,
+        "name": "Charles Odia",
+        "handle": "@charlesodia.coach",
+        "url": "https://www.tiktok.com/@charlesodia.coach",
+        "role": "Loyal Supporter",
+        "badge": "🔱",
+        "photo": "/gifters/charles.jpg",
+        "bio": "A distinguished executive, strategist, and transformational leader. He empowers individuals to navigate challenges with confidence."
+      },
+      {
+        "id": 5,
+        "name": "Dr BNS",
+        "handle": "@bns4255",
+        "url": "https://www.tiktok.com/@bns4255",
+        "role": "Loyal Supporter",
+        "badge": "🔱",
+        "photo": "/gifters/dr-bns.jpg",
+        "bio": "A triple board certified physician in Internal Medicine, Critical Care & Pulmonary Medicine. Saving lives is her calling."
+      },
+      {
+        "id": 6,
+        "name": "Baindu",
+        "handle": "@thatgurl_b86",
+        "url": "https://www.tiktok.com/@thatgurl_b86",
+        "role": "Loyal Supporter",
+        "badge": "🔱",
+        "photo": "/gifters/baindu.jpg",
+        "bio": "Your favorite upcoming Most Beautiful and Destiny Helper Host. Turn on notifications for when I'm on."
+      }
+    ],
+    "topFans": [
+      {
+        "id": 1,
+        "name": "Grace",
+        "handle": "@amazing56987",
+        "url": "https://www.tiktok.com/@amazing56987",
+        "role": "Rising Voice",
+        "photo": "/testimonials/grace.jpg",
+        "note": "Abuja, Nigeria"
+      },
+      {
+        "id": 2,
+        "name": "diamondprincess",
+        "handle": "@diamondprincess42",
+        "url": "https://www.tiktok.com/@diamondprincess42",
+        "role": "Arena Regular",
+        "photo": "/testimonials/diamond.jpg",
+        "note": "20K+ journey"
+      },
+      {
+        "id": 3,
+        "name": "Caesar",
+        "handle": "@caesar.m8",
+        "url": "https://www.tiktok.com/@caesar.m8",
+        "role": "Loyal Fan",
+        "photo": "/testimonials/caesar.jpg",
+        "note": "Always in the box"
+      },
+      {
+        "id": 4,
+        "name": "Eyram El-shadai",
+        "handle": "@eyram.elshadai",
+        "url": "https://www.tiktok.com/@eyram.elshadai",
+        "role": "Loyal Fan",
+        "photo": "/testimonials/eyram.jpg",
+        "note": "Two-time guest"
+      },
+      {
+        "id": 5,
+        "name": "Ark Browser",
+        "handle": "@arkbrowser",
+        "url": "https://www.tiktok.com/@arkbrowser",
+        "role": "Community Voice",
+        "photo": "/testimonials/ark.jpg",
+        "note": "Impact first"
+      },
+      {
+        "id": 6,
+        "name": "Kcee",
+        "handle": "@chocomilo570",
+        "url": "https://www.tiktok.com/@chocomilo570",
+        "role": "Rising Creator",
+        "photo": "/testimonials/kcee.jpg",
+        "note": "Growth mindset"
+      }
+    ],
+    "agencyRegions": [
+      {
+        "id": 1,
+        "name": "US & Canada",
+        "flag": "🇺🇸",
+        "tagline": "North American creators — build, battle, and thrive.",
+        "benefits": [
+          "North American Timezones",
+          "Cross-Border Collabs",
+          "Priority Matchmaking"
+        ],
+        "description": "Join King Maker's official TikTok agency for creators based in the United States and Canada. Grow your live presence under the KM Dynasty banner.",
+        "benefitsText": "North American Timezones\nCross-Border Collabs\nPriority Matchmaking"
+      },
+      {
+        "id": 2,
+        "name": "United Kingdom",
+        "flag": "🇬🇧",
+        "tagline": "UK-based creators — join the Dynasty family.",
+        "benefits": [
+          "Local UK Support",
+          "Exclusive Live Events",
+          "Priority Matchmaking"
+        ],
+        "description": "Join King Maker's official TikTok agency for creators based in the United Kingdom. Grow your live presence under the KM Dynasty banner.",
+        "benefitsText": "Local UK Support\nExclusive Live Events\nPriority Matchmaking"
+      },
+      {
+        "id": 3,
+        "name": "East Africa",
+        "flag": "🇺🇬",
+        "tagline": "Uganda, Kenya, Tanzania & beyond — represent the continent.",
+        "benefits": [
+          "African Timezones",
+          "Community Events",
+          "Growth Support"
+        ],
+        "description": "Join King Maker's official TikTok agency for creators based in East Africa. Grow your live presence and connect with the global KM Dynasty community.",
+        "benefitsText": "African Timezones\nCommunity Events\nGrowth Support"
+      }
+    ],
+    "masterclassTiers": [
+      {
+        "id": 1,
+        "name": "1-on-1 Consultation",
+        "price": "$300",
+        "originalPrice": "$500",
+        "badge": null,
+        "duration": "Private Session · 1 Hour",
+        "features": [
+          "1 hour private Zoom session",
+          "Personal or business consultation",
+          "Deep profile/livestream analysis",
+          "Strategies to fix & improve performance",
+          "Bonus: Livestream guest appearance",
+          "KM Dynasty Community introduction"
+        ],
+        "cta": "Book Now",
+        "featuresText": "1 hour private Zoom session\nPersonal or business consultation\nDeep profile/livestream analysis\nStrategies to fix & improve performance\nBonus: Livestream guest appearance\nKM Dynasty Community introduction"
+      },
+      {
+        "id": 2,
+        "name": "Dynasty Masterclass",
+        "price": "$500",
+        "originalPrice": "$750",
+        "badge": "Popular",
+        "duration": "5 Weeks Program",
+        "features": [
+          "5 live weekly Zoom sessions",
+          "5 weeks of monetisation & growth training",
+          "Community-building frameworks",
+          "Real-time problem solving",
+          "Full training slides included",
+          "KM Dynasty badge of completion"
+        ],
+        "cta": "Enrol Now",
+        "featuresText": "5 live weekly Zoom sessions\n5 weeks of monetisation & growth training\nCommunity-building frameworks\nReal-time problem solving\nFull training slides included\nKM Dynasty badge of completion"
+      },
+      {
+        "id": 3,
+        "name": "Masterclass + Mentorship",
+        "price": "$1,200",
+        "originalPrice": "$1,500",
+        "badge": "Premium",
+        "duration": "5 Weeks + Ongoing Mentorship",
+        "features": [
+          "Everything in the Masterclass",
+          "Ongoing personal mentorship from King Maker",
+          "Priority 1-on-1 direct access",
+          "Flexible timing",
+          "Post-program follow-up",
+          "Personal growth systems",
+          "Lifetime KM Dynasty inner circle access"
+        ],
+        "cta": "Enrol Now",
+        "featuresText": "Everything in the Masterclass\nOngoing personal mentorship from King Maker\nPriority 1-on-1 direct access\nFlexible timing\nPost-program follow-up\nPersonal growth systems\nLifetime KM Dynasty inner circle access"
+      }
+    ],
+    "masterclassMeta": {
+      "day": "Every Saturday",
+      "time": "2:00 PM CT (Dallas Time)",
+      "format": "Live Zoom sessions (1 hour each) with full training slides"
+    },
+    "masterclassTerms": [
+      {
+        "id": 1,
+        "text": "Same-day bookings must be made before 2:00 PM CT."
+      },
+      {
+        "id": 2,
+        "text": "Sessions run Saturdays only."
+      },
+      {
+        "id": 3,
+        "text": "No access to sessions after program completion."
+      },
+      {
+        "id": 4,
+        "text": "All programmes are subject to availability."
+      }
+    ],
+    "faq": [
+      {
+        "id": 1,
+        "question": "What services do you offer?",
+        "answer": "KM DYNASTY and La'Gwat Agency provide creator management, brand development, TikTok livestream coaching, and community-building support for content creators. We specialize in the box battle format and help creators grow their audience and engagement.",
+        "category": "Getting Started"
+      },
+      {
+        "id": 2,
+        "question": "Who is eligible to join?",
+        "answer": "Anyone with a TikTok account who wants to be part of the KM DYNASTY community. For creator management services through La'Gwat Agency, eligibility extends to creators in the US and Canada who meet our partnership criteria.",
+        "category": "Getting Started"
+      },
+      {
+        "id": 3,
+        "question": "How do I get started?",
+        "answer": "Start by following King Maker on TikTok, joining the KM DYNASTY livestreams, and engaging with the community. For creator management, reach out through the contact page or email lagwatinc@gmail.com.",
+        "category": "Getting Started"
+      },
+      {
+        "id": 4,
+        "question": "How do you protect creators' accounts?",
+        "answer": "We never request account passwords or sensitive credentials. All management is done through secure, official TikTok collaboration tools. La'Gwat Agency follows industry-standard data protection practices.",
+        "category": "Account Safety"
+      },
+      {
+        "id": 5,
+        "question": "What does your creative support include?",
+        "answer": "Creative support includes content strategy, livestream preparation and coaching, audience engagement techniques, brand identity development, and access to the KM DYNASTY community network for cross-promotion.",
+        "category": "Creator Support"
+      },
+      {
+        "id": 6,
+        "question": "What kind of technical advice do you provide?",
+        "answer": "We provide technical guidance on TikTok features, livestream optimization, video quality setup, engagement analytics interpretation, and platform best practices to maximize your reach and retention.",
+        "category": "Creator Support"
+      },
+      {
+        "id": 7,
+        "question": "How do I book an ad placement?",
+        "answer": "Visit the Advertise page and fill out the inquiry form with your business details, preferred placement, and budget range. Our team reviews every submission and responds within 48 hours with available options and pricing.",
+        "category": "Advertising"
+      },
+      {
+        "id": 8,
+        "question": "What kind of reach can my ad expect?",
+        "answer": "KM DYNASTY livestreams regularly reach thousands of live viewers, with additional replay and clip engagement. Exact numbers vary by battle type and time slot — share your goals in the inquiry form and we'll recommend the best placement for your budget.",
+        "category": "Advertising"
+      },
+      {
+        "id": 9,
+        "question": "Can I sponsor a specific battle or creator?",
+        "answer": "Yes — the Custom/Bundle package on the Advertise page lets you request a specific battle type, creator shout-out, or bundled placement. Mention your preference in the message field of the inquiry form.",
+        "category": "Advertising"
+      }
+    ],
+    "faqCategories": [
+      "All",
+      "Getting Started",
+      "Creator Support",
+      "Account Safety",
+      "Advertising"
+    ],
+    "adPackages": [
+      {
+        "id": 1,
+        "code": "PT-01",
+        "name": "Livestream Shout-Out",
+        "tag": "During battle",
+        "availability": "available",
+        "featuresText": "On-screen brand mention during live battle\nTagged in stream description\nShared to King Maker's TikTok story"
+      },
+      {
+        "id": 2,
+        "code": "PT-02",
+        "name": "Homepage Banner",
+        "tag": "Site wide",
+        "availability": "limited",
+        "availabilityNote": "1 slot at a time",
+        "featuresText": "Rotating banner on kmDynasty.com\nSeen by every site visitor\nLink out to your campaign"
+      },
+      {
+        "id": 3,
+        "code": "PT-03",
+        "name": "Sponsored Content",
+        "tag": "Owned post",
+        "availability": "available",
+        "featuresText": "Dedicated TikTok post or shout-out\nMentioned in battle description\nBrand tag in video overlay"
+      },
+      {
+        "id": 4,
+        "code": "PT-04",
+        "name": "Custom / Bundle",
+        "tag": "Bespoke",
+        "availability": "available",
+        "featuresText": "Mix any placements above\nBuilt around your campaign goals\nCustom quote after brief"
+      }
+    ],
+    "joinSteps": [
+      {
+        "id": 1,
+        "title": "Follow King Maker",
+        "body": "Follow @kingmakernevergivesup on TikTok.",
+        "img": "/photos/king-maker-live.jpg"
+      },
+      {
+        "id": 2,
+        "title": "Join the Dynasty",
+        "body": "Add 🔱👑 to your TikTok display name.",
+        "img": "/photos/community-meetup.jpg"
+      },
+      {
+        "id": 3,
+        "title": "Hit 5,000 taps",
+        "body": "Build your presence in Official battles.",
+        "img": "/battles-photos/daily-godsent.jpg"
+      },
+      {
+        "id": 4,
+        "title": "Fill the form",
+        "body": "Submit your handle via Join My Box Battle.",
+        "img": "/photos/battle-highlights.jpg"
+      },
+      {
+        "id": 5,
+        "title": "Show up live",
+        "body": "Be ready when your slot opens.",
+        "img": "/photos/scavengers-battle.jpg"
+      },
+      {
+        "id": 6,
+        "title": "Compete honest",
+        "body": "No bots. No cheating. Pure energy.",
+        "img": "/battles-photos/most-beautiful.jpg"
+      },
+      {
+        "id": 7,
+        "title": "Support the family",
+        "body": "Lift others as you rise.",
+        "img": "/photos/champion-crowning.jpg"
+      },
+      {
+        "id": 8,
+        "title": "Win with grace",
+        "body": "Celebrate, credit the community.",
+        "img": "/battles-photos/champion-of-champions.jpg"
+      },
+      {
+        "id": 9,
+        "title": "Rise again",
+        "body": "Champions return. The cathedral never closes.",
+        "img": "/photos/team-dallas.jpg"
+      }
+    ],
+    "howItWorks": [
+      {
+        "id": 1,
+        "num": "01",
+        "title": "Follow & join",
+        "body": "Follow King Maker. Add the dynasty crown to your name."
+      },
+      {
+        "id": 2,
+        "num": "02",
+        "title": "Qualify",
+        "body": "Hit your taps, fill the form, wait for the call."
+      },
+      {
+        "id": 3,
+        "num": "03",
+        "title": "Battle",
+        "body": "Enter the box. Compete. Represent the family."
+      }
+    ],
+    "battleCatalog": [
+      {
+        "id": 1,
+        "title": "Daily Godsent Box Battle",
+        "blurb": "The daily grind. Bring your taps, prayers, and energy.",
+        "img": "/battles-photos/daily-godsent.jpg"
+      },
+      {
+        "id": 2,
+        "title": "Most Beautiful Box Battle",
+        "blurb": "Beauty meets battle. Show your sparkle in the box.",
+        "img": "/battles-photos/most-beautiful.jpg"
+      },
+      {
+        "id": 3,
+        "title": "Country Box Battle",
+        "blurb": "Rep your nation. Country pride in the arena.",
+        "img": "/battles-photos/country.jpg"
+      },
+      {
+        "id": 4,
+        "title": "Scavengers Box Battle",
+        "blurb": "No tap minimum. Pure hunger. Underdogs rewrite the night.",
+        "img": "/battles-photos/scavengers.jpg"
+      }
+    ],
+    "contactLines": [
+      {
+        "id": 1,
+        "label": "Email",
+        "value": "lagwatinc@gmail.com",
+        "href": "mailto:lagwatinc@gmail.com"
+      },
+      {
+        "id": 2,
+        "label": "US phone",
+        "value": "+1 (469) 664-1195",
+        "href": "tel:+14696641195"
+      },
+      {
+        "id": 3,
+        "label": "Uganda",
+        "value": "+256-200-947-070",
+        "href": "tel:+256200947070"
+      },
+      {
+        "id": 4,
+        "label": "Hours",
+        "value": "Mon–Sat · reply within 48h",
+        "href": ""
+      }
+    ],
+    "mediaLibrary": [
+      "/photos/battle-highlights.jpg",
+      "/photos/champion-crowning.jpg",
+      "/photos/community-meetup.jpg",
+      "/photos/king-maker-live.jpg",
+      "/photos/scavengers-battle.jpg",
+      "/photos/team-dallas.jpg",
+      "/battles-photos/daily-godsent.jpg",
+      "/battles-photos/most-beautiful.jpg",
+      "/battles-photos/country.jpg",
+      "/battles-photos/scavengers.jpg",
+      "/battles-photos/champion-of-champions.jpg",
+      "/team/maker.jpg",
+      "/team/mufasa.jpg"
+    ]
+  }
+}

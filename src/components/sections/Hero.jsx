@@ -1,169 +1,379 @@
-import { useRef, useState, useEffect } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, EffectFade, Pagination } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/effect-fade'
-import 'swiper/css/pagination'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useSignUp } from '../SignUpContext'
-import { photos } from '../../data/photos'
-import LiveStatus from '../LiveStatus'
-import { Icons } from '../Icons'
-import CountdownTicker from '../CountdownTicker'
+import { photos as fallbackPhotos } from '../../data/photos'
+import { useContent } from '../../cms/ContentContext'
+import { normalizeHeroSlides } from '../../cms/normalize'
 
-// Real face photos for social proof avatars
-const avatarPhotos = [
-  '/gifters/brittany.jpg',
-  '/gifters/gregory.jpg',
-  '/gifters/ailinda.jpg',
-  '/team/maker.jpg',
-]
+const SLIDE_MS = 3000
+const SWIPE_THRESHOLD = 40
 
 export default function Hero() {
-  const { openOfficial } = useSignUp()
-  const swiperRef = useRef(null)
+  const { openOfficial, openSpecial } = useSignUp()
+  const { collections } = useContent()
+  const photos = useMemo(() => {
+    const fromCms = normalizeHeroSlides(collections.heroSlides)
+    return fromCms.length ? fromCms : fallbackPhotos
+  }, [collections.heroSlides])
+  // Extended track: all photos + clone of first for seamless left wrap
+  const track = useMemo(() => (photos.length ? [...photos, photos[0]] : []), [photos])
+  const [index, setIndex] = useState(0)
+  const [animate, setAnimate] = useState(true)
+  const [progress, setProgress] = useState(0)
   const [paused, setPaused] = useState(false)
   const [reducedMotion, setReducedMotion] = useState(false)
+  const animRef = useRef(null)
+  const startRef = useRef(0)
+  const elapsedRef = useRef(0)
+  const touchX = useRef(null)
+  const wrapping = useRef(false)
+
+  const realIndex = index % photos.length
+  const slide = photos[realIndex]
+  const total = photos.length
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
     setReducedMotion(mq.matches)
-    const handler = (e) => setReducedMotion(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+    const onChange = (e) => setReducedMotion(e.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
   }, [])
 
+  const jumpTo = useCallback((nextReal) => {
+    const target = ((nextReal % total) + total) % total
+    wrapping.current = false
+    setAnimate(true)
+    setIndex(target)
+    setProgress(0)
+    elapsedRef.current = 0
+    startRef.current = performance.now()
+  }, [total])
+
+  const advance = useCallback(() => {
+    if (wrapping.current) return
+    setIndex((i) => i + 1)
+    setProgress(0)
+    elapsedRef.current = 0
+    startRef.current = performance.now()
+  }, [])
+
+  const next = useCallback(() => {
+    if (wrapping.current) return
+    setAnimate(true)
+    advance()
+  }, [advance])
+
+  const prev = useCallback(() => {
+    if (wrapping.current) return
+    if (index === 0) {
+      // Jump to clone silently, then animate back one
+      wrapping.current = true
+      setAnimate(false)
+      setIndex(total)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimate(true)
+          setIndex(total - 1)
+          wrapping.current = false
+          setProgress(0)
+          elapsedRef.current = 0
+          startRef.current = performance.now()
+        })
+      })
+      return
+    }
+    setAnimate(true)
+    setIndex((i) => i - 1)
+    setProgress(0)
+    elapsedRef.current = 0
+    startRef.current = performance.now()
+  }, [index, total])
+
+  const onTrackTransitionEnd = () => {
+    if (index >= total) {
+      wrapping.current = true
+      setAnimate(false)
+      setIndex(0)
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setAnimate(true)
+          wrapping.current = false
+        })
+      })
+    }
+  }
+
+  // Autoplay every 3 seconds
   useEffect(() => {
-    if (!swiperRef.current) return
-    if (paused || reducedMotion) swiperRef.current.autoplay.stop()
-    else swiperRef.current.autoplay.start()
-  }, [paused, reducedMotion])
+    if (paused) {
+      if (animRef.current) cancelAnimationFrame(animRef.current)
+      return
+    }
+
+    startRef.current = performance.now() - elapsedRef.current
+
+    const tick = (now) => {
+      if (wrapping.current) {
+        animRef.current = requestAnimationFrame(tick)
+        return
+      }
+      const elapsed = now - startRef.current
+      elapsedRef.current = elapsed
+      const p = Math.min(elapsed / SLIDE_MS, 1)
+      setProgress(p)
+      if (p >= 1) {
+        elapsedRef.current = 0
+        startRef.current = now
+        setProgress(0)
+        setIndex((i) => i + 1)
+      }
+      animRef.current = requestAnimationFrame(tick)
+    }
+
+    animRef.current = requestAnimationFrame(tick)
+    return () => {
+      if (animRef.current) cancelAnimationFrame(animRef.current)
+    }
+  }, [paused])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'ArrowRight') next()
+      if (e.key === 'ArrowLeft') prev()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [next, prev])
+
+  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX }
+  const onTouchEnd = (e) => {
+    if (touchX.current == null) return
+    const dx = e.changedTouches[0].clientX - touchX.current
+    touchX.current = null
+    if (Math.abs(dx) < SWIPE_THRESHOLD) return
+    if (dx < 0) next()
+    else prev()
+  }
+
+  const handleCta = () => {
+    if (slide.cta?.action === 'openSpecial') openSpecial()
+    else openOfficial()
+  }
+
+  const shouldAnimate = animate && !reducedMotion
+  const trackCount = track.length
 
   return (
     <section
-      className="relative h-[560px] sm:h-[640px] md:h-[720px] overflow-hidden"
-      style={{ background: '#120620' }}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      className="hero-arena relative h-[calc(100svh-4rem)] min-h-[540px] overflow-hidden"
+      style={{ background: '#160B2C' }}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      aria-roledescription="carousel"
+      aria-label="KM Dynasty battle showcase"
     >
-      {/* Photo carousel */}
-      <Swiper
-        modules={[Autoplay, EffectFade, Pagination]}
-        effect="fade"
-        fadeEffect={{ crossFade: true }}
-        speed={900}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
-        loop
-        pagination={{ clickable: true }}
-        onSwiper={(api) => { swiperRef.current = api }}
-        className="w-full h-full hero-swiper"
-      >
-        {photos.map(({ src, alt }, i) => (
-          <SwiperSlide key={i}>
-            <img
-              src={src}
-              alt={alt}
-              loading={i < 2 ? 'eager' : 'lazy'}
-              className="absolute inset-0 w-full h-full object-cover"
-              onError={(e) => { e.target.style.display = 'none' }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-
-      {/* Multi-layer overlay */}
-      <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.94) 40%, rgba(59,16,99,0.55) 100%)' }} />
-      <div className="absolute inset-0 z-[1]" style={{ background: 'linear-gradient(to top, rgba(18,6,32,1) 0%, transparent 55%)' }} />
-      {/* Ambient ember glow bottom-right */}
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] z-[1] pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.08) 0%, transparent 65%)', transform: 'translate(20%, 20%)' }} />
-
-      {/* Content */}
-      <div className="absolute inset-0 z-[2] flex items-end pb-16 sm:pb-24 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-          {/* Left: headline */}
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6 text-xs font-semibold uppercase tracking-wider text-ivory" style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
-              <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
-              The Official Hub
+      {/* ═══ Full-bleed track — slides LEFT every 3s ═══ */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div
+          className={`hero-track flex h-full ${shouldAnimate ? '' : 'hero-track--instant'}`}
+          style={{
+            width: `${trackCount * 100}%`,
+            transform: `translate3d(-${(index / trackCount) * 100}%, 0, 0)`,
+          }}
+          onTransitionEnd={(e) => {
+            if (e.target !== e.currentTarget) return
+            onTrackTransitionEnd()
+          }}
+        >
+          {track.map((photo, i) => (
+            <div
+              key={`${photo.src}-${i}`}
+              className="hero-panel relative h-full flex-shrink-0 overflow-hidden"
+              style={{ width: `${100 / trackCount}%` }}
+              aria-hidden={i !== index}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading={i < 2 ? 'eager' : 'lazy'}
+                className={`hero-panel-img absolute inset-0 w-full h-full object-cover ${
+                  i === index ? 'is-active' : ''
+                }`}
+                onError={(e) => { e.target.style.opacity = '0.3' }}
+              />
+              <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: i % 2 === 0
+                    ? 'linear-gradient(135deg, rgba(90,40,160,0.38), transparent 60%)'
+                    : 'linear-gradient(225deg, rgba(255,107,26,0.28), transparent 55%)',
+                }}
+              />
             </div>
+          ))}
+        </div>
+      </div>
 
-            <h1 className="font-display font-extrabold text-ivory mb-2 leading-none" style={{ fontSize: 'clamp(52px, 9vw, 100px)', letterSpacing: '-0.03em' }}>
-              KM
-            </h1>
-            <h1 className="font-display font-extrabold mb-5 leading-none" style={{ fontSize: 'clamp(52px, 9vw, 100px)', letterSpacing: '-0.03em', WebkitTextStroke: '1px rgba(255,107,26,0.6)', color: 'transparent', backgroundImage: 'linear-gradient(135deg, #FF6B1A 0%, #ffffff 60%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-              DYNASTY
-            </h1>
+      {/* Peeking next frames on desktop */}
+      <div className="hero-peek absolute top-0 right-0 bottom-0 z-[1] pointer-events-none hidden lg:block" aria-hidden>
+        <div className="absolute inset-0 flex gap-3 items-stretch py-[18%] pr-4 pl-10">
+          {[1, 2].map((offset) => {
+            const p = photos[(realIndex + offset) % total]
+            return (
+              <div
+                key={`${p.src}-peek-${offset}`}
+                className={`hero-peek-card ${offset === 1 ? 'hero-peek-card--near' : 'hero-peek-card--far'}`}
+              >
+                <img src={p.src} alt="" />
+              </div>
+            )
+          })}
+        </div>
+      </div>
 
-            <p className="text-white/60 text-sm sm:text-base max-w-sm mb-8 leading-relaxed">
-              🔥 Daily Box Battles &nbsp;|&nbsp; 💎 Pro Strategies &amp; Tips &nbsp;|&nbsp; Creator Livestream Visit
+      <div className="hero-veil absolute inset-0 z-[2] pointer-events-none" />
+
+      {/* Top progress */}
+      <div className="absolute top-0 left-0 right-0 z-[4] h-[2px] bg-white/10">
+        <div
+          className="h-full bg-ember origin-left"
+          style={{
+            transform: `scaleX(${progress})`,
+            boxShadow: '0 0 12px rgba(255,107,26,0.55)',
+          }}
+        />
+      </div>
+
+      {/* Brand + CTA */}
+      <div className="absolute inset-0 z-[3] flex flex-col justify-end pointer-events-none">
+        <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 pb-28 sm:pb-32 pt-24">
+          <div className="max-w-xl pointer-events-auto">
+            <p className="font-body text-[11px] tracking-[0.35em] uppercase text-white/45 mb-4">
+              Godsent Box Battles
             </p>
 
-            <div className="flex flex-wrap items-center gap-3 mb-8">
-              <button
-                onClick={openOfficial}
-                className="px-7 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105 active:scale-95"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.3)' }}
+            <h1 className="font-display font-extrabold leading-[0.88] tracking-[-0.03em]">
+              <span className="block text-ivory" style={{ fontSize: 'clamp(3.25rem, 11vw, 7rem)' }}>
+                KM
+              </span>
+              <span
+                className="block hero-brand-outline"
+                style={{ fontSize: 'clamp(3.25rem, 11vw, 7rem)' }}
               >
-                Join the Box Battle
+                DYNASTY
+              </span>
+            </h1>
+
+            <div className="mt-6 mb-8 min-h-[4.75rem]" key={realIndex}>
+              <p
+                className="hero-caption font-display font-semibold text-ember italic leading-tight mb-2"
+                style={{ fontSize: 'clamp(1.25rem, 2.8vw, 1.85rem)' }}
+              >
+                {slide.caption}
+              </p>
+              <p className="hero-line text-white/60 text-sm sm:text-base max-w-sm leading-relaxed">
+                {slide.line}
+              </p>
+            </div>
+
+            <div
+              className="flex flex-wrap items-center gap-4"
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+            >
+              <button
+                type="button"
+                onClick={handleCta}
+                className="hero-cta group relative inline-flex items-center gap-3 px-8 py-4 text-sm sm:text-base font-bold text-white overflow-hidden"
+              >
+                <span className="relative z-[1]">{slide.cta?.label || 'Join My Box Battle'}</span>
+                <svg className="relative z-[1] w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" aria-hidden>
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span className="hero-cta-sweep" aria-hidden />
               </button>
-              <a
-                href="/battle-schedule"
-                className="px-7 py-3.5 text-sm font-medium text-white rounded-xl border border-white/20 hover:border-white/40 transition-all"
-                style={{ backdropFilter: 'blur(8px)', background: 'rgba(255,255,255,0.06)' }}
+
+              <Link
+                to="/battle-schedule"
+                className="text-sm font-medium text-white/55 hover:text-ivory transition-colors underline-offset-4 hover:underline"
               >
                 See Schedule
-              </a>
+              </Link>
             </div>
-
-            {/* Social proof — real photos */}
-            <div className="flex items-center gap-3">
-              <div className="flex -space-x-2.5">
-                {avatarPhotos.map((src, i) => (
-                  <div
-                    key={i}
-                    className="w-8 h-8 rounded-full overflow-hidden border-2 flex-shrink-0"
-                    style={{ borderColor: '#120620' }}
-                  >
-                    <img
-                      src={src}
-                      alt="Community member"
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none'
-                        e.target.parentNode.style.background = 'rgba(59,16,99,0.6)'
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <p className="text-white/70 text-xs font-semibold">Thousands of creators competing</p>
-                <div className="flex items-center gap-1 mt-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-ember text-[10px]">★</span>
-                  ))}
-                  <span className="text-white/30 text-[10px] ml-1">Community rated</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: countdown */}
-          <div className="hidden lg:flex justify-end">
-            <CountdownTicker />
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[2] flex flex-col items-center gap-1.5 opacity-30">
-        <span className="text-white text-[9px] uppercase tracking-[0.2em]">scroll</span>
-        <div className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent" />
+      {/* Filmstrip — all 6 images visible */}
+      <div
+        className="hero-filmstrip absolute bottom-0 inset-x-0 z-[4]"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        <div className="max-w-7xl mx-auto px-5 sm:px-8 pb-5 pt-3">
+          <div className="flex items-end gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
+            {photos.map((photo, i) => {
+              const active = i === realIndex
+              return (
+                <button
+                  key={photo.src}
+                  type="button"
+                  onClick={() => jumpTo(i)}
+                  className={`hero-thumb group relative flex-shrink-0 overflow-hidden transition-all duration-500 ${
+                    active ? 'is-active' : ''
+                  }`}
+                  aria-label={`Slide ${i + 1}: ${photo.caption}`}
+                  aria-current={active ? 'true' : undefined}
+                >
+                  <img
+                    src={photo.src}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                  <span className={`absolute bottom-1.5 left-1.5 font-display text-[10px] tracking-wider tabular-nums ${
+                    active ? 'text-ember' : 'text-white/70'
+                  }`}>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {active && (
+                    <span
+                      className="absolute bottom-0 left-0 h-0.5 bg-ember"
+                      style={{ width: `${progress * 100}%` }}
+                    />
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
       </div>
 
-      {/* Live badge */}
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
-        <LiveStatus />
-      </div>
+      <button
+        type="button"
+        onClick={prev}
+        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[4] w-10 h-10 flex items-center justify-center text-white/40 hover:text-ivory transition-colors"
+        aria-label="Previous slide"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button
+        type="button"
+        onClick={next}
+        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[4] w-10 h-10 flex items-center justify-center text-white/40 hover:text-ivory transition-colors"
+        aria-label="Next slide"
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
     </section>
   )
 }

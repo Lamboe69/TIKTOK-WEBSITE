@@ -1,38 +1,37 @@
 export const photos = [
   {
-    src: '/photos/king-maker-live.jpg',
-    alt: 'King Maker going live on TikTok',
-    caption: 'Daily Godsent Box Battle',
-    cta: null,
-  },
-  {
     src: '/photos/battle-highlights.jpg',
     alt: 'Box battle highlights and reactions',
     caption: 'Where Every Tap Counts',
-    cta: null,
+    line: 'Engagement is the currency. Heart is the crown.',
+    cta: { label: 'Join My Box Battle', action: 'openOfficial' },
   },
   {
     src: '/photos/champion-crowning.jpg',
     alt: 'Champion of Champions crowning moment',
     caption: 'Champion of Champions',
-    cta: { label: 'Sign Up — Box Battle', action: 'openOfficial' },
+    line: 'Win the night. Earn the title. Claim the dynasty spotlight.',
+    cta: { label: 'Join My Box Battle', action: 'openOfficial' },
   },
   {
     src: '/photos/team-dallas.jpg',
     alt: 'KM DYNASTY team in Dallas TX',
-    caption: 'Dallas TX — The Dynasty Home',
-    cta: null,
+    caption: 'Dallas TX — Dynasty Home',
+    line: 'From Texas soil to a global TikTok movement.',
+    cta: { label: 'Join My Box Battle', action: 'openOfficial' },
   },
   {
     src: '/photos/community-meetup.jpg',
     alt: 'Community meetup and creator visit',
     caption: 'Creator Livestream Visits',
-    cta: null,
+    line: 'Winners don’t just rank — they get face time with the dynasty.',
+    cta: { label: 'Join My Box Battle', action: 'openOfficial' },
   },
   {
     src: '/photos/scavengers-battle.jpg',
     alt: 'Scavengers Box Battle night',
     caption: 'Scavengers Box Battle',
+    line: 'No tap minimum. Pure hunger. Underdogs rewrite the night.',
     cta: { label: 'Join the Battle', action: 'openSpecial' },
   },
 ]

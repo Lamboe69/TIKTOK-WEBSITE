@@ -5,6 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm --prefix server run dev",
+    "dev:all": "npm --prefix server run dev & vite",
+    "server": "npm --prefix server start",
+    "server:setup": "npm --prefix server run setup",
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview"

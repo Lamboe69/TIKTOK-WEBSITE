@@ -1,18 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const TIMEZONE_SOURCE = {
-  iana: 'America/Chicago',
-  label: 'CT',
-  flag: '🇺🇸',
-}
-
 const TIMEZONES = [
-  { iana: 'America/New_York', label: 'US Eastern', flag: '🇺🇸', abbr: 'ET' },
-  { iana: 'America/Chicago', label: 'US Central', flag: '🇺🇸', abbr: 'CT' },
-  { iana: 'America/Toronto', label: 'Canada', flag: '🇨🇦', abbr: 'ET' },
-  { iana: 'Europe/London', label: 'UK', flag: '🇬🇧', abbr: 'GMT' },
-  { iana: 'Africa/Lagos', label: 'Nigeria', flag: '🇳🇬', abbr: 'WAT' },
-  { iana: 'Africa/Kampala', label: 'Uganda', flag: '🇺🇬', abbr: 'EAT' },
+  { iana: 'America/New_York', label: 'US Eastern', abbr: 'ET' },
+  { iana: 'America/Chicago', label: 'US Central', abbr: 'CT' },
+  { iana: 'America/Toronto', label: 'Canada', abbr: 'ET' },
+  { iana: 'Europe/London', label: 'UK', abbr: 'GMT' },
+  { iana: 'Africa/Lagos', label: 'Nigeria', abbr: 'WAT' },
+  { iana: 'Africa/Kampala', label: 'Uganda', abbr: 'EAT' },
 ]
 
 function getSourceDate(timeStr) {
@@ -77,30 +71,30 @@ export default function TimezoneRotator({ sourceTime = '8:00 PM' }) {
       onMouseLeave={() => setPaused(false)}
     >
       <button
+        type="button"
         onClick={() => setActiveIdx((prev) => (prev - 1 + TIMEZONES.length) % TIMEZONES.length)}
-        className="w-7 h-7 rounded-md bg-brand-100 hover:bg-brand-200 flex items-center justify-center transition-colors flex-shrink-0"
+        className="w-8 h-8 flex items-center justify-center text-white/35 hover:text-ivory transition-colors flex-shrink-0"
         aria-label="Previous timezone"
       >
-        <svg className="w-3.5 h-3.5 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6" /></svg>
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="15 18 9 12 15 6" /></svg>
       </button>
 
-      <div className="relative min-w-[220px] text-center">
-        <div key={activeIdx} className="tz-fade-in flex flex-col items-center gap-1">
-          <span className="text-xl">{current.flag}</span>
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-brand-900 rounded-full">
-            <span className="text-white font-semibold text-sm">{current.label}</span>
-            <span className="w-px h-4 bg-white/20" />
-            <span className="text-accent font-bold text-sm">{currentTime}</span>
-          </span>
+      <div className="relative min-w-[200px] text-center">
+        <div key={activeIdx} className="tz-fade-in">
+          <p className="font-display font-bold text-ivory text-2xl sm:text-3xl tracking-tight mb-1">
+            {currentTime}
+          </p>
+          <p className="text-white/40 text-xs tracking-[0.2em] uppercase">{current.label}</p>
         </div>
 
-        <div className="flex items-center justify-center gap-1.5 mt-3">
+        <div className="flex items-center justify-center gap-1.5 mt-4">
           {TIMEZONES.map((_, i) => (
             <button
               key={i}
+              type="button"
               onClick={() => setActiveIdx(i)}
-              className={`h-1.5 rounded-full transition-all ${
-                i === activeIdx ? 'w-5 bg-accent' : 'w-1.5 bg-brand-200'
+              className={`h-0.5 transition-all ${
+                i === activeIdx ? 'w-6 bg-ember' : 'w-3 bg-white/20 hover:bg-white/40'
               }`}
               aria-label={`Go to ${TIMEZONES[i].label}`}
             />
@@ -109,11 +103,12 @@ export default function TimezoneRotator({ sourceTime = '8:00 PM' }) {
       </div>
 
       <button
+        type="button"
         onClick={() => setActiveIdx((prev) => (prev + 1) % TIMEZONES.length)}
-        className="w-7 h-7 rounded-md bg-brand-100 hover:bg-brand-200 flex items-center justify-center transition-colors flex-shrink-0"
+        className="w-8 h-8 flex items-center justify-center text-white/35 hover:text-ivory transition-colors flex-shrink-0"
         aria-label="Next timezone"
       >
-        <svg className="w-3.5 h-3.5 text-brand-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6" /></svg>
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="9 18 15 12 9 6" /></svg>
       </button>
     </div>
   )
