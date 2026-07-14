@@ -1,13 +1,8 @@
 import { useState } from 'react'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
-
-const impactStats = [
-  { value: '500+', label: 'Families Helped' },
-  { value: '$10K+', label: 'Donated' },
-  { value: '12', label: 'Countries Reached' },
-  { value: '100%', label: 'Transparent' },
-]
+import { useContent } from '../cms/ContentContext'
+import './morePages.css'
 
 const supportReasons = [
   'Medical emergency',
@@ -19,6 +14,9 @@ const supportReasons = [
 ]
 
 export default function Outreach() {
+  const { getPage, settings } = useContent()
+  const page = getPage('outreach')
+  const contactEmail = settings.email || 'lagwatinc@gmail.com'
   const [form, setForm] = useState({ name: '', email: '', country: '', reason: '', story: '' })
   const [submitted, setSubmitted] = useState(false)
 
@@ -28,60 +26,50 @@ export default function Outreach() {
     const body = encodeURIComponent(
       'Name: ' + form.name + '\nEmail: ' + form.email + '\nCountry: ' + form.country + '\nReason: ' + form.reason + '\n\nStory:\n' + form.story
     )
-    window.location.href = 'mailto:lagwatinc@gmail.com?subject=' + subject + '&body=' + body
+    window.location.href = 'mailto:' + contactEmail + '?subject=' + subject + '&body=' + body
     setSubmitted(true)
   }
 
   return (
     <main>
-      {/* Hero */}
-      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1400&q=80"
-          alt="Outreach"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <Motion delay={0.1}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                Giving Back
-              </span>
-              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
-                KM Dynasty<br />
-                <span className="text-gradient">Outreach</span>
-              </h1>
-              <p className="text-white/60 text-sm leading-relaxed max-w-md italic">
-                "I want to take our dynasty family to the streets and be a destiny helper to those in need."
-              </p>
-            </Motion>
-
-            <Motion delay={0.2}>
-              <div className="glass rounded-2xl p-6 border border-white/10 grid grid-cols-2 gap-5">
-                {impactStats.map(s => (
-                  <div key={s.label} className="text-center">
-                    <p className="font-display font-bold text-2xl text-ivory">{s.value}</p>
-                    <p className="text-white/40 text-[10px] uppercase tracking-wider mt-1">{s.label}</p>
-                  </div>
-                ))}
-              </div>
-            </Motion>
-          </div>
+      {/* Hero — Giving Horizon */}
+      <section className="outreach-hero" aria-label="KM Dynasty Outreach">
+        <div className="outreach-hero__media" aria-hidden>
+          <img src={page.heroImage || '/photos/community-meetup.jpg'} alt="" />
+          <div className="outreach-hero__veil" />
+          <div className="outreach-hero__warm" />
+        </div>
+        <div className="outreach-hero__lockup">
+          <Motion delay={60}>
+            <p className="outreach-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <h1 className="outreach-hero__title">{page.heroTitle || 'Outreach'}</h1>
+            <p className="outreach-hero__lede">
+              {page.heroLede ||
+                '“I want to take our dynasty family to the streets and be a destiny helper to those in need.”'}
+            </p>
+            <div className="outreach-hero__actions">
+              <a href="#outreach-mission" className="mp-cta">
+                See the mission
+                <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+              </a>
+              <a href="#outreach-donate" className="mp-link">
+                Donate on GoFundMe
+              </a>
+            </div>
+          </Motion>
         </div>
       </section>
 
       {/* Main Content */}
-      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+      <section id="outreach-mission" className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {/* Left — Mission */}
             <div className="space-y-6">
               <Motion delay={0.1}>
                 <div className="relative rounded-2xl overflow-hidden aspect-[16/9]">
-                  <img loading="lazy"
-                    src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=800&q=80"
+                  <img
+                    src="/photos/community-meetup.jpg"
                     alt="Outreach mission"
                     className="w-full h-full object-cover"
                   />
@@ -119,7 +107,7 @@ export default function Outreach() {
               </Motion>
 
               <Motion delay={0.25}>
-                <div className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
+                <div id="outreach-donate" className="rounded-2xl p-6 border border-white/04" style={{ background: 'rgba(59,16,99,0.35)', backdropFilter: 'blur(16px)' }}>
                   <h3 className="font-display font-bold text-lg text-ivory mb-2">Donate via GoFundMe</h3>
                   <p className="text-white/50 text-sm mb-4">Support the KM Dynasty Outreach fund. Every dollar helps a family in need.</p>
                   <a

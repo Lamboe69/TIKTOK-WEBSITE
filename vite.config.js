@@ -3,27 +3,25 @@ import react from '@vitejs/plugin-react'
 
 function apiDevPlugin() {
   return {
-    name: 'api-dev-mock',
+    name: 'api-dev-stats-mock',
     configureServer(server) {
-      server.middlewares.use('/api/stats', (req, res) => {
+      // Keep TikTok stats mock in Vite; CMS APIs are proxied to Express (:4000)
+      server.middlewares.use('/api/stats', (_req, res) => {
         res.setHeader('Content-Type', 'application/json')
-        res.setHeader('Access-Control-Allow-Origin', '*')
-
-        // Return the cached stats if available, otherwise nulls
-        // On Vercel, the real api/stats.js handler runs instead
-        const response = {
-          followers: 50000,
-          followersFormatted: '50K+',
-          likes: 1000000,
-          likesFormatted: '1M+',
-          following: null,
-          displayName: 'King Maker',
-          username: 'kingmakernevergivesup',
-          source: 'dev-mock',
-          updatedAt: new Date().toISOString(),
-          expiresAt: new Date(Date.now() + 86400000).toISOString(),
-        }
-        res.end(JSON.stringify(response))
+        res.end(
+          JSON.stringify({
+            followers: 50000,
+            followersFormatted: '50K+',
+            likes: 1000000,
+            likesFormatted: '1M+',
+            following: null,
+            displayName: 'King Maker',
+            username: 'kingmakernevergivesup',
+            source: 'dev-mock',
+            updatedAt: new Date().toISOString(),
+            expiresAt: new Date(Date.now() + 86400000).toISOString(),
+          }),
+        )
       })
     },
   }
@@ -31,19 +29,15 @@ function apiDevPlugin() {
 
 export default defineConfig({
   plugins: [react(), apiDevPlugin()],
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom') || id.includes('node_modules/react-router')) {
-            return 'vendor-react'
-          }
-          if (id.includes('node_modules/swiper')) {
-            return 'vendor-swiper'
-          }
-        },
-      },
+  server: {
+    proxy: {
+      '/api/admin': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/content': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/collections': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/pages': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/settings': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/media': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/health': { target: 'http://localhost:4000', changeOrigin: true },
     },
-    chunkSizeWarningLimit: 600,
   },
 })

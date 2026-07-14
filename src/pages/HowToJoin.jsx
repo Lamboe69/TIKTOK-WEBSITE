@@ -1,268 +1,402 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
 import Motion from '../components/Motion'
+import { useContent } from '../cms/ContentContext'
+import './HowToJoin.css'
 
-const stepImages = [
-  'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=600&q=80',
-  'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80',
-  'https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=600&q=80',
-  'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=600&q=80',
-  'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80',
-  'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80',
-  'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80',
-  'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=600&q=80',
-  'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&q=80',
+const fallbackSteps = [
+  {
+    title: 'Tap the Page',
+    desc: 'Tap and like the live screen — every tap counts toward your dynasty standing.',
+    img: '/team/maker.jpg',
+  },
+  {
+    title: 'Pray Before Your Box',
+    desc: 'Say a short prayer before sending. Faith fuels the fight.',
+    img: '/photos/battle-highlights.jpg',
+    prayer: '"Dear God, guide my box to the right battle. Let my effort be seen and my support counted. Amen."',
+  },
+  {
+    title: 'Always 5,000+ Taps',
+    desc: 'Hold a minimum of 5,000 taps on KM DYNASTY content before you claim a slot.',
+    img: '/photos/king-maker-live.jpg',
+  },
+  {
+    title: 'Support the Livestreams',
+    desc: 'Send gifts, cheer loud, and defend the Dynasty when the night gets fierce.',
+    img: '/battles-photos/most-beautiful.jpg',
+  },
+  {
+    title: 'Elevate Creators',
+    desc: 'Lift guest creators with comments, shares, and relentless positivity.',
+    img: '/photos/community-meetup.jpg',
+  },
+  {
+    title: 'Be in the Top Seven',
+    desc: 'Climb into the top 7 active supporters — visibility is earned.',
+    img: '/battles-photos/daily-godsent.jpg',
+  },
+  {
+    title: 'Be Regular & Supportive',
+    desc: 'Consistency. Loyalty. No drama. Family energy, always.',
+    img: '/battles-photos/champion-of-champions.jpg',
+  },
+  {
+    title: 'Win Daily Godsent Battles',
+    desc: 'Daily wins unlock the weekly finale — defend your crown night after night.',
+    img: '/battles-photos/scavengers.jpg',
+  },
+  {
+    title: 'Win the Weekly Battle',
+    desc: 'Win the weekly — then walk into Champion of Champions.',
+    img: '/photos/champion-crowning.jpg',
+  },
 ]
 
-const steps = [
-  { title: 'Tap the Page', desc: 'Tap/like the live screen repeatedly. Every tap counts.' },
-  { title: 'Pray Before Your Box', desc: 'Say a short prayer before sending. Faith fuels the fight.' },
-  { title: 'Always 5,000+ Taps', desc: 'Minimum 5,000 taps on KM DYNASTY content required.' },
-  { title: 'Support the Livestreams', desc: 'Send gifts, cheer, defend the dynasty.' },
-  { title: 'Elevate Creators', desc: 'Support guest creators with comments and shares.' },
-  { title: 'Be in the Top Seven', desc: 'Rank among the top 7 active supporters.' },
-  { title: 'Be Regular & Supportive', desc: 'Consistency, positivity, loyalty, no drama.' },
-  { title: 'Win Daily Godsent Battles', desc: 'Winning daily battles advances you to the weekly finale.' },
-  { title: 'Win the Weekly Battle', desc: 'Winning the weekly battle advances you to the Champion finale.' },
+const specialDiffs = [
+  { n: '01', label: 'Own form', copy: 'Separate entry path — not the Official Godsent route.' },
+  { n: '02', label: 'Open gate', copy: 'No 5,000 tap minimum. Hunger is enough.' },
+  { n: '03', label: 'Own crown', copy: 'Own rules, own schedule, own winner.' },
 ]
 
-function EligibilityChecker() {
-  const [answers, setAnswers] = useState({ taps: null, following: null })
+function Gate({ ready, answers, setAnswers }) {
   const allAnswered = answers.taps !== null && answers.following !== null
-  const ready = answers.taps === true && answers.following === true
 
   return (
-    <div className="glass rounded-2xl p-5 border border-white/10 max-w-xs">
-      <p className="text-white/40 text-[10px] uppercase tracking-widest mb-4">Quick Eligibility Check</p>
-
-      <div className="space-y-4">
-        <div>
-          <p className="text-ivory text-xs font-semibold mb-2">Do you have 5,000+ taps?</p>
-          <div className="flex gap-2">
-            {[true, false].map(val => (
-              <button
-                key={String(val)}
-                onClick={() => setAnswers({ ...answers, taps: val })}
-                className="flex-1 py-2 text-xs font-bold rounded-lg border transition-all"
-                style={{
-                  background: answers.taps === val ? (val ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)') : 'rgba(255,255,255,0.05)',
-                  borderColor: answers.taps === val ? (val ? 'rgba(16,185,129,0.4)' : 'rgba(239,68,68,0.4)') : 'rgba(255,255,255,0.1)',
-                  color: answers.taps === val ? (val ? '#10b981' : '#ef4444') : 'rgba(255,255,255,0.6)',
-                }}
-              >
-                {val ? 'Yes' : 'Not yet'}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <p className="text-ivory text-xs font-semibold mb-2">Following King Maker on TikTok?</p>
-          <div className="flex gap-2">
-            {[true, false].map(val => (
-              <button
-                key={String(val)}
-                onClick={() => setAnswers({ ...answers, following: val })}
-                className="flex-1 py-2 text-xs font-bold rounded-lg border transition-all"
-                style={{
-                  background: answers.following === val ? (val ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.15)') : 'rgba(255,255,255,0.05)',
-                  borderColor: answers.following === val ? (val ? 'rgba(16,185,129,0.4)' : 'rgba(239,68,68,0.4)') : 'rgba(255,255,255,0.1)',
-                  color: answers.following === val ? (val ? '#10b981' : '#ef4444') : 'rgba(255,255,255,0.6)',
-                }}
-              >
-                {val ? 'Yes' : 'Not yet'}
-              </button>
-            ))}
-          </div>
-        </div>
+    <div className="join-gate">
+      <div className="join-gate__head">
+        <p className="sec-kicker">The Gate</p>
+        <h2 className="join-gate__title font-display font-bold text-ivory tracking-tight">
+          Prove the floor
+        </h2>
+        <p className="join-gate__hint">
+          Two checks. Then the path opens.
+        </p>
       </div>
 
-      {allAnswered && (
-        <div className="mt-4 p-3 rounded-xl text-xs font-semibold" style={{ background: ready ? 'rgba(16,185,129,0.1)' : 'rgba(255,107,26,0.1)', color: ready ? '#10b981' : '#FF6B1A' }}>
-          {ready ? '✓ You\'re ready — sign up below!' : 'Keep working toward the requirements.'}
+      <div className="join-gate__board">
+        {[
+          { key: 'taps', q: 'Do you hold 5,000+ taps?', n: 'I' },
+          { key: 'following', q: 'Following King Maker on TikTok?', n: 'II' },
+        ].map(({ key, q, n }) => (
+          <div key={key} className="join-gate__row">
+            <span className="join-gate__roman font-display" aria-hidden>{n}</span>
+            <p className="join-gate__q">{q}</p>
+            <div className="join-gate__opts" role="group" aria-label={q}>
+              {[true, false].map((val) => {
+                const on = answers[key] === val
+                return (
+                  <button
+                    key={String(val)}
+                    type="button"
+                    className={`join-gate__opt ${on ? (val ? 'is-yes' : 'is-no') : ''}`}
+                    onClick={() => setAnswers((a) => ({ ...a, [key]: val }))}
+                  >
+                    {val ? 'Yes' : 'Not yet'}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+
+        <div className={`join-gate__verdict ${allAnswered ? 'is-visible' : ''} ${ready ? 'is-ready' : ''}`}>
+          {allAnswered && (
+            ready
+              ? 'The gate opens — walk the path below.'
+              : 'Build the floor. Then return for the crown.'
+          )}
         </div>
-      )}
+      </div>
     </div>
   )
 }
 
 export default function HowToJoin() {
   const { openOfficial, openSpecial } = useSignUp()
+  const { collections, getPage, settings } = useContent()
+  const page = getPage('howToJoin')
+  const steps =
+    collections.joinSteps?.length > 0
+      ? collections.joinSteps.map((s) => ({
+          title: s.title,
+          desc: s.body || s.desc,
+          img: s.img,
+          prayer: s.prayer,
+        }))
+      : fallbackSteps
+  const [active, setActive] = useState(0)
   const [done, setDone] = useState({})
-
-  const toggle = (i) => setDone(prev => ({ ...prev, [i]: !prev[i] }))
+  const [paused, setPaused] = useState(false)
+  const [answers, setAnswers] = useState({ taps: null, following: null })
+  const ready = answers.taps === true && answers.following === true
+  const step = steps[active]
   const doneCount = Object.values(done).filter(Boolean).length
 
+  useEffect(() => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduced || paused || !steps.length) return undefined
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % steps.length)
+    }, 5500)
+    return () => clearInterval(id)
+  }, [paused, steps.length])
+
+  const toggleDone = (i) => {
+    setDone((prev) => ({ ...prev, [i]: !prev[i] }))
+    setActive(i)
+  }
+
   return (
-    <main>
-      {/* Hero */}
-      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=1400&q=80"
-          alt="How to Join"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <Motion delay={0.1}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                <span className="w-3.5 h-3.5 block">{Icons.swords}</span>
-                Official Steps
-              </span>
-              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
-                How to Join My<br />
-                <span className="text-gradient">Box Battle</span>
-              </h1>
-              <p className="text-white/60 text-sm max-w-sm leading-relaxed">
-                TikTok Live — follow the path from first tap to Champion of Champions.
-              </p>
-            </Motion>
-
-            <Motion delay={0.2}>
-              <EligibilityChecker />
-            </Motion>
-          </div>
+    <main className="join-page">
+      {/* ═══ Hero — Cathedral Threshold ═══ */}
+      <section className="join-hero" aria-label="How to Join">
+        <div className="join-hero__media" aria-hidden>
+          <img
+            src={page.heroImage || '/photos/champion-crowning.jpg'}
+            alt=""
+            className="join-hero__photo"
+          />
+          <div className="join-hero__veil" />
         </div>
-      </section>
 
-      {/* Track A: Steps grid */}
-      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <Motion delay={0.1} className="mb-10">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ background: '#FF6B1A' }}>A</span>
-              <h2 className="font-display font-bold text-2xl sm:text-3xl text-ivory">Official Godsent Progression</h2>
-            </div>
-            <p className="text-white/50 text-sm ml-11">
-              Steps 1–9. Complete this path to reach the Champion of Champions finale.
-              {doneCount > 0 && <span className="ml-2 text-ember font-semibold">{doneCount}/9 done</span>}
+        <svg
+          className="join-hero__arches"
+          viewBox="0 0 1200 800"
+          preserveAspectRatio="xMidYMax meet"
+          aria-hidden
+        >
+          <path className="join-hero__arch join-hero__arch--a" d="M60 800 Q600 120 1140 800" fill="none" />
+          <path className="join-hero__arch join-hero__arch--b" d="M180 800 Q600 220 1020 800" fill="none" />
+          <path className="join-hero__arch join-hero__arch--c" d="M300 800 Q600 320 900 800" fill="none" />
+          <path className="join-hero__arch join-hero__arch--d" d="M420 800 Q600 420 780 800" fill="none" />
+        </svg>
+
+        <div className="join-hero__portal">
+          <Motion delay={50} className="join-hero__copy">
+            <p className="join-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <h1 className="join-hero__title">
+              <span className="join-hero__how">How to</span>
+              <span className="join-hero__join">{page.heroTitle?.replace(/^How to\s*/i, '') || 'Join'}</span>
+            </h1>
+            <p className="join-hero__lede">
+              {page.heroLede ||
+                'Cross the threshold. Nine steps to the crown — from first tap to Champion of Champions.'}
             </p>
-          </Motion>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {steps.map(({ title, desc }, i) => (
-              <Motion key={i} delay={0.1 + i * 0.06}>
-                <button
-                  onClick={() => toggle(i)}
-                  className="group relative rounded-2xl overflow-hidden aspect-[4/3] text-left w-full transition-all hover:scale-[1.02]"
-                >
-                  <img loading="lazy"
-                    src={stepImages[i]}
-                    alt={title}
-                    className={`w-full h-full object-cover transition-all duration-500 ${done[i] ? 'grayscale opacity-50' : 'group-hover:scale-105'}`}
-                  />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.95) 40%, rgba(18,6,32,0.3) 100%)' }} />
-
-                  {/* Step number */}
-                  <div className="absolute top-3 left-3 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold text-white" style={{ background: done[i] ? '#10b981' : '#FF6B1A' }}>
-                    {done[i] ? '✓' : i + 1}
-                  </div>
-
-                  <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h3 className={`font-display font-bold text-sm mb-1 ${done[i] ? 'line-through text-white/40' : 'text-ivory'}`}>{title}</h3>
-                    <p className="text-white/50 text-xs leading-relaxed">{desc}</p>
-                  </div>
-                </button>
-              </Motion>
-            ))}
-          </div>
-
-          {/* Prayer callout */}
-          <Motion delay={0.5}>
-            <div className="mt-8 rounded-xl p-5 border border-white/04" style={{ background: 'rgba(59,16,99,0.2)' }}>
-              <p className="text-ember text-xs font-bold uppercase tracking-wider mb-2">Sample Prayer (Step 2)</p>
-              <p className="text-white/60 text-sm italic leading-relaxed">
-                "Dear God, guide my box to the right battle. Let my effort be seen and my support counted. Amen."
-              </p>
-            </div>
-          </Motion>
-
-          <Motion delay={0.6}>
-            <div className="mt-8 text-center">
-              <a
-                href="https://www.tiktok.com/@kingmakernevergivesup"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 6 }}
-              >
-                Follow King Maker
+            <div className="join-hero__actions">
+              <button type="button" onClick={openOfficial} className="join-hero__cta">
+                {settings.ctaLabel || 'Join My Box Battle'}
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+              </button>
+              <a href="#join-ascent" className="join-hero__link">
+                Walk the nine steps
               </a>
             </div>
           </Motion>
         </div>
+
+        <div className="join-hero__procession" aria-hidden>
+          <div className="join-hero__procession-track">
+            {[...steps, ...steps].map((s, i) => (
+              <span key={`${s.title}-${i}`}>
+                <em>{String((i % steps.length) + 1).padStart(2, '0')}</em>
+                {s.title}
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* Track B */}
-      <section className="relative min-h-[400px] flex items-center overflow-hidden">
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=1400&q=80"
-          alt="Special Battles"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.9) 50%, rgba(59,16,99,0.7) 100%)' }} />
+      {/* ═══ Gate ═══ */}
+      <section id="join-gate" className="join-band join-band--gate">
+        <Motion delay={40} className="join-pad">
+          <Gate ready={ready} answers={answers} setAnswers={setAnswers} />
+        </Motion>
+      </section>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-            <Motion delay={0.1}>
-              <div className="flex items-center gap-3 mb-4">
-                <span className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold text-white" style={{ background: '#3B1063' }}>B</span>
-                <h2 className="font-display font-bold text-2xl sm:text-3xl text-ivory">Scavengers, Country & Most Beautiful</h2>
+      {/* ═══ The Ascent — full-bleed ═══ */}
+      <section id="join-ascent" className="join-band join-band--ascent">
+        <div className="join-pad join-ascent__intro">
+          <Motion delay={40}>
+            <p className="sec-kicker mb-2">Path A · Official Godsent</p>
+            <div className="join-ascent__intro-row">
+              <h2 className="join-ascent__heading font-display font-bold text-ivory tracking-tight">
+                Nine steps to the <span className="text-gradient">crown</span>
+              </h2>
+              <p className="join-ascent__count">
+                {doneCount > 0 ? (
+                  <><span className="text-ember font-semibold">{doneCount}</span> / 9 marked</>
+                ) : (
+                  'Mark what you’ve lived'
+                )}
+              </p>
+            </div>
+          </Motion>
+        </div>
+
+        <Motion delay={90}>
+          <div
+            className="join-ascent"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            {/* Full-width step ribbon */}
+            <div className="join-ribbon" role="tablist" aria-label="Official progression steps">
+              {steps.map((s, i) => {
+                const on = i === active
+                return (
+                  <button
+                    key={s.title}
+                    type="button"
+                    role="tab"
+                    aria-selected={on}
+                    className={`join-ribbon__btn ${on ? 'is-active' : ''} ${done[i] ? 'is-done' : ''}`}
+                    onClick={() => setActive(i)}
+                    onMouseEnter={() => setActive(i)}
+                  >
+                    <span className="join-ribbon__n font-display">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="join-ribbon__t">{s.title}</span>
+                  </button>
+                )
+              })}
+            </div>
+
+            {/* Cinematic stage */}
+            <div className="join-ascent__stage">
+              {steps.map((s, i) => (
+                <img
+                  key={s.title}
+                  src={s.img}
+                  alt={i === active ? s.title : ''}
+                  aria-hidden={i !== active}
+                  className={`join-ascent__img ${i === active ? 'is-on' : ''}`}
+                />
+              ))}
+              <div className="join-ascent__veil" />
+
+              <span className="join-ascent__idx font-display font-extrabold" aria-hidden>
+                {String(active + 1).padStart(2, '0')}
+              </span>
+
+              <div key={step.title} className="join-ascent__copy join-pad">
+                <div className="join-ascent__copy-inner">
+                  <div className="flex items-center gap-3 mb-4">
+                    <button
+                      type="button"
+                      className={`join-mark ${done[active] ? 'is-done' : ''}`}
+                      onClick={() => toggleDone(active)}
+                      aria-pressed={!!done[active]}
+                    >
+                      {done[active] ? 'Lived' : 'Mark lived'}
+                    </button>
+                    <span className="text-[10px] uppercase tracking-[0.28em] text-white/50">
+                      Step {active + 1} of 9
+                    </span>
+                  </div>
+                  <h3 className={`join-ascent__step-title font-display font-bold text-ivory ${done[active] ? 'opacity-60' : ''}`}>
+                    {step.title}
+                  </h3>
+                  <p className="join-ascent__step-desc">
+                    {step.desc}
+                  </p>
+                  {step.prayer && (
+                    <blockquote className="join-prayer">{step.prayer}</blockquote>
+                  )}
+                </div>
               </div>
-              <p className="text-white/60 text-sm leading-relaxed mb-6">
-                These special battles are filled independently via the website form. They follow their own path, separate from the Official Godsent progression.
+            </div>
+          </div>
+        </Motion>
+
+        <div className="join-pad join-ascent__cta">
+          <Motion delay={120} className="flex flex-wrap items-center gap-4">
+            <a
+              href="https://www.tiktok.com/@kingmakernevergivesup"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="sec-cta"
+            >
+              Follow King Maker
+              <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+            </a>
+            <button type="button" onClick={openOfficial} className="sec-cta-ghost">
+              Ready — join a battle
+            </button>
+          </Motion>
+        </div>
+      </section>
+
+      {/* ═══ Path B — Special battles ═══ */}
+      <section className="join-special">
+        <div className="join-special__grid">
+          <div className="join-special__media">
+            <img
+              src="/battles-photos/most-beautiful.jpg"
+              alt=""
+              aria-hidden
+            />
+            <div className="join-special__media-veil" />
+          </div>
+
+          <div className="join-special__copy join-pad">
+            <Motion delay={60}>
+              <p className="sec-kicker mb-4" style={{ color: '#C4A0FF' }}>Path B · Special Arenas</p>
+              <h2 className="join-special__title font-display font-bold text-ivory tracking-tight">
+                Scavengers.<br />
+                Country.<br />
+                <span className="text-gradient">Most Beautiful.</span>
+              </h2>
+              <p className="join-special__lede">
+                Parallel doors into the Dynasty — filled on their own form, with their own fire.
               </p>
               <button
+                type="button"
                 onClick={openSpecial}
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                style={{ background: 'linear-gradient(135deg, #3B1063, #6B3FA0)', borderRadius: 6 }}
+                className="sec-cta"
+                style={{ background: 'linear-gradient(135deg, #6B3FA0, #FF6B1A)' }}
               >
-                Apply for Box Battle
+                Apply for special battle
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </button>
-            </Motion>
 
-            <Motion delay={0.2}>
-              <div className="glass rounded-2xl p-5 border border-white/10">
-                <p className="text-ember text-xs font-bold uppercase tracking-wider mb-3">What's different</p>
-                <ul className="space-y-3">
-                  {['Separate sign-up form (not the Official form)', 'No 5,000 tap minimum — open to all', 'Own rules, own schedule, own winner'].map(item => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-white/70">
-                      <span className="w-4 h-4 block text-ember flex-shrink-0 mt-0.5">{Icons.check}</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              <div className="join-diff">
+                {specialDiffs.map((d) => (
+                  <div key={d.n} className="join-diff__row">
+                    <span className="join-diff__n font-display">{d.n}</span>
+                    <div>
+                      <p className="join-diff__label">{d.label}</p>
+                      <p className="join-diff__copy">{d.copy}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </Motion>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="relative min-h-[280px] flex items-center overflow-hidden">
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
-          alt="Sign up"
-          className="absolute inset-0 w-full h-full object-cover"
+      {/* ═══ Closing invitation ═══ */}
+      <section className="join-close">
+        <img
+          src="/battles-photos/champion-of-champions.jpg"
+          alt=""
+          className="join-close__img"
+          aria-hidden
         />
-        <div className="absolute inset-0" style={{ background: 'rgba(59,16,99,0.85)' }} />
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 text-center">
-          <Motion delay={0.1}>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-4" style={{ letterSpacing: '-0.02em' }}>
-              Join the KM DYNASTY Godsent Box Battle
+        <div className="join-close__veil" />
+        <div className="join-close__content join-pad">
+          <Motion delay={60}>
+            <p className="sec-kicker mb-5">The Invitation</p>
+            <h2 className="join-close__title font-display font-bold text-ivory tracking-tight">
+              Enter the <span className="text-gradient">Dynasty</span>
             </h2>
-            <p className="text-white/60 text-sm mb-6">Ready to compete? Sign up now and bring your best energy.</p>
-            <button
-              onClick={openOfficial}
-              className="px-8 py-3.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 6 }}
-            >
-              Sign Up — Box Battle
+            <p className="join-close__lede">
+              Bring your taps, your faith, and your fire. The arena is waiting.
+            </p>
+            <button type="button" onClick={openOfficial} className="sec-cta">
+              {settings.ctaLabel || 'Join My Box Battle'}
+              <span className="w-4 h-4 block">{Icons.arrowRight}</span>
             </button>
           </Motion>
         </div>

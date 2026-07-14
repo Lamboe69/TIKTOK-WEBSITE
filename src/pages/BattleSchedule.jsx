@@ -1,91 +1,49 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { battleTypes, schedule } from '../data/schedule'
+import { battleTypes as fallbackTypes, schedule as fallbackSchedule } from '../data/schedule'
 import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
 import { convertTimezones, getBattleStatus, getCountdown, getBattleDate, downloadICS } from '../utils/battle'
 import Motion from '../components/Motion'
+import { useContent } from '../cms/ContentContext'
+import './BattleSchedule.css'
 
 const typeImages = {
-  'Daily Godsent': 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&q=80',
-  'Most Beautiful': 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&q=80',
-  'Country': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80',
-  'Scavengers': 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=400&q=80',
-  'Champion of Champions': 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&q=80',
+  'Daily Godsent': '/battles-photos/daily-godsent.jpg',
+  'Most Beautiful': '/battles-photos/most-beautiful.jpg',
+  Country: '/battles-photos/country.jpg',
+  Scavengers: '/battles-photos/scavengers.jpg',
+  'Champion of Champions': '/battles-photos/champion-of-champions.jpg',
 }
-const typeEmoji = { 'Daily Godsent': '⚔️', 'Most Beautiful': '✨', 'Country': '🌍', 'Scavengers': '🎯', 'Champion of Champions': '👑' }
-const typeAccent = { 'Daily Godsent': '#FF6B1A', 'Most Beautiful': '#ffffff', 'Country': '#FF6B1A', 'Scavengers': '#3B1063', 'Champion of Champions': '#ffffff' }
 
-function BattleCard({ battle, onSignUp }) {
-  const status = getBattleStatus(battle.date, battle.time)
-  const zones = convertTimezones(battle.date, battle.time)
-  const isOfficial = battle.type === 'Daily Godsent' || battle.type === 'Champion of Champions'
-  const accent = typeAccent[battle.type] || '#FF6B1A'
-  const img = typeImages[battle.type] || typeImages['Daily Godsent']
-  const d = new Date(battle.date + 'T00:00:00')
+const typeAccent = {
+  'Daily Godsent': '#FF6B1A',
+  'Most Beautiful': '#E8B94A',
+  Country: '#C4A0FF',
+  Scavengers: '#FF8A3D',
+  'Champion of Champions': '#E8B94A',
+}
 
-  return (
-    <Motion variant="fade-up">
-      <div className="rounded-2xl overflow-hidden border border-white/04 hover:border-white/08 transition-all" style={{ background: 'rgba(59,16,99,0.2)' }}>
-        {/* Image header */}
-        <div className="relative h-40 overflow-hidden">
-          <img loading="lazy" src={img} alt={battle.type} className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.9) 30%, rgba(18,6,32,0.3) 100%)' }} />
-          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ background: accent }} />
-          <div className="absolute top-3 left-3">
-            {status === 'live' ? (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-500 text-white text-[10px] font-bold rounded-full">
-                <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />LIVE
-              </span>
-            ) : status === 'today' ? (
-              <span className="px-2.5 py-1 text-[10px] font-bold rounded-full text-white" style={{ background: '#FF6B1A' }}>TODAY</span>
-            ) : (
-              <span className="px-2.5 py-1 bg-black/40 backdrop-blur-sm text-white text-[10px] font-bold rounded-full">
-                {d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-              </span>
-            )}
-          </div>
-          <div className="absolute top-3 right-3">
-            <span className="text-lg">{typeEmoji[battle.type]}</span>
-          </div>
-          <div className="absolute bottom-3 left-3">
-            <p className="font-display font-bold text-ivory text-sm">{battle.title}</p>
-          </div>
-        </div>
+function formatDay(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00')
+  return {
+    weekday: d.toLocaleDateString('en-US', { weekday: 'short' }),
+    month: d.toLocaleDateString('en-US', { month: 'short' }),
+    day: d.getDate(),
+  }
+}
 
-        {/* Body */}
-        <div className="p-4">
-          {/* Timezone strip */}
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide mb-4">
-            {zones.map(({ label, flag, time }) => (
-              <span key={label} className="flex-shrink-0 flex items-center gap-1 px-2 py-1 rounded-lg text-[11px]" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                <span>{flag}</span>
-                <span className="text-ivory font-semibold">{time}</span>
-                <span className="text-white/40">{label}</span>
-              </span>
-            ))}
-          </div>
-
-          <div className="flex gap-2">
-            <button
-              onClick={() => onSignUp(isOfficial)}
-              className="flex-1 py-2 text-xs font-bold text-white rounded-lg transition-all hover:scale-105"
-              style={{ background: isOfficial ? 'linear-gradient(135deg, #FF6B1A, #CC5200)' : 'rgba(232,185,74,0.8)', borderRadius: 6 }}
-            >
-              {isOfficial ? 'Sign Up' : 'Apply'}
-            </button>
-            <button
-              onClick={() => downloadICS(battle)}
-              className="px-3 py-2 text-xs text-white/50 rounded-lg border border-white/10 hover:border-white/08 transition-all"
-              title="Add to calendar"
-            >
-              📅
-            </button>
-          </div>
-        </div>
-      </div>
-    </Motion>
-  )
+function parseCountdownParts(str) {
+  if (!str) return []
+  // e.g. "2d 5h 12m" or similar from getCountdown
+  return String(str)
+    .split(/\s+/)
+    .filter(Boolean)
+    .map((part) => {
+      const m = part.match(/^(\d+)([a-zA-Z]+)$/)
+      if (m) return { value: m[1], unit: m[2] }
+      return { value: part, unit: '' }
+    })
 }
 
 // ─── Arena Date Rail ───────────────────────────────────────────────────────
@@ -168,7 +126,12 @@ function ArenaRail({ onSignUp }) {
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function BattleSchedule() {
   const [activeType, setActiveType] = useState('All')
+  const [activeId, setActiveId] = useState(null)
+  const [paused, setPaused] = useState(false)
   const { openOfficial, openSpecial } = useSignUp()
+  const { collections } = useContent()
+  const schedule = collections.schedule?.length ? collections.schedule : fallbackSchedule
+  const filters = collections.battleTypes?.length ? collections.battleTypes : fallbackTypes
   const [next, setNext] = useState(null)
   const [countdown, setCountdown] = useState('')
 
@@ -176,145 +139,337 @@ export default function BattleSchedule() {
     const update = () => {
       const now = new Date()
       const upcoming = schedule
-        .map(b => ({ ...b, dateObj: getBattleDate(b.date, b.time) }))
-        .filter(b => b.dateObj > now)
+        .map((b) => ({ ...b, dateObj: getBattleDate(b.date, b.time) }))
+        .filter((b) => b.dateObj > now)
         .sort((a, b) => a.dateObj - b.dateObj)
-      const n = upcoming[0]
+      const n = upcoming[0] || null
       setNext(n)
       setCountdown(n ? getCountdown(n.dateObj) : '')
+      setActiveId((prev) => {
+        if (prev && schedule.some((b) => b.id === prev)) return prev
+        return n?.id ?? schedule[0]?.id ?? null
+      })
     }
     update()
     const id = setInterval(update, 30000)
     return () => clearInterval(id)
-  }, [])
+  }, [schedule])
 
-  const filtered = useMemo(() => (
-    activeType === 'All' ? schedule : schedule.filter(b => b.type === activeType)
-  ), [activeType])
+  const filtered = useMemo(
+    () => (activeType === 'All' ? schedule : schedule.filter((b) => b.type === activeType)),
+    [activeType, schedule],
+  )
 
-  const handleSignUp = (isOfficial) => isOfficial ? openOfficial() : openSpecial()
+  useEffect(() => {
+    if (!filtered.length) return
+    if (!filtered.some((b) => b.id === activeId)) {
+      setActiveId(filtered[0].id)
+    }
+  }, [filtered, activeId])
+
+  useEffect(() => {
+    if (paused || filtered.length < 2) return undefined
+    const id = window.setInterval(() => {
+      setActiveId((cur) => {
+        const idx = filtered.findIndex((b) => b.id === cur)
+        const nextIdx = idx < 0 ? 0 : (idx + 1) % filtered.length
+        return filtered[nextIdx].id
+      })
+    }, 6000)
+    return () => clearInterval(id)
+  }, [paused, filtered])
+
+  const battle = filtered.find((b) => b.id === activeId) || filtered[0] || null
+  const accent = battle ? typeAccent[battle.type] || '#FF6B1A' : '#FF6B1A'
+  const img = battle ? typeImages[battle.type] || typeImages['Daily Godsent'] : typeImages['Daily Godsent']
+  const status = battle ? getBattleStatus(battle.date, battle.time) : null
+  const zones = battle ? convertTimezones(battle.date, battle.time) : []
+  const isOfficial = battle
+    ? battle.type === 'Daily Godsent' || battle.type === 'Champion of Champions'
+    : true
+  const day = battle ? formatDay(battle.date) : null
+  const countdownParts = parseCountdownParts(countdown)
+  const nextDay = next ? formatDay(next.date) : null
+
+  const handleEnter = () => (isOfficial ? openOfficial() : openSpecial())
+
+  const nextZones = next ? convertTimezones(next.date, next.time) : []
+  const ctZone = nextZones.find((z) => z.label === 'CT') || nextZones[0]
 
   return (
-    <main>
-      {/* Hero */}
-      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=80"
-          alt="Battle Schedule"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
+    <main className="sched-page">
+      {/* ═══ Hero — Fight Gate ═══ */}
+      <section className="sched-hero" aria-label="Battle Schedule">
+        <div className="sched-hero__photo-plane">
+          <img
+            src={next ? (typeImages[next.type] || img) : img}
+            alt={next ? next.title : 'Battle schedule'}
+            className="sched-hero__photo"
+          />
+        </div>
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <Motion delay={0.1}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                Upcoming Battles
-              </span>
-              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
-                Battle Schedule
+        <div className="sched-hero__gate" aria-hidden />
+
+        <div className="sched-hero__frame">
+          <div className="sched-hero__column">
+            <Motion delay={70}>
+              <p className="sched-hero__brand">KM DYNASTY</p>
+              <h1 className="sched-hero__title">
+                <span className="sched-hero__title-soft">The</span>
+                <span className="sched-hero__title-hard">Schedule</span>
               </h1>
-              <p className="text-white/60 text-sm max-w-sm">
-                Filter by type · Add to calendar · Sign up in seconds
+              <p className="sched-hero__lede">
+                Tonight’s arena. Live clocks. One board for the Dynasty.
               </p>
             </Motion>
 
-            {/* Countdown card */}
-            {next && (
-              <Motion delay={0.2}>
-                <div className="glass rounded-2xl p-5 border border-white/10 max-w-xs">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
-                    <span className="text-white/50 text-[10px] uppercase tracking-widest">Next Battle</span>
+            {next && countdownParts.length > 0 && (
+              <Motion delay={160} className="sched-hero__clock" aria-label={`Starts in ${countdown}`}>
+                {countdownParts.map((p, i) => (
+                  <div key={`${p.value}-${p.unit}-${i}`} className="sched-hero__clock-cell">
+                    <span className="sched-hero__clock-val font-display">{p.value}</span>
+                    <span className="sched-hero__clock-unit">{p.unit}</span>
                   </div>
-                  <p className="text-ivory font-display font-bold text-base mb-1">{next.title}</p>
-                  <p className="text-white/40 text-xs mb-4">{next.date}</p>
-                  <div className="flex items-center gap-2">
-                    <span className="text-white/40 text-xs">Starts in</span>
-                    <span className="px-3 py-1 rounded-lg text-sm font-bold text-white" style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}>
-                      {countdown}
-                    </span>
-                  </div>
-                </div>
+                ))}
               </Motion>
             )}
+
+            <Motion delay={240} className="sched-hero__next">
+              {next ? (
+                <>
+                  <p
+                    className="sched-hero__next-type"
+                    style={{ color: typeAccent[next.type] || '#FF8A3D' }}
+                  >
+                    Next · {next.type}
+                  </p>
+                  <p className="sched-hero__next-title font-display">{next.title}</p>
+                  <p className="sched-hero__next-meta">
+                    {nextDay?.weekday} {nextDay?.month} {nextDay?.day}
+                    {ctZone ? ` · ${ctZone.time} ${ctZone.label}` : ` · ${next.time}`}
+                  </p>
+                </>
+              ) : (
+                <p className="sched-hero__next-title font-display">No fight on deck</p>
+              )}
+            </Motion>
+
+            <Motion delay={320} className="sched-hero__actions">
+              <a href="#sched-board" className="sched-hero__cta">
+                Open the board
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+              <Link to="/how-to-join" className="sched-hero__link">
+                How to qualify
+              </Link>
+            </Motion>
           </div>
-        </div>
-      </section>
 
-      {/* ── Arena Date Rail ── */}
-      <ArenaRail onSignUp={(b) => (b.type === 'Daily Godsent' || b.type === 'Champion of Champions' ? openOfficial() : openSpecial())} />
-
-      {/* Filter tabs */}
-      <section className="py-8" style={{ background: '#1B1024' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-            <button
-              onClick={() => setActiveType('All')}
-              className={`flex-shrink-0 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === 'All' ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/30 hover:text-white/80'}`}
-              style={activeType === 'All' ? { background: 'rgba(255,107,26,0.15)' } : { background: 'rgba(255,255,255,0.04)' }}
-            >
-              All
-            </button>
-            {battleTypes.filter(t => t !== 'All').map(type => (
-              <button
-                key={type}
-                onClick={() => setActiveType(type)}
-                className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 text-xs font-bold rounded-full border transition-all ${activeType === type ? 'text-white border-ember' : 'text-white/50 border-white/10 hover:border-white/30 hover:text-white/80'}`}
-                style={activeType === type ? { background: 'rgba(255,107,26,0.15)' } : { background: 'rgba(255,255,255,0.04)' }}
-              >
-                <span>{typeEmoji[type]}</span>
-                <span>{type}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Battle cards */}
-      <section className="pb-16" style={{ background: '#1B1024' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          {filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filtered.map(battle => (
-                <BattleCard key={battle.id} battle={battle} onSignUp={handleSignUp} />
+          {nextZones.length > 0 && (
+            <div className="sched-hero__spine" aria-label="Global kickoff">
+              {nextZones.map(({ label, time }) => (
+                <div key={label} className={`sched-hero__spine-item ${label === 'CT' ? 'is-home' : ''}`}>
+                  <span className="sched-hero__spine-label">{label}</span>
+                  <span className="sched-hero__spine-time font-display">{time}</span>
+                </div>
               ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <p className="text-white/40 text-sm">No {activeType} battles scheduled yet.</p>
-              <button onClick={() => setActiveType('All')} className="mt-4 text-ember text-sm hover:underline">View all battles</button>
             </div>
           )}
         </div>
       </section>
 
-      {/* Champion of Champions */}
-      <section className="relative min-h-[320px] flex items-center overflow-hidden">
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=1400&q=80"
-          alt="Champion of Champions"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
-        <div className="absolute inset-0" style={{ background: 'rgba(18,6,32,0.85)' }} />
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 py-16 text-center">
-          <Motion delay={0.1}>
-            <span className="text-3xl mb-4 block">👑</span>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3" style={{ letterSpacing: '-0.02em' }}>
-              Champion of Champions
-            </h2>
-            <p className="text-white/60 text-sm max-w-md mx-auto mb-6">
-              Win your battle. Earn your spot. Rise to the finale.
-            </p>
-            <Link
-              to="/how-to-join"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg border border-white/30 hover:border-white transition-all"
-              style={{ color: '#ffffff' }}
-            >
-              How to Qualify
-              <span className="w-4 h-4 block">{Icons.arrowRight}</span>
-            </Link>
+      {/* ═══ Arena board ═══ */}
+      <section id="sched-board" className="sched-board">
+        <div className="sched-pad sched-board__intro">
+          <Motion delay={40}>
+            <p className="sec-kicker mb-2">The Arena Board</p>
+            <div className="sched-board__intro-row">
+              <h2 className="sched-board__heading font-display font-bold text-ivory tracking-tight">
+                Choose your <span className="text-gradient">fire</span>
+              </h2>
+              <p className="sched-board__count">
+                {filtered.length} {filtered.length === 1 ? 'battle' : 'battles'}
+              </p>
+            </div>
           </Motion>
+        </div>
+
+        {/* Type ribbon — full width, not pills */}
+        <div className="sched-ribbon" role="tablist" aria-label="Battle types">
+          {filters.map((type) => {
+            const on = activeType === type
+            const a = type === 'All' ? '#FF8A3D' : typeAccent[type] || '#FF8A3D'
+            return (
+              <button
+                key={type}
+                type="button"
+                role="tab"
+                aria-selected={on}
+                className={`sched-ribbon__btn ${on ? 'is-active' : ''}`}
+                style={{ ['--sched-accent']: a }}
+                onClick={() => setActiveType(type)}
+              >
+                {type === 'All' ? 'All Arenas' : type}
+              </button>
+            )
+          })}
+        </div>
+
+        {battle ? (
+          <div
+            className="sched-stage"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            <div className="sched-stage__visual">
+              {filtered.map((b) => (
+                <img
+                  key={b.id}
+                  src={typeImages[b.type] || typeImages['Daily Godsent']}
+                  alt={b.id === battle.id ? b.title : ''}
+                  aria-hidden={b.id !== battle.id}
+                  className={`sched-stage__img ${b.id === battle.id ? 'is-on' : ''}`}
+                />
+              ))}
+              <div className="sched-stage__veil" />
+
+              <div className="sched-stage__copy sched-pad">
+                <div className="sched-stage__copy-inner">
+                  <div className="sched-stage__badges">
+                    <span className="sched-status" data-status={status} style={{ ['--sched-accent']: accent }}>
+                      {status === 'live' ? 'Live now' : status === 'today' ? 'Tonight' : 'Upcoming'}
+                    </span>
+                    <span className="sched-type" style={{ color: accent }}>
+                      {battle.type}
+                    </span>
+                  </div>
+
+                  <p className="sched-stage__date font-display">
+                    <span>{day?.weekday}</span>
+                    <span className="sched-stage__date-em">{day?.month} {day?.day}</span>
+                  </p>
+
+                  <h3 className="sched-stage__title font-display font-bold text-ivory">
+                    {battle.title}
+                  </h3>
+                  <p className="sched-stage__desc">{battle.description}</p>
+
+                  <div className="sched-zones" aria-label="Kickoff times">
+                    {zones.map(({ label, time }) => (
+                      <div key={label} className="sched-zones__cell">
+                        <span className="sched-zones__time font-display">{time}</span>
+                        <span className="sched-zones__label">{label}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="sched-stage__actions">
+                    <button type="button" onClick={handleEnter} className="sched-hero__cta">
+                      {isOfficial ? 'Join this battle' : 'Apply for this battle'}
+                      <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => downloadICS(battle)}
+                      className="sched-hero__link"
+                    >
+                      Add to calendar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Chronologue rail */}
+            <div className="sched-chrono" role="listbox" aria-label="Scheduled battles">
+              {filtered.map((b, i) => {
+                const on = b.id === battle.id
+                const d = formatDay(b.date)
+                const a = typeAccent[b.type] || '#FF6B1A'
+                return (
+                  <button
+                    key={b.id}
+                    type="button"
+                    role="option"
+                    aria-selected={on}
+                    className={`sched-chrono__row ${on ? 'is-active' : ''}`}
+                    style={{ ['--sched-accent']: a }}
+                    onClick={() => setActiveId(b.id)}
+                    onMouseEnter={() => setActiveId(b.id)}
+                  >
+                    <span className="sched-chrono__idx font-display">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <span className="sched-chrono__date">
+                      <span className="sched-chrono__day">{d.day}</span>
+                      <span className="sched-chrono__mon">{d.month}</span>
+                    </span>
+                    <span className="sched-chrono__meta">
+                      <span className="sched-chrono__type">{b.type}</span>
+                      <span className="sched-chrono__title">{b.title}</span>
+                    </span>
+                    <span className="sched-chrono__time">{b.time.replace(' CT', '')}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="sched-pad sched-empty">
+            <p>No {activeType} battles on the board yet.</p>
+            <button type="button" onClick={() => setActiveType('All')} className="sched-hero__link">
+              Show all arenas
+            </button>
+          </div>
+        )}
+      </section>
+
+      {/* ═══ Finale ═══ */}
+      <section className="sched-finale">
+        <div className="sched-finale__grid">
+          <div className="sched-finale__media">
+            <img
+              src="/battles-photos/champion-of-champions.jpg"
+              alt="Champion of Champions"
+              className="sched-finale__img"
+            />
+            <span className="sched-finale__echo font-display" aria-hidden>
+              FINAL
+            </span>
+          </div>
+
+          <div className="sched-finale__copy sched-pad">
+            <Motion delay={60}>
+              <p className="sec-kicker mb-4" style={{ color: '#E8B94A' }}>
+                Path to the crown
+              </p>
+              <h2 className="sched-finale__title font-display font-bold text-ivory tracking-tight">
+                Champion of
+                <span className="block text-gradient">Champions</span>
+              </h2>
+              <p className="sched-finale__lede">
+                Official winners collide in one finale. Win your night — then claim your seat.
+              </p>
+              <div className="sched-finale__rules">
+                {[
+                  { n: '01', t: 'Win Official Godsent' },
+                  { n: '02', t: 'Earn your finale seat' },
+                  { n: '03', t: 'Rise for the crown' },
+                ].map((r) => (
+                  <div key={r.n} className="sched-finale__rule">
+                    <span className="sched-finale__rule-n font-display">{r.n}</span>
+                    <span className="sched-finale__rule-t">{r.t}</span>
+                  </div>
+                ))}
+              </div>
+              <Link to="/how-to-join" className="sched-hero__cta">
+                How to qualify
+                <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+              </Link>
+            </Motion>
+          </div>
         </div>
       </section>
     </main>

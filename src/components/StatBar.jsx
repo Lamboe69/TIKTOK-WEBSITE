@@ -1,16 +1,16 @@
 import { useTikTokStats, STAT_LABELS } from '../hooks/useTikTokStats'
 import useAnimatedCounter from '../hooks/useAnimatedCounter'
 import Motion from './Motion'
-import { Icons } from './Icons'
-
-const statIcons = [Icons.users, Icons.heart, Icons.swords, Icons.trophy]
 
 function Counter({ value, numericEnd }) {
-  const [ref, count] = useAnimatedCounter(numericEnd || 0, 2000)
+  const [ref, count] = useAnimatedCounter(numericEnd || 0, 2200)
   const suffix = value ? value.replace(/[\d]/g, '') : ''
+  const display = count > 0 ? `${count}${suffix}` : (value || '0')
   return (
-    <span ref={ref} className="font-display font-bold text-2xl sm:text-3xl text-ivory tabular-nums">
-      {count > 0 ? `${count}${suffix}` : '0'}
+    <span ref={ref} className="font-display font-extrabold text-ivory block leading-none tracking-tight"
+      style={{ fontSize: 'clamp(2rem, 4.5vw, 3.25rem)' }}
+    >
+      {display}
     </span>
   )
 }
@@ -26,24 +26,24 @@ export default function StatBar() {
   ]
 
   return (
-    <section className="py-6 sm:py-8" style={{ background: '#1B1024' }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section className="relative overflow-hidden home-band-violet home-band-sep">
+      <div
+        className="absolute inset-0 pointer-events-none opacity-70"
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(255,107,26,0.18), transparent)' }}
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <Motion variant="fade-up">
-          <div
-            className="glass-premium rounded-2xl px-6 py-5"
-            style={{ borderTop: '1px solid rgba(255,107,26,0.2)' }}
-          >
-            <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/05">
-              {items.map(({ value, numericEnd, label }, i) => (
-                <div key={i} className="flex flex-col items-center gap-1 px-4 py-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="w-3.5 h-3.5 block text-ember opacity-70">{statIcons[i]}</span>
-                    <Counter value={value} numericEnd={numericEnd} />
-                  </div>
-                  <p className="text-white/40 text-[11px] font-medium uppercase tracking-wider text-center">{label}</p>
-                </div>
-              ))}
-            </div>
+          <div className="stat-ticker">
+            {items.map(({ value, numericEnd, label, note }, i) => (
+              <div key={label} className="stat-cell">
+                <p className="sec-kicker mb-3 opacity-80" style={{ letterSpacing: '0.2em', fontSize: 10 }}>
+                  {String(i + 1).padStart(2, '0')}
+                </p>
+                <Counter value={value} numericEnd={numericEnd} />
+                <p className="text-white/75 text-xs font-medium mt-3 tracking-wide uppercase">{label}</p>
+                {note && <p className="text-white/45 text-[11px] mt-1">{note}</p>}
+              </div>
+            ))}
           </div>
         </Motion>
       </div>

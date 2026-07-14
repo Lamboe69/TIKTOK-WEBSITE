@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
+import { useContent } from '../cms/ContentContext'
 
 const columns = {
   explore: [
@@ -58,23 +59,30 @@ function LinkColumn({ title, links }) {
 }
 
 export default function Footer() {
+  const { settings } = useContent()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  const contactEmail = settings.email || 'lagwatinc@gmail.com'
+  const phoneUS = settings.phoneUS || '+1 (469) 664-1195'
+  const phoneUG = settings.phoneUG || '+256-200-947-070'
+  const tiktokUrl = settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'
+  const siteName = settings.siteName || 'KM DYNASTY'
+  const tagline = settings.tagline || "The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise."
 
   const handleSubscribe = (e) => {
     e.preventDefault()
     if (!email) return
-    const subject = encodeURIComponent('KM DYNASTY — Newsletter Signup')
+    const subject = encodeURIComponent('KM DYNASTY — Newsletter')
     const body = encodeURIComponent(`New subscriber: ${email}`)
-    window.location.href = `mailto:lagwatinc@gmail.com?subject=${subject}&body=${body}`
+    window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`
     setSubscribed(true)
     setEmail('')
   }
 
   return (
-    <footer style={{ background: '#120620' }}>
+    <footer style={{ background: '#1A0E34' }}>
       {/* Ember accent line */}
-      <div style={{ height: 3, background: 'linear-gradient(90deg, #3B1063, #FF6B1A, #3B1063)' }} />
+      <div style={{ height: 3, background: 'linear-gradient(90deg, #6B3FA0, #FF8A3D, #6B3FA0)' }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
         {/* Main grid */}
@@ -86,15 +94,25 @@ export default function Footer() {
                 <span className="w-4 h-4 block">{Icons.crown}</span>
               </span>
               <div className="leading-none">
-                <span className="block font-display font-bold text-sm text-ivory tracking-widest">KM DYNASTY</span>
+                <span className="block font-display font-bold text-sm text-ivory tracking-widest">{siteName}</span>
                 <span className="block font-body text-[9px] text-white/30 tracking-[0.2em] uppercase">Godsent Box Battles</span>
               </div>
             </Link>
             {/* Ember accent bar */}
             <div className="w-8 h-0.5 bg-ember mb-3 rounded-full" />
-            <p className="text-white/40 text-sm leading-relaxed mb-4 max-w-xs">
-              The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise.
+            <p className="text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
+              {tagline}
             </p>
+            <a
+              href={tiktokUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+            >
+              <span className="w-5 h-5 block rounded-sm overflow-hidden shrink-0">{Icons.tiktok}</span>
+              Follow King Maker
+            </a>
           </div>
 
           <LinkColumn title="Explore" links={columns.explore} />
@@ -106,21 +124,21 @@ export default function Footer() {
             <h4 className="font-body font-semibold text-[10px] uppercase tracking-widest text-white/30 mb-3">Contact</h4>
             <ul className="space-y-2">
               <li>
-                <a href="mailto:lagwatinc@gmail.com" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
+                <a href={`mailto:${contactEmail}`} className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
                   <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.mail}</span>
-                  lagwatinc@gmail.com
+                  {contactEmail}
                 </a>
               </li>
               <li>
-                <a href="tel:+14696641195" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
+                <a href={`tel:${phoneUS.replace(/[^\d+]/g, '')}`} className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
                   <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.phone}</span>
-                  +1 (469) 664-1195
+                  {phoneUS}
                 </a>
               </li>
               <li>
-                <a href="tel:+256200947070" className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
+                <a href={`tel:${phoneUG.replace(/[^\d+]/g, '')}`} className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
                   <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.phone}</span>
-                  +256-200-947-070
+                  {phoneUG}
                 </a>
               </li>
               <li className="flex items-center gap-2 text-sm text-white/40">
@@ -182,7 +200,9 @@ export default function Footer() {
                     style={highlight ? { background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' } : { background: 'rgba(255,255,255,0.05)' }}
                     aria-label={label}
                   >
-                    <span className="w-3.5 h-3.5 block">{Icons[icon]}</span>
+                    <span className={`block overflow-hidden rounded-sm ${highlight ? 'w-5 h-5' : 'w-3.5 h-3.5'}`}>
+                      {Icons[icon]}
+                    </span>
                   </a>
                 ))}
               </div>
@@ -194,13 +214,13 @@ export default function Footer() {
         <div className="border-t border-white/04 py-8 text-center">
           <p className="text-white/40 text-xs uppercase tracking-widest mb-4">Follow King Maker</p>
           <a
-            href="https://www.tiktok.com/@kingmakernevergivesup"
+            href={tiktokUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
             style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.25)' }}
           >
-            <span className="w-4 h-4 block">{Icons.tiktok}</span>
+            <span className="w-5 h-5 block rounded-sm overflow-hidden shrink-0">{Icons.tiktok}</span>
             Follow King Maker on TikTok
           </a>
         </div>

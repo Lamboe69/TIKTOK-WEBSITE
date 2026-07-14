@@ -8,70 +8,48 @@ export default function CTA() {
   const [parallaxRef, parallaxStyle] = useParallax({ factor: 0.12 })
 
   return (
-    <section className="relative overflow-hidden" style={{ minHeight: 360 }}>
-      {/* Background image */}
-      <img loading="lazy"
-        src="/battles-photos/daily-godsent.jpg"
-        alt="Join the Dynasty"
+    <section className="relative min-h-[480px] overflow-hidden flex items-center">
+      <img
+        src="/photos/team-dallas.jpg"
+        alt="Join KM Dynasty"
         className="absolute inset-0 w-full h-full object-cover"
         ref={parallaxRef}
         style={parallaxStyle}
       />
-      {/* Deep overlay — stage gradient */}
       <div
         className="absolute inset-0"
-        style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.92) 0%, rgba(18,6,32,0.96) 60%, rgba(18,6,32,0.98) 100%)' }}
-      />
-      {/* Subtle ember orb */}
-      <div
-        className="absolute bottom-0 right-0 w-96 h-96 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(255,107,26,0.15) 0%, transparent 70%)', transform: 'translate(30%, 30%)' }}
-      />
-      {/* Purple orb top-left */}
-      <div
-        className="absolute top-0 left-0 w-80 h-80 rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(107,63,160,0.2) 0%, transparent 70%)', transform: 'translate(-30%, -30%)' }}
+        style={{
+          background:
+            'linear-gradient(to top, rgba(10,4,20,0.97) 0%, rgba(10,4,20,0.75) 50%, rgba(10,4,20,0.55) 100%)',
+        }}
       />
 
-      <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-24 text-center">
-        <Motion delay={0.1}>
-          {/* Crown icon */}
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6"
-            style={{ background: 'rgba(255,107,26,0.15)', border: '1px solid rgba(255,107,26,0.25)' }}
-          >
-            <span className="w-7 h-7 block text-ember animate-spin-slow">{Icons.crown}</span>
-          </div>
-
+      <div className="relative z-10 w-full max-w-3xl mx-auto px-5 sm:px-8 py-24 text-center">
+        <Motion delay={80}>
+          <p className="sec-kicker mb-5 justify-center">KM Dynasty</p>
           <h2
-            className="font-display font-bold text-ivory mb-4 leading-tight"
-            style={{ fontSize: 'clamp(28px, 4vw, 48px)', letterSpacing: '-0.02em' }}
+            className="font-display font-bold text-ivory leading-[0.95] tracking-tight mb-5"
+            style={{ fontSize: 'clamp(2.4rem, 5.5vw, 4rem)' }}
           >
-            Ready to Join the Dynasty?
+            Ready to join<br />
+            <span className="text-gradient">the Dynasty?</span>
           </h2>
-
-          <p className="text-white/55 text-sm sm:text-base max-w-lg mx-auto mb-8 leading-relaxed">
-            Whether you're a creator, a supporter, or just curious —<br className="hidden sm:block" />
-            there's a place for you in KM DYNASTY.
+          <p className="text-white/55 text-sm sm:text-base max-w-md mx-auto mb-10 leading-relaxed">
+            Creator, supporter, or curious newcomer — there’s a place for you here.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              onClick={openOfficial}
-              className="btn-shimmer btn-glow w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-ember hover:shadow-ember-lg"
-              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8, boxShadow: '0 8px 32px rgba(255,107,26,0.35)' }}
-            >
-              <span className="w-4 h-4 block">{Icons.swords}</span>
-              Sign Up — Box Battle
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+            <button type="button" onClick={openOfficial} className="sec-cta">
+              Join My Box Battle
+              <span className="w-4 h-4 block">{Icons.arrowRight}</span>
             </button>
             <a
               href="https://www.tiktok.com/@kingmakernevergivesup"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-medium text-white/80 hover:text-white transition-all"
-              style={{ border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(8px)' }}
+              className="sec-cta-ghost"
             >
-              <span className="w-4 h-4 block">{Icons.tiktok}</span>
+              <span className="w-5 h-5 block rounded-sm overflow-hidden shrink-0">{Icons.tiktok}</span>
               Follow King Maker
             </a>
           </div>

@@ -1,90 +1,161 @@
+import { useState } from 'react'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
-import topGifters from '../../data/topGifters'
+import fallbackGifters from '../../data/topGifters'
+import fallbackFans from '../../data/topFans'
+import { useContent } from '../../cms/ContentContext'
 
-const fallback = [
-  { name: 'Gift Queen', tiktokHandle: '@giftqueen', photo: null },
-  { name: 'Diamond Hands', tiktokHandle: '@diamondhands', photo: null },
-  { name: 'Battle Boss', tiktokHandle: '@battleboss', photo: null },
-  { name: 'Crown Bearer', tiktokHandle: '@crownbearer', photo: null },
-  { name: 'Dynasty Legend', tiktokHandle: '@dynastylegend', photo: null },
-  { name: 'Heart of Gold', tiktokHandle: '@heartofgold', photo: null },
+const tabs = [
+  { id: 'gifters', label: 'Top Gifters', accent: '#FF6B1A' },
+  { id: 'fans', label: 'Top Fans', accent: '#E8B94A' },
 ]
 
-const gifters = (topGifters && topGifters.length ? topGifters : fallback).slice(0, 6)
-
-const rankEmoji = ['🥇', '🥈', '🥉']
-
 export default function CommunityRecognition() {
-  const top3 = gifters.slice(0, 3)
-  const rest = gifters.slice(3)
+  const { collections } = useContent()
+  const topGifters = collections.topGifters?.length ? collections.topGifters : fallbackGifters
+  const topFans = collections.topFans?.length ? collections.topFans : fallbackFans
+  const [tab, setTab] = useState('gifters')
+  const list = (tab === 'gifters' ? topGifters : topFans).slice(0, 3)
+  const accent = tabs.find((t) => t.id === tab)?.accent || '#FF6B1A'
 
   return (
-    <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#1B1024' }}>
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(59,16,99,0.5) 0%, transparent 70%)' }} />
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
-        <Motion delay={0.1} className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-            <span className="w-3.5 h-3.5 block">{Icons.award}</span>
-            Kingdom Family
-          </span>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl text-ivory mb-3">
-            Monthly Top <span className="text-gradient">Gifters</span>
-          </h2>
-          <p className="text-white/50 text-sm max-w-md mx-auto">
-            The most dedicated members of the KM Dynasty family.
-          </p>
-        </Motion>
+    <section className="relative overflow-hidden home-band-glow home-band-sep">
+      <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-5">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+          <Motion delay={40}>
+            <p className="sec-kicker mb-2">Kingdom Family</p>
+            <h2
+              className="font-display font-bold text-ivory leading-none tracking-tight"
+              style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.5rem)' }}
+            >
+              Honor the{' '}
+              <span className="text-gradient">{tab === 'gifters' ? 'gifters' : 'fans'}</span>
+            </h2>
+          </Motion>
 
-        {/* Top 3 square cards */}
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          {top3.map((g, i) => (
-            <Motion key={g.name} delay={0.15 + i * 0.08}>
-              <div className={`relative rounded-2xl overflow-hidden aspect-square group glow-card card-tilt ${i === 0 ? 'gold-aura animate-shimmer-line' : ''}`}
+          <div className="flex self-start sm:self-auto" role="tablist">
+            {tabs.map(({ id, label, accent: a }) => {
+              const on = tab === id
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  aria-selected={on}
+                  onClick={() => setTab(id)}
+                  className={`relative px-4 py-2 text-[10px] font-bold uppercase tracking-[0.22em] transition-colors ${
+                    on ? 'text-ivory' : 'text-white/50 hover:text-white/55'
+                  }`}
+                >
+                  {label}
+                  {on && (
+                    <span className="absolute left-4 right-4 bottom-0 h-0.5" style={{ background: a }} />
+                  )}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* Full-bleed: top 3 + support mission — same height band */}
+      <div key={tab} className="honor-roll honor-roll--mission">
+        {list.map((person, i) => (
+          <Motion key={person.handle} delay={50 + i * 35} className="honor-panel">
+            <a
+              href={person.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block h-full w-full overflow-hidden"
+            >
+              <img
+                src={person.photo}
+                alt={person.name}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div
+                className="absolute inset-0"
                 style={{
-                  boxShadow: i === 0
-                    ? '0 0 0 1px rgba(232,185,74,0.3), 0 0 30px rgba(232,185,74,0.15), 0 8px 32px rgba(0,0,0,0.4)'
-                    : '0 8px 32px rgba(0,0,0,0.35)',
-                  borderTop: `2px solid ${i === 0 ? '#E8B94A' : 'rgba(255,107,26,0.3)'}`,
+                  background:
+                    'linear-gradient(to top, rgba(10,4,20,0.95) 0%, rgba(10,4,20,0.25) 55%, transparent 100%)',
+                }}
+              />
+              <span
+                className="absolute top-3 left-3 sm:top-4 sm:left-4 font-display font-extrabold leading-none"
+                style={{
+                  fontSize: i === 0 ? 'clamp(1.6rem, 2.8vw, 2.35rem)' : 'clamp(1rem, 1.8vw, 1.4rem)',
+                  color: i === 0 ? accent : 'rgba(255,255,255,0.35)',
                 }}
               >
-                {g.photo ? (
-                  <img loading="lazy" src={g.photo} alt={g.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(59,16,99,0.6), rgba(255,107,26,0.15))' }}>
-                    <span className="font-display font-bold text-4xl text-white/20">{g.name[0]}</span>
-                  </div>
-                )}
-                {/* Photo gradient overlay — lighter so photos pop */}
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(18,6,32,0.88) 25%, rgba(18,6,32,0.1) 60%, transparent 100%)' }} />
-                <div className="absolute inset-0 rounded-2xl" style={{ boxShadow: i === 0 ? 'inset 0 0 0 1px rgba(232,185,74,0.25)' : 'inset 0 0 0 1px rgba(255,107,26,0.1)' }} />
-                <div className="absolute top-3 left-3 text-2xl">{rankEmoji[i]}</div>
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <p className={`font-display font-bold text-sm ${i === 0 ? 'text-crown-gold' : 'text-ivory'}`}>{g.name}</p>
-                  <p className="text-white/50 text-xs">{g.tiktokHandle}</p>
-                </div>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span
+                className={`absolute top-0 left-0 right-0 h-[2px] transition-transform duration-300 origin-left ${
+                  i === 0 ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                }`}
+                style={{ background: accent }}
+              />
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
+                <p
+                  className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] mb-1 truncate"
+                  style={{ color: accent }}
+                >
+                  {person.role}
+                </p>
+                <p className="font-display font-bold text-ivory text-xs sm:text-sm leading-tight truncate">
+                  {person.name}
+                </p>
+                <p className="text-white/60 text-[10px] truncate opacity-0 group-hover:opacity-100 transition-opacity">
+                  {person.handle}
+                </p>
               </div>
-            </Motion>
-          ))}
-        </div>
+            </a>
+          </Motion>
+        ))}
 
-        {/* Bottom 3 rows */}
-        <div className="space-y-2">
-          {rest.map((g, i) => (
-            <Motion key={g.name} delay={0.35 + i * 0.06}>
-              <div className="flex items-center gap-4 px-5 py-3 rounded-xl border border-white/04 hover:border-white/08 transition-colors" style={{ background: 'rgba(59,16,99,0.15)' }}>
-                <span className="text-white/30 font-display font-bold text-sm w-6">{i + 4}</span>
-                <div className="w-8 h-8 rounded-full bg-dynasty-purple/40 flex items-center justify-center flex-shrink-0">
-                  <span className="text-white/60 text-xs font-bold">{g.name[0]}</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-ivory text-sm font-semibold">{g.name}</p>
-                  <p className="text-white/40 text-xs">{g.handle}</p>
-                </div>
-              </div>
-            </Motion>
-          ))}
-        </div>
+        {/* Support the mission — same band */}
+        <Motion delay={160} className="honor-panel honor-mission">
+          <div className="relative h-full w-full flex flex-col justify-between p-4 sm:p-5 lg:p-6 overflow-hidden"
+            style={{ background: 'linear-gradient(160deg, rgba(255,107,26,0.35) 0%, rgba(90,40,160,0.55) 45%, #32185C 100%)' }}
+          >
+            <img
+              src="/testimonials/grace.jpg"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-30"
+            />
+            <div className="absolute inset-0" style={{ background: 'linear-gradient(160deg, rgba(50,24,92,0.35), rgba(50,24,92,0.88))' }} />
+
+            <div className="relative z-10">
+              <p className="text-[9px] uppercase tracking-[0.28em] text-ember mb-2">Giving Back</p>
+              <h3 className="font-display font-bold text-ivory text-base sm:text-lg lg:text-xl leading-tight mb-2">
+                Support the mission
+              </h3>
+              <p className="text-white/65 text-[11px] sm:text-xs leading-relaxed line-clamp-3">
+                Expand the Dynasty. Lift creators. Fund what matters.
+              </p>
+            </div>
+
+            <div className="relative z-10 flex flex-col gap-2.5 mt-4">
+              <a
+                href="https://gofundme.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-bold text-white"
+                style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+              >
+                <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
+                Donate
+              </a>
+              <a
+                href="mailto:lagwatinc@gmail.com?subject=KM%20DYNASTY%20%E2%80%94%20Request%20Support"
+                className="sec-cta-ghost justify-center text-[11px] py-1"
+              >
+                Request support
+                <span className="w-3.5 h-3.5 block">{Icons.arrowRight}</span>
+              </a>
+            </div>
+          </div>
+        </Motion>
       </div>
     </section>
   )

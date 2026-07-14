@@ -1,8 +1,11 @@
 import { useState } from 'react'
-import { quotes, getTodayQuote } from '../data/quotes'
+import { quotes as fallbackQuotes, getTodayQuote as fallbackToday } from '../data/quotes'
 import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
 import Motion from '../components/Motion'
+import { useContent } from '../cms/ContentContext'
+import { getTodayQuoteFromList } from '../cms/normalize'
+import './morePages.css'
 
 function generateQuoteImage(quote, day) {
   const canvas = document.createElement('canvas')
@@ -120,47 +123,37 @@ function QuoteCard({ quote, isToday, index }) {
 }
 
 export default function DailyQuotes() {
-  const today = getTodayQuote()
+  const { collections, getPage } = useContent()
+  const page = getPage('quotes')
+  const quotes = collections.quotes?.length ? collections.quotes : fallbackQuotes
+  const today = getTodayQuoteFromList(quotes) || fallbackToday()
   const { openSpecial } = useSignUp()
 
   return (
     <main>
-      {/* Hero */}
-      <section className="relative min-h-[520px] flex items-end pb-16 overflow-hidden" style={{ background: '#120620' }}>
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80"
-          alt="Daily Quotes"
-          className="absolute inset-0 w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(18,6,32,0.95) 40%, rgba(59,16,99,0.6) 100%)' }} />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
-            <Motion delay={0.1}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider mb-5 text-ember" style={{ background: 'rgba(255,107,26,0.1)' }}>
-                Daily Inspiration
-              </span>
-              <h1 className="font-display font-bold text-ivory mb-4 leading-tight" style={{ fontSize: 'clamp(36px, 5vw, 64px)', letterSpacing: '-0.02em' }}>
-                Daily KM<br />
-                <span className="text-gradient">Quotes</span>
-              </h1>
-              <p className="text-white/60 text-sm leading-relaxed max-w-md">
-                A quote for every day of the week. Fuel your battles with purpose.
-              </p>
-            </Motion>
-
-            <Motion delay={0.2}>
-              <div className="glass rounded-2xl p-6 border border-white/10">
-                <p className="text-white/40 text-[10px] uppercase tracking-widest mb-3">Today's Quote</p>
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="w-2 h-2 rounded-full bg-ember animate-pulse" />
-                  <span className="text-ember text-xs font-bold uppercase tracking-wider">{today.day}</span>
-                  <span className="text-lg ml-auto">{today.emoji}</span>
-                </div>
-                <p className="text-ivory/80 text-sm italic leading-relaxed">"{today.quote}"</p>
-              </div>
-            </Motion>
-          </div>
+      {/* Hero — Quote Reliquary */}
+      <section className="quotes-hero" aria-label="Daily KM Quotes">
+        <div className="quotes-hero__media" aria-hidden>
+          <img src={page.heroImage || '/photos/battle-highlights.jpg'} alt="" />
+          <div className="quotes-hero__veil" />
+        </div>
+        <div className="quotes-hero__marks" aria-hidden>
+          <span>“</span>
+          <span>”</span>
+        </div>
+        <div className="quotes-hero__core">
+          <Motion delay={60}>
+            <p className="quotes-hero__brand">{page.heroBrand || 'KM DYNASTY'}</p>
+            <p className="quotes-hero__day">{today.day}</p>
+            <blockquote className="quotes-hero__quote">“{today.quote}”</blockquote>
+            <h1 className="quotes-hero__title">{page.heroTitle || 'Daily Quotes'}</h1>
+            <div className="quotes-hero__actions">
+              <a href="#quotes-grid" className="mp-cta">
+                Browse the week
+                <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+              </a>
+            </div>
+          </Motion>
         </div>
       </section>
 
@@ -188,7 +181,7 @@ export default function DailyQuotes() {
       </section>
 
       {/* Quote Grid */}
-      <section className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
+      <section id="quotes-grid" className="py-16 sm:py-24" style={{ background: '#1B1024' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {quotes.map((q, i) => (
@@ -204,8 +197,8 @@ export default function DailyQuotes() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <Motion delay={0.1}>
               <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-                <img loading="lazy"
-                  src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80"
+                <img
+                  src="/team/maker.jpg"
                   alt="Brand strategy"
                   className="w-full h-full object-cover"
                 />

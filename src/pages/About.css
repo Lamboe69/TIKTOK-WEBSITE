@@ -1,0 +1,601 @@
+/* ─── About — Origin Reel (cinematic chapters) ─── */
+
+.origin-page {
+  --o-ink: #0C0618;
+  --o-ember: #FF8A3D;
+  --o-pad: clamp(1.25rem, 4vw, 4.5rem);
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  background: var(--o-ink);
+}
+
+.origin-pad {
+  padding-left: var(--o-pad);
+  padding-right: var(--o-pad);
+}
+
+/* ═══ Hero — KM DYNASTY as a photo window (type-mask) ═══ */
+.origin-hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #06030E;
+}
+
+/* Living brand — live imagery only visible inside the letters */
+.origin-hero__cut {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58svh;
+  padding: clamp(2.5rem, 6vw, 5rem) var(--o-pad) clamp(1.5rem, 3vw, 2.5rem);
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 45%, rgba(255, 107, 26, 0.12), transparent 62%),
+    #06030E;
+}
+
+.origin-hero__cut-fill,
+.origin-hero__cut-stroke {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: clamp(4.2rem, 17vw, 13.5rem);
+  line-height: 0.78;
+  letter-spacing: -0.06em;
+  text-align: center;
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+}
+
+.origin-hero__cut-fill {
+  z-index: 2;
+  color: transparent;
+  background-image: url('/photos/king-maker-live.jpg');
+  background-size: 140% auto;
+  background-position: 50% 18%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: origin-cut-pan 22s ease-in-out infinite alternate;
+  filter: saturate(1.1) contrast(1.08);
+}
+
+.origin-hero__cut-stroke {
+  z-index: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255, 138, 61, 0.4);
+}
+
+@keyframes origin-cut-pan {
+  from { background-position: 42% 12%; }
+  to   { background-position: 58% 32%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .origin-hero__cut-fill { animation: none; background-position: 50% 20%; }
+}
+
+/* Footing — About statement under the brand cut */
+.origin-hero__footing {
+  flex: 0 0 auto;
+  border-top: 1px solid rgba(255, 138, 61, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 107, 26, 0.06) 0%, transparent 40%),
+    #0A0614;
+  padding: 1.75rem var(--o-pad) 2.5rem;
+}
+
+.origin-hero__footing-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+@media (min-width: 800px) {
+  .origin-hero__footing-inner {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+}
+
+.origin-hero__footing-copy {
+  max-width: 32rem;
+}
+
+.origin-hero__sr-brand {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.origin-hero__about {
+  margin: 0 0 0.55rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(1.65rem, 3.2vw, 2.35rem);
+  letter-spacing: -0.02em;
+  color: rgba(255, 247, 240, 0.88);
+}
+
+.origin-hero__lede {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 247, 240, 0.55);
+}
+
+.origin-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.4rem;
+  flex-shrink: 0;
+}
+
+.origin-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.95rem 1.55rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, #FF6B1A 0%, #CC5200 100%);
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 12px 36px rgba(255, 107, 26, 0.28);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+.origin-cta:hover { transform: translateY(-2px); filter: brightness(1.06); }
+
+.origin-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 247, 240, 0.6);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 138, 61, 0.45);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.origin-link:hover {
+  color: #FFF7F0;
+  border-color: rgba(255, 138, 61, 0.95);
+}
+
+.origin-hero__ticker {
+  display: flex;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0A0614;
+}
+
+.origin-hero__ticker-track {
+  display: flex;
+  gap: 3rem;
+  padding: 0.85rem 0;
+  white-space: nowrap;
+  animation: origin-marquee 28s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .origin-hero__ticker-track { animation: none; }
+}
+
+@keyframes origin-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.origin-hero__ticker span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 247, 240, 0.45);
+}
+.origin-hero__ticker span em {
+  font-style: normal;
+  color: var(--o-ember);
+  margin-right: 0.35rem;
+}
+
+/* ═══ Reel chapters ═══ */
+.origin-reel {
+  position: relative;
+  padding: 5rem 0 2rem;
+}
+
+.origin-reel__head {
+  margin-bottom: 3rem;
+  max-width: 36rem;
+}
+
+.origin-reel__head h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #FFF7F0;
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+
+.origin-reel__head p {
+  font-size: 0.95rem;
+  color: rgba(255, 247, 240, 0.5);
+  line-height: 1.55;
+}
+
+.origin-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.origin-chapter {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: min(78vh, 640px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+@media (min-width: 900px) {
+  .origin-chapter {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  }
+  .origin-chapter--flip {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  }
+  .origin-chapter--flip .origin-chapter__media { order: 2; }
+  .origin-chapter--flip .origin-chapter__body { order: 1; }
+}
+
+.origin-chapter__media {
+  position: relative;
+  min-height: 280px;
+  overflow: hidden;
+  background: #160B2C;
+}
+
+.origin-chapter__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.origin-chapter:hover .origin-chapter__media img {
+  transform: scale(1.05);
+}
+
+.origin-chapter__frame {
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.origin-chapter__timecode {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 3;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: rgba(255, 247, 240, 0.7);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 0.35rem 0.65rem;
+}
+
+.origin-chapter__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2.5rem var(--o-pad);
+  background:
+    radial-gradient(ellipse 70% 50% at 100% 0%, rgba(255, 107, 26, 0.1), transparent 55%),
+    #12081F;
+}
+
+.origin-chapter__n {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--o-ember);
+  margin-bottom: 1rem;
+}
+
+.origin-chapter__title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.origin-chapter__copy {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: rgba(255, 247, 240, 0.58);
+  max-width: 28rem;
+}
+
+/* ═══ Creed — full-bleed title cards ═══ */
+.origin-creed {
+  padding: 4rem 0 5rem;
+}
+
+.origin-creed__intro {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.origin-creed__intro h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+}
+
+.origin-creed__track {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+@media (min-width: 700px) {
+  .origin-creed__track {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+}
+
+.origin-creed__card {
+  position: relative;
+  min-height: 320px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  cursor: default;
+}
+
+.origin-creed__card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease, filter 0.5s ease;
+  filter: brightness(0.55) saturate(0.85);
+}
+
+.origin-creed__card:hover img {
+  transform: scale(1.06);
+  filter: brightness(0.7) saturate(1);
+}
+
+.origin-creed__card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(12, 6, 24, 0.95) 0%, transparent 55%);
+}
+
+.origin-creed__word {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1.75rem 1.25rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+  writing-mode: horizontal-tb;
+}
+@media (min-width: 700px) {
+  .origin-creed__word {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    height: 100%;
+    padding: 1.5rem 1rem;
+    font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+  }
+}
+
+/* ═══ Cast credits ═══ */
+.origin-cast {
+  padding: 5rem 0;
+  background:
+    linear-gradient(180deg, #0C0618 0%, #160B2C 40%, #0C0618 100%);
+}
+
+.origin-cast__head {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.origin-cast__head h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.origin-cast__head p {
+  font-size: 0.9rem;
+  color: rgba(255, 247, 240, 0.45);
+}
+
+.origin-cast__roll {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  max-width: 920px;
+  margin: 0 auto;
+}
+@media (min-width: 720px) {
+  .origin-cast__roll { grid-template-columns: 1fr 1fr; }
+}
+
+.origin-cast__member {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: #1A0E34;
+}
+
+.origin-cast__member img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.origin-cast__member:hover img { transform: scale(1.05); }
+
+.origin-cast__member::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(12, 6, 24, 0.96) 0%, transparent 50%);
+}
+
+.origin-cast__credit {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 1.5rem;
+}
+
+.origin-cast__role {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--o-ember);
+  margin-bottom: 0.4rem;
+}
+
+.origin-cast__name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+}
+
+.origin-cast__tag {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  color: rgba(255, 247, 240, 0.45);
+}
+
+.origin-cast__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.85rem;
+  font-size: 0.75rem;
+  color: rgba(255, 247, 240, 0.4);
+  transition: color 0.2s;
+}
+.origin-cast__member:hover .origin-cast__go { color: rgba(255, 247, 240, 0.8); }
+
+/* ═══ Closing title card ═══ */
+.origin-end {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+}
+
+.origin-end__bg {
+  position: absolute;
+  inset: 0;
+}
+.origin-end__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.45);
+}
+.origin-end__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 6, 24, 0.72);
+}
+
+.origin-end__inner {
+  position: relative;
+  z-index: 2;
+  padding: 4rem var(--o-pad);
+  max-width: 36rem;
+}
+
+.origin-end__brand {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--o-ember);
+  margin-bottom: 1rem;
+}
+
+.origin-end__inner h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  color: #FFF7F0;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.origin-end__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}

@@ -31,8 +31,8 @@ export default function Terms() {
     <main>
       {/* Hero */}
       <section className="relative min-h-[360px] flex items-end pb-14 overflow-hidden" style={{ background: '#120620' }}>
-        <img loading="lazy"
-          src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1400&q=80"
+        <img
+          src="/photos/team-dallas.jpg"
           alt="Terms of Service"
           className="absolute inset-0 w-full h-full object-cover opacity-30"
         />

@@ -23,7 +23,7 @@ const battleMeta = {
   },
   special: {
     emoji: '👑',
-    label: 'Special Battle Sign-Up',
+    label: 'Special Battle Entry',
     subtitle: 'Choose your battle type, drop your handle, and pick your available date.',
     accent: '#6B3FA0',
     accentBg: 'rgba(107,63,160,0.15)',
@@ -239,7 +239,7 @@ export default function SignUpModal({ type = 'official', isOpen, onClose }) {
                   className="w-full py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
                   style={{ background: `linear-gradient(135deg, ${meta.accent}, ${isOfficial ? '#CC5200' : '#3B1063'})` }}
                 >
-                  {submitting ? 'Submitting...' : isOfficial ? 'Submit Entry ⚔️' : 'Sign Me Up 👑'}
+                  {submitting ? 'Sending...' : isOfficial ? 'Submit Entry' : 'Enter Battle'}
                 </button>
 
                 <p className="text-white/20 text-[10px] text-center">

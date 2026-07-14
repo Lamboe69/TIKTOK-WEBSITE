@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
-import { useSignUp } from './SignUpContext'
+import './Navbar.css'
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -14,138 +14,187 @@ const navLinks = [
 ]
 
 const moreLinks = [
-  { to: '/daily-quotes', label: 'Daily Quotes' },
-  { to: '/blog', label: 'Blog' },
-  { to: '/gallery', label: 'Gallery' },
-  { to: '/outreach', label: 'Outreach' },
-  { to: '/giveaway', label: 'Giveaway' },
-  { to: '/faq', label: 'FAQ' },
-  { to: '/advertise', label: 'Advertise' },
+  { to: '/daily-quotes', label: 'Daily Quotes', blurb: 'Week of inspiration', icon: 'lightbulb' },
+  { to: '/blog', label: 'Blog', blurb: 'Reports & stories', icon: 'film' },
+  { to: '/gallery', label: 'Gallery', blurb: 'Captured moments', icon: 'star' },
+  { to: '/outreach', label: 'Outreach', blurb: 'Giving back', icon: 'heart' },
+  { to: '/giveaway', label: 'Giveaway', blurb: 'Claim your reward', icon: 'gift' },
+  { to: '/faq', label: 'FAQ', blurb: 'Answers & guidance', icon: 'clipboard' },
+  { to: '/advertise', label: 'Advertise', blurb: 'Partner with us', icon: 'target' },
 ]
+
+function isActive(pathname, to) {
+  if (to === '/') return pathname === '/'
+  return pathname === to || pathname.startsWith(`${to}/`)
+}
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
-  const { openOfficial, openSpecial } = useSignUp()
+  const moreRef = useRef(null)
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 10)
+    const handler = () => setScrolled(window.scrollY > 12)
+    handler()
     window.addEventListener('scroll', handler, { passive: true })
     return () => window.removeEventListener('scroll', handler)
   }, [])
 
-  const isSpecialPage = pathname === '/daily-quotes'
-  const ctaAction = isSpecialPage ? openSpecial : openOfficial
+  useEffect(() => {
+    setMobileOpen(false)
+    setMoreOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    if (!mobileOpen) return undefined
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [mobileOpen])
+
+  useEffect(() => {
+    if (!moreOpen && !mobileOpen) return undefined
+    const onPointer = (e) => {
+      if (moreOpen && moreRef.current && !moreRef.current.contains(e.target)) {
+        setMoreOpen(false)
+      }
+    }
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setMoreOpen(false)
+        setMobileOpen(false)
+      }
+    }
+    document.addEventListener('pointerdown', onPointer)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('pointerdown', onPointer)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [moreOpen, mobileOpen])
+
+  const moreActive = moreLinks.some(({ to }) => isActive(pathname, to))
 
   return (
     <header
-      className="sticky top-0 z-50 transition-all duration-300"
-      style={{
-        background: scrolled
-          ? 'rgba(18, 6, 32, 0.92)'
-          : 'rgba(18, 6, 32, 0.75)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(59,16,99,0.5)',
-      }}
+      className={[
+        'site-nav',
+        scrolled ? 'is-scrolled' : '',
+        mobileOpen ? 'is-open' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
-          <span className="w-8 h-8 rounded-lg bg-ember flex items-center justify-center text-white">
-            <span className="w-4 h-4 block">{Icons.crown}</span>
+      <nav className="site-nav__bar" aria-label="Primary">
+        <Link to="/" className="site-nav__brand" onClick={() => setMobileOpen(false)}>
+          <span className="site-nav__mark" aria-hidden>
+            <span>{Icons.crown}</span>
           </span>
-          <div className="leading-none">
-            <span className="block font-display font-bold text-sm text-ivory tracking-widest">KM DYNASTY</span>
-            <span className="block font-body text-[9px] text-white/40 tracking-[0.2em] uppercase">Godsent Box Battles</span>
-          </div>
+          <span className="site-nav__wordmark">
+            <span className="site-nav__name">KM DYNASTY</span>
+            <span className="site-nav__tag">Godsent Box Battles</span>
+          </span>
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+        <div className="site-nav__links">
           {navLinks.map(({ to, label }) => (
             <Link
               key={to}
               to={to}
-              className={`relative px-3 py-1.5 text-sm font-medium rounded-md transition-all nav-link ${
-                pathname === to
-                  ? 'text-ember'
-                  : 'text-white/60 hover:text-white'
-              }`}
+              className={`site-nav__link${isActive(pathname, to) ? ' is-active' : ''}`}
             >
               {label}
-              <span
-                className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px rounded-full transition-all duration-300"
-                style={{
-                  width: pathname === to ? '60%' : '0%',
-                  background: 'linear-gradient(90deg, transparent, #FF6B1A, transparent)',
-                  opacity: pathname === to ? 1 : 0,
-                }}
-              />
             </Link>
           ))}
-        </div>
 
-        {/* CTA */}
-        <button
-          onClick={ctaAction}
-          className="btn-shimmer hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded-lg text-white flex-shrink-0 transition-all hover:scale-105"
-          style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 4px 16px rgba(255,107,26,0.3)' }}
-        >
-          <span className="w-3.5 h-3.5 block">{Icons.swords}</span>
-          Sign Up
-        </button>
-
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden p-2 text-white/70 hover:text-white transition-colors"
-          aria-label="Toggle menu"
-        >
-          <span className="w-5 h-5 block">{mobileOpen ? Icons.close : Icons.menu}</span>
-        </button>
-      </nav>
-
-      {mobileOpen && (
-        <div className="md:hidden border-t border-white/04 animate-fade-in" style={{ background: 'rgba(18,6,32,0.97)' }}>
-          <div className="px-4 py-4">
-            <div className="grid grid-cols-2 gap-1 mb-3">
-              {navLinks.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-all ${
-                    pathname === to ? 'bg-ember/20 text-ember' : 'text-white/70 hover:bg-white/05 hover:text-white'
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-            <p className="text-white/30 text-[10px] uppercase tracking-widest mb-2 px-1">More Pages</p>
-            <div className="grid grid-cols-2 gap-1 mb-4">
-              {moreLinks.map(({ to, label }) => (
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={() => setMobileOpen(false)}
-                  className="px-3 py-2 text-xs text-white/50 hover:text-white rounded-md hover:bg-white/05 transition-all"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
+          <div
+            className={`site-nav__more${moreOpen ? ' is-open' : ''}`}
+            ref={moreRef}
+          >
             <button
-              onClick={() => { ctaAction(); setMobileOpen(false) }}
-              className="w-full py-3 text-sm font-bold text-white rounded-lg"
-              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
+              type="button"
+              className={`site-nav__more-btn${moreActive ? ' is-active' : ''}`}
+              aria-expanded={moreOpen}
+              aria-haspopup="menu"
+              onClick={() => setMoreOpen((v) => !v)}
             >
-              Sign Up — Box Battle
+              More
+              <span className="site-nav__more-chevron" aria-hidden>
+                {Icons.chevronDown}
+              </span>
             </button>
+            <div className="site-nav__dropdown" role="menu">
+              <p className="site-nav__drop-head">Explore</p>
+              <div className="site-nav__drop-grid">
+                {moreLinks.map(({ to, label, blurb, icon }) => (
+                  <Link
+                    key={to}
+                    to={to}
+                    role="menuitem"
+                    className={`site-nav__drop-link${isActive(pathname, to) ? ' is-active' : ''}`}
+                    onClick={() => setMoreOpen(false)}
+                  >
+                    <span className="site-nav__drop-icon" aria-hidden>
+                      {Icons[icon]}
+                    </span>
+                    <span className="site-nav__drop-copy">
+                      <strong>{label}</strong>
+                      <em>{blurb}</em>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
-      )}
+
+        <button
+          type="button"
+          className="site-nav__toggle"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <span>{mobileOpen ? Icons.close : Icons.menu}</span>
+        </button>
+
+        <div className="site-nav__signal" aria-hidden />
+      </nav>
+
+      <div className="site-nav__panel" id="site-nav-panel">
+        <div className="site-nav__panel-inner">
+          <div className="site-nav__panel-grid">
+            {navLinks.map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                className={`site-nav__panel-link${isActive(pathname, to) ? ' is-active' : ''}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          <p className="site-nav__panel-label">Explore</p>
+          <div className="site-nav__panel-more">
+            {moreLinks.map(({ to, label, blurb }) => (
+              <Link
+                key={to}
+                to={to}
+                className={isActive(pathname, to) ? 'is-active' : undefined}
+                onClick={() => setMobileOpen(false)}
+              >
+                <strong>{label}</strong>
+                <em>{blurb}</em>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
     </header>
   )
 }
