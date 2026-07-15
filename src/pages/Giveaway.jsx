@@ -24,7 +24,7 @@ const steps = [
 
 export default function Giveaway() {
   const { getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('giveaway')
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
 
@@ -52,7 +52,7 @@ export default function Giveaway() {
         </div>
         <div className="give-hero__core">
           <Motion delay={60}>
-            <p className="give-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="give-hero__brand">{siteName}</p>
             <h1 className="give-hero__title">{page.heroTitle || 'Claim Your Reward'}</h1>
             <p className="give-hero__lede">
               {page.heroLede ||

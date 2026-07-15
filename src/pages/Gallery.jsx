@@ -1,18 +1,24 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import Motion from '../components/Motion'
 import fallbackPhotos, { galleryCategories as fallbackCategories } from '../data/gallery'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { normalizeGalleryItems } from '../cms/normalize'
+import { mediaUrl } from '../utils/mediaUrl'
 import './morePages.css'
 
 export default function Gallery() {
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('gallery')
-  const photos = collections.gallery?.length ? collections.gallery : fallbackPhotos
+  const photos = useMemo(() => {
+    const fromCms = normalizeGalleryItems(collections.gallery || [])
+    return fromCms.length ? fromCms : normalizeGalleryItems(fallbackPhotos)
+  }, [collections.gallery])
   const galleryCategories = collections.galleryCategories?.length
     ? collections.galleryCategories
     : fallbackCategories
+  const heroImage = mediaUrl(page.heroImage, '/photos/gallery-camera.jpg')
   const [activeCategory, setActiveCategory] = useState('All')
   const [selectedPhoto, setSelectedPhoto] = useState(null)
 
@@ -44,14 +50,14 @@ export default function Gallery() {
       {/* Hero — Film Gate */}
       <section className="gallery-hero" aria-label="Photo Gallery">
         <div className="gallery-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/gallery-camera.jpg'} alt="" />
+          <img src={heroImage} alt="" />
           <div className="gallery-hero__veil" />
         </div>
         <div className="gallery-hero__sprockets gallery-hero__sprockets--l" aria-hidden />
         <div className="gallery-hero__sprockets gallery-hero__sprockets--r" aria-hidden />
         <div className="gallery-hero__core">
           <Motion delay={60}>
-            <p className="gallery-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="gallery-hero__brand">{siteName}</p>
             <h1 className="gallery-hero__title">{page.heroTitle || 'Gallery'}</h1>
             <p className="gallery-hero__lede">
               {page.heroLede ||

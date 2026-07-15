@@ -11,7 +11,7 @@ export default function StickyCTA() {
   const isSpecialPage = pathname === '/daily-quotes'
   const label = isSpecialPage ? 'Fill Form Here' : settings.ctaLabel || 'Join My Box Battle'
   const paypalEmail = settings.paypalEmail || ''
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
 
   if (pathname !== '/' && pathname !== '/how-to-join' && pathname !== '/battle-schedule' && pathname !== '/daily-quotes') {
     return null

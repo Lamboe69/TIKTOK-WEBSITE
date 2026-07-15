@@ -2,7 +2,7 @@ import { useContent } from '../cms/ContentContext'
 
 export default function PayPalDonate({ variant = 'compact' }) {
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const paypalEmail = settings.paypalEmail || ''
 
   if (!paypalEmail) {

@@ -4,6 +4,7 @@ import { useSignUp } from '../SignUpContext'
 import { photos as fallbackPhotos } from '../../data/photos'
 import { useContent } from '../../cms/ContentContext'
 import { normalizeHeroSlides } from '../../cms/normalize'
+import { mediaUrl } from '../../utils/mediaUrl'
 
 const SLIDE_MS = 3000
 const SWIPE_THRESHOLD = 40
@@ -11,11 +12,12 @@ const SWIPE_THRESHOLD = 40
 export default function Hero() {
   const { openOfficial, openSpecial } = useSignUp()
   const { collections, settings, getPage } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const homePage = getPage('home')
   const photos = useMemo(() => {
     const fromCms = normalizeHeroSlides(collections.heroSlides)
-    return fromCms.length ? fromCms : fallbackPhotos
+    const list = fromCms.length ? fromCms : fallbackPhotos
+    return list.map((p) => ({ ...p, src: mediaUrl(p.src) }))
   }, [collections.heroSlides])
   // Extended track: all photos + clone of first for seamless left wrap
   const track = useMemo(() => (photos.length ? [...photos, photos[0]] : []), [photos])

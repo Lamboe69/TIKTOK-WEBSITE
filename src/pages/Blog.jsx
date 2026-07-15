@@ -1,20 +1,26 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Motion from '../components/Motion'
 import fallbackPosts, { categories as fallbackCategories } from '../data/blog'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { normalizeBlogPosts } from '../cms/normalize'
+import { mediaUrl } from '../utils/mediaUrl'
 import './morePages.css'
 
 export default function Blog() {
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('blog')
-  const posts = collections.blogPosts?.length ? collections.blogPosts : fallbackPosts
+  const posts = useMemo(() => {
+    const fromCms = normalizeBlogPosts(collections.blogPosts || [])
+    return fromCms.length ? fromCms : normalizeBlogPosts(fallbackPosts)
+  }, [collections.blogPosts])
   const categories = collections.blogCategories?.length
     ? collections.blogCategories
     : fallbackCategories
   const [activeCategory, setActiveCategory] = useState('All')
   const [expandedId, setExpandedId] = useState(null)
+  const heroImage = mediaUrl(page.heroImage, '/photos/blog-writing.jpg')
 
   const filtered = activeCategory === 'All' ? posts : posts.filter(p => p.category === activeCategory)
 
@@ -23,13 +29,13 @@ export default function Blog() {
       {/* Hero — Press Folio */}
       <section className="blog-hero" aria-label="Dynasty Blog">
         <div className="blog-hero__media" aria-hidden>
-          <img src={page.heroImage || '/photos/blog-writing.jpg'} alt="" />
+          <img src={heroImage} alt="" />
           <div className="blog-hero__veil" />
         </div>
         <div className="blog-hero__folio">
           <Motion delay={60}>
             <div className="blog-hero__rule">
-              <p className="blog-hero__brand">{page.heroBrand || siteName}</p>
+              <p className="blog-hero__brand">{siteName}</p>
             </div>
             <h1 className="blog-hero__title">{page.heroTitle || 'Blog'}</h1>
             <p className="blog-hero__lede">

@@ -8,6 +8,7 @@ import {
   useContent,
 } from '../../cms/ContentContext'
 import { blankItem, getCollection } from '../../cms/schema'
+import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 
 function Field({ field, value, onChange, media }) {
@@ -40,12 +41,12 @@ function Field({ field, value, onChange, media }) {
       <div className="admin-field">
         <label>{field.label}</label>
         <div className="admin-image-row">
-          {value ? <img src={value} alt="" /> : <div />}
+          {value ? <img src={mediaUrl(value)} alt="" /> : <div />}
           <div>
             <input
               value={value || ''}
               onChange={(e) => onChange(e.target.value)}
-              placeholder="/photos/example.jpg"
+              placeholder="/photos/example.jpg or https://…spaces…"
             />
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
               <label className="admin-btn admin-btn--ghost" style={{ cursor: 'pointer' }}>
@@ -72,7 +73,7 @@ function Field({ field, value, onChange, media }) {
                   <option value="">Pick from library…</option>
                   {media.map((m) => (
                     <option key={m} value={m}>
-                      {m}
+                      {mediaLabel(m)}
                     </option>
                   ))}
                 </select>
@@ -185,7 +186,7 @@ export default function CollectionList() {
               <div className="admin-row__lead">
                 {item.photo || item.src || item.img || item.cover ? (
                   <img
-                    src={item.photo || item.src || item.img || item.cover}
+                    src={mediaUrl(item.photo || item.src || item.img || item.cover)}
                     alt=""
                     className="admin-row__thumb"
                   />

@@ -1,7 +1,9 @@
 const tiers = [
   {
+    id: 1,
     name: '1-on-1 Consultation',
     price: '$300',
+    amount: 300,
     originalPrice: '$500',
     badge: null,
     duration: 'Private Session · 1 Hour',
@@ -16,8 +18,10 @@ const tiers = [
     cta: 'Book Now',
   },
   {
+    id: 2,
     name: 'Dynasty Masterclass',
     price: '$500',
+    amount: 500,
     originalPrice: '$750',
     badge: 'Popular',
     duration: '5 Weeks Program',
@@ -32,8 +36,10 @@ const tiers = [
     cta: 'Enrol Now',
   },
   {
+    id: 3,
     name: 'Masterclass + Mentorship',
     price: '$1,200',
+    amount: 1200,
     originalPrice: '$1,500',
     badge: 'Premium',
     duration: '5 Weeks + Ongoing Mentorship',

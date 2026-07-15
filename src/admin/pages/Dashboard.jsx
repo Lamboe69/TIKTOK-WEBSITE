@@ -109,6 +109,20 @@ export default function AdminDashboard() {
         ))}
       </div>
 
+      <p className="admin-side__section" style={{ marginTop: 0 }}>
+        Payments &amp; applications
+      </p>
+      <div className="admin-grid" style={{ marginBottom: '1.75rem' }}>
+        <Link to="/admin/enrollments" className="admin-card">
+          <strong>Masterclass enrollments</strong>
+          <span>View PayPal bookings &amp; capture IDs</span>
+        </Link>
+        <Link to="/admin/applications" className="admin-card">
+          <strong>Box battle applications</strong>
+          <span>Official &amp; special battle signups</span>
+        </Link>
+      </div>
+
       <div className="admin-stats">
         {stats.map((s) => (
           <div key={s.label} className="admin-stat">

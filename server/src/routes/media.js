@@ -6,26 +6,26 @@ import multer from 'multer'
 import { pool, query } from '../db.js'
 import { authRequired } from '../auth.js'
 import { bumpMeta } from '../contentStore.js'
+import { deleteFromSpaces, spacesConfigured, uploadBufferToSpaces } from '../spaces.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '../../..')
 const uploadsDir = path.join(root, 'public', 'uploads')
 fs.mkdirSync(uploadsDir, { recursive: true })
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadsDir),
-  filename: (_req, file, cb) => {
-    const ext = path.extname(file.originalname || '').toLowerCase() || '.jpg'
-    const base = path
-      .basename(file.originalname || 'upload', ext)
-      .replace(/[^a-zA-Z0-9_-]/g, '-')
-      .slice(0, 60)
-    cb(null, `${Date.now()}-${base || 'upload'}${ext}`)
-  },
-})
+function safeFilename(originalName, mime = 'image/jpeg') {
+  const extFromName = path.extname(originalName || '').toLowerCase()
+  const safeBase = path
+    .basename(originalName || 'upload', extFromName)
+    .replace(/[^a-zA-Z0-9_-]/g, '-')
+    .slice(0, 60)
+  const mimeExt = String(mime.split('/')[1] || 'jpg').replace('jpeg', 'jpg')
+  const ext = extFromName || `.${mimeExt}`
+  return `${Date.now()}-${safeBase || 'upload'}${ext}`
+}
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 12 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     if (!file.mimetype?.startsWith('image/')) {
@@ -57,9 +57,33 @@ async function addMediaPath(client, publicPath, filename, mime, size) {
   await bumpMeta(client)
 }
 
+async function persistImage({ finalName, buffer, mime }) {
+  if (spacesConfigured()) {
+    const url = await uploadBufferToSpaces({
+      key: finalName,
+      body: buffer,
+      contentType: mime,
+    })
+    return { publicPath: url, storage: 'spaces' }
+  }
+
+  const filePath = path.join(uploadsDir, finalName)
+  fs.writeFileSync(filePath, buffer)
+  return { publicPath: `/uploads/${finalName}`, storage: 'local' }
+}
+
+router.get('/config', (_req, res) => {
+  res.json({
+    spaces: spacesConfigured(),
+    storage: spacesConfigured() ? 'spaces' : 'local',
+  })
+})
+
 router.get('/', async (_req, res) => {
   try {
-    const r = await query(`SELECT id, path, filename, mime_type, size_bytes, created_at FROM media ORDER BY created_at DESC`)
+    const r = await query(
+      `SELECT id, path, filename, mime_type, size_bytes, created_at FROM media ORDER BY created_at DESC`,
+    )
     res.json({ media: r.rows })
   } catch (e) {
     res.status(500).json({ error: e.message })
@@ -70,10 +94,16 @@ router.post('/upload', authRequired, upload.single('file'), async (req, res) => 
   const client = await pool.connect()
   try {
     if (!req.file) return res.status(400).json({ error: 'file required' })
-    const publicPath = `/uploads/${req.file.filename}`
-    await addMediaPath(client, publicPath, req.file.filename, req.file.mimetype, req.file.size)
-    res.status(201).json({ path: publicPath })
+    const finalName = safeFilename(req.file.originalname, req.file.mimetype)
+    const { publicPath, storage } = await persistImage({
+      finalName,
+      buffer: req.file.buffer,
+      mime: req.file.mimetype,
+    })
+    await addMediaPath(client, publicPath, finalName, req.file.mimetype, req.file.size)
+    res.status(201).json({ path: publicPath, url: publicPath, storage })
   } catch (e) {
+    console.error('upload', e)
     res.status(500).json({ error: e.message })
   } finally {
     client.release()
@@ -91,22 +121,15 @@ export async function handleJsonUpload(req, res) {
     const match = dataUrl.match(/^data:(image\/[a-zA-Z0-9.+-]+);base64,(.+)$/)
     if (!match) return res.status(400).json({ error: 'Invalid data URL' })
 
-    const extFromName = path.extname(filename).toLowerCase()
-    const safeBase = path
-      .basename(filename, extFromName)
-      .replace(/[^a-zA-Z0-9_-]/g, '-')
-      .slice(0, 60)
-    const mimeExt = match[1].split('/')[1].replace('jpeg', 'jpg')
-    const ext = extFromName || `.${mimeExt}`
-    const finalName = `${Date.now()}-${safeBase || 'upload'}${ext}`
-    const filePath = path.join(uploadsDir, finalName)
-    const buf = Buffer.from(match[2], 'base64')
-    fs.writeFileSync(filePath, buf)
+    const mime = match[1]
+    const buffer = Buffer.from(match[2], 'base64')
+    const finalName = safeFilename(filename, mime)
+    const { publicPath, storage } = await persistImage({ finalName, buffer, mime })
 
-    const publicPath = `/uploads/${finalName}`
-    await addMediaPath(client, publicPath, finalName, match[1], buf.length)
-    res.status(201).json({ path: publicPath })
+    await addMediaPath(client, publicPath, finalName, mime, buffer.length)
+    res.status(201).json({ path: publicPath, url: publicPath, storage })
   } catch (e) {
+    console.error('json upload', e)
     res.status(500).json({ error: e.message })
   } finally {
     client.release()
@@ -131,6 +154,13 @@ router.delete('/', authRequired, async (req, res) => {
       [JSON.stringify(lib)],
     )
     await bumpMeta(client)
+    if (spacesConfigured() && String(mediaPath).startsWith('http')) {
+      try {
+        await deleteFromSpaces(mediaPath)
+      } catch (err) {
+        console.warn('spaces delete', err.message)
+      }
+    }
     res.json({ ok: true })
   } catch (e) {
     res.status(500).json({ error: e.message })

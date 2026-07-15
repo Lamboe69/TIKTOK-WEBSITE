@@ -26,7 +26,7 @@ const faces = [
 export default function KmLovers() {
   const { openOfficial } = useSignUp()
   const { getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const ctaLabel = settings.ctaLabel || 'Join My Box Battle'
   const homePage = getPage('home')
 

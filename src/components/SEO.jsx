@@ -24,7 +24,7 @@ const routeTitles = {
 export default function SEO() {
   const { pathname } = useLocation()
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const tagline = settings.tagline || "Official hub for King Maker's Godsent Box Battles"
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export default function SEO() {
     if (desc) desc.setAttribute('content', `${siteName} — ${tagline}`)
 
     const ogTitle = document.querySelector('meta[property="og:title"]')
-    if (ogTitle) ogTitle.setAttribute('content', `${siteName} | King Maker`)
+    if (ogTitle) ogTitle.setAttribute('content', pageTitle ? `${pageTitle} | ${siteName}` : `${siteName} | ${tagline}`)
 
     const ogDesc = document.querySelector('meta[property="og:description"]')
     if (ogDesc) ogDesc.setAttribute('content', tagline)

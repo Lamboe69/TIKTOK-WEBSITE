@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { savePage, uploadImage, useContent } from '../../cms/ContentContext'
 import { PAGE_SCHEMA } from '../../cms/schema'
+import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 
 export default function PageEditor() {
@@ -60,11 +61,12 @@ export default function PageEditor() {
         <div className="admin-field" key={field.key}>
           <label>{field.label}</label>
           <div className="admin-image-row">
-            {draft[field.key] ? <img src={draft[field.key]} alt="" /> : <div />}
+            {draft[field.key] ? <img src={mediaUrl(draft[field.key])} alt="" /> : <div />}
             <div>
               <input
                 value={draft[field.key] || ''}
                 onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+                placeholder="/photos/… or https://…spaces…"
               />
               <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
                 <label className="admin-btn admin-btn--ghost" style={{ cursor: 'pointer' }}>
@@ -90,7 +92,7 @@ export default function PageEditor() {
                   <option value="">Pick from library…</option>
                   {media.map((m) => (
                     <option key={m} value={m}>
-                      {m}
+                      {mediaLabel(m)}
                     </option>
                   ))}
                 </select>

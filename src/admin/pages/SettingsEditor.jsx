@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveContent, saveSettings, uploadImage, useContent } from '../../cms/ContentContext'
 import { SETTINGS_FIELDS } from '../../cms/schema'
+import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 
 const SECTIONS = [
@@ -100,6 +101,14 @@ export function MediaLibrary() {
   const { content, loading, refresh } = useContent()
   const [toast, setToast] = useState('')
   const [busy, setBusy] = useState(false)
+  const [storage, setStorage] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/media/config')
+      .then((r) => r.json())
+      .then((d) => setStorage(d.storage || 'local'))
+      .catch(() => setStorage('local'))
+  }, [])
 
   if (loading) {
     return (
@@ -116,9 +125,9 @@ export function MediaLibrary() {
     if (!file) return
     setBusy(true)
     try {
-      await uploadImage(file)
+      const result = await uploadImage(file)
       await refresh()
-      setToast('Uploaded')
+      setToast(result.storage === 'spaces' ? 'Uploaded to DigitalOcean Spaces' : 'Uploaded')
     } catch (err) {
       setToast(err.message)
     } finally {
@@ -128,7 +137,7 @@ export function MediaLibrary() {
   }
 
   const remove = async (path) => {
-    if (!window.confirm(`Remove ${path} from library? (File stays on disk)`)) return
+    if (!window.confirm(`Remove this image from the library?`)) return
     const next = {
       ...content,
       collections: {
@@ -144,7 +153,11 @@ export function MediaLibrary() {
   return (
     <AdminPage
       title="Media library"
-      lede="Upload images or reuse existing site assets."
+      lede={
+        storage === 'spaces'
+          ? 'Uploads go to DigitalOcean Spaces. Use gallery paths (/photos/…) or full Spaces URLs anywhere on the site.'
+          : 'Uploads save locally to /uploads until DigitalOcean Spaces credentials are configured.'
+      }
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <label className="admin-btn" style={{ cursor: busy ? 'wait' : 'pointer' }}>
@@ -157,8 +170,8 @@ export function MediaLibrary() {
       <div className="admin-media-grid">
         {media.map((path) => (
           <figure key={path} className="admin-media-item">
-            <img src={path} alt="" />
-            <figcaption>{path}</figcaption>
+            <img src={mediaUrl(path)} alt="" />
+            <figcaption title={path}>{mediaLabel(path)}</figcaption>
             <div style={{ padding: '0 0.55rem 0.55rem' }}>
               <button
                 type="button"

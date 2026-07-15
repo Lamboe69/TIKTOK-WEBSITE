@@ -5,7 +5,7 @@ import { useContent } from '../../cms/ContentContext'
 
 export default function GiveBack() {
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const paypalEmail = settings.paypalEmail || ''
   const [form, setForm] = useState({ name: '', message: '' })
   const [submitted, setSubmitted] = useState(false)

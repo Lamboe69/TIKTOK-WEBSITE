@@ -151,7 +151,6 @@ export const PAGE_SCHEMA = [
     label: 'Agency',
     fields: [
       { key: 'heroImage', label: 'Hero image', type: 'image' },
-      { key: 'heroBrand', label: 'Brand line', type: 'text' },
       { key: 'heroTitle', label: 'Title', type: 'text' },
       { key: 'heroLede', label: 'Supporting line', type: 'textarea' },
       { key: 'introTitle', label: 'Intro section title', type: 'text' },
@@ -258,7 +257,7 @@ export const PAGE_SCHEMA = [
 ]
 
 export const SETTINGS_FIELDS = [
-  { key: 'siteName', label: 'Site name (appears in navbar, footer, everywhere)', type: 'text' },
+  { key: 'siteName', label: 'Site name (navbar, footer, page heroes — everywhere)', type: 'text' },
   { key: 'tagline', label: 'Tagline / Subtitle', type: 'textarea' },
   { key: 'ctaLabel', label: 'Primary CTA label', type: 'text' },
   { key: 'email', label: 'Contact email', type: 'text' },
@@ -453,7 +452,8 @@ export const COLLECTIONS = [
     titleField: 'name',
     fields: [
       { key: 'name', label: 'Name', type: 'text' },
-      { key: 'price', label: 'Price', type: 'text' },
+      { key: 'price', label: 'Price label (display)', type: 'text' },
+      { key: 'amount', label: 'Checkout amount (USD number, e.g. 500)', type: 'text' },
       { key: 'originalPrice', label: 'Original price', type: 'text' },
       { key: 'badge', label: 'Badge', type: 'text' },
       { key: 'duration', label: 'Duration', type: 'text' },

@@ -17,7 +17,7 @@ const romans = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI
 
 export default function FAQ() {
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('faq')
   const closingKicker = page.closingKicker || 'Still looking'
   const closingTitle = page.closingTitle || "Your question isn't in the codex?"
@@ -64,7 +64,7 @@ export default function FAQ() {
 
         <div className="codex-hero__core">
           <Motion delay={50}>
-            <p className="codex-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="codex-hero__brand">{siteName}</p>
             <h1 className="codex-hero__title">{page.heroTitle || 'Answers'}</h1>
             <p className="codex-hero__lede">
               {page.heroLede ||

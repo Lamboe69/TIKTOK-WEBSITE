@@ -4,7 +4,7 @@ import { useContent } from '../cms/ContentContext'
 
 function WinnersVisit() {
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const steps = [
     { step: '01', title: 'Win the Battle', description: 'Compete in daily box battles and come out on top.', icon: Icons.trophy },
     { step: '02', title: 'Get Featured', description: 'Top winners get highlighted on our TikTok and social channels.', icon: Icons.smartphone },

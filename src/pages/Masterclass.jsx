@@ -9,6 +9,7 @@ import {
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
 import { normalizeMasterclassTiers } from '../cms/normalize'
+import MasterclassCheckout from '../components/MasterclassCheckout'
 import './Masterclass.css'
 
 const defaultTierMeta = [
@@ -27,11 +28,11 @@ const weeks = [
 
 export default function Masterclass() {
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('masterclass')
   const tiers = useMemo(() => {
     const fromCms = normalizeMasterclassTiers(collections.masterclassTiers || [])
-    return fromCms.length ? fromCms : fallbackTiers
+    return fromCms.length ? fromCms : normalizeMasterclassTiers(fallbackTiers)
   }, [collections.masterclassTiers])
   const schedule = collections.masterclassMeta?.day
     ? collections.masterclassMeta
@@ -58,6 +59,7 @@ export default function Masterclass() {
 
   const [active, setActive] = useState(Math.min(1, Math.max(0, tiers.length - 1)))
   const [week, setWeek] = useState(0)
+  const [checkoutOpen, setCheckoutOpen] = useState(false)
   const safeActive = Math.min(active, Math.max(0, tiers.length - 1))
   const tier = tiers[safeActive] || tiers[0]
   const meta = {
@@ -71,6 +73,13 @@ export default function Masterclass() {
 
   return (
     <main className="mc-page">
+      {checkoutOpen ? (
+        <MasterclassCheckout
+          tier={tier}
+          accent={meta.accent}
+          onClose={() => setCheckoutOpen(false)}
+        />
+      ) : null}
       {/* ═══ Hero — Five Flames ═══ */}
       <section className="mc-hero" aria-label={`${siteName} Masterclass`}>
         <div className="mc-hero__media" aria-hidden>
@@ -100,7 +109,7 @@ export default function Masterclass() {
 
         <div className="mc-hero__core">
           <Motion delay={50} className="mc-hero__copy">
-            <p className="mc-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="mc-hero__brand">{siteName}</p>
             <h1 className="mc-hero__title">{page.heroTitle || 'Masterclass'}</h1>
             <p className="mc-hero__lede">
               {page.heroLede ||
@@ -262,10 +271,15 @@ export default function Masterclass() {
                   ))}
                 </ul>
 
-                <Link to="/contact" className="mc-cta" style={{ background: `linear-gradient(135deg, ${meta.accent}, #CC5200)` }}>
+                <button
+                  type="button"
+                  className="mc-cta"
+                  style={{ background: `linear-gradient(135deg, ${meta.accent}, #CC5200)` }}
+                  onClick={() => setCheckoutOpen(true)}
+                >
                   {tier.cta}
                   <span className="w-4 h-4 block">{Icons.arrowRight}</span>
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -312,10 +326,15 @@ export default function Masterclass() {
             <p className="mc-close__lede">
               {mcClosingBody}
             </p>
-            <Link to="/contact" className="mc-cta">
-              Contact us
-              <span className="w-4 h-4 block">{Icons.mail}</span>
-            </Link>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
+              <button type="button" className="mc-cta" onClick={() => setCheckoutOpen(true)}>
+                Enrol with PayPal
+                <span className="w-4 h-4 block">{Icons.arrowRight}</span>
+              </button>
+              <Link to="/contact" className="mc-link">
+                Questions? Contact us
+              </Link>
+            </div>
           </Motion>
         </div>
       </section>

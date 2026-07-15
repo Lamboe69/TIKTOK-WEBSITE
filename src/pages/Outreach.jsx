@@ -15,7 +15,7 @@ const supportReasons = [
 
 export default function Outreach() {
   const { getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('outreach')
   const missionHeading = page.missionHeading || 'Our Mission'
   const missionBody = page.missionBody || `King Maker believes in giving back. Through the ${siteName} Outreach program, we support individuals and families in need across the globe — from medical emergencies to education fees.`
@@ -50,7 +50,7 @@ export default function Outreach() {
         </div>
         <div className="outreach-hero__lockup">
           <Motion delay={60}>
-            <p className="outreach-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="outreach-hero__brand">{siteName}</p>
             <h1 className="outreach-hero__title">{page.heroTitle || 'Outreach'}</h1>
             <p className="outreach-hero__lede">
               {page.heroLede ||

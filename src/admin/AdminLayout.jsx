@@ -26,7 +26,7 @@ function useAuthGate() {
 export function AdminLogin() {
   const nav = useNavigate()
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -130,7 +130,7 @@ function AdminShell() {
     <div className="admin-root admin-shell">
       <aside className="admin-side">
         <Link to="/admin" className="admin-side__brand">
-          {(settings.siteName || 'KM DYNASTY')} Admin
+          {(settings.siteName || '')} Admin
         </Link>
         <div className="admin-side__scroll">
           <nav className="admin-side__nav">
@@ -142,6 +142,18 @@ function AdminShell() {
               className={location.pathname === '/admin/settings' ? 'is-active' : ''}
             >
               Site settings
+            </Link>
+            <Link
+              to="/admin/enrollments"
+              className={location.pathname === '/admin/enrollments' ? 'is-active' : ''}
+            >
+              Enrollments
+            </Link>
+            <Link
+              to="/admin/applications"
+              className={location.pathname === '/admin/applications' ? 'is-active' : ''}
+            >
+              Battle applications
             </Link>
             <Link
               to="/admin/media"

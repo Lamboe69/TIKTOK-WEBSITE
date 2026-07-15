@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { resolveContentMedia } from './resolveMedia'
 
 const ContentContext = createContext(null)
 const TOKEN_KEY = 'km-admin-token'
@@ -63,7 +64,12 @@ export async function uploadImage(file) {
     const err = await res.json().catch(() => ({}))
     throw new Error(err.error || 'Upload failed')
   }
-  return res.json()
+  const data = await res.json()
+  return {
+    path: data.path || data.url,
+    url: data.url || data.path,
+    storage: data.storage || 'local',
+  }
 }
 
 function authHeaders() {
@@ -147,7 +153,7 @@ export function ContentProvider({ children }) {
     setError(null)
     try {
       const data = await fetchContent()
-      setContent(data)
+      setContent(resolveContentMedia(data))
     } catch (e) {
       // Public site can keep fallbacks; admin UI shows the error.
       setError(e.message)
@@ -190,6 +196,49 @@ export function useContent() {
   const ctx = useContext(ContentContext)
   if (!ctx) throw new Error('useContent must be used within ContentProvider')
   return ctx
+}
+
+/**
+ * Site-wide brand & contact from CMS settings (Admin → Site settings).
+ * Prefer this over page.heroBrand or hardcoded "KM DYNASTY".
+ */
+export function useSiteSettings() {
+  const { settings, loading } = useContent()
+  return useMemo(() => {
+    const siteName = String(settings.siteName || '').trim()
+    const tagline = String(settings.tagline || '').trim()
+    const ctaLabel = String(settings.ctaLabel || '').trim()
+    const email = String(settings.email || '').trim()
+    const phoneUS = String(settings.phoneUS || '').trim()
+    const phoneUG = String(settings.phoneUG || '').trim()
+    const location = String(settings.location || '').trim()
+    const tiktokHandle = String(settings.tiktokHandle || '').trim()
+    const tiktokUrl = String(settings.tiktokUrl || '').trim()
+    const paypalEmail = String(settings.paypalEmail || '').trim()
+
+    return {
+      loading,
+      /** Brand name — empty only while first load has not arrived yet */
+      siteName,
+      tagline,
+      ctaLabel: ctaLabel || 'Join My Box Battle',
+      email,
+      phoneUS,
+      phoneUG,
+      location,
+      tiktokHandle: tiktokHandle || '@kingmakernevergivesup',
+      tiktokUrl: tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup',
+      paypalEmail,
+      copyright: String(settings.copyright || '').trim(),
+      disclaimer: String(settings.disclaimer || '').trim(),
+      instagramUrl: String(settings.instagramUrl || '').trim(),
+      youtubeUrl: String(settings.youtubeUrl || '').trim(),
+      whatsappUrl: String(settings.whatsappUrl || '').trim(),
+      facebookUrl: String(settings.facebookUrl || '').trim(),
+      twitchUrl: String(settings.twitchUrl || '').trim(),
+      raw: settings,
+    }
+  }, [settings, loading])
 }
 
 /** Safe hook — returns empty when outside provider (shouldn't happen) */

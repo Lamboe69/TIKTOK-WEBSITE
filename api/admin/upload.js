@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import { requireAuth, sendJson, readBody, readContent, writeContent } from '../_lib/cms.js'
+import { spacesConfigured, uploadBufferToSpaces } from '../_lib/spaces.js'
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -30,20 +31,34 @@ export default async function handler(req, res) {
       return sendJson(res, 400, { error: 'Invalid data URL' })
     }
 
+    const mime = match[1]
     const extFromName = path.extname(filename).toLowerCase()
     const safeBase = path
       .basename(filename, extFromName)
       .replace(/[^a-zA-Z0-9_-]/g, '-')
       .slice(0, 60)
-    const mimeExt = match[1].split('/')[1].replace('jpeg', 'jpg')
+    const mimeExt = mime.split('/')[1].replace('jpeg', 'jpg')
     const ext = extFromName || `.${mimeExt}`
     const finalName = `${Date.now()}-${safeBase || 'upload'}${ext}`
-    const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
-    fs.mkdirSync(uploadsDir, { recursive: true })
-    const filePath = path.join(uploadsDir, finalName)
-    fs.writeFileSync(filePath, Buffer.from(match[2], 'base64'))
+    const buffer = Buffer.from(match[2], 'base64')
 
-    const publicPath = `/uploads/${finalName}`
+    let publicPath
+    let storage = 'local'
+
+    if (spacesConfigured()) {
+      publicPath = await uploadBufferToSpaces({
+        key: finalName,
+        body: buffer,
+        contentType: mime,
+      })
+      storage = 'spaces'
+    } else {
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
+      fs.mkdirSync(uploadsDir, { recursive: true })
+      fs.writeFileSync(path.join(uploadsDir, finalName), buffer)
+      publicPath = `/uploads/${finalName}`
+    }
+
     const content = readContent()
     const lib = Array.isArray(content.collections.mediaLibrary)
       ? content.collections.mediaLibrary
@@ -53,7 +68,7 @@ export default async function handler(req, res) {
       writeContent(content)
     }
 
-    return sendJson(res, 200, { path: publicPath })
+    return sendJson(res, 200, { path: publicPath, url: publicPath, storage })
   } catch (e) {
     return sendJson(res, 500, { error: e.message || 'Upload failed' })
   }

@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
 import fallbackGifters from '../../data/topGifters'
 import fallbackFans from '../../data/topFans'
 import { useContent } from '../../cms/ContentContext'
+import { normalizePeoplePhotos } from '../../cms/normalize'
+import { mediaUrl } from '../../utils/mediaUrl'
 
 const tabs = [
   { id: 'gifters', label: 'Top Gifters', accent: '#FF6B1A' },
@@ -13,18 +15,27 @@ const tabs = [
 export default function CommunityRecognition() {
   const { collections, settings, getPage } = useContent()
   const homePage = getPage('home')
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const paypalEmail = settings.paypalEmail || ''
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
-  const topGifters = collections.topGifters?.length ? collections.topGifters : fallbackGifters
-  const topFans = collections.topFans?.length ? collections.topFans : fallbackFans
+  const topGifters = useMemo(() => {
+    const fromCms = normalizePeoplePhotos(collections.topGifters || [])
+    return fromCms.length ? fromCms : normalizePeoplePhotos(fallbackGifters)
+  }, [collections.topGifters])
+  const topFans = useMemo(() => {
+    const fromCms = normalizePeoplePhotos(collections.topFans || [])
+    return fromCms.length ? fromCms : normalizePeoplePhotos(fallbackFans)
+  }, [collections.topFans])
   const [tab, setTab] = useState('gifters')
   const list = (tab === 'gifters' ? topGifters : topFans).slice(0, 3)
   const recognitionTitle = homePage.recognitionTitle || 'Honor the'
   const recognitionKicker = homePage.recognitionKicker || 'Kingdom Family'
   const recognitionMissionTitle = homePage.recognitionMissionTitle || 'Support the mission'
   const recognitionMissionBody = homePage.recognitionMissionBody || 'Expand the Dynasty. Lift creators. Fund what matters.'
-  const recognitionMissionImage = homePage.recognitionMissionImage || '/testimonials/grace.jpg'
+  const recognitionMissionImage = mediaUrl(
+    homePage.recognitionMissionImage,
+    '/testimonials/grace.jpg',
+  )
   const accent = tabs.find((t) => t.id === tab)?.accent || '#FF6B1A'
 
   return (

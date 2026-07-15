@@ -31,7 +31,7 @@ function getSections(siteName) {
 
 export default function Terms() {
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const sections = getSections(siteName)
   return (
     <main>

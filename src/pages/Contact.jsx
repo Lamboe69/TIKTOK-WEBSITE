@@ -39,7 +39,7 @@ const fallbackLines = [
 
 export default function Contact() {
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('contact')
   const formHeading = page.formHeading || 'Write to us'
   const formSubtitle = page.formSubtitle || 'Two steps — pick a topic, then fill in your details. We reply within 1–2 business days.'
@@ -136,7 +136,7 @@ export default function Contact() {
 
         <div className="contact-hero__stage">
           <Motion delay={50} className="contact-hero__top">
-            <p className="contact-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="contact-hero__brand">{siteName}</p>
           </Motion>
 
           <div className="contact-hero__cut-spacer" aria-hidden />

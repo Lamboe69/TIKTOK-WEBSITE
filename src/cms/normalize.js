@@ -1,4 +1,5 @@
 /** Normalize CMS collection rows for public components */
+import { mediaUrl } from '../utils/mediaUrl'
 
 export function linesToArray(text) {
   if (Array.isArray(text)) return text
@@ -11,7 +12,7 @@ export function linesToArray(text) {
 
 export function normalizeHeroSlides(items = []) {
   return items.map((p) => ({
-    src: p.src,
+    src: mediaUrl(p.src),
     alt: p.alt,
     caption: p.caption,
     line: p.line,
@@ -32,6 +33,8 @@ export function normalizeAdPackages(items = []) {
 export function normalizeMasterclassTiers(items = []) {
   return items.map((t) => ({
     ...t,
+    img: mediaUrl(t.img),
+    amount: t.amount != null && t.amount !== '' ? Number(t.amount) : t.amount,
     features: linesToArray(t.featuresText || t.features),
   }))
 }
@@ -39,7 +42,29 @@ export function normalizeMasterclassTiers(items = []) {
 export function normalizeAgencyRegions(items = []) {
   return items.map((r) => ({
     ...r,
+    img: mediaUrl(r.img),
     benefits: linesToArray(r.benefitsText || r.benefits),
+  }))
+}
+
+export function normalizeGalleryItems(items = []) {
+  return items.map((p) => ({
+    ...p,
+    src: mediaUrl(p.src),
+  }))
+}
+
+export function normalizeBlogPosts(items = []) {
+  return items.map((p) => ({
+    ...p,
+    cover: mediaUrl(p.cover),
+  }))
+}
+
+export function normalizePeoplePhotos(items = []) {
+  return items.map((p) => ({
+    ...p,
+    photo: mediaUrl(p.photo),
   }))
 }
 

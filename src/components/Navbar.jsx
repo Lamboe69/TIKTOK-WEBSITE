@@ -37,7 +37,7 @@ export default function Navbar() {
   const moreRef = useRef(null)
   const { settings, collections } = useContent()
 
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const tagline = settings.tagline || 'Godsent Box Battles'
   const paypalEmail = settings.paypalEmail || ''
   const navLinks = (collections.navLinks?.length ? collections.navLinks : defaultNavLinks)

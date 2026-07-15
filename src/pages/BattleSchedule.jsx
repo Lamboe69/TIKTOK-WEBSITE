@@ -128,10 +128,10 @@ export default function BattleSchedule() {
   const [activeType, setActiveType] = useState('All')
   const [activeId, setActiveId] = useState(null)
   const [paused, setPaused] = useState(false)
-  const { openOfficial, openSpecial } = useSignUp()
+  const { openOfficial, openSpecial, openBattle } = useSignUp()
   const { collections, getPage, settings } = useContent()
   const page = getPage('schedule')
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const schedule = collections.schedule?.length ? collections.schedule : fallbackSchedule
   const filters = collections.battleTypes?.length ? collections.battleTypes : fallbackTypes
 
@@ -201,7 +201,7 @@ export default function BattleSchedule() {
   const countdownParts = parseCountdownParts(countdown)
   const nextDay = next ? formatDay(next.date) : null
 
-  const handleEnter = () => (isOfficial ? openOfficial() : openSpecial())
+  const handleEnter = () => (battle ? openBattle(battle) : openOfficial())
 
   const nextZones = next ? convertTimezones(next.date, next.time) : []
   const ctZone = nextZones.find((z) => z.label === 'CT') || nextZones[0]

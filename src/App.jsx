@@ -18,6 +18,7 @@ import Contact from './pages/Contact'
 import Advertise from './pages/Advertise'
 import Agency from './pages/Agency'
 import Masterclass from './pages/Masterclass'
+import MasterclassEnrolled from './pages/MasterclassEnrolled'
 import Blog from './pages/Blog'
 import Gallery from './pages/Gallery'
 import Outreach from './pages/Outreach'
@@ -30,6 +31,8 @@ import AdminDashboard from './admin/pages/Dashboard'
 import PageEditor from './admin/pages/PageEditor'
 import CollectionList, { CollectionEdit } from './admin/pages/CollectionEditor'
 import SettingsEditor, { MediaLibrary } from './admin/pages/SettingsEditor'
+import EnrollmentsAdmin from './admin/pages/EnrollmentsAdmin'
+import BattleApplicationsAdmin from './admin/pages/BattleApplicationsAdmin'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -74,6 +77,8 @@ function AppRoutes() {
           <Route index element={<AdminDashboard />} />
           <Route path="settings" element={<SettingsEditor />} />
           <Route path="media" element={<MediaLibrary />} />
+          <Route path="enrollments" element={<EnrollmentsAdmin />} />
+          <Route path="applications" element={<BattleApplicationsAdmin />} />
           <Route path="pages/:key" element={<PageEditor />} />
           <Route path="collections/:key" element={<CollectionList />} />
           <Route path="collections/:key/:id" element={<CollectionEdit />} />
@@ -96,6 +101,7 @@ function AppRoutes() {
         <Route path="/advertise" element={<Advertise />} />
         <Route path="/agency" element={<Agency />} />
         <Route path="/masterclass" element={<Masterclass />} />
+        <Route path="/masterclass/enrolled" element={<MasterclassEnrolled />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/outreach" element={<Outreach />} />

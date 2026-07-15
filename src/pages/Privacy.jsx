@@ -27,7 +27,7 @@ function getSections(siteName) {
 
 export default function Privacy() {
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const sections = getSections(siteName)
   return (
     <main>

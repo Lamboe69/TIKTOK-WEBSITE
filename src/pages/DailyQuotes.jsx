@@ -37,7 +37,7 @@ function generateQuoteImage(quote, day, siteName) {
   ctx.fillText(line.trim(), 540, y)
   ctx.fillStyle = 'rgba(255,255,255,0.4)'
   ctx.font = 'bold 28px sans-serif'
-  ctx.fillText(siteName || 'KM DYNASTY', 540, 1700)
+  ctx.fillText(siteName || '', 540, 1700)
   return canvas
 }
 
@@ -46,7 +46,7 @@ function shareQuote(quote, day, siteName) {
   canvas.toBlob(async (blob) => {
     const file = new File([blob], `km-quote-${day.toLowerCase()}.png`, { type: 'image/png' })
     if (navigator.share && navigator.canShare?.({ files: [file] })) {
-      try { await navigator.share({ files: [file], title: `${siteName || 'KM DYNASTY'} — ${day}'s Quote` }) } catch {}
+      try { await navigator.share({ files: [file], title: `${siteName || ''} — ${day}'s Quote` }) } catch {}
     } else {
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
@@ -125,7 +125,7 @@ function QuoteCard({ quote, isToday, index, siteName }) {
 export default function DailyQuotes() {
   const { collections, getPage, settings } = useContent()
   const page = getPage('quotes')
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
 
   const reminderKicker = page.reminderKicker || 'Quick Reminder'
   const reminderBody = page.reminderBody || 'Scavengers, Country, Most Beautiful — fill the form. Official Godsent — bring your taps and prayers.'
@@ -150,7 +150,7 @@ export default function DailyQuotes() {
         </div>
         <div className="quotes-hero__core">
           <Motion delay={60}>
-            <p className="quotes-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="quotes-hero__brand">{siteName}</p>
             <p className="quotes-hero__day">{today.day}</p>
             <blockquote className="quotes-hero__quote">“{today.quote}”</blockquote>
             <h1 className="quotes-hero__title">{page.heroTitle || 'Daily Quotes'}</h1>

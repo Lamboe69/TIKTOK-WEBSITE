@@ -82,7 +82,7 @@ export default function Advertise() {
   const [active, setActive] = useState(0)
   const { stats } = useTikTokStats()
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('advertise')
   const packages = collections.adPackages?.length
     ? normalizeAdPackages(collections.adPackages)
@@ -146,7 +146,7 @@ export default function Advertise() {
 
         <div className="prime-hero__marquee">
           <Motion delay={50} className="prime-hero__lockup">
-            <p className="prime-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="prime-hero__brand">{siteName}</p>
             <h1 className="prime-hero__title">{page.heroTitle || 'Advertise'}</h1>
             <p className="prime-hero__lede">
               {page.heroLede ||

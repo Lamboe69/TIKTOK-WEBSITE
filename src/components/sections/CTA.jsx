@@ -9,10 +9,11 @@ export default function CTA() {
   const [parallaxRef, parallaxStyle] = useParallax({ factor: 0.12 })
   const { getPage, settings } = useContent()
   const homePage = getPage('home')
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const ctaTitle = homePage.ctaTitle || 'Ready to join the Dynasty?'
   const ctaSubtitle = homePage.ctaSubtitle || "Creator, supporter, or curious newcomer — there's a place for you here."
   const ctaFollowLabel = homePage.ctaFollowLabel || 'Follow King Maker'
+  const tiktokUrl = settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'
 
   return (
     <section className="relative min-h-[480px] overflow-hidden flex items-center">
@@ -60,7 +61,7 @@ export default function CTA() {
               <span className="w-4 h-4 block">{Icons.arrowRight}</span>
             </button>
             <a
-              href="https://www.tiktok.com/@kingmakernevergivesup"
+              href={tiktokUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="sec-cta-ghost"

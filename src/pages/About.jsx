@@ -63,7 +63,7 @@ const cast = [
 
 export default function About() {
   const { getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('about')
   const statsRaw = page.stats || '50K+ | Followers\n100+ | Battles Hosted\n50+ | Winners Crowned\n6 | Global Regions'
   const stats = statsRaw.split('\n').filter(Boolean).map(line => {
@@ -95,7 +95,7 @@ export default function About() {
         <div className="origin-hero__footing">
           <Motion delay={80} className="origin-hero__footing-inner">
             <div className="origin-hero__footing-copy">
-              <p className="origin-hero__sr-brand">{page.heroBrand || siteName}</p>
+              <p className="origin-hero__sr-brand">{siteName}</p>
               <h1 className="origin-hero__about">{page.heroTitle || 'About'}</h1>
               <p className="origin-hero__lede">
                 {page.heroLede ||
@@ -219,12 +219,12 @@ export default function About() {
           <h2>{endHeading}</h2>
           <div className="origin-end__actions">
             <a
-              href="https://www.tiktok.com/@kingmakernevergivesup"
+              href={settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'}
               target="_blank"
               rel="noopener noreferrer"
               className="origin-cta"
             >
-              Follow King Maker
+              Follow {settings.tiktokHandle?.replace(/^@/, '') || 'King Maker'}
             </a>
             <Link to="/how-to-join" className="origin-link" style={{ color: 'rgba(255,247,240,0.75)' }}>
               How to Join

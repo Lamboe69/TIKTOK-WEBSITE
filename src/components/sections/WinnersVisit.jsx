@@ -10,7 +10,7 @@ const defaultSteps = [
 
 export default function WinnersVisit() {
   const { getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const homePage = getPage('home')
   const sectionTitle = homePage.winnersTitle || 'Win. Claim your spotlight'
   const sectionSubtitle = homePage.winnersSubtitle || `Official Godsent winners earn a scheduled livestream visit with ${siteName}. Champions go first.`

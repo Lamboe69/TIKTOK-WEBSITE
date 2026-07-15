@@ -2,23 +2,27 @@ import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
 import { useContent } from '../../cms/ContentContext'
+import { normalizeAdPackages } from '../../cms/normalize'
 
-const previewCards = [
+const fallbackCards = [
   {
-    label: 'Livestream Shout-Out',
-    description: 'Brand mention + on-screen tag during King Maker\'s live box battle.',
-    color: 'bg-dynasty-purple',
+    name: 'Livestream Shout-Out',
+    features: ["Brand mention + on-screen tag during the live box battle."],
   },
   {
-    label: 'Homepage Banner',
-    description: 'Your brand featured on this site — seen by every visitor.',
-    color: 'bg-dynasty-orange',
+    name: 'Homepage Banner',
+    features: ['Your brand featured on this site — seen by every visitor.'],
   },
 ]
 
 export default function AdvertiseSection() {
-  const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const { settings, collections } = useContent()
+  const siteName = settings.siteName || ''
+  const packages = (() => {
+    const fromCms = normalizeAdPackages(collections.adPackages || [])
+    return fromCms.length ? fromCms.slice(0, 2) : fallbackCards
+  })()
+
   return (
     <section className="py-20 sm:py-28 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -37,17 +41,23 @@ export default function AdvertiseSection() {
         </Motion>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10 max-w-2xl mx-auto">
-          {previewCards.map(({ label, description, color }, i) => (
-            <Motion key={i} variant="fade-up" delay={i * 120}>
+          {packages.map((pkg, i) => (
+            <Motion key={pkg.name || i} variant="fade-up" delay={i * 120}>
               <div className="bg-dynasty-cream/50 rounded-2xl p-6 border border-gray-100 card-hover">
-                <div className={`w-10 h-10 rounded-lg ${color} text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                <div
+                  className={`w-10 h-10 rounded-lg ${i % 2 === 0 ? 'bg-dynasty-purple' : 'bg-dynasty-orange'} text-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}
+                >
                   {Icons.star}
                 </div>
                 <p className="text-xs font-bold text-dynasty-orange uppercase tracking-wider mb-1">
                   Sponsored Placement
                 </p>
-                <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-1">{label}</h3>
-                <p className="text-sm text-gray-500">{description}</p>
+                <h3 className="font-display font-bold text-base text-dynasty-charcoal mb-1">
+                  {pkg.name}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {(pkg.features && pkg.features[0]) || pkg.description || ''}
+                </p>
               </div>
             </Motion>
           ))}

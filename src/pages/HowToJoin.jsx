@@ -19,7 +19,7 @@ const fallbackSteps = [
   },
   {
     title: 'Always 5,000+ Taps',
-    desc: 'Hold a minimum of 5,000 taps on KM DYNASTY content before you claim a slot.',
+    desc: 'Hold a minimum of 5,000 taps on {SITE} content before you claim a slot.',
     img: '/photos/king-maker-live.jpg',
   },
   {
@@ -117,7 +117,7 @@ export default function HowToJoin() {
   const { openOfficial, openSpecial } = useSignUp()
   const { collections, getPage, settings } = useContent()
   const page = getPage('howToJoin')
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const steps =
     collections.joinSteps?.length > 0
       ? collections.joinSteps.map((s) => ({
@@ -126,7 +126,7 @@ export default function HowToJoin() {
           img: s.img,
           prayer: s.prayer,
         }))
-      : fallbackSteps.map(s => ({ ...s, desc: s.desc.replace(/KM DYNASTY/g, siteName) }))
+      : fallbackSteps.map(s => ({ ...s, desc: s.desc.replace(/\{SITE\}/g, siteName || 'the Dynasty') }))
   const [active, setActive] = useState(0)
   const [done, setDone] = useState({})
   const [paused, setPaused] = useState(false)
@@ -176,7 +176,7 @@ export default function HowToJoin() {
 
         <div className="join-hero__portal">
           <Motion delay={50} className="join-hero__copy">
-            <p className="join-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="join-hero__brand">{siteName}</p>
             <h1 className="join-hero__title">
               <span className="join-hero__how">How to</span>
               <span className="join-hero__join">{page.heroTitle?.replace(/^How to\s*/i, '') || 'Join'}</span>
@@ -313,7 +313,7 @@ export default function HowToJoin() {
         <div className="join-pad join-ascent__cta">
           <Motion delay={120} className="flex flex-wrap items-center gap-4">
             <a
-              href="https://www.tiktok.com/@kingmakernevergivesup"
+              href={settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'}
               target="_blank"
               rel="noopener noreferrer"
               className="sec-cta"

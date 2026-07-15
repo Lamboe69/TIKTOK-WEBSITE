@@ -19,7 +19,7 @@ function Counter({ value, numericEnd }) {
 export default function StatBar() {
   const { stats } = useTikTokStats()
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
 
   const items = [
     { value: stats.followersFormatted, numericEnd: 50, label: `${siteName} Family` },

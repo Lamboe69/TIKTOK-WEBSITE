@@ -47,9 +47,49 @@ From the repo root, run the Vite app separately (`npm run dev`). Vite proxies ad
 | POST | `/api/media/upload` | Bearer | multipart file |
 | POST | `/api/media/upload-json` | Bearer | base64 JSON |
 | DELETE | `/api/media` | Bearer | `{ path }` remove from library |
+| GET | `/api/paypal/config` | — | Public PayPal client id + mode |
+| POST | `/api/paypal/reserve` | — | Reserve seat without PayPal (pending) |
+| POST | `/api/paypal/create-order` | — | Start masterclass checkout |
+| POST | `/api/paypal/capture-order` | — | Capture after buyer approval |
+| POST | `/api/battle-applications` | — | Submit box battle signup |
+| GET | `/api/admin/battle-applications` | Bearer | List applications (`?status=&type=`) |
+| PATCH | `/api/admin/battle-applications/:id` | Bearer | Update notes / status |
+| GET | `/api/admin/enrollments` | Bearer | List enrollments (`?status=`) |
+| GET | `/api/admin/enrollments/:id` | Bearer | One enrollment |
+| PATCH | `/api/admin/enrollments/:id` | Bearer | Update notes / status |
+
+## PayPal masterclass checkout
+
+1. Create a REST app in the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications).
+2. Put `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, and `PAYPAL_MODE` (`sandbox` or `live`) in `server/.env`.
+3. Restart the API. On `/masterclass`, tier CTAs open a checkout modal and charge via PayPal.
+4. Paid bookings appear under **Admin → Enrollments**.
+
+Each masterclass tier should have an `amount` field (USD number) in the CMS; display `price` can stay as `"$500"`.
+
+## DigitalOcean Spaces (media uploads)
+
+When Spaces credentials are set, admin photo uploads go to the bucket and the CMS stores the **public URL**. Without them, files go to `public/uploads` as `/uploads/…`.
+
+```bash
+DO_SPACES_KEY=
+DO_SPACES_SECRET=
+DO_SPACES_BUCKET=
+DO_SPACES_ENDPOINT=nyc3.digitaloceanspaces.com   # host only, no https://
+DO_SPACES_REGION=nyc3
+DO_SPACES_CDN_URL=https://your-bucket.nyc3.cdn.digitaloceanspaces.com  # optional
+DO_SPACES_PREFIX=uploads
+```
+
+1. Create a Space and an API key with write access.
+2. Set the bucket to **public** files (or use a CDN that serves them).
+3. Restart the API. **Admin → Media** should say uploads go to Spaces.
+4. Image fields accept either a gallery path (`/photos/…`) or a full Spaces/CDN URL.
+
+`GET /api/media/config` reports `{ storage: "spaces" | "local" }`.
 
 ## Database
 
 Database name: **dynasty**
 
-Tables: `admins`, `site_settings`, `pages`, `collection_blobs`, `collection_items`, `media`, `content_meta`
+Tables: `admins`, `site_settings`, `pages`, `collection_blobs`, `collection_items`, `media`, `content_meta`, `masterclass_enrollments`

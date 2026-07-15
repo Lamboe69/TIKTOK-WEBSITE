@@ -5,7 +5,7 @@ import { useContent } from '../../cms/ContentContext'
 
 export default function Champions() {
   const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   return (
     <section className="relative min-h-[70vh] flex items-end overflow-hidden home-band-sep">
       <img

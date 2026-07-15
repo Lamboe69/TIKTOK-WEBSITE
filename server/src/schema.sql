@@ -55,6 +55,51 @@ CREATE TABLE IF NOT EXISTS content_meta (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS masterclass_enrollments (
+  id                BIGSERIAL PRIMARY KEY,
+  tier_id           TEXT NOT NULL,
+  tier_name         TEXT NOT NULL,
+  amount_cents      INT NOT NULL,
+  currency          TEXT NOT NULL DEFAULT 'USD',
+  buyer_name        TEXT NOT NULL,
+  buyer_email       TEXT NOT NULL,
+  buyer_phone       TEXT,
+  status            TEXT NOT NULL DEFAULT 'pending',
+  paypal_order_id   TEXT,
+  paypal_capture_id TEXT,
+  notes             TEXT,
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  paid_at           TIMESTAMPTZ
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_enrollments_paypal_order
+  ON masterclass_enrollments (paypal_order_id)
+  WHERE paypal_order_id IS NOT NULL;
+
+CREATE INDEX IF NOT EXISTS idx_enrollments_status_created
+  ON masterclass_enrollments (status, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS battle_applications (
+  id              BIGSERIAL PRIMARY KEY,
+  entry_type      TEXT NOT NULL DEFAULT 'official',
+  battle_label    TEXT NOT NULL,
+  full_name       TEXT NOT NULL DEFAULT '',
+  tiktok_handle   TEXT NOT NULL,
+  followers       INT,
+  available_date  DATE,
+  status          TEXT NOT NULL DEFAULT 'new',
+  notes           TEXT,
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_battle_apps_status_created
+  ON battle_applications (status, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_battle_apps_entry_type
+  ON battle_applications (entry_type, created_at DESC);
+
 INSERT INTO site_settings (id, data) VALUES (1, '{}'::jsonb)
   ON CONFLICT (id) DO NOTHING;
 

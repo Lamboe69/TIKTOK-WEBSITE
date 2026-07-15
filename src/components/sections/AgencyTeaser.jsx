@@ -1,15 +1,21 @@
 import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
-import regions from '../../data/agencyRegions'
+import fallbackRegions from '../../data/agencyRegions'
 import { useContent } from '../../cms/ContentContext'
+import { normalizeAgencyRegions } from '../../cms/normalize'
 
 export default function AgencyTeaser() {
-  const { settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const { settings, collections, getPage } = useContent()
+  const siteName = settings.siteName || ''
+  const home = getPage('home')
+  const regions = (() => {
+    const fromCms = normalizeAgencyRegions(collections.agencyRegions || [])
+    return fromCms.length ? fromCms : normalizeAgencyRegions(fallbackRegions)
+  })()
+
   return (
     <section className="relative py-16 sm:py-24 overflow-hidden" style={{ background: '#120620' }}>
-      {/* HUD grid */}
       <div className="absolute inset-0 pointer-events-none" style={{
         backgroundImage: 'linear-gradient(rgba(79,243,224,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(79,243,224,0.03) 1px, transparent 1px)',
         backgroundSize: '48px 48px',
@@ -28,7 +34,8 @@ export default function AgencyTeaser() {
             Join the <span className="text-gradient">Agency</span>
           </h2>
           <p className="text-white/50 text-sm max-w-md mx-auto">
-            Represent {siteName} in your region. Get priority battle access, mentorship, and direct support from King Maker.
+            {home.agencyTeaserBody ||
+              `Represent ${siteName || 'the Dynasty'} in your region. Get priority battle access, mentorship, and direct support.`}
           </p>
         </Motion>
 
@@ -40,11 +47,11 @@ export default function AgencyTeaser() {
                   <span className="text-2xl">{region.flag}</span>
                   <div>
                     <p className="font-display font-bold text-ivory text-sm">{region.name}</p>
-                    <p className="text-ember text-[11px] font-mono">{region.tagline.split('—')[0].trim()}</p>
+                    <p className="text-ember text-[11px] font-mono">{(region.tagline || '').split('—')[0].trim()}</p>
                   </div>
                 </div>
                 <ul className="space-y-1.5">
-                  {region.benefits.map(b => (
+                  {(region.benefits || []).slice(0, 4).map((b) => (
                     <li key={b} className="flex items-center gap-2 text-xs text-white/50">
                       <span className="w-1 h-1 rounded-full bg-tech-cyan/40 flex-shrink-0" />
                       {b}

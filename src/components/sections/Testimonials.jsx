@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Motion from '../Motion'
 import fallbackTestimonials from '../../data/testimonials'
 import { useContent } from '../../cms/ContentContext'
+import { normalizePeoplePhotos } from '../../cms/normalize'
 
 const ROTATE_MS = 8000
 
@@ -10,12 +11,11 @@ export default function Testimonials() {
   const homePage = getPage('home')
   const testimonialsTitle = homePage.testimonialsTitle || 'Voices from the family'
   const testimonialsKicker = homePage.testimonialsKicker || 'Testimony'
-  const voices =
-    collections.testimonials?.length > 0
-      ? collections.testimonials
-      : fallbackTestimonials && fallbackTestimonials.length
-        ? fallbackTestimonials
-        : []
+  const voices = useMemo(() => {
+    const fromCms = normalizePeoplePhotos(collections.testimonials || [])
+    if (fromCms.length) return fromCms
+    return normalizePeoplePhotos(fallbackTestimonials || [])
+  }, [collections.testimonials])
   const [active, setActive] = useState(0)
   const [paused, setPaused] = useState(false)
 

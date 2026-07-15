@@ -56,7 +56,7 @@ export default function Footer() {
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
   const phoneUS = settings.phoneUS || '+1 (469) 664-1195'
   const phoneUG = settings.phoneUG || '+256-200-947-070'
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const tagline = settings.tagline || "The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise."
   const location = settings.location || 'Dallas, Texas, USA'
   const copyright = settings.copyright || `${siteName}. All rights reserved.`

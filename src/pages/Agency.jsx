@@ -24,7 +24,7 @@ const meridians = [
 
 export default function Agency() {
   const { collections, getPage, settings } = useContent()
-  const siteName = settings.siteName || 'KM DYNASTY'
+  const siteName = settings.siteName || ''
   const page = getPage('agency')
   const atlasHeading = page.atlasHeading || 'The Atlas'
   const atlasDescription = page.atlasDescription || 'Select your embassy. Walk the corridor. Apply for citizenship under the Dynasty banner.'
@@ -33,7 +33,7 @@ export default function Agency() {
   const oathImage = page.oathImage || '/battles-photos/daily-godsent.jpg'
   const regions = useMemo(() => {
     const fromCms = normalizeAgencyRegions(collections.agencyRegions || [])
-    return fromCms.length ? fromCms : fallbackRegions
+    return fromCms.length ? fromCms : normalizeAgencyRegions(fallbackRegions)
   }, [collections.agencyRegions])
   const [active, setActive] = useState(0)
   const safeActive = Math.min(active, Math.max(0, regions.length - 1))
@@ -71,7 +71,7 @@ export default function Agency() {
 
         <div className="embassy-hero__core">
           <Motion delay={60} className="embassy-hero__lockup">
-            <p className="embassy-hero__brand">{page.heroBrand || siteName}</p>
+            <p className="embassy-hero__brand">{siteName}</p>
             <h1 className="embassy-hero__title">{page.heroTitle || 'Agency'}</h1>
             <p className="embassy-hero__lede">
               {page.heroLede ||
