@@ -155,11 +155,6 @@ export function ContentProvider({ children }) {
       setContent(resolveContentMedia(data))
       setContentSource('live')
     } catch (e) {
-      const target = apiUrl('/api/content')
-      console.warn(
-        `[KM Dynasty] CMS API unavailable (${target}). Using bundled site copy.`,
-        e.message,
-      )
       setError(e.message)
       setContentSource('fallback')
       setContent({

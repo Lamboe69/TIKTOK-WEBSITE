@@ -35,21 +35,10 @@ export function apiUrl(path) {
   return base ? `${base}${p}` : p
 }
 
-// ─── DEBUG: API URL — check browser console after deploy, remove when done ───
-console.log('[KM Dynasty] VITE_API_URL (build-time):', import.meta.env.VITE_API_URL)
-console.log('[KM Dynasty] km-config apiUrl (runtime):', globalThis.__KM_CONFIG__?.apiUrl)
-console.log('[KM Dynasty] resolved API base (used for fetch):', getApiBase())
-console.log('[KM Dynasty] example health URL:', apiUrl('/api/health'))
-console.log('[KM Dynasty] example login URL:', apiUrl('/api/admin/login'))
-// ─── end DEBUG ───
-
 /** Fetch with clearer errors when the server returns HTML instead of JSON. */
 export async function apiFetch(path, options) {
   const url = apiUrl(path)
-  // DEBUG: logs on every API call (login, content, etc.)
-  console.log('[KM Dynasty] apiFetch →', options?.method || 'GET', url)
   const res = await fetch(url, options)
-  console.log('[KM Dynasty] apiFetch ←', res.status, url)
   return res
 }
 

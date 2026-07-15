@@ -3,7 +3,7 @@ import { Link, Navigate, Outlet, useLocation, useNavigate } from 'react-router-d
 import { getAdminToken, setAdminToken, useContent } from '../cms/ContentContext'
 import { DEFAULT_SETTINGS } from '../cms/defaults'
 import { COLLECTIONS, PAGE_SCHEMA } from '../cms/schema'
-import { apiFetch, apiUrl, getApiBase, pingApiHealth, readJsonResponse } from '../utils/api'
+import { apiFetch, readJsonResponse } from '../utils/api'
 import './admin.css'
 
 function useAuthGate() {
@@ -27,17 +27,12 @@ function useAuthGate() {
 
 export function AdminLogin() {
   const nav = useNavigate()
-  const { settings, loading, contentSource, error: contentError } = useContent()
+  const { settings, loading } = useContent()
   const siteName = settings.siteName || DEFAULT_SETTINGS.siteName || ''
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const [apiStatus, setApiStatus] = useState(null)
   const auth = useAuthGate()
-
-  useEffect(() => {
-    pingApiHealth().then(setApiStatus)
-  }, [])
 
   if (!auth.loading && auth.ok) return <Navigate to="/admin" replace />
 
@@ -45,11 +40,6 @@ export function AdminLogin() {
     e.preventDefault()
     setBusy(true)
     setError('')
-    const loginUrl = apiUrl('/api/admin/login')
-    // DEBUG: sign-in — remove when deploy verified
-    console.log('[KM Dynasty] sign in — VITE_API_URL:', import.meta.env.VITE_API_URL)
-    console.log('[KM Dynasty] sign in — API base:', getApiBase())
-    console.log('[KM Dynasty] sign in — POST', loginUrl)
     try {
       const res = await apiFetch('/api/admin/login', {
         method: 'POST',
@@ -74,25 +64,6 @@ export function AdminLogin() {
         <p className="admin-login__sub">
           Admin console — manage pages, copy, images, schedule, and more.
         </p>
-        {/* DEBUG: API URLs — visible on page; remove after deploy verified */}
-        <p className="admin-login__api" style={{ fontSize: '11px', opacity: 0.85 }}>
-          VITE_API_URL: <code>{String(import.meta.env.VITE_API_URL || '(empty)')}</code>
-          <br />
-          Login URL: <code>{apiUrl('/api/admin/login')}</code>
-        </p>
-        {apiStatus ? (
-          <p
-            className={`admin-login__api ${apiStatus.ok ? 'is-ok' : 'is-bad'}`}
-            role="status"
-          >
-            {apiStatus.ok
-              ? `API connected (${apiStatus.url})`
-              : `API not reachable — ${apiStatus.error || `HTTP ${apiStatus.status}`}. Check https://api.kmdynasty.org is running and CORS allows this site.`}
-          </p>
-        ) : null}
-        {contentSource === 'fallback' && contentError ? (
-          <p className="admin-login__api is-bad">{contentError}</p>
-        ) : null}
         <label htmlFor="admin-pass">Password</label>
         <input
           id="admin-pass"
@@ -103,12 +74,6 @@ export function AdminLogin() {
           required
         />
         {error ? <p className="admin-login__err">{error}</p> : null}
-        {!error && import.meta.env.PROD && !import.meta.env.VITE_API_URL ? (
-          <p className="admin-login__hint">
-            Production CMS mode — set <code>ADMIN_PASSWORD</code> in Vercel env vars, or set{' '}
-            <code>VITE_API_URL</code> to your Express API for the full backend.
-          </p>
-        ) : null}
         <button className="admin-btn" type="submit" disabled={busy} style={{ width: '100%' }}>
           {busy ? 'Signing in…' : 'Enter dashboard'}
         </button>
