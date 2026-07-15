@@ -144,15 +144,19 @@ export function ContentProvider({ children }) {
   const [content, setContent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [contentSource, setContentSource] = useState('loading')
 
   const refresh = useCallback(async () => {
     setLoading(true)
     setError(null)
+    setContentSource('loading')
     try {
       const data = await fetchContent()
       setContent(resolveContentMedia(data))
+      setContentSource('live')
     } catch (e) {
       setError(e.message)
+      setContentSource('fallback')
       setContent({
         version: 0,
         updatedAt: null,
@@ -174,6 +178,7 @@ export function ContentProvider({ children }) {
       content,
       loading,
       error,
+      contentSource,
       refresh,
       setContent,
       settings: mergeSettings(content?.settings),
@@ -183,7 +188,7 @@ export function ContentProvider({ children }) {
       getCollection: (key) => content?.collections?.[key] || DEFAULT_COLLECTIONS[key] || [],
       apiBase: apiUrl(''),
     }),
-    [content, loading, error, refresh],
+    [content, loading, error, contentSource, refresh],
   )
 
   return <ContentContext.Provider value={value}>{children}</ContentContext.Provider>

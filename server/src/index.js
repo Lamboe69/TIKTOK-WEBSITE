@@ -27,6 +27,10 @@ dotenv.config({ path: path.join(__dirname, '../.env') })
 
 const app = express()
 const PORT = Number(process.env.PORT || 4000)
+const HOST = process.env.HOST || '0.0.0.0'
+
+// Behind nginx / reverse proxy — needed for secure cookies and client IP
+app.set('trust proxy', 1)
 
 async function ensureExtraTables() {
   await pool.query(`
@@ -124,6 +128,35 @@ app.use('/api/admin/enrollments', authRequired, enrollmentsRoutes)
 app.use('/api/admin/battle-applications', authRequired, adminBattleApplicationsRouter)
 app.use('/api/admin/contact-messages', authRequired, adminContactMessagesRouter)
 
+/** Optional: serve Vite build from Express (simplest nginx — proxy everything to this port). */
+function mountStaticSite() {
+  const enabled = process.env.SERVE_STATIC === '1' || process.env.STATIC_DIR
+  if (!enabled) return
+
+  const staticDir =
+    process.env.STATIC_DIR || path.join(__dirname, '../../dist')
+
+  app.use(
+    express.static(staticDir, {
+      index: false,
+      fallthrough: true,
+      maxAge: process.env.NODE_ENV === 'production' ? '7d' : 0,
+    }),
+  )
+
+  app.use((req, res, next) => {
+    if (req.method !== 'GET' && req.method !== 'HEAD') return next()
+    if (req.path.startsWith('/api')) return next()
+    res.sendFile(path.join(staticDir, 'index.html'), (err) => {
+      if (err) next(err)
+    })
+  })
+
+  console.log(`✓ Serving static site from ${staticDir}`)
+}
+
+mountStaticSite()
+
 app.use((err, _req, res, _next) => {
   console.error(err)
   res.status(500).json({ error: err.message || 'Server error' })
@@ -133,9 +166,9 @@ async function start() {
   await pool.query('SELECT 1')
   await ensureExtraTables()
   await ensureDefaultAdmin()
-  app.listen(PORT, () => {
-    console.log(`Dynasty API listening on http://localhost:${PORT}`)
-    console.log(`Health: http://localhost:${PORT}/api/health`)
+  app.listen(PORT, HOST, () => {
+    console.log(`Dynasty API listening on http://${HOST}:${PORT}`)
+    console.log(`Health: http://${HOST}:${PORT}/api/health`)
   })
 }
 

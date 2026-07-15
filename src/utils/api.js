@@ -1,5 +1,18 @@
-/** API base URL for production (Express backend). Empty = same-origin /api (Vercel serverless). */
+/** Runtime override from public/km-config.js (no rebuild needed on server). */
+function runtimeApiBase() {
+  try {
+    const v = globalThis.__KM_CONFIG__?.apiUrl
+    if (v != null && String(v).trim() !== '') return String(v).trim().replace(/\/+$/, '')
+  } catch {
+    /* ignore */
+  }
+  return ''
+}
+
+/** API base URL. Empty = same-origin `/api/...` (nginx proxy on same domain). */
 export function getApiBase() {
+  const runtime = runtimeApiBase()
+  if (runtime) return runtime
   const raw = import.meta.env.VITE_API_URL || ''
   return String(raw).trim().replace(/\/+$/, '')
 }
@@ -13,7 +26,8 @@ export function apiUrl(path) {
 
 /** Fetch with clearer errors when the server returns HTML instead of JSON. */
 export async function apiFetch(path, options) {
-  const res = await fetch(apiUrl(path), options)
+  const url = apiUrl(path)
+  const res = await fetch(url, options)
   return res
 }
 
@@ -24,10 +38,24 @@ export async function readJsonResponse(res) {
     return JSON.parse(text)
   } catch {
     const snippet = text.replace(/\s+/g, ' ').slice(0, 120)
+    const looksLikeNginxHtml = /nginx|<!doctype html/i.test(text)
     throw new Error(
       res.ok
         ? 'Invalid JSON response from server'
-        : `Server error (${res.status}). Check API URL and env vars. ${snippet}`,
+        : looksLikeNginxHtml && res.status === 405
+          ? 'nginx returned 405 — add location /api/ { proxy_pass http://127.0.0.1:4000; } before location /'
+          : `Server error (${res.status}). ${snippet}`,
     )
+  }
+}
+
+/** Quick connectivity check for admin / diagnostics. */
+export async function pingApiHealth() {
+  try {
+    const res = await apiFetch('/api/health')
+    const data = await readJsonResponse(res)
+    return { ok: res.ok && data.ok !== false, status: res.status, data, url: apiUrl('/api/health') }
+  } catch (e) {
+    return { ok: false, status: 0, error: e.message, url: apiUrl('/api/health') }
   }
 }

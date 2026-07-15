@@ -96,6 +96,26 @@ body.admin-lock {
   color: rgba(196, 160, 255, 0.9);
 }
 
+.admin-login__api {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.admin-login__api.is-ok {
+  color: #8fd4a8;
+  background: rgba(79, 243, 224, 0.08);
+  border: 1px solid rgba(79, 243, 224, 0.2);
+}
+
+.admin-login__api.is-bad {
+  color: #ffb4b4;
+  background: rgba(255, 107, 26, 0.08);
+  border: 1px solid rgba(255, 107, 26, 0.22);
+}
+
 .admin-shell {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);

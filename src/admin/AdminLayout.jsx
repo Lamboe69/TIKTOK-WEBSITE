@@ -3,7 +3,7 @@ import { Link, Navigate, Outlet, useLocation, useNavigate } from 'react-router-d
 import { getAdminToken, setAdminToken, useContent } from '../cms/ContentContext'
 import { DEFAULT_SETTINGS } from '../cms/defaults'
 import { COLLECTIONS, PAGE_SCHEMA } from '../cms/schema'
-import { apiFetch, readJsonResponse } from '../utils/api'
+import { apiFetch, pingApiHealth, readJsonResponse } from '../utils/api'
 import './admin.css'
 
 function useAuthGate() {
@@ -27,12 +27,17 @@ function useAuthGate() {
 
 export function AdminLogin() {
   const nav = useNavigate()
-  const { settings, loading } = useContent()
+  const { settings, loading, contentSource, error: contentError } = useContent()
   const siteName = settings.siteName || DEFAULT_SETTINGS.siteName || ''
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [apiStatus, setApiStatus] = useState(null)
   const auth = useAuthGate()
+
+  useEffect(() => {
+    pingApiHealth().then(setApiStatus)
+  }, [])
 
   if (!auth.loading && auth.ok) return <Navigate to="/admin" replace />
 
@@ -64,6 +69,19 @@ export function AdminLogin() {
         <p className="admin-login__sub">
           Admin console — manage pages, copy, images, schedule, and more.
         </p>
+        {apiStatus ? (
+          <p
+            className={`admin-login__api ${apiStatus.ok ? 'is-ok' : 'is-bad'}`}
+            role="status"
+          >
+            {apiStatus.ok
+              ? `API connected (${apiStatus.url})`
+              : `API not reachable — ${apiStatus.error || `HTTP ${apiStatus.status}`}. Pages show bundled copy until nginx proxies /api/ to Express.`}
+          </p>
+        ) : null}
+        {contentSource === 'fallback' && contentError ? (
+          <p className="admin-login__api is-bad">{contentError}</p>
+        ) : null}
         <label htmlFor="admin-pass">Password</label>
         <input
           id="admin-pass"

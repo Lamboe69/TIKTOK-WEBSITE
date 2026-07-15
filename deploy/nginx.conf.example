@@ -1,0 +1,65 @@
+# KM Dynasty — nginx configs for test.kmdynasty.org
+#
+# If POST /api/admin/login returns nginx 405, use nginx-simple.conf.example instead.
+# Split static + API only works when THIS server block is the one nginx actually uses.
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# OPTION A (RECOMMENDED): deploy/nginx-simple.conf.example
+#   Express serves dist + API on :4000, nginx proxies everything.
+#   Set SERVE_STATIC=1 in server/.env
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# OPTION B: nginx serves static files, proxies /api/ only
+#   Use ^~ so /api/ wins over regex locations from other includes.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name test.kmdynasty.org;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name test.kmdynasty.org;
+
+    ssl_certificate     /etc/letsencrypt/live/test.kmdynasty.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/test.kmdynasty.org/privkey.pem;
+
+    root /var/www/km-dynasty/dist;
+    index index.html;
+
+    # ^~ = highest priority prefix — stops other locations stealing /api/
+    location ^~ /api/ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        client_max_body_size 25m;
+    }
+
+    location ^~ /uploads/ {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location = /km-config.js {
+        add_header Cache-Control "no-store";
+        try_files $uri =404;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+# ─── Debug: which config is active? ───
+#   sudo nginx -T | grep -B2 -A40 "test.kmdynasty.org"
+#   curl -s http://127.0.0.1:4000/api/health
+#   curl -i -X POST http://127.0.0.1:4000/api/admin/login -H "Content-Type: application/json" -d '{"password":"..."}'

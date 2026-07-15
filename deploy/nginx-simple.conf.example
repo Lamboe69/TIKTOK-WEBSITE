@@ -1,0 +1,42 @@
+# RECOMMENDED — single upstream (avoids nginx 405 on POST /api/*)
+#
+# Express serves BOTH the API and the React build (SERVE_STATIC=1).
+# nginx only forwards traffic — no try_files, no split /api location.
+#
+# On server:
+#   1. npm run build
+#   2. server/.env:
+#        SERVE_STATIC=1
+#        STATIC_DIR=/var/www/km-dynasty/dist
+#        PORT=4000
+#   3. cd server && npm run start   (or pm2)
+#   4. Use this nginx config
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name test.kmdynasty.org;
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name test.kmdynasty.org;
+
+    ssl_certificate     /etc/letsencrypt/live/test.kmdynasty.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/test.kmdynasty.org/privkey.pem;
+
+    client_max_body_size 25m;
+
+    location / {
+        proxy_pass http://127.0.0.1:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
