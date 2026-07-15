@@ -3,7 +3,7 @@ import { Link, Navigate, Outlet, useLocation, useNavigate } from 'react-router-d
 import { getAdminToken, setAdminToken, useContent } from '../cms/ContentContext'
 import { DEFAULT_SETTINGS } from '../cms/defaults'
 import { COLLECTIONS, PAGE_SCHEMA } from '../cms/schema'
-import { apiFetch, pingApiHealth, readJsonResponse } from '../utils/api'
+import { apiFetch, apiUrl, getApiBase, pingApiHealth, readJsonResponse } from '../utils/api'
 import './admin.css'
 
 function useAuthGate() {
@@ -45,6 +45,11 @@ export function AdminLogin() {
     e.preventDefault()
     setBusy(true)
     setError('')
+    const loginUrl = apiUrl('/api/admin/login')
+    // DEBUG: sign-in — remove when deploy verified
+    console.log('[KM Dynasty] sign in — VITE_API_URL:', import.meta.env.VITE_API_URL)
+    console.log('[KM Dynasty] sign in — API base:', getApiBase())
+    console.log('[KM Dynasty] sign in — POST', loginUrl)
     try {
       const res = await apiFetch('/api/admin/login', {
         method: 'POST',
@@ -68,6 +73,12 @@ export function AdminLogin() {
         <p className="admin-login__brand">{loading && !siteName ? 'Loading…' : siteName}</p>
         <p className="admin-login__sub">
           Admin console — manage pages, copy, images, schedule, and more.
+        </p>
+        {/* DEBUG: API URLs — visible on page; remove after deploy verified */}
+        <p className="admin-login__api" style={{ fontSize: '11px', opacity: 0.85 }}>
+          VITE_API_URL: <code>{String(import.meta.env.VITE_API_URL || '(empty)')}</code>
+          <br />
+          Login URL: <code>{apiUrl('/api/admin/login')}</code>
         </p>
         {apiStatus ? (
           <p
