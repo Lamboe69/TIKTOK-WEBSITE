@@ -41,6 +41,7 @@ export default defineConfig({
       '/api/battle-applications': { target: 'http://localhost:4000', changeOrigin: true },
       '/api/contact': { target: 'http://localhost:4000', changeOrigin: true },
       '/api/health': { target: 'http://localhost:4000', changeOrigin: true },
+      '/uploads': { target: 'http://localhost:4000', changeOrigin: true },
     },
   },
 })

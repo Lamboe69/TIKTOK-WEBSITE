@@ -1,3 +1,5 @@
+import { getApiBase } from './api'
+
 /**
  * Resolve a CMS media value for display.
  * Accepts:
@@ -5,6 +7,9 @@
  * - Absolute site paths (/photos/..., /uploads/...)
  * - Protocol-relative URLs
  * - Bare object keys (uploads/foo.jpg) when VITE_DO_SPACES_CDN_URL is set
+ *
+ * /uploads/... files are stored on the API server — in split deploy they must
+ * load from api.kmdynasty.org, not the static frontend host.
  */
 export function mediaUrl(src, fallback = '') {
   if (src == null || src === false) return fallback
@@ -15,6 +20,12 @@ export function mediaUrl(src, fallback = '') {
 
   if (/^https?:\/\//i.test(s)) return s
   if (s.startsWith('//')) return `https:${s}`
+
+  if (s.startsWith('/uploads/') || s.startsWith('uploads/')) {
+    const path = s.startsWith('/') ? s : `/${s}`
+    const base = getApiBase()
+    return base ? `${base}${path}` : path
+  }
 
   if (s.startsWith('/')) return s
 
