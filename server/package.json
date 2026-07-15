@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
+    "start:pm2": "pm2 start ecosystem.config.cjs",
     "migrate": "node src/migrate.js",
     "seed": "node src/seed.js",
     "seed:force": "node src/seed.js --force",

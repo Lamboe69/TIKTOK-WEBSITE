@@ -18,6 +18,41 @@ npm run dev        # http://localhost:4000
 
 From the repo root, run the Vite app separately (`npm run dev`). Vite proxies admin/CMS API calls to `:4000`.
 
+## Production (frontend on nginx, API on Node)
+
+If the **site loads** but **login/API returns nginx 405**, use **split mode**:
+
+1. **`server/.env`** — API only (no static serving):
+
+```env
+SERVE_STATIC=0
+HOST=127.0.0.1
+PORT=4000
+```
+
+2. **Start backend with PM2:**
+
+```bash
+cd server
+npm install
+cp .env.example .env   # edit DATABASE_URL, ADMIN_PASSWORD, JWT_SECRET
+npm run setup          # first time
+pm2 start ecosystem.config.cjs
+pm2 logs km-api
+```
+
+3. **nginx** — use `deploy/nginx-split.conf.example` (`^~ /api/` → `:4000`)
+
+4. **Verify Node (not nginx) handles API:**
+
+```bash
+curl -s http://127.0.0.1:4000/api/health
+curl -i -X POST http://127.0.0.1:4000/api/admin/login \
+  -H "Content-Type: application/json" -d '{"password":"test"}'
+```
+
+Expect JSON + header `X-KM-Server: dynasty-api`. HTML 405 = nginx never reached Node.
+
 ## Auth
 
 - Default admin: `admin@kmdynasty.com` / `km-dynasty-admin` (password-only login also works with the existing admin UI)

@@ -32,6 +32,11 @@ const HOST = process.env.HOST || '0.0.0.0'
 // Behind nginx / reverse proxy — needed for secure cookies and client IP
 app.set('trust proxy', 1)
 
+app.use((req, res, next) => {
+  res.setHeader('X-KM-Server', 'dynasty-api')
+  next()
+})
+
 async function ensureExtraTables() {
   await pool.query(`
     CREATE TABLE IF NOT EXISTS masterclass_enrollments (
@@ -157,6 +162,18 @@ function mountStaticSite() {
 
 mountStaticSite()
 
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({
+      error: 'API route not found',
+      path: req.path,
+      method: req.method,
+      server: 'dynasty-api',
+    })
+  }
+  next()
+})
+
 app.use((err, _req, res, _next) => {
   console.error(err)
   res.status(500).json({ error: err.message || 'Server error' })
@@ -166,9 +183,21 @@ async function start() {
   await pool.query('SELECT 1')
   await ensureExtraTables()
   await ensureDefaultAdmin()
+
+  const serveStatic = process.env.SERVE_STATIC === '1' || Boolean(process.env.STATIC_DIR)
+  console.log('────────────────────────────────────────')
+  console.log(`Mode: ${serveStatic ? 'API + static files' : 'API only (nginx serves frontend)'}`)
+  console.log(`Listen: http://${HOST}:${PORT}`)
+  console.log(`POST /api/admin/login  GET /api/health  GET /api/content`)
+  if (serveStatic) {
+    console.log(`Static: ${process.env.STATIC_DIR || path.join(__dirname, '../../dist')}`)
+  } else {
+    console.log('nginx must proxy ^~ /api/ → http://127.0.0.1:4000')
+  }
+  console.log('────────────────────────────────────────')
+
   app.listen(PORT, HOST, () => {
-    console.log(`Dynasty API listening on http://${HOST}:${PORT}`)
-    console.log(`Health: http://${HOST}:${PORT}/api/health`)
+    console.log(`Dynasty API ready`)
   })
 }
 
