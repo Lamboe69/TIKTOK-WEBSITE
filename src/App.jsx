@@ -33,6 +33,7 @@ import CollectionList, { CollectionEdit } from './admin/pages/CollectionEditor'
 import SettingsEditor, { MediaLibrary } from './admin/pages/SettingsEditor'
 import EnrollmentsAdmin from './admin/pages/EnrollmentsAdmin'
 import BattleApplicationsAdmin from './admin/pages/BattleApplicationsAdmin'
+import ContactMessagesAdmin from './admin/pages/ContactMessagesAdmin'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -79,6 +80,7 @@ function AppRoutes() {
           <Route path="media" element={<MediaLibrary />} />
           <Route path="enrollments" element={<EnrollmentsAdmin />} />
           <Route path="applications" element={<BattleApplicationsAdmin />} />
+          <Route path="contact-messages" element={<ContactMessagesAdmin />} />
           <Route path="pages/:key" element={<PageEditor />} />
           <Route path="collections/:key" element={<CollectionList />} />
           <Route path="collections/:key/:id" element={<CollectionEdit />} />

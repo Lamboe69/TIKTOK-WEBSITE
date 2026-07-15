@@ -100,6 +100,25 @@ CREATE INDEX IF NOT EXISTS idx_battle_apps_status_created
 CREATE INDEX IF NOT EXISTS idx_battle_apps_entry_type
   ON battle_applications (entry_type, created_at DESC);
 
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id           BIGSERIAL PRIMARY KEY,
+  name         TEXT NOT NULL,
+  email        TEXT NOT NULL,
+  topic        TEXT NOT NULL DEFAULT 'General Question',
+  message      TEXT NOT NULL,
+  status       TEXT NOT NULL DEFAULT 'new',
+  notes        TEXT,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  resolved_at  TIMESTAMPTZ
+);
+
+CREATE INDEX IF NOT EXISTS idx_contact_messages_status_created
+  ON contact_messages (status, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_contact_messages_topic_created
+  ON contact_messages (topic, created_at DESC);
+
 INSERT INTO site_settings (id, data) VALUES (1, '{}'::jsonb)
   ON CONFLICT (id) DO NOTHING;
 

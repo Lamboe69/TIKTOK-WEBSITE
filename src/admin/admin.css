@@ -749,6 +749,17 @@ body.admin-lock {
 .ba-status--approved { color: #8dffb0; border-color: rgba(141, 255, 176, 0.35); }
 .ba-status--declined { color: #ff8a8a; border-color: rgba(255, 138, 138, 0.35); }
 .ba-status--contacted { color: #c4a0ff; border-color: rgba(196, 160, 255, 0.35); }
+.ba-status--in_progress { color: #7dd3fc; border-color: rgba(125, 211, 252, 0.35); }
+.ba-status--resolved { color: #8dffb0; border-color: rgba(141, 255, 176, 0.35); }
+.ba-status--archived { color: #a0a0a0; border-color: rgba(160, 160, 160, 0.35); }
+
+.cm-message {
+  margin: 0.65rem 0 0.85rem;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.92rem;
+}
 
 .ba-detail td {
   padding: 0.55rem 0.65rem 0.7rem;

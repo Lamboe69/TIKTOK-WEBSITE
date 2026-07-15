@@ -70,17 +70,17 @@
     "howToJoin": {
       "heroImage": "/photos/competition-energy.jpg",
       "heroTitle": "How to Join",
-      "heroLede": "Nine steps through the cathedral. Enter clean. Compete honest. Rise with the dynasty.",
-      "heroCtaLink": "Walk the nine steps",
+      "heroLede": "Seven steps to the box. Enter clean. Compete honest. Rise with the dynasty.",
+      "heroCtaLink": "Walk the seven steps",
       "gateTitle": "Prove the floor",
       "gateSubtitle": "Two checks. Then the path opens.",
-      "introTitle": "Nine steps to the crown",
+      "introTitle": "Seven steps to the box",
       "introBody": "Path A · Official Godsent",
       "ascentCtaLink": "Follow King Maker",
       "ascentCtaButton": "Ready — join a battle",
       "pathBKicker": "Path B · Special Arenas",
-      "pathBTitle": "Scavengers.\nCountry.\nMost Beautiful.",
-      "pathBBody": "Parallel doors into the Dynasty — filled on their own form, with their own fire.",
+      "pathBTitle": "Country.\nMost Beautiful / Handsome.\nCustom.",
+      "pathBBody": "These battles are filled independently through the KM DYNASTY website box battle form — link in bio, pinned comment, or Custom.",
       "pathBButton": "Apply for special battle",
       "pathBImage": "/photos/content-creation.jpg",
       "closingTitle": "Enter the Dynasty",
@@ -139,12 +139,21 @@
     },
     "agency": {
       "heroImage": "/photos/agency-partners.jpg",
-      "heroTitle": "Agency",
-      "heroLede": "Territory meridians for creators ready to grow under the Dynasty banner.",
-      "atlasHeading": "The Atlas",
-      "atlasDescription": "Select your embassy. Walk the corridor. Apply for citizenship under the Dynasty banner.",
-      "oathHeading": "Ready to represent?",
-      "oathBody": "Tell us who you are, what you create, and which embassy you claim. Applications move through Contact.",
+      "heroTitle": "The A-Team Creator Network",
+      "heroLede": "Strategic architects behind the scenes — the pit crew for your rocket ship.",
+      "introTitle": "A-TEAM AGENCY",
+      "introBody": "To the visionaries, the disruptors, and the culture shifters — the gap between being a creator and building an empire is operational excellence. That is where The A-Team comes in. We are the strategic architects behind the scenes, the pit crew for your rocket ship.\n\nYou didn’t build your audience by playing it safe. You grind, you create, and you connect. We aren’t just another management agency. We take the friction out of your business so you can focus entirely on your craft.",
+      "scanHeading": "Apply to The A-Team",
+      "scanBody": "The A-Team takes on a limited number of creators each quarter — because we invest our full resources into every talent we accept. We are looking for creators who are ready to play the long game.",
+      "criteriaText": "Ready to stop being a player and start being the owner\nCommitted to long-term brand building over short-term virality\nOpen to strategic guidance and operational systems\nDriven to build a community, not just an audience",
+      "formHeading": "Agency application",
+      "formSubtitle": "Tell us who you are, where you create, and why you’re ready for The A-Team.",
+      "formSubmitLabel": "Submit application",
+      "applyUrl": "",
+      "qrImage": "",
+      "servicesHeading": "What We Do",
+      "oathHeading": "Ready to build the empire?",
+      "oathBody": "Limited seats each quarter. Tap apply or scan the code — tell us who you are and what you create.",
       "oathImage": "/photos/oath-commitment.jpg"
     },
     "gallery": {
@@ -180,15 +189,15 @@
     },
     "outreach": {
       "heroImage": "/photos/outreach-mission.jpg",
-      "heroTitle": "Outreach",
-      "heroLede": "Stories of support — the dynasty gives back.",
-      "missionHeading": "Our Mission",
-      "missionBody": "King Maker believes in giving back. Through the Dynasty Outreach program, we support individuals and families in need across the globe — from medical emergencies to education fees.",
+      "heroTitle": "Apply for Charity",
+      "heroLede": "Your Story Matters",
+      "heroSupport": "Your need is valid. We are ready to listen, review, and reach out with the support you deserve. Fill in the form and our team will be in touch.",
+      "commitmentHeading": "Our Commitment",
+      "commitmentBody": "King Maker's charity operates across multiple regions, with dedicated support pathways for applicants in the USA, and around the world. Backed by a growing global community, we are transforming digital influence into meaningful, lasting change.",
       "missionImage": "/photos/giving-back.jpg",
-      "donationsHeading": "How Your Donations Help",
-      "donationsItems": "Medical support for families in crisis\nSchool fees and educational supplies\nFood packages for struggling households\nEmergency shelter and housing support",
-      "formHeading": "Request Support",
-      "formSubtitle": "Going through a difficult time? Submit your application and our team will review it personally."
+      "howHeading": "How It Works",
+      "formHeading": "Apply for Charity",
+      "formSubtitle": "Your need is valid. We are ready to listen, review, and reach out with the support you deserve. Fill in the form and our team will be in touch."
     },
     "giveaway": {
       "heroImage": "/photos/giveaway-gift.jpg",
@@ -985,57 +994,45 @@
     "joinSteps": [
       {
         "id": 1,
-        "title": "Follow King Maker",
-        "body": "Follow @kingmakernevergivesup on TikTok.",
+        "title": "Always 5,000 taps and above",
+        "body": "You must have at least 5,000 total taps on KM DYNASTY content or livestreams to enter any official battle.",
         "img": "/photos/king-maker-live.jpg"
       },
       {
         "id": 2,
-        "title": "Join the Dynasty",
-        "body": "Add 🔱👑 to your TikTok display name.",
-        "img": "/photos/community-meetup.jpg"
-      },
-      {
-        "id": 3,
-        "title": "Hit 5,000 taps",
-        "body": "Build your presence in Official battles.",
+        "title": "Support the livestreams",
+        "body": "Help the host win in occurring co-host battles amid the livestream. Send gifts, cheer, and defend the dynasty. Aim to rank among the top seven active supporters during livestreams. Top seven get priority entry to the box.",
         "img": "/battles-photos/daily-godsent.jpg"
       },
       {
+        "id": 3,
+        "title": "Elevate creators in the box",
+        "body": "When other creators join the box (guests), support them with positive comments and shares. Lifting others lifts KM.",
+        "img": "/photos/community-meetup.jpg"
+      },
+      {
         "id": 4,
-        "title": "Fill the form",
-        "body": "Submit your handle via Join My Box Battle.",
-        "img": "/photos/battle-highlights.jpg"
-      },
-      {
-        "id": 5,
-        "title": "Show up live",
-        "body": "Be ready when your slot opens.",
-        "img": "/photos/scavengers-battle.jpg"
-      },
-      {
-        "id": 6,
-        "title": "Compete honest",
-        "body": "No bots. No cheating. Pure energy.",
-        "img": "/battles-photos/most-beautiful.jpg"
-      },
-      {
-        "id": 7,
-        "title": "Support the family",
-        "body": "Lift others as you rise.",
-        "img": "/photos/champion-crowning.jpg"
-      },
-      {
-        "id": 8,
-        "title": "Win with grace",
-        "body": "Celebrate, credit the community.",
+        "title": "Be a regular & supportive member",
+        "body": "Be a regular and supportive member of KM DYNASTY. Consistent presence, positive energy, and loyalty. No drama, no toxicity.",
         "img": "/battles-photos/champion-of-champions.jpg"
       },
       {
-        "id": 9,
-        "title": "Rise again",
-        "body": "Champions return. The cathedral never closes.",
-        "img": "/photos/team-dallas.jpg"
+        "id": 5,
+        "title": "Win Daily Godsent Battles",
+        "body": "Winning a Daily Godsent Box Battle brings you straight to the Weekly Sunday Official Battle.\n\nKM DYNASTY OFFICIAL BOX BATTLE\nTarget: 500K\nWinner gets: 3 Lions, followers, and a livestream visit\nTime: UK & Nigeria – 8:30 PM · USA – 2:30 PM CST & 3:30 PM EST · Uganda – 10:30 PM EAT",
+        "img": "/battles-photos/scavengers.jpg"
+      },
+      {
+        "id": 6,
+        "title": "Win the weekly Official Battle",
+        "body": "Winning the Sunday Official Battle subsequently takes you to the Champion of the Champions finale.",
+        "img": "/photos/champion-crowning.jpg"
+      },
+      {
+        "id": 7,
+        "title": "Separate battles via website form",
+        "body": "The Country and Most Beautiful/Handsome Box Battles are filled independently through the KM DYNASTY website box battle form (link in bio / pinned comment) and Custom.",
+        "img": "/photos/battle-highlights.jpg"
       }
     ],
     "howItWorks": [
@@ -1187,8 +1184,8 @@
       {
         "id": 4,
         "to": "/outreach",
-        "label": "Outreach",
-        "blurb": "Giving back",
+        "label": "Charity",
+        "blurb": "Apply for support",
         "icon": "heart"
       },
       {
@@ -1249,7 +1246,7 @@
       {
         "id": 1,
         "to": "/outreach",
-        "label": "Outreach"
+        "label": "Charity"
       },
       {
         "id": 2,

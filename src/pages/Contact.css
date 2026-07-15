@@ -614,6 +614,12 @@
   font-size: 0.8rem;
   color: rgba(255, 247, 240, 0.45);
 }
+.contact-form__error {
+  margin: 0;
+  width: 100%;
+  font-size: 0.85rem;
+  color: #ff8a8a;
+}
 .contact-form__hint a {
   color: rgba(255, 247, 240, 0.75);
   text-decoration: underline;

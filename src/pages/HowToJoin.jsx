@@ -7,50 +7,39 @@ import './HowToJoin.css'
 
 const fallbackSteps = [
   {
-    title: 'Tap the Page',
-    desc: 'Tap and like the live screen — every tap counts toward your dynasty standing.',
-    img: '/team/maker.jpg',
-  },
-  {
-    title: 'Pray Before Your Box',
-    desc: 'Say a short prayer before sending. Faith fuels the fight.',
-    img: '/photos/battle-highlights.jpg',
-    prayer: '"Dear God, guide my box to the right battle. Let my effort be seen and my support counted. Amen."',
-  },
-  {
-    title: 'Always 5,000+ Taps',
-    desc: 'Hold a minimum of 5,000 taps on {SITE} content before you claim a slot.',
+    title: 'Always 5,000 taps and above',
+    desc: 'You must have at least 5,000 total taps on KM DYNASTY content or livestreams to enter any official battle.',
     img: '/photos/king-maker-live.jpg',
   },
   {
-    title: 'Support the Livestreams',
-    desc: 'Send gifts, cheer loud, and defend the Dynasty when the night gets fierce.',
-    img: '/battles-photos/most-beautiful.jpg',
-  },
-  {
-    title: 'Elevate Creators',
-    desc: 'Lift guest creators with comments, shares, and relentless positivity.',
-    img: '/photos/community-meetup.jpg',
-  },
-  {
-    title: 'Be in the Top Seven',
-    desc: 'Climb into the top 7 active supporters — visibility is earned.',
+    title: 'Support the livestreams',
+    desc: 'Help the host win in occurring co-host battles amid the livestream. Send gifts, cheer, and defend the dynasty. Aim to rank among the top seven active supporters during livestreams. Top seven get priority entry to the box.',
     img: '/battles-photos/daily-godsent.jpg',
   },
   {
-    title: 'Be Regular & Supportive',
-    desc: 'Consistency. Loyalty. No drama. Family energy, always.',
+    title: 'Elevate creators in the box',
+    desc: 'When other creators join the box (guests), support them with positive comments and shares. Lifting others lifts KM.',
+    img: '/photos/community-meetup.jpg',
+  },
+  {
+    title: 'Be a regular & supportive member',
+    desc: 'Be a regular and supportive member of KM DYNASTY. Consistent presence, positive energy, and loyalty. No drama, no toxicity.',
     img: '/battles-photos/champion-of-champions.jpg',
   },
   {
     title: 'Win Daily Godsent Battles',
-    desc: 'Daily wins unlock the weekly finale — defend your crown night after night.',
+    desc: 'Winning a Daily Godsent Box Battle brings you straight to the Weekly Sunday Official Battle.\n\nKM DYNASTY OFFICIAL BOX BATTLE\nTarget: 500K\nWinner gets: 3 Lions, followers, and a livestream visit\nTime: UK & Nigeria – 8:30 PM · USA – 2:30 PM CST & 3:30 PM EST · Uganda – 10:30 PM EAT',
     img: '/battles-photos/scavengers.jpg',
   },
   {
-    title: 'Win the Weekly Battle',
-    desc: 'Win the weekly — then walk into Champion of Champions.',
+    title: 'Win the weekly Official Battle',
+    desc: 'Winning the Sunday Official Battle subsequently takes you to the Champion of the Champions finale.',
     img: '/photos/champion-crowning.jpg',
+  },
+  {
+    title: 'Separate battles via website form',
+    desc: 'The Country and Most Beautiful/Handsome Box Battles are filled independently through the KM DYNASTY website box battle form (link in bio / pinned comment) and Custom.',
+    img: '/photos/battle-highlights.jpg',
   },
 ]
 
@@ -183,7 +172,7 @@ export default function HowToJoin() {
             </h1>
             <p className="join-hero__lede">
               {page.heroLede ||
-                'Cross the threshold. Nine steps to the crown — from first tap to Champion of Champions.'}
+                'Seven steps to the box — from 5,000 taps to Champion of Champions.'}
             </p>
             <div className="join-hero__actions">
               <button type="button" onClick={openOfficial} className="join-hero__cta">
@@ -191,7 +180,7 @@ export default function HowToJoin() {
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </button>
               <a href="#join-ascent" className="join-hero__link">
-                {page.heroCtaLink || 'Walk the nine steps'}
+                {page.heroCtaLink || 'Walk the seven steps'}
               </a>
             </div>
           </Motion>
@@ -223,11 +212,11 @@ export default function HowToJoin() {
             <p className="sec-kicker mb-2">{page.introBody || 'Path A · Official Godsent'}</p>
             <div className="join-ascent__intro-row">
               <h2 className="join-ascent__heading font-display font-bold text-ivory tracking-tight">
-                {page.introTitle || 'Nine steps to the crown'}
+                {page.introTitle || 'Seven steps to the box'}
               </h2>
               <p className="join-ascent__count">
                 {doneCount > 0 ? (
-                  <><span className="text-ember font-semibold">{doneCount}</span> / 9 marked</>
+                  <><span className="text-ember font-semibold">{doneCount}</span> / {steps.length} marked</>
                 ) : (
                   'Mark what you’ve lived'
                 )}
@@ -292,13 +281,13 @@ export default function HowToJoin() {
                       {done[active] ? 'Lived' : 'Mark lived'}
                     </button>
                     <span className="text-[10px] uppercase tracking-[0.28em] text-white/50">
-                      Step {active + 1} of 9
+                      Step {active + 1} of {steps.length}
                     </span>
                   </div>
                   <h3 className={`join-ascent__step-title font-display font-bold text-ivory ${done[active] ? 'opacity-60' : ''}`}>
                     {step.title}
                   </h3>
-                  <p className="join-ascent__step-desc">
+                  <p className="join-ascent__step-desc whitespace-pre-line">
                     {step.desc}
                   </p>
                   {step.prayer && (
@@ -344,7 +333,7 @@ export default function HowToJoin() {
             <Motion delay={60}>
               <p className="sec-kicker mb-4" style={{ color: '#C4A0FF' }}>{page.pathBKicker || 'Path B · Special Arenas'}</p>
               <h2 className="join-special__title font-display font-bold text-ivory tracking-tight">
-                {(page.pathBTitle || 'Scavengers.\nCountry.\nMost Beautiful.').split('\n').map((line, i, arr) => (
+                {(page.pathBTitle || 'Country.\nMost Beautiful / Handsome.\nCustom.').split('\n').map((line, i, arr) => (
                   <span key={i}>
                     {i === arr.length - 1 ? <span className="text-gradient">{line}</span> : line}
                     {i < arr.length - 1 && <br />}
@@ -352,7 +341,8 @@ export default function HowToJoin() {
                 ))}
               </h2>
               <p className="join-special__lede">
-                {page.pathBBody || 'Parallel doors into the Dynasty — filled on their own form, with their own fire.'}
+                {page.pathBBody ||
+                  'These battles are filled independently through the KM DYNASTY website box battle form — link in bio, pinned comment, or Custom.'}
               </p>
               <button
                 type="button"

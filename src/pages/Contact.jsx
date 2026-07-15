@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useMemo, useState, useEffect } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
@@ -15,7 +15,7 @@ const topics = [
   },
   {
     title: 'Creator Inquiry',
-    desc: "Join La'Gwat Agency",
+    desc: 'Join The A-Team Agency',
     value: "Creator Management Inquiry (La'Gwat Agency)",
   },
   {
@@ -39,6 +39,7 @@ const fallbackLines = [
 
 export default function Contact() {
   const { collections, getPage, settings } = useContent()
+  const [searchParams] = useSearchParams()
   const siteName = settings.siteName || ''
   const page = getPage('contact')
   const formHeading = page.formHeading || 'Write to us'
@@ -75,10 +76,16 @@ export default function Contact() {
   }, [collections.contactLines, settings])
   const contactEmail = settings.email || 'lagwatinc@gmail.com'
 
-  const [topic, setTopic] = useState(0)
+  const initialTopic = searchParams.get('topic') === 'creator' ? 1 : 0
+  const [topic, setTopic] = useState(initialTopic)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (searchParams.get('topic') === 'creator') setTopic(1)
+  }, [searchParams])
 
   const selected = topics[topic]
 
@@ -87,26 +94,47 @@ export default function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
-    const payload = { ...form, reason: selected.value }
-    if (FORMSPREE_CONTACT) {
-      try {
-        await fetch(FORMSPREE_CONTACT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        })
-      } catch { /* ignore */ }
-    } else {
-      const subject = encodeURIComponent(`${siteName} Contact — ${selected.value} — ${form.name}`)
-      const body = encodeURIComponent(
-        `Name: ${form.name}\nEmail: ${form.email}\nReason: ${selected.value}\n\n${form.message}`,
-      )
-      window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`
+    setError('')
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          topic: selected.value,
+          reason: selected.value,
+          message: form.message,
+        }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data.error || 'Failed to send message')
+
+      if (FORMSPREE_CONTACT) {
+        try {
+          await fetch(FORMSPREE_CONTACT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: form.name,
+              email: form.email,
+              reason: selected.value,
+              message: form.message,
+            }),
+          })
+        } catch {
+          /* optional mirror */
+        }
+      }
+
+      setSubmitted(true)
+      setForm({ name: '', email: '', message: '' })
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (err) {
+      setError(err.message || 'Failed to send message')
+    } finally {
+      setSubmitting(false)
     }
-    setSubmitting(false)
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
-    setForm({ name: '', email: '', message: '' })
   }
 
   return (
@@ -152,7 +180,7 @@ export default function Contact() {
                 Write a message
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </a>
-              <Link to="/agency" className="contact-text-link">
+              <Link to="/agency#agency-apply" className="contact-text-link">
                 Agency applications
               </Link>
             </div>
@@ -284,8 +312,9 @@ export default function Contact() {
                 </fieldset>
 
                 <div className="contact-form__footer">
+                  {error ? <p className="contact-form__error">{error}</p> : null}
                   <p className="contact-form__hint">
-                    Sends to <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+                    Your message goes to the {siteName || 'Dynasty'} team inbox.
                   </p>
                   <button type="submit" disabled={submitting} className="contact-btn contact-btn--wide">
                     {submitting ? 'Sending…' : formSubmitLabel}

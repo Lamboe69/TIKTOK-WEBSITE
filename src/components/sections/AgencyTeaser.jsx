@@ -68,7 +68,7 @@ export default function AgencyTeaser() {
 
         <Motion delay={0.4} className="text-center">
           <Link
-            to="/agency"
+            to="/agency#agency-apply"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:scale-105"
             style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 0 24px rgba(255,107,26,0.2)' }}
           >

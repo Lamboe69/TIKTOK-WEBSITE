@@ -39,6 +39,7 @@ export default defineConfig({
       '/api/media': { target: 'http://localhost:4000', changeOrigin: true },
       '/api/paypal': { target: 'http://localhost:4000', changeOrigin: true },
       '/api/battle-applications': { target: 'http://localhost:4000', changeOrigin: true },
+      '/api/contact': { target: 'http://localhost:4000', changeOrigin: true },
       '/api/health': { target: 'http://localhost:4000', changeOrigin: true },
     },
   },

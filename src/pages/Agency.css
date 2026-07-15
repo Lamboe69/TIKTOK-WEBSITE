@@ -1,4 +1,4 @@
-/* ─── Agency — Meridian Throne + embassies ─── */
+/* ─── Agency — A-Team Creator Network ─── */
 
 .embassy-page {
   --e-ink: #071018;
@@ -16,7 +16,7 @@
   padding-right: var(--e-pad);
 }
 
-/* ═══ Hero — Meridian Throne (orbital atlas over full-bleed) ═══ */
+/* ═══ Hero ═══ */
 .embassy-hero {
   position: relative;
   display: grid;
@@ -51,7 +51,6 @@
   to   { transform: scale(1.1) translate(-1.5%, -1%); }
 }
 
-/* Deep navy atmosphere — photo stays readable through the center */
 .embassy-hero__veil {
   position: absolute;
   inset: 0;
@@ -62,7 +61,6 @@
   pointer-events: none;
 }
 
-/* Three territory light shafts — embassies of light, not cards */
 .embassy-hero__beams {
   position: absolute;
   inset: 0;
@@ -102,7 +100,6 @@
   .embassy-hero__beams span { animation: none; opacity: 0.55; }
 }
 
-/* Orbital meridians — the atlas alive behind type */
 .embassy-hero__orbs {
   position: absolute;
   left: 50%;
@@ -161,12 +158,11 @@
   .embassy-hero__orb-core { animation: none; }
 }
 
-/* Brand-first sovereign lockup */
 .embassy-hero__core {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 40rem;
+  max-width: 42rem;
   padding: clamp(5.5rem, 12vh, 7rem) var(--e-pad) clamp(2rem, 5vh, 3.5rem);
   text-align: center;
 }
@@ -200,8 +196,8 @@
 .embassy-hero__title {
   font-family: 'Playfair Display', Georgia, serif;
   font-weight: 800;
-  font-size: clamp(2.75rem, 7vw, 5.25rem);
-  line-height: 0.92;
+  font-size: clamp(2.35rem, 6.2vw, 4.5rem);
+  line-height: 0.98;
   letter-spacing: -0.035em;
   margin: 0 0 1rem;
   background: linear-gradient(135deg, #9ECDE4 0%, #E8F4FA 38%, #FFBE7A 78%, #FF8A3D 100%);
@@ -225,7 +221,7 @@
   font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   line-height: 1.55;
   color: rgba(255, 247, 240, 0.72);
-  max-width: 28rem;
+  max-width: 30rem;
 }
 
 .embassy-hero__actions {
@@ -234,7 +230,6 @@
   align-items: center;
   justify-content: center;
   gap: 1rem 1.5rem;
-  margin-bottom: 1.75rem;
 }
 
 .embassy-cta {
@@ -261,277 +256,464 @@
 }
 .embassy-link:hover { color: #FFF7F0; }
 
-.embassy-hero__territories {
-  margin: 0;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(126, 184, 212, 0.7);
-  line-height: 1.6;
-}
 @media (max-width: 520px) {
-  .embassy-hero__territories {
-    letter-spacing: 0.12em;
-    font-size: 0.62rem;
-  }
   .embassy-hero__brand {
     letter-spacing: 0.22em;
     font-size: clamp(1.35rem, 7vw, 1.85rem);
   }
 }
 
-/* ═══ Meridians — privilege ribbon ═══ */
-.embassy-meridians {
+/* ═══ Intro ═══ */
+.embassy-intro {
+  padding: clamp(3.5rem, 8vw, 6rem) var(--e-pad);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background:
+    radial-gradient(ellipse 70% 80% at 0% 50%, rgba(126, 184, 212, 0.06) 0%, transparent 55%),
+    #0A121E;
+}
+
+.embassy-intro__inner {
+  max-width: 40rem;
+}
+
+.embassy-intro__kicker {
+  margin: 0 0 1.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--e-ember);
+}
+
+.embassy-intro__body {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  line-height: 1.7;
+  color: rgba(255, 247, 240, 0.68);
+}
+.embassy-intro__body:last-child { margin-bottom: 0; }
+
+/* ═══ Scan to Apply ═══ */
+.embassy-scan {
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0;
+  background:
+    radial-gradient(ellipse 50% 60% at 80% 40%, rgba(255, 138, 61, 0.1) 0%, transparent 55%),
+    #071018;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.embassy-scan__grid {
   display: grid;
   grid-template-columns: 1fr;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: clamp(2.5rem, 6vw, 4rem);
+  align-items: center;
+  max-width: 68rem;
+  margin: 0 auto;
 }
-@media (min-width: 700px) {
-  .embassy-meridians { grid-template-columns: repeat(4, 1fr); }
-}
-
-.embassy-meridian {
-  padding: 1.5rem var(--e-pad);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: #0C1628;
-}
-@media (min-width: 700px) {
-  .embassy-meridian {
-    border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 1.75rem 1.5rem;
+@media (min-width: 900px) {
+  .embassy-scan__grid {
+    grid-template-columns: 1.05fr 0.95fr;
   }
-  .embassy-meridian:last-child { border-right: none; }
 }
 
-.embassy-meridian__n {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.5rem;
+.embassy-scan__kicker {
+  margin: 0 0 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
   color: var(--e-steel);
-  opacity: 0.5;
-  margin-bottom: 0.5rem;
-  display: block;
 }
 
-.embassy-meridian h3 {
+.embassy-scan__copy h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  color: #FFF7F0;
+  margin: 0 0 1rem;
+}
+
+.embassy-scan__lede {
+  margin: 0 0 1.75rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(255, 247, 240, 0.55);
+  max-width: 34rem;
+}
+
+.embassy-scan__criteria {
+  list-style: none;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.embassy-scan__criteria li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
   font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 247, 240, 0.78);
+}
+
+.embassy-scan__check {
+  flex-shrink: 0;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.1rem;
+  color: var(--e-ember);
+}
+
+.embassy-scan__cta {
+  margin-top: 0.25rem;
+}
+
+.embassy-scan__frame-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Big QR scanner frame */
+.embassy-scanner {
+  position: relative;
+  width: min(100%, 22rem);
+  aspect-ratio: 1;
+  padding: 1.35rem;
+  background: #0C1628;
+  border: 1px solid rgba(126, 184, 212, 0.22);
+}
+
+.embassy-scanner__corners {
+  position: absolute;
+  inset: 0.55rem;
+  pointer-events: none;
+}
+.embassy-scanner__corners span {
+  position: absolute;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-color: var(--e-ember);
+  border-style: solid;
+}
+.embassy-scanner__corners span:nth-child(1) {
+  top: 0; left: 0;
+  border-width: 3px 0 0 3px;
+}
+.embassy-scanner__corners span:nth-child(2) {
+  top: 0; right: 0;
+  border-width: 3px 3px 0 0;
+}
+.embassy-scanner__corners span:nth-child(3) {
+  bottom: 0; left: 0;
+  border-width: 0 0 3px 3px;
+}
+.embassy-scanner__corners span:nth-child(4) {
+  bottom: 0; right: 0;
+  border-width: 0 3px 3px 0;
+}
+
+.embassy-scanner__beam {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  height: 2px;
+  top: 14%;
+  z-index: 2;
+  background: linear-gradient(90deg, transparent, rgba(255, 138, 61, 0.95), transparent);
+  box-shadow: 0 0 18px rgba(255, 138, 61, 0.55);
+  animation: embassy-scan-beam 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .embassy-scanner__beam { animation: none; opacity: 0.5; top: 50%; }
+}
+
+@keyframes embassy-scan-beam {
+  0%, 100% { top: 14%; opacity: 0.55; }
+  50%      { top: 82%; opacity: 1; }
+}
+
+.embassy-scanner__qr {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  border-radius: 2px;
+}
+
+.embassy-scanner__placeholder {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 247, 240, 0.04),
+    rgba(255, 247, 240, 0.04) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+.embassy-scanner__caption {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(126, 184, 212, 0.75);
+  text-align: center;
+}
+
+.embassy-scanner--link {
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.embassy-scanner--link:hover,
+.embassy-scanner--link:focus-visible {
+  border-color: rgba(255, 138, 61, 0.55);
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.embassy-scanner__tap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--e-ember);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+}
+.embassy-scanner__tap:hover {
+  text-decoration: underline;
+}
+
+/* On-page application form */
+.embassy-apply-form-wrap {
+  margin-top: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.embassy-apply-form__heading {
+  margin: 0 0 0.35rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
   font-weight: 700;
   color: #FFF7F0;
-  margin-bottom: 0.35rem;
+  letter-spacing: -0.02em;
 }
 
-.embassy-meridian p {
-  font-size: 0.78rem;
-  line-height: 1.5;
+.embassy-apply-form__sub {
+  margin: 0 0 1.25rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: rgba(255, 247, 240, 0.5);
+}
+
+.embassy-apply-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.embassy-apply-form__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+@media (min-width: 560px) {
+  .embassy-apply-form__row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.embassy-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.embassy-field > span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: rgba(255, 247, 240, 0.45);
 }
-
-/* ═══ Atlas — region corridor ═══ */
-.embassy-atlas {
-  padding: 5rem 0 3rem;
+.embassy-field abbr {
+  text-decoration: none;
+  color: var(--e-ember);
+}
+.embassy-field input,
+.embassy-field select,
+.embassy-field textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 0.55rem;
+  font-size: 0.9rem;
+  color: #FFF7F0;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.embassy-field input::placeholder,
+.embassy-field textarea::placeholder {
+  color: rgba(255, 247, 240, 0.25);
+}
+.embassy-field select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(255, 247, 240, 0.45) 50%),
+    linear-gradient(135deg, rgba(255, 247, 240, 0.45) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.25rem;
+}
+.embassy-field select option {
+  background: #0C1628;
+  color: #FFF7F0;
+}
+.embassy-field input:focus,
+.embassy-field select:focus,
+.embassy-field textarea:focus {
+  border-color: rgba(255, 138, 61, 0.45);
+  box-shadow: 0 0 0 3px rgba(255, 138, 61, 0.15);
+}
+.embassy-field textarea {
+  resize: vertical;
+  min-height: 7rem;
 }
 
-.embassy-atlas__head {
+.embassy-apply-form__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #ff8a8a;
+}
+
+.embassy-apply-success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  padding: 1.25rem 1.35rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 107, 26, 0.08);
+  border: 1px solid rgba(255, 107, 26, 0.22);
+}
+.embassy-apply-success__title {
+  margin: 0.35rem 0 0;
+  font-weight: 700;
+  color: #FFF7F0;
+}
+.embassy-apply-success__copy {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(255, 247, 240, 0.55);
+}
+
+/* ═══ What We Do ═══ */
+.embassy-services {
+  padding: clamp(3.5rem, 8vw, 6rem) 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: #0C1628;
+}
+
+.embassy-services__head {
   max-width: 36rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
-.embassy-atlas__head h2 {
+.embassy-services__kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--e-ember);
+}
+
+.embassy-services__head h2 {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(2rem, 4vw, 3.25rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: #FFF7F0;
   line-height: 1.1;
-  margin-bottom: 0.75rem;
+  margin: 0;
 }
 
-.embassy-atlas__head p {
-  font-size: 0.95rem;
-  color: rgba(255, 247, 240, 0.5);
-  line-height: 1.55;
+.embassy-services__list {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.embassy-atlas__body {
-  padding-bottom: 3rem;
-}
-
-.embassy-corridor {
+.embassy-service {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0;
+  gap: 1rem;
+  padding: 1.75rem var(--e-pad);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.25s ease;
 }
-@media (min-width: 900px) {
-  .embassy-corridor {
-    grid-template-columns: 220px 1fr;
-    min-height: min(72vh, 620px);
+.embassy-service:hover {
+  background: rgba(126, 184, 212, 0.04);
+}
+@media (min-width: 720px) {
+  .embassy-service {
+    grid-template-columns: 7.5rem 1fr;
+    gap: 2rem;
+    padding: 2rem var(--e-pad);
+    align-items: start;
   }
 }
 
-.embassy-tabs {
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: #0C1628;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.embassy-tabs::-webkit-scrollbar { display: none; }
-@media (min-width: 900px) {
-  .embassy-tabs {
-    flex-direction: column;
-    overflow-x: visible;
-    border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-  }
-}
-
-.embassy-tab {
-  flex: 0 0 auto;
+.embassy-service__meta {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  text-align: left;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  color: rgba(255, 247, 240, 0.45);
-  cursor: pointer;
-  transition: color 0.2s, background 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-@media (min-width: 900px) {
-  .embassy-tab {
-    width: 100%;
-    border-bottom: none;
-    border-left: 3px solid transparent;
-    padding: 1.35rem 1.25rem;
-    white-space: normal;
-  }
+  gap: 0.85rem;
 }
 
-.embassy-tab:hover { color: rgba(255, 247, 240, 0.8); background: rgba(126, 184, 212, 0.05); }
-.embassy-tab.is-active {
-  color: #FFF7F0;
-  border-color: var(--e-ember);
-  background: rgba(255, 107, 26, 0.08);
-}
-
-.embassy-tab__flag {
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
-.embassy-tab__name {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
-
-.embassy-stage {
-  position: relative;
-  min-height: 480px;
-  overflow: hidden;
-  background: #122033;
-}
-
-.embassy-stage__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transform: scale(1.06);
-  transition: opacity 0.7s ease, transform 1s ease;
-}
-.embassy-stage__img.is-on {
-  opacity: 1;
-  transform: scale(1);
-  z-index: 1;
-}
-
-.embassy-stage__veil {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  background:
-    linear-gradient(to top, rgba(10, 18, 32, 0.95) 0%, rgba(10, 18, 32, 0.45) 45%, transparent 70%),
-    linear-gradient(90deg, rgba(10, 18, 32, 0.55) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-.embassy-stage__panel {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 3;
-  padding: 2rem var(--e-pad) 2.25rem;
-}
-
-.embassy-stage__code {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-  color: var(--e-steel);
-  margin-bottom: 0.5rem;
-}
-
-.embassy-stage__title {
+.embassy-service__n {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+  font-size: 1.35rem;
+  color: var(--e-steel);
+  opacity: 0.55;
+}
+
+.embassy-service__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--e-ember);
+  opacity: 0.85;
+}
+
+.embassy-service__copy h3 {
+  margin: 0 0 0.55rem;
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
   font-weight: 700;
   color: #FFF7F0;
-  letter-spacing: -0.02em;
-  margin-bottom: 0.4rem;
+  letter-spacing: -0.01em;
 }
 
-.embassy-stage__tag {
+.embassy-service__copy p {
+  margin: 0;
   font-size: 0.9rem;
-  color: var(--e-ember);
-  margin-bottom: 1.25rem;
-  max-width: 28rem;
-}
-
-.embassy-stage__benefits {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  margin-bottom: 1.5rem;
-}
-
-.embassy-stage__benefits li {
-  font-size: 0.8rem;
-  color: rgba(255, 247, 240, 0.65);
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-}
-.embassy-stage__benefits li::before {
-  content: '';
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--e-ember);
-  flex-shrink: 0;
-}
-
-.embassy-stage__desc {
-  font-size: 0.85rem;
-  line-height: 1.55;
+  line-height: 1.65;
   color: rgba(255, 247, 240, 0.5);
-  max-width: 32rem;
-  margin-bottom: 1.5rem;
+  max-width: 46rem;
 }
 
-/* ═══ Oath — allegiance CTA ═══ */
+/* ═══ Closing CTA ═══ */
 .embassy-oath {
   position: relative;
   min-height: 55vh;
@@ -583,9 +765,16 @@
   margin-bottom: 1rem;
 }
 
-.embassy-oath__inner p {
+.embassy-oath__inner > p {
   font-size: 0.92rem;
   line-height: 1.55;
   color: rgba(255, 247, 240, 0.55);
   margin-bottom: 1.75rem;
+}
+
+.embassy-oath__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
 }

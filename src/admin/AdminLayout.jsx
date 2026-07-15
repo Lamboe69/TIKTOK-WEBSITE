@@ -156,6 +156,12 @@ function AdminShell() {
               Battle applications
             </Link>
             <Link
+              to="/admin/contact-messages"
+              className={location.pathname === '/admin/contact-messages' ? 'is-active' : ''}
+            >
+              Contact messages
+            </Link>
+            <Link
               to="/admin/media"
               className={location.pathname === '/admin/media' ? 'is-active' : ''}
             >

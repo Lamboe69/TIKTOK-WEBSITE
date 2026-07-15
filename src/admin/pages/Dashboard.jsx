@@ -121,6 +121,10 @@ export default function AdminDashboard() {
           <strong>Box battle applications</strong>
           <span>Official &amp; special battle signups</span>
         </Link>
+        <Link to="/admin/contact-messages" className="admin-card">
+          <strong>Contact messages</strong>
+          <span>Review concerns &amp; mark resolved</span>
+        </Link>
       </div>
 
       <div className="admin-stats">

@@ -54,6 +54,9 @@ From the repo root, run the Vite app separately (`npm run dev`). Vite proxies ad
 | POST | `/api/battle-applications` | — | Submit box battle signup |
 | GET | `/api/admin/battle-applications` | Bearer | List applications (`?status=&type=`) |
 | PATCH | `/api/admin/battle-applications/:id` | Bearer | Update notes / status |
+| POST | `/api/contact` | — | Submit Contact page message |
+| GET | `/api/admin/contact-messages` | Bearer | List messages (`?status=&topic=`) |
+| PATCH | `/api/admin/contact-messages/:id` | Bearer | Update notes / status |
 | GET | `/api/admin/enrollments` | Bearer | List enrollments (`?status=`) |
 | GET | `/api/admin/enrollments/:id` | Bearer | One enrollment |
 | PATCH | `/api/admin/enrollments/:id` | Bearer | Update notes / status |

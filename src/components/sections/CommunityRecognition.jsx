@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
 import fallbackGifters from '../../data/topGifters'
@@ -17,7 +18,6 @@ export default function CommunityRecognition() {
   const homePage = getPage('home')
   const siteName = settings.siteName || ''
   const paypalEmail = settings.paypalEmail || ''
-  const contactEmail = settings.email || 'lagwatinc@gmail.com'
   const topGifters = useMemo(() => {
     const fromCms = normalizePeoplePhotos(collections.topGifters || [])
     return fromCms.length ? fromCms : normalizePeoplePhotos(fallbackGifters)
@@ -171,13 +171,13 @@ export default function CommunityRecognition() {
                     Donate
                   </button>
                 </form>
-              <a
-                href={`mailto:${contactEmail}?subject=${encodeURIComponent(siteName + ' — Request Support')}`}
+              <Link
+                to="/outreach#charity-apply"
                 className="sec-cta-ghost justify-center text-[11px] py-1"
               >
-                Request support
+                Apply for Charity
                 <span className="w-3.5 h-3.5 block">{Icons.arrowRight}</span>
-              </a>
+              </Link>
             </div>
           </div>
         </Motion>

@@ -18,6 +18,9 @@ import enrollmentsRoutes from './routes/enrollments.js'
 import battleApplicationsRoutes, {
   adminBattleApplicationsRouter,
 } from './routes/battleApplications.js'
+import contactMessagesRoutes, {
+  adminContactMessagesRouter,
+} from './routes/contactMessages.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 dotenv.config({ path: path.join(__dirname, '../.env') })
@@ -70,6 +73,23 @@ async function ensureExtraTables() {
 
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS full_name TEXT NOT NULL DEFAULT '';
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS followers INT;
+
+    CREATE TABLE IF NOT EXISTS contact_messages (
+      id           BIGSERIAL PRIMARY KEY,
+      name         TEXT NOT NULL,
+      email        TEXT NOT NULL,
+      topic        TEXT NOT NULL DEFAULT 'General Question',
+      message      TEXT NOT NULL,
+      status       TEXT NOT NULL DEFAULT 'new',
+      notes        TEXT,
+      created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      resolved_at  TIMESTAMPTZ
+    );
+    CREATE INDEX IF NOT EXISTS idx_contact_messages_status_created
+      ON contact_messages (status, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_contact_messages_topic_created
+      ON contact_messages (topic, created_at DESC);
   `)
 }
 
@@ -99,8 +119,10 @@ app.use('/api/settings', settingsRoutes)
 app.use('/api/media', mediaRoutes)
 app.use('/api/paypal', paypalRoutes)
 app.use('/api/battle-applications', battleApplicationsRoutes)
+app.use('/api/contact', contactMessagesRoutes)
 app.use('/api/admin/enrollments', authRequired, enrollmentsRoutes)
 app.use('/api/admin/battle-applications', authRequired, adminBattleApplicationsRouter)
+app.use('/api/admin/contact-messages', authRequired, adminContactMessagesRouter)
 
 app.use((err, _req, res, _next) => {
   console.error(err)

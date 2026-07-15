@@ -48,7 +48,13 @@ const content = {
       heroImage: '/photos/champion-crowning.jpg',
       heroBrand: 'KM DYNASTY',
       heroTitle: 'How to Join',
-      heroLede: 'Nine steps through the cathedral. Enter clean. Compete honest. Rise with the dynasty.',
+      heroLede: 'Seven steps to the box. Enter clean. Compete honest. Rise with the dynasty.',
+      heroCtaLink: 'Walk the seven steps',
+      introTitle: 'Seven steps to the box',
+      introBody: 'Path A · Official Godsent',
+      pathBTitle: 'Country.\nMost Beautiful / Handsome.\nCustom.',
+      pathBBody:
+        'These battles are filled independently through the KM DYNASTY website box battle form — link in bio, pinned comment, or Custom.',
     },
     faq: {
       heroImage: '/battles-photos/most-beautiful.jpg',
@@ -107,8 +113,8 @@ const content = {
     outreach: {
       heroImage: '/photos/community-meetup.jpg',
       heroBrand: 'KM DYNASTY',
-      heroTitle: 'Outreach',
-      heroLede: 'Stories of support — the dynasty gives back.',
+      heroTitle: 'Apply for Charity',
+      heroLede: 'Your Story Matters',
     },
     giveaway: {
       heroImage: '/photos/champion-crowning.jpg',
@@ -245,15 +251,48 @@ const content = {
       },
     ],
     joinSteps: [
-      { id: 1, title: 'Follow King Maker', body: 'Follow @kingmakernevergivesup on TikTok.', img: '/photos/king-maker-live.jpg' },
-      { id: 2, title: 'Join the Dynasty', body: 'Add 🔱👑 to your TikTok display name.', img: '/photos/community-meetup.jpg' },
-      { id: 3, title: 'Hit 5,000 taps', body: 'Build your presence in Official battles.', img: '/battles-photos/daily-godsent.jpg' },
-      { id: 4, title: 'Fill the form', body: 'Submit your handle via Join My Box Battle.', img: '/photos/battle-highlights.jpg' },
-      { id: 5, title: 'Show up live', body: 'Be ready when your slot opens.', img: '/photos/scavengers-battle.jpg' },
-      { id: 6, title: 'Compete honest', body: 'No bots. No cheating. Pure energy.', img: '/battles-photos/most-beautiful.jpg' },
-      { id: 7, title: 'Support the family', body: 'Lift others as you rise.', img: '/photos/champion-crowning.jpg' },
-      { id: 8, title: 'Win with grace', body: 'Celebrate, credit the community.', img: '/battles-photos/champion-of-champions.jpg' },
-      { id: 9, title: 'Rise again', body: 'Champions return. The cathedral never closes.', img: '/photos/team-dallas.jpg' },
+      {
+        id: 1,
+        title: 'Always 5,000 taps and above',
+        body: 'You must have at least 5,000 total taps on KM DYNASTY content or livestreams to enter any official battle.',
+        img: '/photos/king-maker-live.jpg',
+      },
+      {
+        id: 2,
+        title: 'Support the livestreams',
+        body: 'Help the host win in occurring co-host battles amid the livestream. Send gifts, cheer, and defend the dynasty. Aim to rank among the top seven active supporters during livestreams. Top seven get priority entry to the box.',
+        img: '/battles-photos/daily-godsent.jpg',
+      },
+      {
+        id: 3,
+        title: 'Elevate creators in the box',
+        body: 'When other creators join the box (guests), support them with positive comments and shares. Lifting others lifts KM.',
+        img: '/photos/community-meetup.jpg',
+      },
+      {
+        id: 4,
+        title: 'Be a regular & supportive member',
+        body: 'Be a regular and supportive member of KM DYNASTY. Consistent presence, positive energy, and loyalty. No drama, no toxicity.',
+        img: '/battles-photos/champion-of-champions.jpg',
+      },
+      {
+        id: 5,
+        title: 'Win Daily Godsent Battles',
+        body: 'Winning a Daily Godsent Box Battle brings you straight to the Weekly Sunday Official Battle.\n\nKM DYNASTY OFFICIAL BOX BATTLE\nTarget: 500K\nWinner gets: 3 Lions, followers, and a livestream visit\nTime: UK & Nigeria – 8:30 PM · USA – 2:30 PM CST & 3:30 PM EST · Uganda – 10:30 PM EAT',
+        img: '/battles-photos/scavengers.jpg',
+      },
+      {
+        id: 6,
+        title: 'Win the weekly Official Battle',
+        body: 'Winning the Sunday Official Battle subsequently takes you to the Champion of the Champions finale.',
+        img: '/photos/champion-crowning.jpg',
+      },
+      {
+        id: 7,
+        title: 'Separate battles via website form',
+        body: 'The Country and Most Beautiful/Handsome Box Battles are filled independently through the KM DYNASTY website box battle form (link in bio / pinned comment) and Custom.',
+        img: '/photos/battle-highlights.jpg',
+      },
     ],
     howItWorks: [
       { id: 1, num: '01', title: 'Follow & join', body: 'Follow King Maker. Add the dynasty crown to your name.' },
