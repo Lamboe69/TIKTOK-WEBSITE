@@ -1,0 +1,6 @@
+# API subdomain only — use when test.kmdynasty.org stays on existing nginx
+# See deploy/BACKEND-SETUP.md
+
+api.kmdynasty.org {
+	reverse_proxy 127.0.0.1:4000
+}

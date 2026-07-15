@@ -9,8 +9,13 @@ function runtimeApiBase() {
   return ''
 }
 
-/** API base URL. Empty = same-origin `/api/...` (nginx proxy on same domain). */
+/** API base URL. Empty = same-origin `/api/...` (Vite proxy in dev). */
 export function getApiBase() {
+  // Local dev: ignore km-config.js so Vite can proxy /api to :4000
+  if (import.meta.env.DEV) {
+    const raw = import.meta.env.VITE_API_URL || ''
+    return String(raw).trim().replace(/\/+$/, '')
+  }
   const runtime = runtimeApiBase()
   if (runtime) return runtime
   const raw = import.meta.env.VITE_API_URL || ''

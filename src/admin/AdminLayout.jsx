@@ -76,7 +76,7 @@ export function AdminLogin() {
           >
             {apiStatus.ok
               ? `API connected (${apiStatus.url})`
-              : `API not reachable — ${apiStatus.error || `HTTP ${apiStatus.status}`}. Pages show bundled copy until nginx proxies /api/ to Express.`}
+              : `API not reachable — ${apiStatus.error || `HTTP ${apiStatus.status}`}. Check https://api.kmdynasty.org is running and CORS allows this site.`}
           </p>
         ) : null}
         {contentSource === 'fallback' && contentError ? (

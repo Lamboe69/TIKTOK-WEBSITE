@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { schedule as fallbackSchedule } from '../data/schedule'
 import { useContent } from '../cms/ContentContext'
+import { apiUrl } from '../utils/api'
 
 function getCountdown(target) {
   const diff = target - new Date()
@@ -30,7 +31,7 @@ export default function LiveStatus() {
   useEffect(() => {
     const checkLive = async () => {
       try {
-        const res = await fetch('/api/live-status')
+        const res = await fetch(apiUrl('/api/live-status'))
         const data = await res.json()
         setIsLive(data.isLive || false)
       } catch {

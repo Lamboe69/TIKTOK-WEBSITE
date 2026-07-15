@@ -1,4 +1,5 @@
 import { useState, useEffect, createContext, useContext, useCallback } from 'react'
+import { apiUrl } from '../utils/api'
 
 // How stats are labeled site-wide
 const STAT_LABELS = {
@@ -107,7 +108,7 @@ export function StatsProvider({ children }) {
 
     setLoading(true)
     try {
-      const res = await fetch('/api/stats')
+      const res = await fetch(apiUrl('/api/stats'))
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
 
