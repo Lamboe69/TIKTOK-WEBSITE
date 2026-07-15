@@ -18,7 +18,7 @@ const defaultMoreLinks = [
   { to: '/daily-quotes', label: 'Daily Quotes', blurb: 'Week of inspiration', icon: 'lightbulb' },
   { to: '/blog', label: 'Blog', blurb: 'Reports & stories', icon: 'film' },
   { to: '/gallery', label: 'Gallery', blurb: 'Captured moments', icon: 'star' },
-  { to: '/outreach', label: 'Charity', blurb: 'Apply for support', icon: 'heart' },
+  { to: '/charity', label: 'Charity', blurb: 'Apply for support', icon: 'heart' },
   { to: '/giveaway', label: 'Giveaway', blurb: 'Claim your reward', icon: 'gift' },
   { to: '/faq', label: 'FAQ', blurb: 'Answers & guidance', icon: 'clipboard' },
   { to: '/advertise', label: 'Advertise', blurb: 'Partner with us', icon: 'target' },

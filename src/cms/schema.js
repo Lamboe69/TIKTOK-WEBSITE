@@ -218,7 +218,7 @@ export const PAGE_SCHEMA = [
   },
   {
     key: 'outreach',
-    label: 'Outreach / Charity',
+    label: 'Charity',
     fields: [
       { key: 'heroImage', label: 'Hero image', type: 'image' },
       { key: 'heroTitle', label: 'Title', type: 'text' },

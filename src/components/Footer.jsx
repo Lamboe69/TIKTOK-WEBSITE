@@ -13,7 +13,7 @@ const defaultColumns = {
     { to: '/gallery', label: 'Gallery' },
   ],
   community: [
-    { to: '/outreach', label: 'Charity' },
+    { to: '/charity', label: 'Charity' },
     { to: '/giveaway', label: 'Giveaway' },
     { to: '/about', label: 'About' },
     { to: '/agency', label: 'Agency' },

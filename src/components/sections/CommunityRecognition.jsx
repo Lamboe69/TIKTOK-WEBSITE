@@ -107,9 +107,9 @@ function HonorCharityPanel() {
       <p className="honor-side__kicker">Giving Back</p>
       <h3 className="honor-side__title">Charity Support</h3>
       <p className="honor-side__body">
-        Need help? Share your story and apply for outreach support from the Dynasty.
+        Need help? Share your story and apply for charity support from the Dynasty.
       </p>
-      <Link to="/outreach#charity-apply" className="honor-side__btn honor-side__btn--charity">
+      <Link to="/charity#charity-apply" className="honor-side__btn honor-side__btn--charity">
         <span className="honor-side__btn-icon">{Icons.arrowRight}</span>
         Apply for Charity
       </Link>

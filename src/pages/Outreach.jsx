@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { apiFetch, readJsonResponse } from '../utils/api'
 import './morePages.css'
 
 const supportTypes = [
@@ -55,26 +56,34 @@ export default function Outreach() {
     story: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const subject = encodeURIComponent(`${siteName} - Charity Application`)
-    const body = encodeURIComponent(
-      'Full Name: ' +
-        form.name +
-        '\nEmail: ' +
-        form.email +
-        '\nPhone/WhatsApp: ' +
-        form.phone +
-        '\nCountry: ' +
-        form.country +
-        '\nType of Support Needed: ' +
-        form.supportType +
-        '\n\nYour Story:\n' +
-        form.story
-    )
-    window.location.href = 'mailto:' + contactEmail + '?subject=' + subject + '&body=' + body
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError('')
+    try {
+      const res = await apiFetch('/api/charity-applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: form.name,
+          email: form.email,
+          phone: form.phone,
+          country: form.country,
+          supportType: form.supportType,
+          story: form.story,
+        }),
+      })
+      const data = await readJsonResponse(res)
+      if (!res.ok) throw new Error(data.error || 'Failed to submit application')
+      setSubmitted(true)
+    } catch (err) {
+      setSubmitError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -102,7 +111,7 @@ export default function Outreach() {
                 Apply now
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </a>
-              <a href="#outreach-commitment" className="mp-link">
+              <a href="#charity-commitment" className="mp-link">
                 Our commitment
               </a>
             </div>
@@ -134,7 +143,7 @@ export default function Outreach() {
               </Motion>
 
               <Motion delay={0.15}>
-                <div id="outreach-commitment">
+                <div id="charity-commitment">
                   <h2
                     className="font-display font-bold text-3xl text-ivory"
                     style={{ letterSpacing: '-0.02em' }}
@@ -195,7 +204,7 @@ export default function Outreach() {
 
               <Motion delay={0.25}>
                 <div
-                  id="outreach-donate"
+                  id="charity-donate"
                   className="rounded-2xl p-6 border border-white/04"
                   style={{
                     background: 'rgba(59,16,99,0.35)',
@@ -347,14 +356,18 @@ export default function Outreach() {
                     </div>
                     <button
                       type="submit"
-                      className="w-full px-6 py-3.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
+                      className="w-full px-6 py-3.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105 disabled:opacity-60 disabled:hover:scale-100"
                       style={{
                         background: 'linear-gradient(135deg, #FF6B1A, #CC5200)',
                         borderRadius: 8,
                       }}
+                      disabled={submitting}
                     >
-                      Submit Application
+                      {submitting ? 'Submitting…' : 'Submit Application'}
                     </button>
+                    {submitError ? (
+                      <p className="text-red-300 text-sm text-center">{submitError}</p>
+                    ) : null}
                   </form>
                 )}
               </div>

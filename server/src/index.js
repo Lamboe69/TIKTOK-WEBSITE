@@ -18,6 +18,9 @@ import enrollmentsRoutes from './routes/enrollments.js'
 import battleApplicationsRoutes, {
   adminBattleApplicationsRouter,
 } from './routes/battleApplications.js'
+import charityApplicationsRoutes, {
+  adminCharityApplicationsRouter,
+} from './routes/charityApplications.js'
 import contactMessagesRoutes, {
   adminContactMessagesRouter,
 } from './routes/contactMessages.js'
@@ -99,6 +102,24 @@ async function ensureExtraTables() {
       ON contact_messages (status, created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_contact_messages_topic_created
       ON contact_messages (topic, created_at DESC);
+
+    CREATE TABLE IF NOT EXISTS charity_applications (
+      id            BIGSERIAL PRIMARY KEY,
+      full_name     TEXT NOT NULL,
+      email         TEXT NOT NULL,
+      phone         TEXT NOT NULL DEFAULT '',
+      country       TEXT NOT NULL DEFAULT '',
+      support_type  TEXT NOT NULL,
+      story         TEXT NOT NULL,
+      status        TEXT NOT NULL DEFAULT 'new',
+      notes         TEXT,
+      created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+    CREATE INDEX IF NOT EXISTS idx_charity_apps_status_created
+      ON charity_applications (status, created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_charity_apps_support_created
+      ON charity_applications (support_type, created_at DESC);
   `)
 }
 
@@ -128,9 +149,11 @@ app.use('/api/settings', settingsRoutes)
 app.use('/api/media', mediaRoutes)
 app.use('/api/paypal', paypalRoutes)
 app.use('/api/battle-applications', battleApplicationsRoutes)
+app.use('/api/charity-applications', charityApplicationsRoutes)
 app.use('/api/contact', contactMessagesRoutes)
 app.use('/api/admin/enrollments', authRequired, enrollmentsRoutes)
 app.use('/api/admin/battle-applications', authRequired, adminBattleApplicationsRouter)
+app.use('/api/admin/charity-applications', authRequired, adminCharityApplicationsRouter)
 app.use('/api/admin/contact-messages', authRequired, adminContactMessagesRouter)
 
 /** Optional: serve Vite build from Express (simplest nginx — proxy everything to this port). */

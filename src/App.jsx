@@ -33,6 +33,7 @@ import CollectionList, { CollectionEdit } from './admin/pages/CollectionEditor'
 import SettingsEditor, { MediaLibrary } from './admin/pages/SettingsEditor'
 import EnrollmentsAdmin from './admin/pages/EnrollmentsAdmin'
 import BattleApplicationsAdmin from './admin/pages/BattleApplicationsAdmin'
+import CharityApplicationsAdmin from './admin/pages/CharityApplicationsAdmin'
 import ContactMessagesAdmin from './admin/pages/ContactMessagesAdmin'
 
 function ScrollToTop() {
@@ -80,6 +81,7 @@ function AppRoutes() {
           <Route path="media" element={<MediaLibrary />} />
           <Route path="enrollments" element={<EnrollmentsAdmin />} />
           <Route path="applications" element={<BattleApplicationsAdmin />} />
+          <Route path="charity-applications" element={<CharityApplicationsAdmin />} />
           <Route path="contact-messages" element={<ContactMessagesAdmin />} />
           <Route path="pages/:key" element={<PageEditor />} />
           <Route path="collections/:key" element={<CollectionList />} />
@@ -106,7 +108,9 @@ function AppRoutes() {
         <Route path="/masterclass/enrolled" element={<MasterclassEnrolled />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/gallery" element={<Gallery />} />
-        <Route path="/outreach" element={<Outreach />} />
+        <Route path="/charity" element={<Outreach />} />
+        <Route path="/outreach" element={<Navigate to="/charity" replace />} />
+        <Route path="/outreach/*" element={<Navigate to="/charity" replace />} />
         <Route path="/giveaway" element={<Giveaway />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />

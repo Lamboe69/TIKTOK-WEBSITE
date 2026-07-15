@@ -67,7 +67,7 @@ export default function GiveBack() {
               <p className="text-white/45 text-sm mb-5 max-w-sm leading-relaxed">
                 Your story matters. Submit your application and our team will review it personally.
               </p>
-              <Link to="/outreach#charity-apply" className="sec-cta-ghost border border-white/15 px-5 py-3 hover:border-white/30 inline-flex">
+              <Link to="/charity#charity-apply" className="sec-cta-ghost border border-white/15 px-5 py-3 hover:border-white/30 inline-flex">
                 Apply now
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </Link>

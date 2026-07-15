@@ -16,7 +16,7 @@ const routeTitles = {
   '/masterclass': 'Masterclass',
   '/blog': 'Blog',
   '/gallery': 'Gallery',
-  '/outreach': 'Apply for Charity',
+  '/charity': 'Apply for Charity',
   '/giveaway': 'Giveaway',
   '/privacy': 'Privacy Policy',
   '/terms': 'Terms of Use',

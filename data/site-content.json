@@ -1183,7 +1183,7 @@
       },
       {
         "id": 4,
-        "to": "/outreach",
+        "to": "/charity",
         "label": "Charity",
         "blurb": "Apply for support",
         "icon": "heart"
@@ -1245,7 +1245,7 @@
     "footerCommunityLinks": [
       {
         "id": 1,
-        "to": "/outreach",
+        "to": "/charity",
         "label": "Charity"
       },
       {
