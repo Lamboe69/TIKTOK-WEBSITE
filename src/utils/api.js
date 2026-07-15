@@ -28,6 +28,13 @@ export function getApiBase() {
   return ''
 }
 
+// ─── DEBUG: API URL — check browser console after deploy, remove when done ───
+console.log('[KM Dynasty] VITE_API_URL (build-time):', import.meta.env.VITE_API_URL)
+console.log('[KM Dynasty] km-config apiUrl (runtime):', globalThis.__KM_CONFIG__?.apiUrl)
+console.log('[KM Dynasty] resolved API base (used for fetch):', getApiBase())
+console.log('[KM Dynasty] example health URL:', apiUrl('/api/health'))
+// ─── end DEBUG ───
+
 /** Build a full API URL from a path like `/api/content`. */
 export function apiUrl(path) {
   const p = path.startsWith('/') ? path : `/${path}`
