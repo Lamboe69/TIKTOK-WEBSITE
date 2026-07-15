@@ -9,6 +9,9 @@ function runtimeApiBase() {
   return ''
 }
 
+/** Production API host when build/env omit VITE_API_URL (split-domain deploy). */
+const PRODUCTION_API_BASE = 'https://api.kmdynasty.org'
+
 /** API base URL. Empty = same-origin `/api/...` (Vite proxy in dev). */
 export function getApiBase() {
   // Local dev: ignore km-config.js so Vite can proxy /api to :4000
@@ -19,7 +22,10 @@ export function getApiBase() {
   const runtime = runtimeApiBase()
   if (runtime) return runtime
   const raw = import.meta.env.VITE_API_URL || ''
-  return String(raw).trim().replace(/\/+$/, '')
+  const built = String(raw).trim().replace(/\/+$/, '')
+  if (built) return built
+  if (import.meta.env.PROD) return PRODUCTION_API_BASE
+  return ''
 }
 
 /** Build a full API URL from a path like `/api/content`. */
