@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiFetch, readJsonResponse } from '../utils/api'
 import './MasterclassCheckout.css'
 
 function loadPayPalSdk(clientId, currency) {
@@ -61,8 +62,8 @@ export default function MasterclassCheckout({ tier, accent, onClose }) {
 
   useEffect(() => {
     let cancelled = false
-    fetch('/api/paypal/config')
-      .then((r) => r.json())
+    apiFetch('/api/paypal/config')
+      .then((r) => readJsonResponse(r))
       .then((data) => {
         if (!cancelled) setPaypalConfig(data)
       })
@@ -100,7 +101,7 @@ export default function MasterclassCheckout({ tier, accent, onClose }) {
           },
           createOrder: async () => {
             const { buyerName: name, buyerEmail: email, buyerPhone: phone } = formRef.current
-            const res = await fetch('/api/paypal/create-order', {
+            const res = await apiFetch('/api/paypal/create-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -110,18 +111,18 @@ export default function MasterclassCheckout({ tier, accent, onClose }) {
                 buyerPhone: phone || undefined,
               }),
             })
-            const data = await res.json().catch(() => ({}))
+            const data = await readJsonResponse(res)
             if (!res.ok) throw new Error(data.error || 'Could not start checkout')
             return data.orderId
           },
           onApprove: async (data) => {
             setBusy(true)
-            const res = await fetch('/api/paypal/capture-order', {
+            const res = await apiFetch('/api/paypal/capture-order', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ orderId: data.orderID }),
             })
-            const payload = await res.json().catch(() => ({}))
+            const payload = await readJsonResponse(res)
             if (!res.ok) throw new Error(payload.error || 'Payment capture failed')
             goToEnrolled(navigate, payload.enrollment, tier.name, false)
             onClose?.()
@@ -158,7 +159,7 @@ export default function MasterclassCheckout({ tier, accent, onClose }) {
     setBusy(true)
     setError('')
     try {
-      const res = await fetch('/api/paypal/reserve', {
+      const res = await apiFetch('/api/paypal/reserve', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -168,7 +169,7 @@ export default function MasterclassCheckout({ tier, accent, onClose }) {
           buyerPhone: buyerPhone.trim() || undefined,
         }),
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Could not submit enrolment')
       goToEnrolled(navigate, data.enrollment, tier.name, true)
       onClose?.()

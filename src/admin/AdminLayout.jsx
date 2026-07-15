@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { getAdminToken, setAdminToken, useContent } from '../cms/ContentContext'
+import { DEFAULT_SETTINGS } from '../cms/defaults'
 import { COLLECTIONS, PAGE_SCHEMA } from '../cms/schema'
+import { apiFetch, readJsonResponse } from '../utils/api'
 import './admin.css'
 
 function useAuthGate() {
@@ -13,7 +15,7 @@ function useAuthGate() {
       setState({ loading: false, ok: false })
       return
     }
-    fetch('/api/admin/me', {
+    apiFetch('/api/admin/me', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => setState({ loading: false, ok: r.ok }))
@@ -25,8 +27,8 @@ function useAuthGate() {
 
 export function AdminLogin() {
   const nav = useNavigate()
-  const { settings } = useContent()
-  const siteName = settings.siteName || ''
+  const { settings, loading } = useContent()
+  const siteName = settings.siteName || DEFAULT_SETTINGS.siteName || ''
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -39,12 +41,12 @@ export function AdminLogin() {
     setBusy(true)
     setError('')
     try {
-      const res = await fetch('/admin/login', {
+      const res = await apiFetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
       })
-      const data = await res.json()
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Login failed')
       setAdminToken(data.token)
       nav('/admin', { replace: true })
@@ -58,7 +60,7 @@ export function AdminLogin() {
   return (
     <div className="admin-root admin-login">
       <form className="admin-login__card" onSubmit={submit}>
-        <p className="admin-login__brand">{siteName}</p>
+        <p className="admin-login__brand">{loading && !siteName ? 'Loading…' : siteName}</p>
         <p className="admin-login__sub">
           Admin console — manage pages, copy, images, schedule, and more.
         </p>
@@ -72,6 +74,12 @@ export function AdminLogin() {
           required
         />
         {error ? <p className="admin-login__err">{error}</p> : null}
+        {!error && import.meta.env.PROD && !import.meta.env.VITE_API_URL ? (
+          <p className="admin-login__hint">
+            Production CMS mode — set <code>ADMIN_PASSWORD</code> in Vercel env vars, or set{' '}
+            <code>VITE_API_URL</code> to your Express API for the full backend.
+          </p>
+        ) : null}
         <button className="admin-btn" type="submit" disabled={busy} style={{ width: '100%' }}>
           {busy ? 'Signing in…' : 'Enter dashboard'}
         </button>

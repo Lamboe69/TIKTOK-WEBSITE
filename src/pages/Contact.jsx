@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { apiFetch, readJsonResponse } from '../utils/api'
 import './Contact.css'
 
 const FORMSPREE_CONTACT = ''
@@ -96,7 +97,7 @@ export default function Contact() {
     setSubmitting(true)
     setError('')
     try {
-      const res = await fetch('/api/contact', {
+      const res = await apiFetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -107,7 +108,7 @@ export default function Contact() {
           message: form.message,
         }),
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Failed to send message')
 
       if (FORMSPREE_CONTACT) {

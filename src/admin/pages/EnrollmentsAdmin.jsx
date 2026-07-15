@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getAdminToken } from '../../cms/ContentContext'
+import { apiFetch, readJsonResponse } from '../../utils/api'
 import { AdminPage } from '../AdminLayout'
 
 const FILTERS = [
@@ -44,10 +45,10 @@ export default function EnrollmentsAdmin() {
     try {
       const token = getAdminToken()
       const qs = nextStatus && nextStatus !== 'all' ? `?status=${encodeURIComponent(nextStatus)}` : ''
-      const res = await fetch(`/api/admin/enrollments${qs}`, {
+      const res = await apiFetch(`/api/admin/enrollments${qs}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Failed to load enrollments')
       setRows(data.enrollments || [])
       setCounts(data.counts || {})
@@ -66,7 +67,7 @@ export default function EnrollmentsAdmin() {
   const updateEnrollment = async (id, patch) => {
     try {
       const token = getAdminToken()
-      const res = await fetch(`/api/admin/enrollments/${id}`, {
+      const res = await apiFetch(`/api/admin/enrollments/${id}`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +75,7 @@ export default function EnrollmentsAdmin() {
         },
         body: JSON.stringify(patch),
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Update failed')
       setToast('Enrollment updated')
       await load(status)

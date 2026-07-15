@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Icons } from './Icons'
+import { apiFetch, readJsonResponse } from '../utils/api'
 
 const FORMSPREE_OFFICIAL = ''
 const FORMSPREE_SPECIAL = ''
@@ -101,7 +102,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
         throw new Error('Please enter your TikTok follower count')
       }
 
-      const res = await fetch('/api/battle-applications', {
+      const res = await apiFetch('/api/battle-applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -113,7 +114,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
           date: form.date,
         }),
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Could not submit your entry')
 
       if (endpoint) {

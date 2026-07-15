@@ -84,6 +84,18 @@ body.admin-lock {
   font-size: 0.85rem;
 }
 
+.admin-login__hint {
+  margin: -0.35rem 0 1rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: rgba(255, 247, 240, 0.45);
+}
+
+.admin-login__hint code {
+  font-size: 0.7rem;
+  color: rgba(196, 160, 255, 0.9);
+}
+
 .admin-shell {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);

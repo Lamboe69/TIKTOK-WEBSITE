@@ -81,10 +81,19 @@ const content = {
       heroLede: 'Reach the dynasty — business, creator support, or just say hello.',
     },
     agency: {
-      heroImage: '/photos/community-meetup.jpg',
+      heroImage: '/photos/agency-partners.jpg',
       heroBrand: "LA'GWAT AGENCY",
-      heroTitle: 'Agency',
-      heroLede: 'Territory meridians for creators ready to grow under the Dynasty banner.',
+      heroTitle: 'The A-Team Creator Network',
+      heroLede: 'Strategic architects behind the scenes — the pit crew for your rocket ship.',
+      introTitle: 'A-TEAM AGENCY',
+      scanHeading: 'Apply to The A-Team',
+      scanBody:
+        'The A-Team takes on a limited number of creators each quarter — because we invest our full resources into every talent we accept.',
+      formHeading: 'Agency application',
+      formSubtitle: 'Tell us who you are, where you create, and why you’re ready for The A-Team.',
+      formSubmitLabel: 'Submit application',
+      applyUrl: '',
+      oathBody: 'Limited seats each quarter. Tap apply or scan the code — tell us who you are and what you create.',
     },
     gallery: {
       heroImage: '/photos/scavengers-battle.jpg',

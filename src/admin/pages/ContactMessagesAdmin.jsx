@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { getAdminToken } from '../../cms/ContentContext'
+import { apiFetch, readJsonResponse } from '../../utils/api'
 import { AdminPage } from '../AdminLayout'
 
 const STATUS_FILTERS = [
@@ -100,10 +101,10 @@ export default function ContactMessagesAdmin() {
       if (nextStatus && nextStatus !== 'all') qs.set('status', nextStatus)
       if (nextTopic && nextTopic !== 'all') qs.set('topic', nextTopic)
       const suffix = qs.toString() ? `?${qs}` : ''
-      const res = await fetch(`/api/admin/contact-messages${suffix}`, {
+      const res = await apiFetch(`/api/admin/contact-messages${suffix}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Failed to load messages')
       setRows(data.messages || [])
       setCounts(data.counts || {})
@@ -130,7 +131,7 @@ export default function ContactMessagesAdmin() {
 
   const updateMessage = async (id, patch) => {
     const token = getAdminToken()
-    const res = await fetch(`/api/admin/contact-messages/${id}`, {
+    const res = await apiFetch(`/api/admin/contact-messages/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -138,7 +139,7 @@ export default function ContactMessagesAdmin() {
       },
       body: JSON.stringify(patch),
     })
-    const data = await res.json().catch(() => ({}))
+    const data = await readJsonResponse(res)
     if (!res.ok) throw new Error(data.error || 'Update failed')
     await load(status, topic)
     if (expanded === id) setNoteDraft(data.message?.notes || '')

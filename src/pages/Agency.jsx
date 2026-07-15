@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { apiFetch, readJsonResponse } from '../utils/api'
 import './Agency.css'
 
 const AGENCY_TOPIC = "Creator Management Inquiry (La'Gwat Agency)"
@@ -127,6 +128,14 @@ export default function Agency() {
     setQrSrc(page.qrImage || buildQrSrc(target))
   }, [page.applyUrl, page.qrImage])
 
+  useEffect(() => {
+    if (window.location.hash !== '#agency-apply') return undefined
+    const id = window.requestAnimationFrame(() => {
+      document.getElementById('agency-apply')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+    return () => window.cancelAnimationFrame(id)
+  }, [])
+
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
@@ -148,7 +157,7 @@ export default function Agency() {
         .filter((line) => line !== null)
         .join('\n')
 
-      const res = await fetch('/api/contact', {
+      const res = await apiFetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -159,7 +168,7 @@ export default function Agency() {
           message,
         }),
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Failed to submit application')
 
       setSubmitted(true)

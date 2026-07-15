@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { saveContent, saveSettings, uploadImage, useContent } from '../../cms/ContentContext'
 import { SETTINGS_FIELDS } from '../../cms/schema'
+import { apiFetch, readJsonResponse } from '../../utils/api'
 import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 
@@ -104,8 +105,8 @@ export function MediaLibrary() {
   const [storage, setStorage] = useState(null)
 
   useEffect(() => {
-    fetch('/api/media/config')
-      .then((r) => r.json())
+    apiFetch('/api/media/config')
+      .then((r) => readJsonResponse(r))
       .then((d) => setStorage(d.storage || 'local'))
       .catch(() => setStorage('local'))
   }, [])

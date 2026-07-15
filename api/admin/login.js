@@ -1,11 +1,10 @@
-import {
-  getAdminPassword,
-  createToken,
-  verifyToken,
-  getBearer,
-  sendJson,
-  readBody,
-} from '../_lib/cms.js'
+import { getAdminPassword, createToken, sendJson, readBody } from '../_lib/cms.js'
+
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+}
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
@@ -24,7 +23,7 @@ export default async function handler(req, res) {
   try {
     const body = await readBody(req)
     const password = String(body.password || '')
-    if (password !== getAdminPassword()) {
+    if (!password || password !== getAdminPassword()) {
       return sendJson(res, 401, { error: 'Invalid password' })
     }
     const token = createToken()
@@ -32,16 +31,4 @@ export default async function handler(req, res) {
   } catch (e) {
     return sendJson(res, 500, { error: e.message || 'Login failed' })
   }
-}
-
-export function meHandler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  if (req.method === 'OPTIONS') {
-    res.statusCode = 204
-    return res.end()
-  }
-  const ok = verifyToken(getBearer(req))
-  return sendJson(res, ok ? 200 : 401, { ok })
 }

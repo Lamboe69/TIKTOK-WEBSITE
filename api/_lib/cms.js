@@ -43,7 +43,7 @@ export function getAdminPassword() {
 }
 
 export function getAuthSecret() {
-  return process.env.ADMIN_SECRET || `km-secret-${getAdminPassword()}`
+  return process.env.ADMIN_SECRET || process.env.JWT_SECRET || `km-secret-${getAdminPassword()}`
 }
 
 export function createToken(ttlMs = 1000 * 60 * 60 * 24 * 7) {
@@ -83,6 +83,17 @@ export function sendJson(res, status, body) {
 }
 
 export function readBody(req) {
+  if (req.body != null) {
+    if (typeof req.body === 'object') return Promise.resolve(req.body)
+    if (typeof req.body === 'string') {
+      try {
+        return Promise.resolve(req.body ? JSON.parse(req.body) : {})
+      } catch (e) {
+        return Promise.reject(e)
+      }
+    }
+  }
+
   return new Promise((resolve, reject) => {
     const chunks = []
     req.on('data', (c) => chunks.push(c))

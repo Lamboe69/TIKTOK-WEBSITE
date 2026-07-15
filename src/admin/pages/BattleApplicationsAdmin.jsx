@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { getAdminToken } from '../../cms/ContentContext'
+import { apiFetch, readJsonResponse } from '../../utils/api'
 import { AdminPage } from '../AdminLayout'
 
 const STATUS_FILTERS = [
@@ -101,10 +102,10 @@ export default function BattleApplicationsAdmin() {
       if (nextStatus && nextStatus !== 'all') qs.set('status', nextStatus)
       if (nextType && nextType !== 'all') qs.set('type', nextType)
       const suffix = qs.toString() ? `?${qs}` : ''
-      const res = await fetch(`/api/admin/battle-applications${suffix}`, {
+      const res = await apiFetch(`/api/admin/battle-applications${suffix}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      const data = await res.json().catch(() => ({}))
+      const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Failed to load applications')
       setRows(data.applications || [])
       setCounts(data.counts || {})
@@ -159,7 +160,7 @@ export default function BattleApplicationsAdmin() {
 
   const updateApplication = async (id, patch) => {
     const token = getAdminToken()
-    const res = await fetch(`/api/admin/battle-applications/${id}`, {
+    const res = await apiFetch(`/api/admin/battle-applications/${id}`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -167,7 +168,7 @@ export default function BattleApplicationsAdmin() {
       },
       body: JSON.stringify(patch),
     })
-    const data = await res.json().catch(() => ({}))
+    const data = await readJsonResponse(res)
     if (!res.ok) throw new Error(data.error || 'Update failed')
     await load(status, entryType)
     if (expanded === id) setNoteDraft(data.application?.notes || '')

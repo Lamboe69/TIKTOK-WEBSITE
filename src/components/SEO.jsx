@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useContent } from '../cms/ContentContext'
+import { mergeSettings } from '../cms/defaults'
 
 const routeTitles = {
   '/': null,
@@ -19,13 +20,16 @@ const routeTitles = {
   '/giveaway': 'Giveaway',
   '/privacy': 'Privacy Policy',
   '/terms': 'Terms of Use',
+  '/admin/login': 'Admin Login',
+  '/admin': 'Admin',
 }
 
 export default function SEO() {
   const { pathname } = useLocation()
   const { settings } = useContent()
-  const siteName = settings.siteName || ''
-  const tagline = settings.tagline || "Official hub for King Maker's Godsent Box Battles"
+  const merged = mergeSettings(settings)
+  const siteName = merged.siteName || ''
+  const tagline = merged.tagline || "Official hub for King Maker's Godsent Box Battles"
 
   useEffect(() => {
     const route = Object.keys(routeTitles).find(
