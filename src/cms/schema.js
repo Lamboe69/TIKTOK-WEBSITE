@@ -444,12 +444,20 @@ export const COLLECTIONS = [
   {
     key: 'battleCatalog',
     label: 'Battle types',
-    description: 'Homepage battle mosaic',
+    description: 'Homepage battle mosaic and signup form dropdown',
     titleField: 'title',
     fields: [
       { key: 'title', label: 'Title', type: 'text' },
       { key: 'blurb', label: 'Blurb', type: 'textarea' },
       { key: 'img', label: 'Image', type: 'image' },
+      {
+        key: 'entryType',
+        label: 'Entry type',
+        type: 'select',
+        options: ['official', 'special'],
+      },
+      { key: 'short', label: 'Short label (optional)', type: 'text' },
+      { key: 'tag', label: 'Tag line (optional)', type: 'text' },
     ],
   },
   {

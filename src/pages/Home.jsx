@@ -8,12 +8,10 @@ import CommunityRecognition from '../components/sections/CommunityRecognition'
 import Testimonials from '../components/sections/Testimonials'
 import MasterclassTeaser from '../components/sections/MasterclassTeaser'
 import TimezoneStrip from '../components/sections/TimezoneStrip'
-import BoxBattlePopup from '../components/BoxBattlePopup'
 
 export default function Home() {
   return (
     <main>
-      <BoxBattlePopup />
       <Hero />
       <StatBar />
       <HowItWorks />

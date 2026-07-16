@@ -1,73 +1,9 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import Motion from '../Motion'
 import { useSignUp } from '../SignUpContext'
 import { useContent } from '../../cms/ContentContext'
-
-const fallbackTypes = [
-  {
-    id: 'official',
-    short: 'Official',
-    title: 'Official Box Battle',
-    tag: '1M Target · 15 Lions',
-    description: 'The flagship arena. 1M target — 15 Lions reward for the champion who owns the night.',
-    img: '/battles-photos/daily-godsent.jpg',
-    accent: '#FF6B1A',
-    entryType: 'official',
-  },
-  {
-    id: 'beautiful',
-    short: 'Beautiful',
-    title: 'Most Beautiful/Handsome Box Battle',
-    tag: 'Showcase',
-    description: 'Grace, presence, and style — where beauty meets the battle.',
-    img: '/battles-photos/most-beautiful.jpg',
-    accent: '#E8B94A',
-    entryType: 'special',
-  },
-  {
-    id: 'country',
-    short: 'Country',
-    title: 'Country Box Battle',
-    tag: 'Nations',
-    description: 'Rep your flag. National pride in the TikTok arena.',
-    img: '/battles-photos/country.jpg',
-    accent: '#C4A0FF',
-    entryType: 'special',
-  },
-  {
-    id: 'soccer',
-    short: 'Soccer',
-    title: 'Soccer/Football Box Battle',
-    tag: '500K · 3 Lions',
-    description: 'Football fever in the box. 500K target — 3 Lions reward.',
-    img: '/battles-photos/scavengers.jpg',
-    accent: '#FF8A3D',
-    entryType: 'special',
-  },
-  {
-    id: 'nfl',
-    short: 'NFL',
-    title: 'NFL/National Football League Box Battle',
-    tag: '100K · Vault Gift',
-    description: 'Gridiron glory live on TikTok. 100K target — Vault Gift reward.',
-    img: '/photos/battle-highlights.jpg',
-    accent: '#E8B94A',
-    entryType: 'special',
-  },
-  {
-    id: 'nba',
-    short: 'NBA',
-    title: 'NBA Box Battle',
-    tag: 'Courtside',
-    description: 'Hoops energy in the Dynasty arena — fast breaks, big gifts, bigger crowns.',
-    img: '/battles-photos/champion-of-champions.jpg',
-    accent: '#FF6B1A',
-    entryType: 'special',
-  },
-]
-
-const accents = ['#FF6B1A', '#E8B94A', '#C4A0FF', '#FF8A3D', '#E8B94A', '#FF6B1A']
+import { normalizeBattleCatalog } from '../../cms/battleCatalog'
 
 export default function BattleTypes() {
   const { openBattle } = useSignUp()
@@ -76,28 +12,21 @@ export default function BattleTypes() {
   const battleTypesTitle = homePage.battleTypesTitle || 'Battle formats'
   const battleTypesKicker = homePage.battleTypesKicker || 'The Arena · 6 Formats'
   const battleTypesLink = homePage.battleTypesLink || 'Full schedule'
-  const types =
-    collections.battleCatalog?.length > 0
-      ? collections.battleCatalog.map((t, i) => ({
-          id: String(t.id || i),
-          short: t.title?.split(' ')[0] || 'Battle',
-          title: t.title,
-          tag: 'Battle',
-          description: t.blurb || t.description,
-          img: t.img,
-          accent: accents[i % accents.length],
-          entryType: i === 0 ? 'official' : 'special',
-        }))
-      : fallbackTypes
+  const types = useMemo(
+    () => normalizeBattleCatalog(collections.battleCatalog),
+    [collections.battleCatalog],
+  )
   const [active, setActive] = useState(0)
-  const battle = types[active]
+  const battle = types[active] || types[0]
+
+  if (!battle) return null
 
   const handleClaimSlot = () => {
     openBattle({
       type: battle.title,
       title: battle.title,
       battleLabel: battle.title,
-      entryType: battle.entryType || (battle.id === 'official' || battle.id === 'daily' ? 'official' : 'special'),
+      entryType: battle.entryType,
     })
   }
 
@@ -173,7 +102,7 @@ export default function BattleTypes() {
                   {battle.title}
                 </h3>
                 <p className="text-white/75 text-sm leading-relaxed max-w-md mb-6">
-                  {battle.description}
+                  {battle.blurb}
                 </p>
                 <button
                   type="button"

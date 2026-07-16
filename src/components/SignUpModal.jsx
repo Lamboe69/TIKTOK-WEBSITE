@@ -1,22 +1,16 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { Icons } from './Icons'
 import { apiFetch, readJsonResponse } from '../utils/api'
 import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
+import { useContent } from '../cms/ContentContext'
+import {
+  battleCatalogToFormOptions,
+  defaultOfficialBattleLabel,
+} from '../cms/battleCatalog'
 import './SignUpModal.css'
 
 const FORMSPREE_OFFICIAL = ''
 const FORMSPREE_SPECIAL = ''
-
-const OFFICIAL_LABEL = 'Official Godsent Box Battle'
-
-const battleOptions = [
-  { value: OFFICIAL_LABEL, entryType: 'official', group: 'Official' },
-  { value: 'Most Beautiful/Handsome Box Battle', entryType: 'special', group: 'Special' },
-  { value: 'Country Box Battle', entryType: 'special', group: 'Special' },
-  { value: 'Soccer/Football Box Battle', entryType: 'special', group: 'Special' },
-  { value: 'NFL/National Football League Box Battle', entryType: 'special', group: 'Special' },
-  { value: 'NBA Box Battle', entryType: 'special', group: 'Special' },
-]
 
 const battleMeta = {
   official: {
@@ -33,10 +27,10 @@ const battleMeta = {
   },
 }
 
-function emptyForm(type, preset) {
+function emptyForm(type, preset, officialLabel) {
   const defaultBattle =
     preset?.battleLabel ||
-    (type === 'official' ? OFFICIAL_LABEL : '')
+    (type === 'official' ? officialLabel : '')
   return {
     fullName: '',
     tiktok: '',
@@ -51,7 +45,17 @@ function emptyForm(type, preset) {
 }
 
 export default function SignUpModal({ type = 'official', preset = null, isOpen, onClose }) {
-  const [form, setForm] = useState(() => emptyForm(type, preset))
+  const { collections } = useContent()
+  const battleOptions = useMemo(
+    () => battleCatalogToFormOptions(collections.battleCatalog),
+    [collections.battleCatalog],
+  )
+  const officialLabel = useMemo(
+    () => defaultOfficialBattleLabel(collections.battleCatalog),
+    [collections.battleCatalog],
+  )
+
+  const [form, setForm] = useState(() => emptyForm(type, preset, officialLabel))
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -66,15 +70,15 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const isOfficial = entryType === 'official'
   const meta = battleMeta[isOfficial ? 'official' : 'special']
   const endpoint = isOfficial ? FORMSPREE_OFFICIAL : FORMSPREE_SPECIAL
-  const applyingFor = form.battle || (isOfficial ? OFFICIAL_LABEL : 'Select a battle type')
+  const applyingFor = form.battle || (isOfficial ? officialLabel : 'Select a battle type')
   const battleLocked = Boolean(preset?.battleLabel)
 
   useEffect(() => {
     if (!isOpen) return
-    setForm(emptyForm(type, preset))
+    setForm(emptyForm(type, preset, officialLabel))
     setSubmitted(false)
     setError('')
-  }, [isOpen, type, preset])
+  }, [isOpen, type, preset, officialLabel])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -178,7 +182,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const handleClose = () => {
     setSubmitted(false)
     setError('')
-    setForm(emptyForm(type, null))
+    setForm(emptyForm(type, null, officialLabel))
     onClose()
   }
 
@@ -276,15 +280,17 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                             </option>
                           ))}
                       </optgroup>
-                      <optgroup label="Special" className="bg-[#1F0A38]">
-                        {battleOptions
-                          .filter((o) => o.group === 'Special')
-                          .map((opt) => (
-                            <option key={opt.value} value={opt.value} className="bg-[#1F0A38]">
-                              {opt.value}
-                            </option>
-                          ))}
-                      </optgroup>
+                      {battleOptions.some((o) => o.group === 'Special') ? (
+                        <optgroup label="Special" className="bg-[#1F0A38]">
+                          {battleOptions
+                            .filter((o) => o.group === 'Special')
+                            .map((opt) => (
+                              <option key={opt.value} value={opt.value} className="bg-[#1F0A38]">
+                                {opt.value}
+                              </option>
+                            ))}
+                        </optgroup>
+                      ) : null}
                     </select>
                   </div>
                 ) : (
