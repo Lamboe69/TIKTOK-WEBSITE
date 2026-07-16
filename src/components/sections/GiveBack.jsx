@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import { Icons } from '../Icons'
 import Motion from '../Motion'
 import { useContent } from '../../cms/ContentContext'
+import { handleDonateSubmit, useToast } from '../ToastContext'
 
 export default function GiveBack() {
   const { settings } = useContent()
+  const { showDonateComingSoon } = useToast()
   const siteName = settings.siteName || ''
   const paypalEmail = settings.paypalEmail || ''
 
@@ -44,7 +46,14 @@ export default function GiveBack() {
               <p className="text-white/45 text-sm mb-5 max-w-sm leading-relaxed">
                 Help expand the Dynasty and support creators worldwide.
               </p>
-              <form action="https://www.paypal.com/donate" method="post" target="_blank" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+              <form
+                action="https://www.paypal.com/donate"
+                method="post"
+                target="_blank"
+                onSubmit={(e) =>
+                  handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)
+                }
+              >
                   <input type="hidden" name="business" value={paypalEmail} />
                   <input type="hidden" name="no_recurring" value="0" />
                   <input type="hidden" name="item_name" value={`${siteName} Donation`} />

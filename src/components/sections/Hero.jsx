@@ -1,145 +1,447 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import './hero/Hero.css'
+import { useEffect } from 'react'
 import { useSignUp } from '../SignUpContext'
-import { photos as fallbackPhotos } from '../../data/photos'
 import { useContent } from '../../cms/ContentContext'
-import { normalizeHeroSlides } from '../../cms/normalize'
-import { mediaUrl } from '../../utils/mediaUrl'
+import HeroCopy from './hero/HeroCopy'
+import { normalizeHeroLayout } from './hero/heroLayouts'
+import { useHeroSlides } from './hero/useHeroSlides'
 
-const SLIDE_MS = 3000
-const SWIPE_THRESHOLD = 40
+function HeroCarouselMedia({
+  track,
+  index,
+  trackCount,
+  shouldAnimate,
+  onTrackTransitionEnd,
+}) {
+  return (
+    <div className="hero-carousel absolute inset-0 overflow-hidden">
+      <div className="hero-carousel__scan" aria-hidden />
+      <div
+        className={`hero-track flex h-full ${shouldAnimate ? '' : 'hero-track--instant'}`}
+        style={{
+          width: `${trackCount * 100}%`,
+          transform: `translate3d(-${(index / trackCount) * 100}%, 0, 0)`,
+        }}
+        onTransitionEnd={(e) => {
+          if (e.target !== e.currentTarget) return
+          onTrackTransitionEnd()
+        }}
+      >
+        {track.map((photo, i) => (
+          <div
+            key={`${photo.src}-${i}`}
+            className={`hero-panel relative h-full flex-shrink-0 overflow-hidden ${i === index ? 'is-active' : ''}`}
+            style={{ width: `${100 / trackCount}%` }}
+            aria-hidden={i !== index}
+          >
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              className={`hero-panel-img absolute inset-0 w-full h-full object-cover ${
+                i === index ? 'is-active' : ''
+              }`}
+              onError={(e) => { e.target.style.opacity = '0.3' }}
+            />
+            <div
+              className="hero-panel-tint absolute inset-0 pointer-events-none"
+              style={{
+                background: i % 2 === 0
+                  ? 'linear-gradient(135deg, rgba(120,60,200,0.16), transparent 58%)'
+                  : 'linear-gradient(225deg, rgba(255,107,26,0.12), transparent 52%)',
+              }}
+            />
+            <div className="hero-panel-slash absolute inset-y-0 right-0 w-16 pointer-events-none" aria-hidden />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function HeroFadeMedia({ photos, realIndex }) {
+  return (
+    <div className="hero-fade absolute inset-0">
+      <div className="hero-fade__letterbox hero-fade__letterbox--top" aria-hidden />
+      <div className="hero-fade__letterbox hero-fade__letterbox--bottom" aria-hidden />
+      {photos.map((photo, i) => (
+        <div
+          key={photo.src}
+          className={`hero-fade-slide absolute inset-0 ${i === realIndex ? 'is-active' : ''}`}
+          aria-hidden={i !== realIndex}
+        >
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            loading={i < 2 ? 'eager' : 'lazy'}
+            className="hero-fade-img absolute inset-0 w-full h-full object-cover"
+            onError={(e) => { e.target.style.opacity = '0.3' }}
+          />
+        </div>
+      ))}
+      <div className="hero-fade__perf" aria-hidden>
+        {Array.from({ length: 14 }).map((_, i) => (
+          <span key={i} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function HeroSplitMedia({ photos, realIndex }) {
+  return (
+    <div className="hero-split-visual__track">
+      {photos.map((photo, i) => (
+        <div
+          key={photo.src}
+          className={`hero-split-slide ${i === realIndex ? 'is-active' : ''}`}
+          aria-hidden={i !== realIndex}
+        >
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            loading={i < 2 ? 'eager' : 'lazy'}
+            onError={(e) => { e.target.style.opacity = '0.3' }}
+          />
+        </div>
+      ))}
+      <div className="hero-split-visual__glow" aria-hidden />
+    </div>
+  )
+}
+
+function HeroSpotlightMedia({ photos, realIndex }) {
+  return (
+    <div className="hero-spotlight absolute inset-0">
+      {photos.map((photo, i) => (
+        <div
+          key={photo.src}
+          className={`hero-spotlight-slide absolute inset-0 ${i === realIndex ? 'is-active' : ''}`}
+          aria-hidden={i !== realIndex}
+        >
+          <div className="hero-spotlight-frame">
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              onError={(e) => { e.target.style.opacity = '0.3' }}
+            />
+          </div>
+        </div>
+      ))}
+      <div className="hero-spotlight-ring" aria-hidden />
+      <div className="hero-spotlight-rays" aria-hidden />
+    </div>
+  )
+}
+
+function HeroStackMedia({ photos, realIndex }) {
+  const layers = [-3, -2, -1, 0, 1].map((offset) => {
+    const photoIndex = (realIndex + offset + photos.length) % photos.length
+    return {
+      photo: photos[photoIndex],
+      offset,
+      isActive: offset === 0,
+      depth: offset + 3,
+    }
+  })
+
+  return (
+    <div className="hero-stack-stage absolute inset-0">
+      {layers.map(({ photo, offset, isActive, depth }) => (
+        <div
+          key={`${photo.src}-stack-${offset}`}
+          className={`hero-stack-card ${isActive ? 'is-active' : ''}`}
+          style={{
+            '--stack-depth': depth,
+            '--stack-offset': offset,
+            '--stack-abs': Math.abs(offset),
+          }}
+          aria-hidden={!isActive}
+        >
+          <img src={photo.src} alt={isActive ? photo.alt : ''} />
+          <span className="hero-stack-card__corner" aria-hidden>
+            {String(((realIndex + offset + photos.length) % photos.length) + 1).padStart(2, '0')}
+          </span>
+          {isActive && <span className="hero-stack-card__suit" aria-hidden>♦</span>}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+const MOSAIC_COLS = 5
+const MOSAIC_ROWS = 4
+
+function HeroAuroraMedia({ photos, realIndex }) {
+  return (
+    <div className="hero-aurora absolute inset-0">
+      {photos.map((photo, i) => (
+        <div
+          key={photo.src}
+          className={`hero-aurora-slide absolute inset-0 ${i === realIndex ? 'is-active' : ''}`}
+          aria-hidden={i !== realIndex}
+        >
+          <img
+            src={photo.src}
+            alt={photo.alt}
+            loading={i < 2 ? 'eager' : 'lazy'}
+            onError={(e) => { e.target.style.opacity = '0.3' }}
+          />
+        </div>
+      ))}
+      <div className="hero-aurora__ribbons" aria-hidden>
+        <span className="hero-aurora__ribbon hero-aurora__ribbon--a" />
+        <span className="hero-aurora__ribbon hero-aurora__ribbon--b" />
+        <span className="hero-aurora__ribbon hero-aurora__ribbon--c" />
+      </div>
+      <div className="hero-aurora__stars" aria-hidden />
+    </div>
+  )
+}
+
+const PRISM_SHARDS = [
+  { className: 'hero-prism__shard--tl', rotate: -12 },
+  { className: 'hero-prism__shard--tr', rotate: 18 },
+  { className: 'hero-prism__shard--bl', rotate: 8 },
+  { className: 'hero-prism__shard--br', rotate: -20 },
+]
+
+function HeroPrismMedia({ photos, realIndex }) {
+  const slide = photos[realIndex]
+
+  return (
+    <div className="hero-prism absolute inset-0">
+      <div className="hero-prism__void" aria-hidden />
+      <div className="hero-prism__lattice" aria-hidden />
+
+      {PRISM_SHARDS.map((shard) => (
+        <div
+          key={shard.className}
+          className={`hero-prism__shard ${shard.className}`}
+          style={{ '--shard-rotate': `${shard.rotate}deg` }}
+          aria-hidden
+        />
+      ))}
+
+      <div className="hero-prism__jewel-wrap" key={realIndex}>
+        <div className="hero-prism__jewel-aura" aria-hidden />
+        <div className="hero-prism__jewel-frame" aria-hidden />
+        <div className="hero-prism__jewel">
+          {slide && (
+            <>
+              <div
+                className="hero-prism__ghost hero-prism__ghost--r"
+                style={{ backgroundImage: `url(${slide.src})` }}
+              />
+              <div
+                className="hero-prism__ghost hero-prism__ghost--b"
+                style={{ backgroundImage: `url(${slide.src})` }}
+              />
+            </>
+          )}
+          {photos.map((photo, i) => (
+            <div
+              key={photo.src}
+              className={`hero-prism-slide ${i === realIndex ? 'is-active' : ''}`}
+              aria-hidden={i !== realIndex}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading={i < 2 ? 'eager' : 'lazy'}
+                onError={(e) => { e.target.style.opacity = '0.3' }}
+              />
+            </div>
+          ))}
+          <div className="hero-prism__facets" aria-hidden />
+          <div className="hero-prism__sheen" aria-hidden />
+        </div>
+        <div className="hero-prism__prism-base" aria-hidden />
+      </div>
+
+      <div className="hero-prism__flare" key={`flare-${realIndex}`} aria-hidden />
+    </div>
+  )
+}
+
+function HeroOrbitMedia({ photos, realIndex, total }) {
+  const angle = total ? (360 / total) * realIndex : 0
+
+  return (
+    <div className="hero-orbit absolute inset-0">
+      <div className="hero-orbit__floor" aria-hidden />
+      <div
+        className="hero-orbit__ring"
+        style={{ transform: `rotateY(${-angle}deg)` }}
+      >
+        {photos.map((photo, i) => {
+          const itemAngle = total ? (360 / total) * i : 0
+          return (
+            <div
+              key={photo.src}
+              className={`hero-orbit__item ${i === realIndex ? 'is-active' : ''}`}
+              style={{ '--item-angle': `${itemAngle}deg` }}
+              aria-hidden={i !== realIndex}
+            >
+              <img src={photo.src} alt={photo.alt} loading={i < 2 ? 'eager' : 'lazy'} />
+              <span className="hero-orbit__item-glow" aria-hidden />
+            </div>
+          )
+        })}
+      </div>
+      <div className="hero-orbit__halo" aria-hidden />
+    </div>
+  )
+}
+
+function HeroVelvetMedia({ photos, realIndex }) {
+  return (
+    <div className="hero-velvet absolute inset-0" key={realIndex}>
+      <div className="hero-velvet__stage">
+        {photos.map((photo, i) => (
+          <div
+            key={photo.src}
+            className={`hero-velvet-slide ${i === realIndex ? 'is-active' : ''}`}
+            aria-hidden={i !== realIndex}
+          >
+            <img
+              src={photo.src}
+              alt={photo.alt}
+              loading={i < 2 ? 'eager' : 'lazy'}
+              onError={(e) => { e.target.style.opacity = '0.3' }}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="hero-velvet__curtain hero-velvet__curtain--left" aria-hidden>
+        <span className="hero-velvet__fold" />
+        <span className="hero-velvet__fringe" />
+      </div>
+      <div className="hero-velvet__curtain hero-velvet__curtain--right" aria-hidden>
+        <span className="hero-velvet__fold" />
+        <span className="hero-velvet__fringe" />
+      </div>
+      <div className="hero-velvet__proscenium" aria-hidden />
+    </div>
+  )
+}
+
+function HeroMosaicMedia({ slide, realIndex }) {
+  const tiles = []
+  for (let row = 0; row < MOSAIC_ROWS; row += 1) {
+    for (let col = 0; col < MOSAIC_COLS; col += 1) {
+      tiles.push({ row, col, index: row * MOSAIC_COLS + col })
+    }
+  }
+
+  return (
+    <div className="hero-mosaic absolute inset-0" key={realIndex}>
+      <div
+        className="hero-mosaic__grid"
+        style={{ '--mosaic-cols': MOSAIC_COLS, '--mosaic-rows': MOSAIC_ROWS }}
+      >
+        {tiles.map(({ row, col, index }) => (
+          <div
+            key={`${slide.src}-tile-${row}-${col}`}
+            className="hero-mosaic__tile"
+            style={{
+              '--tile-col': col,
+              '--tile-row': row,
+              '--tile-delay': `${index * 22}ms`,
+              backgroundImage: `url(${slide.src})`,
+              backgroundSize: `${MOSAIC_COLS * 100}% ${MOSAIC_ROWS * 100}%`,
+              backgroundPosition: `${(col / (MOSAIC_COLS - 1)) * 100}% ${(row / (MOSAIC_ROWS - 1)) * 100}%`,
+            }}
+            aria-hidden
+          />
+        ))}
+      </div>
+      <img
+        className="hero-mosaic__ghost"
+        src={slide.src}
+        alt={slide.alt}
+      />
+    </div>
+  )
+}
+
+function HeroPeekCards({ photos, realIndex, total }) {
+  return (
+    <div className="hero-peek absolute top-0 right-0 bottom-0 z-[1] pointer-events-none hidden lg:block" aria-hidden>
+      <div className="absolute inset-0 flex gap-3 items-stretch py-[16%] pr-5 pl-8">
+        {[1, 2].map((offset) => {
+          const p = photos[(realIndex + offset) % total]
+          return (
+            <div
+              key={`${p.src}-peek-${offset}`}
+              className={`hero-peek-card ${offset === 1 ? 'hero-peek-card--near' : 'hero-peek-card--far'}`}
+            >
+              <img src={p.src} alt="" />
+              <span className="hero-peek-card__shine" />
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function HeroControls({ prev, next, onPause }) {
+  const pauseProps = {
+    onMouseEnter: () => onPause(true),
+    onMouseLeave: () => onPause(false),
+  }
+
+  return (
+    <>
+      <button type="button" onClick={prev} className="hero-nav hero-nav--prev" aria-label="Previous slide" {...pauseProps}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button type="button" onClick={next} className="hero-nav hero-nav--next" aria-label="Next slide" {...pauseProps}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+    </>
+  )
+}
+
+function HeroProgress({ progress }) {
+  return (
+    <div className="hero-progress">
+      <div className="hero-progress__bar" style={{ transform: `scaleX(${progress})` }} />
+    </div>
+  )
+}
 
 export default function Hero() {
   const { openOfficial, openSpecial } = useSignUp()
   const { collections, settings, getPage } = useContent()
   const siteName = settings.siteName || ''
   const homePage = getPage('home')
-  const photos = useMemo(() => {
-    const fromCms = normalizeHeroSlides(collections.heroSlides)
-    const list = fromCms.length ? fromCms : fallbackPhotos
-    return list.map((p) => ({ ...p, src: mediaUrl(p.src) }))
-  }, [collections.heroSlides])
-  // Extended track: all photos + clone of first for seamless left wrap
-  const track = useMemo(() => (photos.length ? [...photos, photos[0]] : []), [photos])
-  const [index, setIndex] = useState(0)
-  const [animate, setAnimate] = useState(true)
-  const [progress, setProgress] = useState(0)
-  const [paused, setPaused] = useState(false)
-  const [reducedMotion, setReducedMotion] = useState(false)
-  const animRef = useRef(null)
-  const startRef = useRef(0)
-  const elapsedRef = useRef(0)
-  const touchX = useRef(null)
-  const wrapping = useRef(false)
+  const layout = normalizeHeroLayout(homePage.heroLayout)
+  const tagline = homePage.heroTagline || (settings.tagline ? settings.tagline.split('.')[0] : 'Godsent Box Battles')
 
-  const realIndex = index % photos.length
-  const slide = photos[realIndex]
-  const total = photos.length
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(mq.matches)
-    const onChange = (e) => setReducedMotion(e.matches)
-    mq.addEventListener('change', onChange)
-    return () => mq.removeEventListener('change', onChange)
-  }, [])
-
-  const jumpTo = useCallback((nextReal) => {
-    const target = ((nextReal % total) + total) % total
-    wrapping.current = false
-    setAnimate(true)
-    setIndex(target)
-    setProgress(0)
-    elapsedRef.current = 0
-    startRef.current = performance.now()
-  }, [total])
-
-  const advance = useCallback(() => {
-    if (wrapping.current) return
-    setIndex((i) => i + 1)
-    setProgress(0)
-    elapsedRef.current = 0
-    startRef.current = performance.now()
-  }, [])
-
-  const next = useCallback(() => {
-    if (wrapping.current) return
-    setAnimate(true)
-    advance()
-  }, [advance])
-
-  const prev = useCallback(() => {
-    if (wrapping.current) return
-    if (index === 0) {
-      // Jump to clone silently, then animate back one
-      wrapping.current = true
-      setAnimate(false)
-      setIndex(total)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setAnimate(true)
-          setIndex(total - 1)
-          wrapping.current = false
-          setProgress(0)
-          elapsedRef.current = 0
-          startRef.current = performance.now()
-        })
-      })
-      return
-    }
-    setAnimate(true)
-    setIndex((i) => i - 1)
-    setProgress(0)
-    elapsedRef.current = 0
-    startRef.current = performance.now()
-  }, [index, total])
-
-  const onTrackTransitionEnd = () => {
-    if (index >= total) {
-      wrapping.current = true
-      setAnimate(false)
-      setIndex(0)
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setAnimate(true)
-          wrapping.current = false
-        })
-      })
-    }
-  }
-
-  // Autoplay every 3 seconds
-  useEffect(() => {
-    if (paused) {
-      if (animRef.current) cancelAnimationFrame(animRef.current)
-      return
-    }
-
-    startRef.current = performance.now() - elapsedRef.current
-
-    const tick = (now) => {
-      if (wrapping.current) {
-        animRef.current = requestAnimationFrame(tick)
-        return
-      }
-      const elapsed = now - startRef.current
-      elapsedRef.current = elapsed
-      const p = Math.min(elapsed / SLIDE_MS, 1)
-      setProgress(p)
-      if (p >= 1) {
-        elapsedRef.current = 0
-        startRef.current = now
-        setProgress(0)
-        setIndex((i) => i + 1)
-      }
-      animRef.current = requestAnimationFrame(tick)
-    }
-
-    animRef.current = requestAnimationFrame(tick)
-    return () => {
-      if (animRef.current) cancelAnimationFrame(animRef.current)
-    }
-  }, [paused])
+  const {
+    photos,
+    track,
+    index,
+    realIndex,
+    slide,
+    total,
+    progress,
+    setPaused,
+    shouldAnimate,
+    next,
+    prev,
+    onTrackTransitionEnd,
+    onTouchStart,
+    onTouchEnd,
+    trackCount,
+  } = useHeroSlides(collections.heroSlides)
 
   useEffect(() => {
     const onKey = (e) => {
@@ -150,234 +452,104 @@ export default function Hero() {
     return () => window.removeEventListener('keydown', onKey)
   }, [next, prev])
 
-  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX }
-  const onTouchEnd = (e) => {
-    if (touchX.current == null) return
-    const dx = e.changedTouches[0].clientX - touchX.current
-    touchX.current = null
-    if (Math.abs(dx) < SWIPE_THRESHOLD) return
-    if (dx < 0) next()
-    else prev()
-  }
-
   const handleCta = () => {
-    if (slide.cta?.action === 'openSpecial') openSpecial()
+    if (slide?.cta?.action === 'openSpecial') openSpecial()
     else openOfficial()
   }
 
-  const shouldAnimate = animate && !reducedMotion
-  const trackCount = track.length
+  if (!slide) return null
+
+  const copyProps = {
+    layout,
+    siteName,
+    tagline,
+    slide,
+    realIndex,
+    total,
+    onCta: handleCta,
+    onPause: setPaused,
+  }
+
+  if (layout === 'split') {
+    return (
+      <section
+        className={`hero-arena hero-arena--split relative h-[calc(100svh-4rem)] min-h-[540px] overflow-hidden`}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        aria-roledescription="carousel"
+        aria-label={`${siteName} battle showcase`}
+      >
+        <HeroProgress progress={progress} />
+
+        <div className="hero-split-shell">
+          <div className="hero-split-visual">
+            <HeroSplitMedia photos={photos} realIndex={realIndex} />
+            <svg className="hero-split-bevel" viewBox="0 0 40 1000" preserveAspectRatio="none" aria-hidden>
+              <polygon points="0,0 40,0 0,1000" fill="currentColor" />
+            </svg>
+          </div>
+
+          <div className="hero-split-panel">
+            <div className="hero-split-panel__stripe" aria-hidden />
+            <div className="hero-split-panel__inner">
+              <HeroCopy {...copyProps} />
+            </div>
+          </div>
+        </div>
+
+        <HeroControls prev={prev} next={next} onPause={setPaused} />
+      </section>
+    )
+  }
 
   return (
     <section
-      className="hero-arena relative h-[calc(100svh-4rem)] min-h-[540px] overflow-hidden"
-      style={{ background: '#160B2C' }}
+      className={`hero-arena hero-arena--${layout} relative h-[calc(100svh-4rem)] min-h-[540px] overflow-hidden`}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       aria-roledescription="carousel"
       aria-label={`${siteName} battle showcase`}
     >
-      {/* ═══ Full-bleed track — slides LEFT every 3s ═══ */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div
-          className={`hero-track flex h-full ${shouldAnimate ? '' : 'hero-track--instant'}`}
-          style={{
-            width: `${trackCount * 100}%`,
-            transform: `translate3d(-${(index / trackCount) * 100}%, 0, 0)`,
-          }}
-          onTransitionEnd={(e) => {
-            if (e.target !== e.currentTarget) return
-            onTrackTransitionEnd()
-          }}
-        >
-          {track.map((photo, i) => (
-            <div
-              key={`${photo.src}-${i}`}
-              className="hero-panel relative h-full flex-shrink-0 overflow-hidden"
-              style={{ width: `${100 / trackCount}%` }}
-              aria-hidden={i !== index}
-            >
-              <img
-                src={photo.src}
-                alt={photo.alt}
-                loading={i < 2 ? 'eager' : 'lazy'}
-                className={`hero-panel-img absolute inset-0 w-full h-full object-cover ${
-                  i === index ? 'is-active' : ''
-                }`}
-                onError={(e) => { e.target.style.opacity = '0.3' }}
-              />
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: i % 2 === 0
-                    ? 'linear-gradient(135deg, rgba(90,40,160,0.38), transparent 60%)'
-                    : 'linear-gradient(225deg, rgba(255,107,26,0.28), transparent 55%)',
-                }}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Peeking next frames on desktop */}
-      <div className="hero-peek absolute top-0 right-0 bottom-0 z-[1] pointer-events-none hidden lg:block" aria-hidden>
-        <div className="absolute inset-0 flex gap-3 items-stretch py-[18%] pr-4 pl-10">
-          {[1, 2].map((offset) => {
-            const p = photos[(realIndex + offset) % total]
-            return (
-              <div
-                key={`${p.src}-peek-${offset}`}
-                className={`hero-peek-card ${offset === 1 ? 'hero-peek-card--near' : 'hero-peek-card--far'}`}
-              >
-                <img src={p.src} alt="" />
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="hero-veil absolute inset-0 z-[2] pointer-events-none" />
-
-      {/* Top progress */}
-      <div className="absolute top-0 left-0 right-0 z-[4] h-[2px] bg-white/10">
-        <div
-          className="h-full bg-ember origin-left"
-          style={{
-            transform: `scaleX(${progress})`,
-            boxShadow: '0 0 12px rgba(255,107,26,0.55)',
-          }}
+      {layout === 'carousel' && (
+        <HeroCarouselMedia
+          track={track}
+          index={index}
+          trackCount={trackCount}
+          shouldAnimate={shouldAnimate}
+          onTrackTransitionEnd={onTrackTransitionEnd}
         />
-      </div>
+      )}
+      {layout === 'fade' && <HeroFadeMedia photos={photos} realIndex={realIndex} />}
+      {layout === 'spotlight' && <HeroSpotlightMedia photos={photos} realIndex={realIndex} />}
+      {layout === 'stack' && <HeroStackMedia photos={photos} realIndex={realIndex} />}
+      {layout === 'aurora' && <HeroAuroraMedia photos={photos} realIndex={realIndex} />}
+      {layout === 'prism' && <HeroPrismMedia photos={photos} realIndex={realIndex} />}
+      {layout === 'orbit' && <HeroOrbitMedia photos={photos} realIndex={realIndex} total={total} />}
+      {layout === 'velvet' && <HeroVelvetMedia photos={photos} realIndex={realIndex} />}
+      {layout === 'mosaic' && <HeroMosaicMedia slide={slide} realIndex={realIndex} />}
 
-      {/* Brand + CTA */}
-      <div className="absolute inset-0 z-[3] flex flex-col justify-end pointer-events-none">
-        <div className="max-w-7xl mx-auto w-full px-5 sm:px-8 pb-28 sm:pb-32 pt-24">
-          <div className="max-w-xl pointer-events-auto">
-            <p className="font-body text-[11px] tracking-[0.35em] uppercase text-white/45 mb-4">
-              {homePage.heroTagline || (settings.tagline ? settings.tagline.split('.')[0] : 'Godsent Box Battles')}
-            </p>
+      {layout === 'carousel' && total > 1 && (
+        <HeroPeekCards photos={photos} realIndex={realIndex} total={total} />
+      )}
 
-            <h1 className="font-display font-extrabold leading-[0.88] tracking-[-0.03em]">
-              <span className="block text-ivory" style={{ fontSize: 'clamp(3.25rem, 11vw, 7rem)' }}>
-                {siteName.split(' ').length > 1 ? siteName.split(' ')[0] : siteName}
-              </span>
-              <span
-                className="block hero-brand-outline"
-                style={{ fontSize: 'clamp(3.25rem, 11vw, 7rem)' }}
-              >
-                {siteName.split(' ').length > 1 ? siteName.split(' ').slice(1).join(' ') : ''}
-              </span>
-            </h1>
+      <div className={`hero-veil hero-veil--${layout}`} />
 
-            <div className="mt-6 mb-8 min-h-[4.75rem]" key={realIndex}>
-              <p
-                className="hero-caption font-display font-semibold text-ember italic leading-tight mb-2"
-                style={{ fontSize: 'clamp(1.25rem, 2.8vw, 1.85rem)' }}
-              >
-                {slide.caption}
-              </p>
-              <p className="hero-line text-white/60 text-sm sm:text-base max-w-sm leading-relaxed">
-                {slide.line}
-              </p>
-            </div>
+      {layout === 'fade' && (
+        <p className="hero-fade-counter" aria-hidden>
+          <span>{String(realIndex + 1).padStart(2, '0')}</span>
+          <em> / {String(total).padStart(2, '0')}</em>
+        </p>
+      )}
 
-            <div
-              className="flex flex-wrap items-center gap-4"
-              onMouseEnter={() => setPaused(true)}
-              onMouseLeave={() => setPaused(false)}
-            >
-              <button
-                type="button"
-                onClick={handleCta}
-                className="hero-cta group relative inline-flex items-center gap-3 px-8 py-4 text-sm sm:text-base font-bold text-white overflow-hidden"
-              >
-                <span className="relative z-[1]">{slide.cta?.label || 'Join My Box Battle'}</span>
-                <svg className="relative z-[1] w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 16 16" fill="none" aria-hidden>
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                <span className="hero-cta-sweep" aria-hidden />
-              </button>
+      <HeroProgress progress={progress} />
 
-              <Link
-                to="/battle-schedule"
-                className="text-sm font-medium text-white/55 hover:text-ivory transition-colors underline-offset-4 hover:underline"
-              >
-                See Schedule
-              </Link>
-            </div>
-          </div>
+      <div className={`hero-overlay hero-overlay--${layout}`}>
+        <div className="hero-overlay__inner">
+          <HeroCopy {...copyProps} />
         </div>
       </div>
 
-      {/* Filmstrip — all 6 images visible */}
-      <div
-        className="hero-filmstrip absolute bottom-0 inset-x-0 z-[4]"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <div className="max-w-7xl mx-auto px-5 sm:px-8 pb-5 pt-3">
-          <div className="flex items-end gap-2 sm:gap-3 overflow-x-auto scrollbar-hide">
-            {photos.map((photo, i) => {
-              const active = i === realIndex
-              return (
-                <button
-                  key={photo.src}
-                  type="button"
-                  onClick={() => jumpTo(i)}
-                  className={`hero-thumb group relative flex-shrink-0 overflow-hidden transition-all duration-500 ${
-                    active ? 'is-active' : ''
-                  }`}
-                  aria-label={`Slide ${i + 1}: ${photo.caption}`}
-                  aria-current={active ? 'true' : undefined}
-                >
-                  <img
-                    src={photo.src}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <span className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                  <span className={`absolute bottom-1.5 left-1.5 font-display text-[10px] tracking-wider tabular-nums ${
-                    active ? 'text-ember' : 'text-white/70'
-                  }`}>
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  {active && (
-                    <span
-                      className="absolute bottom-0 left-0 h-0.5 bg-ember"
-                      style={{ width: `${progress * 100}%` }}
-                    />
-                  )}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        onClick={prev}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-[4] w-10 h-10 flex items-center justify-center text-white/40 hover:text-ivory transition-colors"
-        aria-label="Previous slide"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      <button
-        type="button"
-        onClick={next}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-[4] w-10 h-10 flex items-center justify-center text-white/40 hover:text-ivory transition-colors"
-        aria-label="Next slide"
-        onMouseEnter={() => setPaused(true)}
-        onMouseLeave={() => setPaused(false)}
-      >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
-          <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+      <HeroControls prev={prev} next={next} onPause={setPaused} />
     </section>
   )
 }

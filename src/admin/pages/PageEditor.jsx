@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { savePage, uploadImage, useContent } from '../../cms/ContentContext'
 import { PAGE_SCHEMA } from '../../cms/schema'
+import { HERO_LAYOUTS } from '../../components/sections/hero/heroLayouts'
+import { getSectionLayoutMeta } from '../../cms/sectionLayouts'
 import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 
@@ -99,6 +101,35 @@ export default function PageEditor() {
               </div>
             </div>
           </div>
+        </div>
+      )
+    }
+
+    if (field.type === 'select') {
+      const layoutMeta = field.key === 'heroLayout'
+        ? Object.fromEntries(HERO_LAYOUTS.map((l) => [l.id, l]))
+        : getSectionLayoutMeta(field.key)
+
+      const isLayoutField = field.key === 'heroLayout' || Boolean(layoutMeta)
+
+      return (
+        <div className="admin-field" key={field.key}>
+          <label>{field.label}</label>
+          <select
+            value={draft[field.key] || (field.options?.[0] ?? '')}
+            onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
+          >
+            {(field.options || []).map((o) => (
+              <option key={o} value={o}>
+                {layoutMeta?.[o] ? `${layoutMeta[o].label} — ${layoutMeta[o].description}` : o}
+              </option>
+            ))}
+          </select>
+          {isLayoutField ? (
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginTop: '0.5rem' }}>
+              Switch anytime — content stays the same; only the presentation changes.
+            </p>
+          ) : null}
         </div>
       )
     }

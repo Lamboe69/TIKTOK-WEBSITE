@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { SignUpProvider } from './components/SignUpContext'
 import { StatsProvider } from './hooks/useTikTokStats'
 import { ContentProvider } from './cms/ContentContext'
+import { ToastProvider } from './components/ToastContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import StickyCTA from './components/StickyCTA'
@@ -125,13 +126,15 @@ export default function App() {
   return (
     <Router>
       <ContentProvider>
-        <SignUpProvider>
-          <StatsProvider>
-            <SEO />
-            <ScrollToTop />
-            <AppRoutes />
-          </StatsProvider>
-        </SignUpProvider>
+        <ToastProvider>
+          <SignUpProvider>
+            <StatsProvider>
+              <SEO />
+              <ScrollToTop />
+              <AppRoutes />
+            </StatsProvider>
+          </SignUpProvider>
+        </ToastProvider>
       </ContentProvider>
     </Router>
   )

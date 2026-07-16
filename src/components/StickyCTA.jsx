@@ -2,12 +2,14 @@ import { useLocation } from 'react-router-dom'
 import { useSignUp } from './SignUpContext'
 import { useContent } from '../cms/ContentContext'
 import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
+import { handleDonateSubmit, useToast } from './ToastContext'
 import { Icons } from './Icons'
 
 export default function StickyCTA() {
   const { pathname } = useLocation()
   const { openOfficial, openSpecial } = useSignUp()
   const { settings } = useContent()
+  const { showDonateComingSoon } = useToast()
 
   const isSpecialPage = pathname === '/daily-quotes'
   const label = isSpecialPage ? BATTLE_SUBMIT_LABEL : settings.ctaLabel || 'Join My Box Battle'
@@ -31,7 +33,13 @@ export default function StickyCTA() {
         >
           {label}
         </button>
-        <form action="https://www.paypal.com/donate" method="post" target="_blank" className="flex-1" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+        <form
+          action="https://www.paypal.com/donate"
+          method="post"
+          target="_blank"
+          className="flex-1"
+          onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}
+        >
             <input type="hidden" name="business" value={paypalEmail} />
             <input type="hidden" name="no_recurring" value="0" />
             <input type="hidden" name="item_name" value={`${siteName} Donation`} />

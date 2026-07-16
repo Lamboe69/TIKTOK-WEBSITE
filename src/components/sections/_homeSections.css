@@ -704,7 +704,8 @@
 
 /* ─── How It Works — compact three-step strip ─── */
 .how-steps {
-  overflow: hidden;
+  overflow-x: clip;
+  overflow-y: visible;
 }
 
 .how-steps__layout {
@@ -771,7 +772,7 @@
     padding: 3.25rem 3.5rem 3.5rem 2.75rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     max-width: none;
   }
 }

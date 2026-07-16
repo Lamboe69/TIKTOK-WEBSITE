@@ -39,6 +39,38 @@ export function normalizeMasterclassTiers(items = []) {
   }))
 }
 
+function resolveTierAmountDollars(tier) {
+  if (!tier) return null
+  if (tier.amount != null && tier.amount !== '') {
+    const n = Number(tier.amount)
+    if (Number.isFinite(n) && n > 0) return n
+  }
+  const match = String(tier.price || '')
+    .replace(/,/g, '')
+    .match(/(\d+(?:\.\d+)?)/)
+  if (!match) return null
+  const n = Number(match[1])
+  return Number.isFinite(n) && n > 0 ? n : null
+}
+
+/** Lowest-priced masterclass tier label for "From $X" displays. */
+export function getMasterclassMinPriceLabel(tiers = []) {
+  let minTier = null
+  let minAmount = Infinity
+
+  for (const tier of tiers) {
+    const amount = resolveTierAmountDollars(tier)
+    if (amount != null && amount < minAmount) {
+      minAmount = amount
+      minTier = tier
+    }
+  }
+
+  if (!minTier) return '$500'
+  if (minTier.price) return minTier.price
+  return `$${minAmount.toLocaleString('en-US')}`
+}
+
 export function normalizeAgencyRegions(items = []) {
   return items.map((r) => ({
     ...r,

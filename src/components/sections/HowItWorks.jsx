@@ -1,5 +1,6 @@
 import Motion from '../Motion'
 import { useContent } from '../../cms/ContentContext'
+import { normalizeSectionLayout } from '../../cms/sectionLayouts'
 
 const fallbackSteps = [
   {
@@ -22,9 +23,34 @@ const fallbackSteps = [
   },
 ]
 
+function HowItWorksHead({ kicker, title, subtitle, centered }) {
+  const titleWords = title.split(' ')
+  const titleBreak = Math.ceil(titleWords.length / 2)
+  const titleLead = titleWords.slice(0, titleBreak).join(' ')
+  const titleAccent = titleWords.slice(titleBreak).join(' ')
+
+  return (
+    <div className={`how-steps__head${centered ? ' how-compass__head' : ''}`}>
+      <p className="sec-kicker">{kicker}</p>
+      <h2 className="how-steps__title">
+        {titleAccent ? (
+          <>
+            {titleLead}{' '}
+            <span className="text-gradient">{titleAccent}</span>
+          </>
+        ) : (
+          title
+        )}
+      </h2>
+      <p className="how-steps__subtitle">{subtitle}</p>
+    </div>
+  )
+}
+
 export default function HowItWorks() {
   const { collections, getPage } = useContent()
   const homePage = getPage('home')
+  const layout = normalizeSectionLayout('howItWorksLayout', homePage.howItWorksLayout)
   const steps = (collections.howItWorks?.length
     ? collections.howItWorks.map((s) => ({
         num: s.num,
@@ -37,10 +63,88 @@ export default function HowItWorks() {
   const sectionKicker = homePage.howItWorksKicker || 'How It Works'
   const sectionImage = homePage.howItWorksImage || '/photos/tiktok.png'
 
-  const titleWords = sectionTitle.split(' ')
-  const titleBreak = Math.ceil(titleWords.length / 2)
-  const titleLead = titleWords.slice(0, titleBreak).join(' ')
-  const titleAccent = titleWords.slice(titleBreak).join(' ')
+  if (layout === 'compass') {
+    return (
+      <section className="how-steps how-steps--compass home-band-ink home-band-sep">
+        <div className="how-compass">
+          <Motion delay={60}>
+            <HowItWorksHead kicker={sectionKicker} title={sectionTitle} subtitle={sectionSubtitle} centered />
+          </Motion>
+          <div className="how-compass__dial" aria-hidden>
+            <div className="how-compass__core">
+              <img src={sectionImage} alt="" />
+            </div>
+          </div>
+          <div className="how-compass__nodes">
+            {steps.map(({ num, title, description }, i) => (
+              <Motion key={num} delay={100 + i * 70}>
+                <article className="how-compass__node">
+                  <span className="how-steps__num" style={{ fontSize: '1.5rem' }}>{num}</span>
+                  <h3 className="how-steps__card-title" style={{ marginTop: '0.35rem' }}>{title}</h3>
+                  <p className="how-steps__card-body">{description}</p>
+                </article>
+              </Motion>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (layout === 'spiral') {
+    return (
+      <section className="how-steps how-steps--spiral home-band-ink home-band-sep">
+        <div className="how-spiral">
+          <Motion delay={60}>
+            <div className="how-spiral__path">
+              <div className="how-spiral__thread" aria-hidden />
+              {steps.map(({ num, title, description }, i) => (
+                <article key={num} className="how-spiral__step" style={{ '--spiral-i': i }}>
+                  <span className="how-steps__num">{num}</span>
+                  <h3 className="how-steps__card-title">{title}</h3>
+                  <p className="how-steps__card-body">{description}</p>
+                </article>
+              ))}
+            </div>
+          </Motion>
+          <div>
+            <Motion delay={80}>
+              <HowItWorksHead kicker={sectionKicker} title={sectionTitle} subtitle={sectionSubtitle} />
+            </Motion>
+            <Motion delay={140}>
+              <div className="how-spiral__media">
+                <img src={sectionImage} alt="King Maker live on TikTok" loading="lazy" />
+              </div>
+            </Motion>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  if (layout === 'tickets') {
+    return (
+      <section className="how-steps how-steps--tickets home-band-ink home-band-sep">
+        <div className="how-tickets">
+          <Motion delay={60}>
+            <HowItWorksHead kicker={sectionKicker} title={sectionTitle} subtitle={sectionSubtitle} centered />
+          </Motion>
+          <div className="how-tickets__fan">
+            {steps.map(({ num, title, description }, i) => (
+              <Motion key={num} delay={100 + i * 80}>
+                <article className="how-tickets__stub" style={{ '--ticket-i': i }}>
+                  <span className="how-steps__num">{num}</span>
+                  <div className="how-tickets__perforation" aria-hidden />
+                  <h3 className="how-steps__card-title" style={{ marginTop: '1.25rem' }}>{title}</h3>
+                  <p className="how-steps__card-body">{description}</p>
+                </article>
+              </Motion>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   return (
     <section className="how-steps home-band-ink home-band-sep">
@@ -52,20 +156,7 @@ export default function HowItWorks() {
 
         <div className="how-steps__body">
           <Motion delay={60}>
-            <div className="how-steps__head">
-              <p className="sec-kicker">{sectionKicker}</p>
-              <h2 className="how-steps__title">
-                {titleAccent ? (
-                  <>
-                    {titleLead}{' '}
-                    <span className="text-gradient">{titleAccent}</span>
-                  </>
-                ) : (
-                  sectionTitle
-                )}
-              </h2>
-              <p className="how-steps__subtitle">{sectionSubtitle}</p>
-            </div>
+            <HowItWorksHead kicker={sectionKicker} title={sectionTitle} subtitle={sectionSubtitle} />
           </Motion>
 
           <div className="how-steps__grid">

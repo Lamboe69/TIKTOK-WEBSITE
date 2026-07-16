@@ -5,7 +5,9 @@ import Motion from '../Motion'
 import fallbackGifters from '../../data/topGifters'
 import fallbackFans from '../../data/topFans'
 import { useContent } from '../../cms/ContentContext'
+import { handleDonateSubmit, useToast } from '../ToastContext'
 import { normalizePeoplePhotos } from '../../cms/normalize'
+import { normalizeSectionLayout } from '../../cms/sectionLayouts'
 
 const MAX_HONOR_PEOPLE = 5
 const GIFTERS_ACCENT = '#FF6B1A'
@@ -69,7 +71,7 @@ function HonorMarquee({ people, direction, accent, label, kicker }) {
   )
 }
 
-function HonorDonatePanel({ title, body, siteName, paypalEmail }) {
+function HonorDonatePanel({ title, body, siteName, paypalEmail, onDonateUnavailable }) {
   return (
     <aside className="honor-side honor-side--donate">
       <p className="honor-side__kicker">Support</p>
@@ -80,12 +82,7 @@ function HonorDonatePanel({ title, body, siteName, paypalEmail }) {
         method="post"
         target="_blank"
         className="honor-side__form"
-        onSubmit={(e) => {
-          if (!paypalEmail) {
-            e.preventDefault()
-            alert('Donations coming soon — the admin will configure PayPal in Settings.')
-          }
-        }}
+        onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, onDonateUnavailable)}
       >
         <input type="hidden" name="business" value={paypalEmail} />
         <input type="hidden" name="no_recurring" value="0" />
@@ -117,9 +114,28 @@ function HonorCharityPanel() {
   )
 }
 
+function RecognitionHead({ kicker, title }) {
+  return (
+    <div className="max-w-7xl mx-auto text-center">
+      <Motion delay={40}>
+        <p className="sec-kicker mb-2">{kicker}</p>
+        <h2
+          className="font-display font-bold text-ivory leading-none tracking-tight"
+          style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.5rem)' }}
+        >
+          {title}{' '}
+          <span className="text-gradient">gifters & fans</span>
+        </h2>
+      </Motion>
+    </div>
+  )
+}
+
 export default function CommunityRecognition() {
   const { collections, settings, getPage } = useContent()
+  const { showDonateComingSoon } = useToast()
   const homePage = getPage('home')
+  const layout = normalizeSectionLayout('recognitionLayout', homePage.recognitionLayout)
   const siteName = settings.siteName || ''
   const paypalEmail = settings.paypalEmail || ''
 
@@ -139,21 +155,143 @@ export default function CommunityRecognition() {
   const recognitionMissionBody =
     homePage.recognitionMissionBody || 'Expand the Dynasty. Lift creators. Fund what matters.'
 
-  return (
-    <section className="relative overflow-hidden home-band-glow home-band-sep honor-section">
-      <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <Motion delay={40}>
-            <p className="sec-kicker mb-2">{recognitionKicker}</p>
-            <h2
-              className="font-display font-bold text-ivory leading-none tracking-tight"
-              style={{ fontSize: 'clamp(1.6rem, 3.2vw, 2.5rem)' }}
-            >
-              {recognitionTitle}{' '}
-              <span className="text-gradient">gifters & fans</span>
-            </h2>
-          </Motion>
+  const sectionClass = `relative overflow-hidden home-band-glow home-band-sep honor-section${layout !== 'marquee' ? ` recognition--${layout}` : ''}`
+
+  if (layout === 'throne') {
+    return (
+      <section className={sectionClass}>
+        <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-4">
+          <RecognitionHead kicker={recognitionKicker} title={recognitionTitle} />
         </div>
+        <div className="throne-room">
+          <div className="throne-side">
+            <p className="honor-marquee__kicker" style={{ color: GIFTERS_ACCENT }}>Royal supporters</p>
+            <h3 className="honor-marquee__title mb-4">Top Gifters</h3>
+            <div className="throne-side__seat">
+              {topGifters.slice(0, MAX_HONOR_PEOPLE).map((person, i) => (
+                <a key={person.handle} href={person.url} target="_blank" rel="noopener noreferrer" className="throne-card" style={{ '--honor-accent': GIFTERS_ACCENT }}>
+                  <img src={person.photo} alt={person.name} />
+                  <p className="text-xs font-bold text-ivory mt-2">{person.name}</p>
+                  <p className="text-[10px] text-white/50">{String(i + 1).padStart(2, '0')}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+          <div className="throne-side throne-side--fans">
+            <p className="honor-marquee__kicker" style={{ color: FANS_ACCENT }}>Loyal voices</p>
+            <h3 className="honor-marquee__title mb-4">Top Fans</h3>
+            <div className="throne-side__seat">
+              {topFans.slice(0, MAX_HONOR_PEOPLE).map((person, i) => (
+                <a key={person.handle} href={person.url} target="_blank" rel="noopener noreferrer" className="throne-card" style={{ '--honor-accent': FANS_ACCENT }}>
+                  <img src={person.photo} alt={person.name} />
+                  <p className="text-xs font-bold text-ivory mt-2">{person.name}</p>
+                  <p className="text-[10px] text-white/50">{String(i + 1).padStart(2, '0')}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="honor-panels">
+          <HonorDonatePanel
+            title={recognitionMissionTitle}
+            body={recognitionMissionBody}
+            siteName={siteName}
+            paypalEmail={paypalEmail}
+            onDonateUnavailable={showDonateComingSoon}
+          />
+          <HonorCharityPanel />
+        </div>
+      </section>
+    )
+  }
+
+  if (layout === 'tapestry') {
+    const allPeople = [
+      ...topGifters.slice(0, MAX_HONOR_PEOPLE).map((p) => ({ ...p, accent: GIFTERS_ACCENT })),
+      ...topFans.slice(0, MAX_HONOR_PEOPLE).map((p) => ({ ...p, accent: FANS_ACCENT })),
+    ]
+    return (
+      <section className={sectionClass}>
+        <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-4">
+          <RecognitionHead kicker={recognitionKicker} title={recognitionTitle} />
+        </div>
+        <div className="tapestry-grid">
+          {allPeople.map((person, i) => (
+            <a key={`${person.handle}-${i}`} href={person.url} target="_blank" rel="noopener noreferrer" className="tapestry-tile">
+              <img src={person.photo} alt={person.name} loading="lazy" />
+              <div className="tapestry-tile__overlay">
+                <p style={{ color: person.accent, fontSize: '8px', fontWeight: 700, letterSpacing: '0.15em' }}>{person.role}</p>
+                <p className="font-display font-bold">{person.name}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="honor-panels">
+          <HonorDonatePanel
+            title={recognitionMissionTitle}
+            body={recognitionMissionBody}
+            siteName={siteName}
+            paypalEmail={paypalEmail}
+            onDonateUnavailable={showDonateComingSoon}
+          />
+          <HonorCharityPanel />
+        </div>
+      </section>
+    )
+  }
+
+  if (layout === 'corridor') {
+    const gifterRows = [topGifters.slice(0, 3), topGifters.slice(0, 3), topGifters.slice(0, 3)]
+    const fanRows = [topFans.slice(0, 3), topFans.slice(0, 3), topFans.slice(0, 3)]
+    return (
+      <section className={sectionClass}>
+        <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-4">
+          <RecognitionHead kicker={recognitionKicker} title={recognitionTitle} />
+        </div>
+        <div className="corridor-hall">
+          <p className="text-center sec-kicker mb-4" style={{ color: GIFTERS_ACCENT }}>Top Gifters</p>
+          {gifterRows.map((row, depth) => (
+            <div key={`g-${depth}`} className="corridor-row" style={{ '--corridor-depth': depth }}>
+              {row.map((person, i) => (
+                <div key={`${person.handle}-${depth}-${i}`} className="corridor-card">
+                  <HonorCard person={person} rank={i + 1} accent={GIFTERS_ACCENT} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="honor-band honor-band--gifters">
+          <HonorDonatePanel
+            title={recognitionMissionTitle}
+            body={recognitionMissionBody}
+            siteName={siteName}
+            paypalEmail={paypalEmail}
+            onDonateUnavailable={showDonateComingSoon}
+          />
+        </div>
+        <div className="corridor-hall">
+          <p className="text-center sec-kicker mb-4" style={{ color: FANS_ACCENT }}>Top Fans</p>
+          {fanRows.map((row, depth) => (
+            <div key={`f-${depth}`} className="corridor-row" style={{ '--corridor-depth': depth }}>
+              {row.map((person, i) => (
+                <div key={`${person.handle}-${depth}-${i}`} className="corridor-card">
+                  <HonorCard person={person} rank={i + 1} accent={FANS_ACCENT} />
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="honor-band honor-band--fans">
+          <HonorCharityPanel />
+        </div>
+      </section>
+    )
+  }
+
+  return (
+    <section className={sectionClass}>
+      <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-4">
+        <RecognitionHead kicker={recognitionKicker} title={recognitionTitle} />
       </div>
 
       <div className="honor-band honor-band--gifters">
@@ -171,6 +309,7 @@ export default function CommunityRecognition() {
           body={recognitionMissionBody}
           siteName={siteName}
           paypalEmail={paypalEmail}
+          onDonateUnavailable={showDonateComingSoon}
         />
       </div>
 

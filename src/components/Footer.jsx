@@ -2,7 +2,18 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
 import { useContent } from '../cms/ContentContext'
-import { WHATSAPP_CHANNEL_URL, CONTACT_EMAIL } from '../constants/brand'
+import { handleDonateSubmit, useToast } from './ToastContext'
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE_WHATSAPP,
+  INSTAGRAM_URL,
+  THREADS_URL,
+  TIKTOK_URL,
+  WHATSAPP_CHANNEL_URL,
+  WHATSAPP_PHONE_URL,
+  YOUTUBE_URL,
+} from '../constants/brand'
+import './Footer.css'
 
 const defaultColumns = {
   explore: [
@@ -33,13 +44,13 @@ function LinkColumn({ title, links }) {
   const { pathname } = useLocation()
   return (
     <div>
-      <h4 className="font-body font-semibold text-[10px] uppercase tracking-widest text-white/30 mb-3">{title}</h4>
-      <ul className="space-y-1.5">
+      <h4 className="site-footer__col-title">{title}</h4>
+      <ul className="site-footer__links">
         {links.map(({ to, label }) => (
           <li key={to}>
             <Link
               to={to}
-              className={`text-sm transition-colors ${pathname === to ? 'text-ember font-medium' : 'text-white/50 hover:text-white'}`}
+              className={`site-footer__link${pathname === to ? ' is-active' : ''}`}
             >
               {label}
             </Link>
@@ -52,32 +63,47 @@ function LinkColumn({ title, links }) {
 
 export default function Footer() {
   const { settings, collections } = useContent()
+  const { showDonateComingSoon } = useToast()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+
   const contactEmail = settings.email || CONTACT_EMAIL
-  const phoneUS = settings.phoneUS || '+1 (469) 664-1195'
-  const phoneUG = settings.phoneUG || '+256-200-947-070'
-  const siteName = settings.siteName || ''
-  const tagline = settings.tagline || "The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise."
+  const whatsappPhone = settings.whatsappPhone || CONTACT_PHONE_WHATSAPP
   const location = settings.location || 'Dallas, Texas, USA'
+  const siteName = settings.siteName || 'KING MAKER'
+  const tagline =
+    settings.tagline ||
+    "The official hub for King Maker's Godsent Box Battles. Join the family, compete, and rise."
   const copyright = settings.copyright || `${siteName}. All rights reserved.`
-  const disclaimer = settings.disclaimer || 'Independent fan/community platform. Not affiliated with TikTok or ByteDance.'
+  const disclaimer =
+    settings.disclaimer ||
+    'Independent fan/community platform. Not affiliated with TikTok or ByteDance.'
+  const tiktokUrl = settings.tiktokUrl || TIKTOK_URL
+  const paypalEmail = settings.paypalEmail || ''
 
   const columns = {
-    explore: collections.footerExploreLinks?.length ? collections.footerExploreLinks : defaultColumns.explore,
-    community: collections.footerCommunityLinks?.length ? collections.footerCommunityLinks : defaultColumns.community,
-    support: collections.footerSupportLinks?.length ? collections.footerSupportLinks : defaultColumns.support,
+    explore: collections.footerExploreLinks?.length
+      ? collections.footerExploreLinks
+      : defaultColumns.explore,
+    community: collections.footerCommunityLinks?.length
+      ? collections.footerCommunityLinks
+      : defaultColumns.community,
+    support: collections.footerSupportLinks?.length
+      ? collections.footerSupportLinks
+      : defaultColumns.support,
   }
 
-  const tiktokUrl = settings.tiktokUrl || 'https://www.tiktok.com/@kingmakernevergivesup'
-  const paypalEmail = settings.paypalEmail || ''
   const socials = [
-    { href: tiktokUrl, icon: 'tiktok', label: 'TikTok', highlight: true },
-    { href: settings.instagramUrl || '#', icon: 'instagram', label: 'Instagram', comingSoon: !settings.instagramUrl },
-    { href: settings.youtubeUrl || '#', icon: 'youtube', label: 'YouTube', comingSoon: !settings.youtubeUrl },
-    { href: settings.whatsappUrl || WHATSAPP_CHANNEL_URL, icon: 'whatsapp', label: 'KM WhatsApp Channel', comingSoon: false },
-    { href: settings.facebookUrl || '#', icon: 'facebook', label: 'Facebook', comingSoon: !settings.facebookUrl },
-    { href: settings.twitchUrl || '#', icon: 'twitch', label: 'Twitch', comingSoon: !settings.twitchUrl },
+    { href: tiktokUrl, icon: 'tiktokBrand', label: 'TikTok', brand: 'tiktok' },
+    { href: settings.instagramUrl || INSTAGRAM_URL, icon: 'instagram', label: 'Instagram', brand: 'instagram' },
+    { href: settings.youtubeUrl || YOUTUBE_URL, icon: 'youtube', label: 'YouTube', brand: 'youtube' },
+    { href: settings.threadsUrl || THREADS_URL, icon: 'threads', label: 'Threads', brand: 'threads' },
+    {
+      href: settings.whatsappUrl || WHATSAPP_CHANNEL_URL,
+      icon: 'whatsapp',
+      label: 'WhatsApp Channel',
+      brand: 'whatsapp',
+    },
   ]
 
   const handleSubscribe = (e) => {
@@ -91,184 +117,139 @@ export default function Footer() {
   }
 
   return (
-    <footer style={{ background: '#1A0E34' }}>
-      {/* Ember accent line */}
-      <div style={{ height: 3, background: 'linear-gradient(90deg, #6B3FA0, #FF8A3D, #6B3FA0)' }} />
+    <footer className="site-footer">
+      <div className="site-footer__accent" aria-hidden />
+      <div className="site-footer__glow" aria-hidden />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-6">
-        {/* Main grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-10">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-4 lg:col-span-1 lg:pr-4">
-            <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <img
-                src="/photos/logo.jpg"
-                alt=""
-                className="w-8 h-8 rounded-lg object-cover border border-ember/35"
-              />
-              <div className="leading-none">
-                <span className="block font-display font-bold text-sm text-ivory tracking-widest">{siteName}</span>
-                <span className="block font-body text-[9px] text-white/30 tracking-[0.2em] uppercase">{tagline.split('.')[0]}</span>
-              </div>
+      <div className="site-footer__inner">
+        <div className="site-footer__grid">
+          <div className="site-footer__brand">
+            <Link to="/" className="site-footer__logo">
+              <img src="/photos/logo.jpg" alt="" />
+              <span>
+                <span className="site-footer__logo-name">{siteName}</span>
+                <span className="site-footer__logo-kicker">Godsent Box Battles</span>
+              </span>
             </Link>
-            {/* Ember accent bar */}
-            <div className="w-8 h-0.5 bg-ember mb-3 rounded-full" />
-            <p className="text-white/40 text-sm leading-relaxed mb-5 max-w-xs">
-              {tagline}
-            </p>
-            <a
-              href={tiktokUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-              style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
-            >
-              <span className="w-5 h-5 block rounded-sm overflow-hidden shrink-0">{Icons.tiktok}</span>
-              Follow King Maker
-            </a>
-            <form action="https://www.paypal.com/donate" method="post" target="_blank" className="mt-3" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+            <p className="site-footer__tagline">{tagline}</p>
+            <div className="site-footer__actions">
+              <a
+                href={tiktokUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="site-footer__btn site-footer__btn--tiktok"
+              >
+                <span className="site-footer__btn-icon site-footer__btn-icon--tiktok">
+                  {Icons.tiktok}
+                </span>
+                Follow on TikTok
+              </a>
+              <form
+                action="https://www.paypal.com/donate"
+                method="post"
+                target="_blank"
+                onSubmit={(e) =>
+                  handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)
+                }
+              >
                 <input type="hidden" name="business" value={paypalEmail} />
                 <input type="hidden" name="no_recurring" value="0" />
                 <input type="hidden" name="item_name" value={`${siteName} Donation`} />
                 <input type="hidden" name="currency_code" value="USD" />
                 <input type="hidden" name="amount" value="" />
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                  style={{ background: 'linear-gradient(135deg, #0070BA, #005ea6)' }}
-                >
-                  <span className="w-4 h-4 block">{Icons.heart}</span>
-                  Donate with PayPal
+                <button type="submit" className="site-footer__btn site-footer__btn--paypal">
+                  <span className="site-footer__btn-icon">{Icons.heart}</span>
+                  Donate
                 </button>
               </form>
+            </div>
           </div>
 
           <LinkColumn title="Explore" links={columns.explore} />
           <LinkColumn title="Community" links={columns.community} />
           <LinkColumn title="Support" links={columns.support} />
 
-          {/* Contact */}
           <div>
-            <h4 className="font-body font-semibold text-[10px] uppercase tracking-widest text-white/30 mb-3">Contact</h4>
-            <ul className="space-y-2">
-              <li>
-                <a href={`mailto:${contactEmail}`} className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-                  <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.mail}</span>
+            <h4 className="site-footer__col-title">Contact</h4>
+            <ul className="site-footer__contact-list">
+              <li className="site-footer__contact-item">
+                <a href={`mailto:${contactEmail}`}>
+                  <span className="site-footer__contact-icon">{Icons.mail}</span>
                   {contactEmail}
                 </a>
               </li>
-              <li>
-                <a href={`tel:${phoneUS.replace(/[^\d+]/g, '')}`} className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-                  <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.phone}</span>
-                  {phoneUS}
+              <li className="site-footer__contact-item">
+                <a href={WHATSAPP_PHONE_URL} target="_blank" rel="noopener noreferrer">
+                  <span className="site-footer__contact-icon">{Icons.whatsapp}</span>
+                  WhatsApp · {whatsappPhone}
                 </a>
               </li>
-              <li>
-                <a href={`tel:${phoneUG.replace(/[^\d+]/g, '')}`} className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors">
-                  <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.phone}</span>
-                  {phoneUG}
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-sm text-white/40">
-                <span className="w-3.5 h-3.5 block flex-shrink-0">{Icons.mapPin}</span>
-                {location}
+              <li className="site-footer__contact-item">
+                <span>
+                  <span className="site-footer__contact-icon">{Icons.mapPin}</span>
+                  {location}
+                </span>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Newsletter + socials */}
-        <div className="border-t border-white/04 pt-6 pb-6">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
-            <div>
-              <h4 className="font-body font-semibold text-[10px] uppercase tracking-widest text-white/30 mb-2">Stay Updated</h4>
-              {subscribed ? (
-                <div className="flex items-center gap-2 text-ember text-sm font-medium">
-                  <span className="w-4 h-4 block">{Icons.check}</span>
-                  You're on the list!
-                </div>
-              ) : (
-                <form onSubmit={handleSubscribe} className="flex rounded-full overflow-hidden border border-white/10" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email address"
-                    required
-                    className="flex-1 px-4 py-2 bg-transparent text-sm text-white placeholder-white/30 focus:outline-none min-w-0 w-52"
-                  />
-                  <button
-                    type="submit"
-                    className="px-5 py-2 text-sm font-bold text-white rounded-full flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
-                  >
-                    Subscribe
-                  </button>
-                </form>
-              )}
-            </div>
+        <div className="site-footer__strip">
+          <div>
+            <p className="site-footer__newsletter-title">Stay in the Dynasty</p>
+            {subscribed ? (
+              <p className="site-footer__newsletter-done">
+                <span className="site-footer__btn-icon">{Icons.check}</span>
+                You&apos;re on the list!
+              </p>
+            ) : (
+              <form onSubmit={handleSubscribe} className="site-footer__newsletter-form">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email address"
+                  required
+                  className="site-footer__newsletter-input"
+                />
+                <button type="submit" className="site-footer__newsletter-btn">
+                  Subscribe
+                </button>
+              </form>
+            )}
+          </div>
 
-            <div>
-              <h4 className="font-body font-semibold text-[10px] uppercase tracking-widest text-white/30 mb-2">Follow Us</h4>
-              <div className="flex items-center gap-2">
-                {socials.map(({ href, icon, label, comingSoon, highlight }) => (
-                  <a
-                    key={label}
-                    href={comingSoon ? undefined : href}
-                    target={comingSoon ? undefined : '_blank'}
-                    rel={comingSoon ? undefined : 'noopener noreferrer'}
-                    title={comingSoon ? `${label} — coming soon` : label}
-                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
-                      highlight
-                        ? 'text-white hover:scale-110'
-                        : comingSoon
-                        ? 'text-white/20 cursor-default'
-                        : 'text-white/50 hover:text-white hover:bg-white/10'
-                    }`}
-                    style={highlight ? { background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' } : { background: 'rgba(255,255,255,0.05)' }}
-                    aria-label={label}
-                  >
-                    <span className={`block overflow-hidden rounded-sm ${highlight ? 'w-5 h-5' : 'w-3.5 h-3.5'}`}>
-                      {Icons[icon]}
-                    </span>
-                  </a>
-                ))}
-              </div>
+          <div>
+            <p className="site-footer__social-head">Follow us</p>
+            <div className="site-footer__socials">
+              {socials.map(({ href, icon, label, brand }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={label}
+                  aria-label={label}
+                  className={`site-footer__social site-footer__social--${brand}`}
+                >
+                  <span className="site-footer__social-icon">{Icons[icon]}</span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
 
-        {/* Follow King Maker CTA */}
-        <div className="border-t border-white/04 py-8 text-center">
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-4">Follow King Maker</p>
-          <a
-            href={tiktokUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
-            style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', boxShadow: '0 8px 32px rgba(255,107,26,0.25)' }}
-          >
-            <span className="w-5 h-5 block rounded-sm overflow-hidden shrink-0">{Icons.tiktok}</span>
-            Follow King Maker on TikTok
-          </a>
-        </div>
-
-        {/* Bottom bar */}
-        <div className="border-t border-white/04 pt-4">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p className="text-white/25 text-xs">
+        <div className="site-footer__legal">
+          <div className="site-footer__legal-row">
+            <p className="site-footer__copy">
               &copy; {new Date().getFullYear()} {copyright}
             </p>
-            <p className="text-white/25 text-xs">
+            <p className="site-footer__advertise">
               Want to reach our audience?{' '}
-              <Link to="/advertise" className="text-ember hover:text-ember/80 font-medium transition-colors">
-                Advertise With Us
-              </Link>
+              <Link to="/advertise">Advertise with us</Link>
             </p>
           </div>
-          <p className="text-white/15 text-[10px] text-center mt-2">
-            {disclaimer}
-          </p>
+          <p className="site-footer__disclaimer">{disclaimer}</p>
         </div>
       </div>
     </footer>

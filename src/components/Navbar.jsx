@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
 import { useContent } from '../cms/ContentContext'
+import { handleDonateSubmit, useToast } from './ToastContext'
 import './Navbar.css'
 
 const defaultNavLinks = [
@@ -36,6 +37,7 @@ export default function Navbar() {
   const { pathname } = useLocation()
   const moreRef = useRef(null)
   const { settings, collections } = useContent()
+  const { showDonateComingSoon } = useToast()
 
   const siteName = settings.siteName || ''
   const tagline = settings.tagline || 'Godsent Box Battles'
@@ -157,7 +159,7 @@ export default function Navbar() {
                 ))}
           </div>
 
-          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__donate" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__donate" onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}>
               <input type="hidden" name="business" value={paypalEmail} />
               <input type="hidden" name="no_recurring" value="0" />
               <input type="hidden" name="item_name" value={`${siteName} Donation`} />
@@ -216,7 +218,7 @@ export default function Navbar() {
               </Link>
             ))}
           </div>
-          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__panel-donate" onSubmit={(e) => { if (!paypalEmail) { e.preventDefault(); alert('Donations coming soon — the admin will configure PayPal in Settings.'); } }}>
+          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__panel-donate" onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}>
               <input type="hidden" name="business" value={paypalEmail} />
               <input type="hidden" name="no_recurring" value="0" />
               <input type="hidden" name="item_name" value={`${siteName} Donation`} />

@@ -1,0 +1,126 @@
+/* Toast notifications */
+
+.km-toast-layer {
+  position: fixed;
+  inset: auto 1rem 1.25rem 1rem;
+  z-index: 80;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .km-toast-layer {
+    inset: auto 1.5rem 1.5rem auto;
+    justify-content: flex-end;
+  }
+}
+
+.km-toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  width: min(100%, 22rem);
+  padding: 1rem 1rem 1rem 1.1rem;
+  border-radius: 1rem;
+  background:
+    radial-gradient(ellipse 80% 60% at 100% 0%, rgba(255, 107, 26, 0.18), transparent 55%),
+    linear-gradient(160deg, rgba(42, 14, 74, 0.98), rgba(16, 5, 28, 0.99));
+  border: 1px solid rgba(255, 138, 61, 0.35);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 107, 26, 0.08);
+  animation: km-toast-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.km-toast__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 0.7rem;
+  color: #fff;
+  background: linear-gradient(135deg, #ff6b1a, #cc5200);
+  box-shadow: 0 6px 18px rgba(255, 107, 26, 0.35);
+}
+
+.km-toast__icon svg,
+.km-toast__icon span {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.km-toast__body {
+  flex: 1;
+  min-width: 0;
+  padding-top: 0.1rem;
+}
+
+.km-toast__kicker {
+  margin: 0 0 0.25rem;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 138, 61, 0.85);
+}
+
+.km-toast__title {
+  margin: 0 0 0.35rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #f8f4ee;
+}
+
+.km-toast__message {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.km-toast__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -0.15rem -0.15rem 0 0;
+  padding: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+  border: none;
+  border-radius: 0.45rem;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.km-toast__close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+@keyframes km-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .km-toast {
+    animation: none;
+  }
+}
