@@ -6,6 +6,7 @@ import { useSignUp } from '../components/SignUpContext'
 import { convertTimezones, getBattleStatus, getCountdown, getBattleDate, downloadICS } from '../utils/battle'
 import Motion from '../components/Motion'
 import { useContent } from '../cms/ContentContext'
+import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
 import './BattleSchedule.css'
 
 const typeImages = {
@@ -377,7 +378,7 @@ export default function BattleSchedule() {
 
                   <div className="sched-stage__actions">
                     <button type="button" onClick={handleEnter} className="sched-hero__cta">
-                      {isOfficial ? 'Join this battle' : 'Apply for this battle'}
+                      {BATTLE_SUBMIT_LABEL}
                       <span className="w-4 h-4 block">{Icons.arrowRight}</span>
                     </button>
                     <button

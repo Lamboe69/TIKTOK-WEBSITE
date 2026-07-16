@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Icons } from './Icons'
 import { apiFetch, readJsonResponse } from '../utils/api'
+import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
+import './SignUpModal.css'
 
 const FORMSPREE_OFFICIAL = ''
 const FORMSPREE_SPECIAL = ''
@@ -9,29 +11,25 @@ const OFFICIAL_LABEL = 'Official Godsent Box Battle'
 
 const battleOptions = [
   { value: OFFICIAL_LABEL, entryType: 'official', group: 'Official' },
-  { value: 'Most Beautiful Box Battle', entryType: 'special', group: 'Special' },
+  { value: 'Most Beautiful/Handsome Box Battle', entryType: 'special', group: 'Special' },
   { value: 'Country Box Battle', entryType: 'special', group: 'Special' },
-  { value: 'Lowest Coins Box Battle', entryType: 'special', group: 'Special' },
-  { value: 'Scavengers Box Games', entryType: 'special', group: 'Special' },
-  { value: 'Champion of Champions', entryType: 'special', group: 'Special' },
+  { value: 'Soccer/Football Box Battle', entryType: 'special', group: 'Special' },
+  { value: 'NFL/National Football League Box Battle', entryType: 'special', group: 'Special' },
+  { value: 'NBA Box Battle', entryType: 'special', group: 'Special' },
 ]
 
 const battleMeta = {
   official: {
-    emoji: '⚔️',
     label: 'Official Godsent Box Battle',
-    subtitle: 'Apply for the next Official Godsent Box Battle.',
+    badge: 'Official entry',
     accent: '#FF6B1A',
-    accentBg: 'rgba(255,107,26,0.12)',
-    accentBorder: 'rgba(255,107,26,0.25)',
+    accentDark: '#CC5200',
   },
   special: {
-    emoji: '👑',
     label: 'Special Battle Entry',
-    subtitle: 'Choose your special battle and share your details.',
+    badge: 'Special entry',
     accent: '#6B3FA0',
-    accentBg: 'rgba(107,63,160,0.15)',
-    accentBorder: 'rgba(107,63,160,0.3)',
+    accentDark: '#3B1063',
   },
 }
 
@@ -45,6 +43,10 @@ function emptyForm(type, preset) {
     followers: '',
     battle: defaultBattle,
     date: preset?.date || '',
+    leagueLevel: '',
+    badgeNumber: '',
+    hasCommunity: '',
+    highestCoins: '',
   }
 }
 
@@ -53,6 +55,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const firstFieldRef = useRef(null)
 
   const selectedOption =
     battleOptions.find((o) => o.value === form.battle) ||
@@ -89,6 +92,12 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
     }
   }, [isOpen])
 
+  useEffect(() => {
+    if (!isOpen || submitted) return undefined
+    const t = window.setTimeout(() => firstFieldRef.current?.focus(), 50)
+    return () => window.clearTimeout(t)
+  }, [isOpen, submitted, battleLocked])
+
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
   const handleSubmit = async (e) => {
@@ -102,17 +111,42 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
         throw new Error('Please enter your TikTok follower count')
       }
 
+      if (isOfficial) {
+        if (!String(form.leagueLevel).trim()) {
+          throw new Error('Please enter your league level')
+        }
+        if (!String(form.badgeNumber).trim()) {
+          throw new Error('Please enter your badge number')
+        }
+        if (!form.hasCommunity) {
+          throw new Error('Please tell us if you have a community or team')
+        }
+        const highestCoins = Number(String(form.highestCoins).replace(/,/g, ''))
+        if (!Number.isFinite(highestCoins) || highestCoins < 0) {
+          throw new Error('Please enter your highest coins ever on TikTok')
+        }
+      }
+
+      const payload = {
+        entryType,
+        battleLabel: form.battle,
+        fullName: form.fullName,
+        tiktok: form.tiktok,
+        followers,
+        date: form.date,
+      }
+
+      if (isOfficial) {
+        payload.leagueLevel = String(form.leagueLevel).trim()
+        payload.badgeNumber = String(form.badgeNumber).trim()
+        payload.hasCommunity = form.hasCommunity
+        payload.highestCoins = Number(String(form.highestCoins).replace(/,/g, ''))
+      }
+
       const res = await apiFetch('/api/battle-applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          entryType,
-          battleLabel: form.battle,
-          fullName: form.fullName,
-          tiktok: form.tiktok,
-          followers,
-          date: form.date,
-        }),
+        body: JSON.stringify(payload),
       })
       const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Could not submit your entry')
@@ -151,37 +185,25 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-5">
       <div
         className="absolute inset-0"
         style={{ background: 'rgba(18,6,32,0.85)', backdropFilter: 'blur(12px)' }}
         onClick={handleClose}
       />
 
-      <div
-        className="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-2xl animate-fade-in"
-        style={{
-          background: 'linear-gradient(160deg, rgba(45,16,80,0.98) 0%, rgba(18,6,32,0.99) 100%)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,107,26,0.08)',
-        }}
-      >
-        <div
-          className="absolute top-0 left-0 right-0 h-[2px] rounded-t-2xl"
-          style={{ background: `linear-gradient(90deg, ${meta.accent}, transparent)` }}
-        />
-
+      <div className="signup-modal" style={{ '--signup-accent': meta.accent }}>
         <button
           type="button"
           onClick={handleClose}
-          className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white transition-all hover:scale-110 z-10"
+          className="absolute top-3.5 right-3.5 w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white transition-all hover:scale-110 z-10"
           style={{ background: 'rgba(255,255,255,0.06)' }}
           aria-label="Close"
         >
           <span className="w-4 h-4 block">{Icons.close}</span>
         </button>
 
-        <div className="p-7">
+        <div className="signup-modal__inner">
           {submitted ? (
             <div className="text-center py-8">
               <div
@@ -208,75 +230,39 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
             </div>
           ) : (
             <>
-              <div className="flex items-start gap-4 mb-5">
-                <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
-                  style={{ background: meta.accentBg, border: `1px solid ${meta.accentBorder}` }}
-                >
-                  {meta.emoji}
+              <header className={`signup-modal__header${isOfficial ? ' signup-modal__header--compact' : ''}`}>
+                <div className="signup-modal__badge">
+                  <span className="signup-modal__badge-dot" aria-hidden />
+                  {meta.badge}
                 </div>
-                <div>
-                  <h3 className="font-display font-bold text-xl text-ivory leading-tight mb-1">
-                    Join a Box Battle
-                  </h3>
-                  <p className="text-white/45 text-xs leading-relaxed">{meta.subtitle}</p>
-                </div>
-              </div>
+                <h2 className="signup-modal__title">Join Box Battle</h2>
+                {!isOfficial ? (
+                  <p className="signup-modal__subtitle">
+                    {battleLocked
+                      ? `Apply for ${form.battle}`
+                      : 'Tell us about yourself — we review every application.'}
+                  </p>
+                ) : null}
+              </header>
 
-              {/* Clear applying-for banner */}
-              <div
-                className="rounded-xl px-4 py-3 mb-5"
-                style={{
-                  background: meta.accentBg,
-                  border: `1px solid ${meta.accentBorder}`,
-                }}
+              <form
+                onSubmit={handleSubmit}
+                className={`signup-modal__form${isOfficial ? ' signup-modal__form--official' : ''}`}
+                style={{ '--signup-accent': meta.accent }}
               >
-                <p className="text-[10px] font-bold uppercase tracking-widest mb-1" style={{ color: meta.accent }}>
-                  Applying for
-                </p>
-                <p className="font-display font-bold text-ivory text-base leading-snug">
-                  {applyingFor}
-                </p>
-                {preset?.title && preset.title !== applyingFor ? (
-                  <p className="text-white/45 text-xs mt-1">{preset.title}</p>
-                ) : null}
-                {form.date ? (
-                  <p className="text-white/45 text-xs mt-1">Available date: {form.date}</p>
-                ) : null}
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2">
-                    Box battle type *
-                  </label>
-                  {battleLocked ? (
-                    <div
-                      className="w-full px-4 py-3 text-sm text-ivory rounded-xl"
-                      style={{
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                      }}
-                    >
-                      {form.battle}
-                    </div>
-                  ) : (
+                {!battleLocked ? (
+                  <div className="signup-field signup-field--full signup-field--battle">
+                    <label className="signup-field__label" htmlFor="signup-battle">
+                      Box battle type *
+                    </label>
                     <select
+                      id="signup-battle"
+                      ref={firstFieldRef}
                       name="battle"
                       value={form.battle}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 text-sm text-ivory rounded-xl focus:outline-none transition-all appearance-none"
-                      style={{
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.border = `1px solid ${meta.accent}60`
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.border = '1px solid rgba(255,255,255,0.08)'
-                      }}
+                      className="signup-field__control signup-field__control--select"
                     >
                       <option value="" className="bg-[#1F0A38]">
                         Select the battle you&apos;re applying for…
@@ -300,173 +286,190 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                           ))}
                       </optgroup>
                     </select>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div className="signup-field signup-field--full signup-field--battle">
+                    <label className="signup-field__label">Box battle type *</label>
+                    <div ref={firstFieldRef} tabIndex={-1} className="signup-field__static">
+                      {form.battle}
+                    </div>
+                  </div>
+                )}
 
-                <div>
-                  <label className="block text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2">
-                    Full name *
-                  </label>
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={form.fullName}
-                    onChange={handleChange}
-                    required
-                    autoComplete="name"
-                    placeholder="Your full name"
-                    className="w-full px-4 py-3 text-sm text-ivory placeholder-white/20 rounded-xl focus:outline-none transition-all"
-                    style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.border = `1px solid ${meta.accent}60`
-                      e.target.style.boxShadow = `0 0 0 3px ${meta.accent}15`
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.border = '1px solid rgba(255,255,255,0.08)'
-                      e.target.style.boxShadow = 'none'
-                    }}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2">
-                    TikTok username *
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30 text-sm font-bold">
-                      @
-                    </span>
+                <div className="signup-field">
+                    <label className="signup-field__label" htmlFor="signup-name">
+                      Full name *
+                    </label>
                     <input
+                      id="signup-name"
+                      ref={battleLocked ? firstFieldRef : undefined}
                       type="text"
-                      name="tiktok"
-                      value={form.tiktok}
+                      name="fullName"
+                      value={form.fullName}
                       onChange={handleChange}
                       required
-                      autoComplete="username"
-                      placeholder="yourusername"
-                      className="w-full pl-8 pr-4 py-3 text-sm text-ivory placeholder-white/20 rounded-xl focus:outline-none transition-all"
-                      style={{
-                        background: 'rgba(255,255,255,0.05)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                      }}
-                      onFocus={(e) => {
-                        e.target.style.border = `1px solid ${meta.accent}60`
-                        e.target.style.boxShadow = `0 0 0 3px ${meta.accent}15`
-                      }}
-                      onBlur={(e) => {
-                        e.target.style.border = '1px solid rgba(255,255,255,0.08)'
-                        e.target.style.boxShadow = 'none'
-                      }}
+                      autoComplete="name"
+                      placeholder="Your full name"
+                      className="signup-field__control"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2">
-                    TikTok followers *
-                  </label>
-                  <input
-                    type="number"
-                    name="followers"
-                    value={form.followers}
-                    onChange={handleChange}
-                    required
-                    min={0}
-                    step={1}
-                    inputMode="numeric"
-                    placeholder="e.g. 12500"
-                    className="w-full px-4 py-3 text-sm text-ivory placeholder-white/20 rounded-xl focus:outline-none transition-all"
-                    style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.border = `1px solid ${meta.accent}60`
-                      e.target.style.boxShadow = `0 0 0 3px ${meta.accent}15`
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.border = '1px solid rgba(255,255,255,0.08)'
-                      e.target.style.boxShadow = 'none'
-                    }}
-                  />
-                </div>
+                  <div className="signup-field">
+                    <label className="signup-field__label" htmlFor="signup-tiktok">
+                      TikTok username *
+                    </label>
+                    <div className="signup-field__wrap">
+                      <span className="signup-field__at" aria-hidden>
+                        @
+                      </span>
+                      <input
+                        id="signup-tiktok"
+                        type="text"
+                        name="tiktok"
+                        value={form.tiktok}
+                        onChange={handleChange}
+                        required
+                        autoComplete="username"
+                        placeholder="yourusername"
+                        className="signup-field__control signup-field__tiktok"
+                      />
+                    </div>
+                  </div>
 
-                <div>
-                  <label className="block text-[10px] font-bold text-white/40 uppercase tracking-widest mb-2">
-                    Date available *
-                  </label>
-                  <input
-                    type="date"
-                    name="date"
-                    value={form.date}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 text-sm text-ivory rounded-xl focus:outline-none transition-all"
-                    style={{
-                      background: 'rgba(255,255,255,0.05)',
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      colorScheme: 'dark',
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.border = `1px solid ${meta.accent}60`
-                      e.target.style.boxShadow = `0 0 0 3px ${meta.accent}15`
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.border = '1px solid rgba(255,255,255,0.08)'
-                      e.target.style.boxShadow = 'none'
-                    }}
-                  />
-                </div>
+                  <div className="signup-field">
+                    <label className="signup-field__label" htmlFor="signup-followers">
+                      TikTok followers *
+                    </label>
+                    <input
+                      id="signup-followers"
+                      type="number"
+                      name="followers"
+                      value={form.followers}
+                      onChange={handleChange}
+                      required
+                      min={0}
+                      step={1}
+                      inputMode="numeric"
+                      placeholder="e.g. 12500"
+                      className="signup-field__control"
+                    />
+                  </div>
+
+                  <div className="signup-field">
+                    <label className="signup-field__label" htmlFor="signup-date">
+                      Date available *
+                    </label>
+                    <input
+                      id="signup-date"
+                      type="date"
+                      name="date"
+                      value={form.date}
+                      onChange={handleChange}
+                      required
+                      className="signup-field__control signup-field__control--date"
+                    />
+                  </div>
 
                 {isOfficial ? (
-                  <div
-                    className="rounded-xl px-4 py-3 text-xs text-white/50 leading-relaxed"
-                    style={{
-                      background: 'rgba(255,107,26,0.06)',
-                      border: '1px solid rgba(255,107,26,0.12)',
-                    }}
-                  >
-                    ⚡ Minimum <span className="text-ember font-semibold">5,000 taps</span> required ·
-                    Say a prayer before your battle
-                  </div>
+                  <>
+                    <div className="signup-field">
+                      <label className="signup-field__label" htmlFor="signup-league">
+                        League level *
+                      </label>
+                      <input
+                        id="signup-league"
+                        type="text"
+                        name="leagueLevel"
+                        value={form.leagueLevel}
+                        onChange={handleChange}
+                        required
+                        placeholder="e.g. A1, B2"
+                        className="signup-field__control"
+                      />
+                    </div>
+
+                    <div className="signup-field">
+                      <label className="signup-field__label" htmlFor="signup-badge">
+                        Badge number *
+                      </label>
+                      <input
+                        id="signup-badge"
+                        type="text"
+                        name="badgeNumber"
+                        value={form.badgeNumber}
+                        onChange={handleChange}
+                        required
+                        placeholder="Your badge number"
+                        className="signup-field__control"
+                      />
+                    </div>
+
+                    <div className="signup-field">
+                      <label className="signup-field__label" htmlFor="signup-coins">
+                        Highest coins *
+                      </label>
+                      <input
+                        id="signup-coins"
+                        type="number"
+                        name="highestCoins"
+                        value={form.highestCoins}
+                        onChange={handleChange}
+                        required
+                        min={0}
+                        step={1}
+                        inputMode="numeric"
+                        placeholder="e.g. 500000"
+                        className="signup-field__control"
+                      />
+                    </div>
+
+                    <div className="signup-field signup-field--community">
+                      <span className="signup-field__label">Community / team? *</span>
+                      <div className="signup-pills" role="radiogroup" aria-label="Community or team">
+                        <label className="signup-pill">
+                          <input
+                            type="radio"
+                            name="hasCommunity"
+                            value="yes"
+                            checked={form.hasCommunity === 'yes'}
+                            onChange={handleChange}
+                            required
+                          />
+                          <span>Yes</span>
+                        </label>
+                        <label className="signup-pill">
+                          <input
+                            type="radio"
+                            name="hasCommunity"
+                            value="no"
+                            checked={form.hasCommunity === 'no'}
+                            onChange={handleChange}
+                          />
+                          <span>No</span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <p className="signup-field--full signup-modal__note signup-modal__note--inline">
+                      Min. <span className="text-ember font-semibold">5,000 taps</span> required · Say a prayer before your battle
+                    </p>
+                  </>
                 ) : null}
 
                 {error ? (
-                  <p
-                    className="rounded-xl px-4 py-3 text-xs leading-relaxed"
-                    style={{
-                      background: 'rgba(255,90,90,0.12)',
-                      border: '1px solid rgba(255,120,120,0.35)',
-                      color: '#ffb4b4',
-                    }}
-                  >
+                  <p className="signup-field--full signup-modal__error" role="alert">
                     {error}
                   </p>
                 ) : null}
 
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="w-full py-3.5 text-sm font-bold text-white rounded-xl transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-                  style={{
-                    background: `linear-gradient(135deg, ${meta.accent}, ${isOfficial ? '#CC5200' : '#3B1063'})`,
-                  }}
-                >
-                  {submitting ? 'Sending…' : `Apply for ${applyingFor}`}
-                </button>
-
-                <p className="text-white/20 text-[10px] text-center">
-                  By submitting you agree to our{' '}
-                  <a
-                    href="/terms"
-                    className="text-white/35 hover:text-white/60 underline transition-colors"
-                  >
-                    Terms of Use
-                  </a>
-                </p>
+                <div className={`signup-modal__footer${isOfficial ? ' signup-modal__footer--compact' : ''}`}>
+                  <button type="submit" disabled={submitting} className="signup-modal__submit">
+                    {submitting ? 'Sending…' : BATTLE_SUBMIT_LABEL}
+                  </button>
+                  <p className="signup-modal__terms">
+                    By submitting you agree to our <a href="/terms">Terms of Use</a>
+                  </p>
+                </div>
               </form>
             </>
           )}

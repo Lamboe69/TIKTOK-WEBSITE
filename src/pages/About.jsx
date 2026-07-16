@@ -2,36 +2,37 @@ import { Link } from 'react-router-dom'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { A_TEAM_APPLY_URL } from '../constants/brand'
 import './About.css'
 
 const chapters = [
   {
     n: 'Scene 01',
     timecode: '00:00',
-    title: 'The $30 Dream',
-    copy: 'It started small — a bet on faith, on live rooms, and on the idea that TikTok battles could be more than coins. A dream measured not in wealth, but in what a night could become.',
+    title: 'AKING MAKER — Pro Godsent Box Battle Host',
+    copy: 'Forget everything you know about live streaming. In the fast-paced world of TikTok, King Maker isn\'t just playing the game — he\'s rewriting the rules. A simple 1v1 live battle transforms into full-scale production: custom sound, rapid commentary, and narrative arcs that keep tens of thousands glued to their screens.',
     img: '/photos/king-maker-live.jpg',
   },
   {
     n: 'Scene 02',
     timecode: '00:12',
-    title: 'Rewriting the Battle',
-    copy: 'King Maker rebuilt the format — custom sound, rapid commentary, narrative arcs. Polls and AR twisted the audience into the story. The arena stopped being a game and became a rite.',
+    title: 'The $30 Dream',
+    copy: 'The rooted $30 dream gazed toward a TikTok universe surprise — then came a whole solid driver of progress. King Maker understands that authenticity is the ultimate currency, leveraging real-time audience sentiment and turning epic battle moments into highlight reels that draw new followers into the lore of his arena.',
     img: '/photos/battle-highlights.jpg',
     flip: true,
   },
   {
     n: 'Scene 03',
     timecode: '00:28',
-    title: 'A Global Dynasty',
-    copy: 'From Dallas outward — six regions, one crown language. Community first, intensity always. Champions rise, visit, and leave the lore thicker than when they arrived.',
+    title: 'The Box Battle Arena',
+    copy: 'While others host battles, King Maker commands the Box Battle Arena. He builds stories, hypes strengths, and creates rivalries that span weeks. The box isn\'t just a screen — it\'s a stage where drama unfolds in real-time, with polls and AR letting the audience vote on dares and multipliers.',
     img: '/photos/community-meetup.jpg',
   },
   {
     n: 'Scene 04',
     timecode: '00:41',
-    title: 'Find, Honor & Empower',
-    copy: 'The mission is clear: connect rising creators with platform, mentorship, and a room that fights with them. Shining is not solitary — it\'s a collective triumph.',
+    title: 'Mission & Vision',
+    copy: 'Mission: Find, honor, and empower those who shine among their peers. Vision: Build a global community where shining is a collective celebration. King Maker doesn\'t just host battles — he builds kings and queens. In his arena, everyone has a chance to claim the throne.',
     img: '/battles-photos/champion-of-champions.jpg',
     flip: true,
   },
@@ -99,7 +100,7 @@ export default function About() {
               <h1 className="origin-hero__about">{page.heroTitle || 'About'}</h1>
               <p className="origin-hero__lede">
                 {page.heroLede ||
-                  'Faith, community, and the crown — from a $30 dream to a global live arena.'}
+                  'King Maker — pro Godsent Box Battle host. Architect of engagement, builder of kings and queens, and commander of the Box Battle Arena.'}
               </p>
             </div>
             <div className="origin-hero__actions">
@@ -206,6 +207,34 @@ export default function About() {
             </Motion>
           ))}
         </div>
+      </section>
+
+      {/* A-Team Creator Network */}
+      <section className="origin-pad py-16" style={{ background: '#1A0E34' }}>
+        <Motion delay={50}>
+          <p className="sec-kicker mb-3">The A-Team Advantage</p>
+          <h2 className="font-display font-bold text-2xl sm:text-3xl text-ivory mb-4">
+            Unlock your full potential
+          </h2>
+          <p className="text-white/65 text-sm leading-relaxed max-w-2xl mb-6">
+            The A-Team is the strategic architect behind the scenes — account protection, brand
+            architecture, revenue multiplication, and world-class production support for creators
+            ready to play the long game.
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <a
+              href={A_TEAM_APPLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="origin-cta"
+            >
+              Join A-Team
+            </a>
+            <Link to="/agency" className="origin-link" style={{ color: 'rgba(255,247,240,0.75)' }}>
+              Learn more
+            </Link>
+          </div>
+        </Motion>
       </section>
 
       {/* End title card */}

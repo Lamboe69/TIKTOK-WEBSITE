@@ -1,8 +1,9 @@
 import { Icons } from './Icons'
-import { Link } from 'react-router-dom'
+import { useSignUp } from './SignUpContext'
 import { useContent } from '../cms/ContentContext'
 
 function WinnersVisit() {
+  const { openOfficial } = useSignUp()
   const { settings } = useContent()
   const siteName = settings.siteName || ''
   const steps = [
@@ -54,12 +55,13 @@ function WinnersVisit() {
         </div>
 
         <div className="mt-16 text-center">
-          <Link
-            to="/join"
+          <button
+            type="button"
+            onClick={openOfficial}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-royal-purple to-royal-purple-deep text-white font-bold rounded-xl hover:shadow-lg hover:shadow-royal-purple/30 transition-all duration-300 hover:-translate-y-0.5"
           >
             Start Your Journey
-          </Link>
+          </button>
         </div>
       </div>
     </section>

@@ -4,6 +4,7 @@ import { Icons } from '../components/Icons'
 import { useSignUp } from '../components/SignUpContext'
 import Motion from '../components/Motion'
 import { useContent } from '../cms/ContentContext'
+import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
 import { getTodayQuoteFromList } from '../cms/normalize'
 import './morePages.css'
 
@@ -180,7 +181,7 @@ export default function DailyQuotes() {
                 className="flex-shrink-0 px-5 py-2.5 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)', borderRadius: 8 }}
               >
-                Fill Form Here
+                {BATTLE_SUBMIT_LABEL}
               </button>
             </div>
           </Motion>

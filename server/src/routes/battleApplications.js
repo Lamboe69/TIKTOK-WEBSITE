@@ -17,6 +17,13 @@ function parseFollowers(raw) {
   return Math.floor(n)
 }
 
+function parseCoins(raw) {
+  if (raw == null || raw === '') return null
+  const n = Number(String(raw).replace(/,/g, '').trim())
+  if (!Number.isFinite(n) || n < 0) return null
+  return Math.floor(n)
+}
+
 function serializeApplication(row) {
   if (!row) return null
   let availableDate = row.available_date
@@ -35,6 +42,10 @@ function serializeApplication(row) {
     fullName: row.full_name,
     tiktokHandle: row.tiktok_handle,
     followers: row.followers,
+    leagueLevel: row.league_level,
+    badgeNumber: row.badge_number,
+    hasCommunity: row.has_community,
+    highestCoins: row.highest_coins != null ? Number(row.highest_coins) : null,
     availableDate,
     status: row.status,
     notes: row.notes,
@@ -86,12 +97,51 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Please choose which box battle you are applying for' })
     }
 
+    let leagueLevel = null
+    let badgeNumber = null
+    let hasCommunity = null
+    let highestCoins = null
+
+    if (entryType === 'official') {
+      leagueLevel = String(req.body?.leagueLevel || '').trim()
+      if (!leagueLevel || leagueLevel.length > 64) {
+        return res.status(400).json({ error: 'Please enter your league level' })
+      }
+
+      badgeNumber = String(req.body?.badgeNumber || '').trim()
+      if (!badgeNumber || badgeNumber.length > 64) {
+        return res.status(400).json({ error: 'Please enter your badge number' })
+      }
+
+      hasCommunity = String(req.body?.hasCommunity || '').trim().toLowerCase()
+      if (!['yes', 'no'].includes(hasCommunity)) {
+        return res.status(400).json({ error: 'Please tell us if you have a community or team' })
+      }
+
+      highestCoins = parseCoins(req.body?.highestCoins)
+      if (highestCoins == null) {
+        return res.status(400).json({ error: 'Please enter your highest coins ever on TikTok' })
+      }
+    }
+
     const inserted = await query(
       `INSERT INTO battle_applications
-         (entry_type, battle_label, full_name, tiktok_handle, followers, available_date, status)
-       VALUES ($1, $2, $3, $4, $5, $6::date, 'new')
+         (entry_type, battle_label, full_name, tiktok_handle, followers, available_date,
+          league_level, badge_number, has_community, highest_coins, status)
+       VALUES ($1, $2, $3, $4, $5, $6::date, $7, $8, $9, $10, 'new')
        RETURNING *`,
-      [entryType, battleLabel, fullName, tiktokHandle, followers, availableDate],
+      [
+        entryType,
+        battleLabel,
+        fullName,
+        tiktokHandle,
+        followers,
+        availableDate,
+        leagueLevel,
+        badgeNumber,
+        hasCommunity,
+        highestCoins,
+      ],
     )
 
     res.status(201).json({

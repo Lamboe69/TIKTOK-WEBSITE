@@ -100,7 +100,7 @@ export default function Navbar() {
       <nav className="site-nav__bar" aria-label="Primary">
         <Link to="/" className="site-nav__brand" onClick={() => setMobileOpen(false)}>
           <span className="site-nav__mark" aria-hidden>
-            <span>{Icons.crown}</span>
+            <img src="/photos/logo.jpg" alt="" />
           </span>
             <span className="site-nav__wordmark">
               <span className="site-nav__name">{siteName}</span>

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
 import { useContent } from '../cms/ContentContext'
+import { WHATSAPP_CHANNEL_URL, CONTACT_EMAIL } from '../constants/brand'
 
 const defaultColumns = {
   explore: [
@@ -53,7 +54,7 @@ export default function Footer() {
   const { settings, collections } = useContent()
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
-  const contactEmail = settings.email || 'lagwatinc@gmail.com'
+  const contactEmail = settings.email || CONTACT_EMAIL
   const phoneUS = settings.phoneUS || '+1 (469) 664-1195'
   const phoneUG = settings.phoneUG || '+256-200-947-070'
   const siteName = settings.siteName || ''
@@ -74,7 +75,7 @@ export default function Footer() {
     { href: tiktokUrl, icon: 'tiktok', label: 'TikTok', highlight: true },
     { href: settings.instagramUrl || '#', icon: 'instagram', label: 'Instagram', comingSoon: !settings.instagramUrl },
     { href: settings.youtubeUrl || '#', icon: 'youtube', label: 'YouTube', comingSoon: !settings.youtubeUrl },
-    { href: settings.whatsappUrl || '#', icon: 'whatsapp', label: 'WhatsApp', comingSoon: !settings.whatsappUrl },
+    { href: settings.whatsappUrl || WHATSAPP_CHANNEL_URL, icon: 'whatsapp', label: 'KM WhatsApp Channel', comingSoon: false },
     { href: settings.facebookUrl || '#', icon: 'facebook', label: 'Facebook', comingSoon: !settings.facebookUrl },
     { href: settings.twitchUrl || '#', icon: 'twitch', label: 'Twitch', comingSoon: !settings.twitchUrl },
   ]
@@ -100,9 +101,11 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-4 lg:col-span-1 lg:pr-4">
             <Link to="/" className="flex items-center gap-2.5 mb-4">
-              <span className="w-8 h-8 rounded-lg bg-ember flex items-center justify-center text-white">
-                <span className="w-4 h-4 block">{Icons.crown}</span>
-              </span>
+              <img
+                src="/photos/logo.jpg"
+                alt=""
+                className="w-8 h-8 rounded-lg object-cover border border-ember/35"
+              />
               <div className="leading-none">
                 <span className="block font-display font-bold text-sm text-ivory tracking-widest">{siteName}</span>
                 <span className="block font-body text-[9px] text-white/30 tracking-[0.2em] uppercase">{tagline.split('.')[0]}</span>

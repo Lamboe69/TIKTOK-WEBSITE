@@ -1,10 +1,37 @@
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext, useState, useCallback, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import SignUpModal from './SignUpModal'
 
 const SignUpContext = createContext()
 
 export function useSignUp() {
   return useContext(SignUpContext)
+}
+
+function JoinDeepLinkHandler({ openOfficial, openSpecial }) {
+  const location = useLocation()
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search)
+    const join = params.get('join')
+    const hash = location.hash.replace('#', '')
+
+    let mode = null
+    if (join === 'official' || hash === 'join' || hash === 'battle-apply') mode = 'official'
+    else if (join === 'special') mode = 'special'
+
+    if (!mode) return
+
+    if (mode === 'official') openOfficial()
+    else openSpecial()
+
+    const url = new URL(window.location.href)
+    url.searchParams.delete('join')
+    if (hash === 'join' || hash === 'battle-apply') url.hash = ''
+    window.history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`)
+  }, [location.pathname, location.search, location.hash, openOfficial, openSpecial])
+
+  return null
 }
 
 /**
@@ -42,6 +69,7 @@ export function SignUpProvider({ children }) {
     }
     const isOfficial =
       battle.type === 'Daily Godsent' ||
+      battle.type === 'Champion of Champions' ||
       battle.entryType === 'official'
     const battleLabel =
       battle.battleLabel ||
@@ -70,6 +98,7 @@ export function SignUpProvider({ children }) {
   return (
     <SignUpContext.Provider value={{ openOfficial, openSpecial, openBattle, close }}>
       {children}
+      <JoinDeepLinkHandler openOfficial={openOfficial} openSpecial={openSpecial} />
       <SignUpModal
         type={modalState.type}
         preset={modalState.preset}

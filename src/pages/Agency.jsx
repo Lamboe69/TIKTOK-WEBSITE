@@ -4,6 +4,7 @@ import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
 import { apiFetch, readJsonResponse } from '../utils/api'
+import { A_TEAM_APPLY_URL } from '../constants/brand'
 import './Agency.css'
 
 const AGENCY_TOPIC = "Creator Management Inquiry (La'Gwat Agency)"
@@ -122,10 +123,10 @@ export default function Agency() {
 
   useEffect(() => {
     const hashPath = `${window.location.origin}/agency#agency-apply`
-    const custom = (page.applyUrl || '').trim()
-    const target = custom || hashPath
-    setApplyTarget(custom || '#agency-apply')
-    setQrSrc(page.qrImage || buildQrSrc(target))
+    const custom = (page.applyUrl || '').trim() || A_TEAM_APPLY_URL
+    const target = custom
+    setApplyTarget(custom)
+    setQrSrc(page.qrImage || buildQrSrc(target.startsWith('http') ? target : hashPath))
   }, [page.applyUrl, page.qrImage])
 
   useEffect(() => {
@@ -184,7 +185,7 @@ export default function Agency() {
   const applyCta =
     isExternalUrl(applyTarget) ? (
       <a href={applyTarget} className="embassy-cta" target="_blank" rel="noopener noreferrer">
-        Apply now
+        Join A-Team
         <span className="w-4 h-4 block">{Icons.arrowRight}</span>
       </a>
     ) : (
@@ -440,10 +441,10 @@ export default function Agency() {
               </a>
             )}
             <p className="embassy-scanner__caption">
-              Tap the code or scan · Opens this application
+              Scan QR · Join <a href={A_TEAM_APPLY_URL} target="_blank" rel="noopener noreferrer" className="embassy-scanner__link">A-Team</a> on TikTok
             </p>
-            <a href="#agency-apply" className="embassy-scanner__tap">
-              Tap here to fill the form
+            <a href={A_TEAM_APPLY_URL} target="_blank" rel="noopener noreferrer" className="embassy-scanner__tap">
+              Apply at {A_TEAM_APPLY_URL.replace('https://', '')}
               <span className="w-3.5 h-3.5 block">{Icons.arrowRight}</span>
             </a>
           </Motion>

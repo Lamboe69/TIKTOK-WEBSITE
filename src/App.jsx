@@ -96,6 +96,7 @@ function AppRoutes() {
     <PublicChrome>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/join" element={<Navigate to="/?join=official" replace />} />
         <Route path="/how-to-join" element={<HowToJoin />} />
         <Route path="/battle-schedule" element={<BattleSchedule />} />
         <Route path="/daily-quotes" element={<DailyQuotes />} />

@@ -141,7 +141,7 @@ export default function CommunityRecognition() {
 
   return (
     <section className="relative overflow-hidden home-band-glow home-band-sep honor-section">
-      <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-6">
+      <div className="relative z-10 px-5 sm:px-8 pt-10 sm:pt-12 pb-4">
         <div className="max-w-7xl mx-auto text-center">
           <Motion delay={40}>
             <p className="sec-kicker mb-2">{recognitionKicker}</p>

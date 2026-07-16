@@ -1,26 +1,29 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import Motion from '../Motion'
+import { useSignUp } from '../SignUpContext'
 import { useContent } from '../../cms/ContentContext'
 
 const fallbackTypes = [
   {
-    id: 'daily',
-    short: 'Daily',
-    title: 'Daily Godsent Box Battle',
-    tag: 'Main Event',
-    description: 'The nightly arena. Fair matchups, curated opponents, real crowns.',
+    id: 'official',
+    short: 'Official',
+    title: 'Official Box Battle',
+    tag: '1M Target · 15 Lions',
+    description: 'The flagship arena. 1M target — 15 Lions reward for the champion who owns the night.',
     img: '/battles-photos/daily-godsent.jpg',
     accent: '#FF6B1A',
+    entryType: 'official',
   },
   {
     id: 'beautiful',
     short: 'Beautiful',
-    title: 'Most Beautiful Box Battle',
+    title: 'Most Beautiful/Handsome Box Battle',
     tag: 'Showcase',
     description: 'Grace, presence, and style — where beauty meets the battle.',
     img: '/battles-photos/most-beautiful.jpg',
     accent: '#E8B94A',
+    entryType: 'special',
   },
   {
     id: 'country',
@@ -30,34 +33,48 @@ const fallbackTypes = [
     description: 'Rep your flag. National pride in the TikTok arena.',
     img: '/battles-photos/country.jpg',
     accent: '#C4A0FF',
+    entryType: 'special',
   },
   {
-    id: 'scavengers',
-    short: 'Scavengers',
-    title: 'Scavengers Box Battle',
-    tag: 'Open Gate',
-    description: 'No tap minimum. Pure hunger. Underdogs rewrite the night.',
+    id: 'soccer',
+    short: 'Soccer',
+    title: 'Soccer/Football Box Battle',
+    tag: '500K · 3 Lions',
+    description: 'Football fever in the box. 500K target — 3 Lions reward.',
     img: '/battles-photos/scavengers.jpg',
     accent: '#FF8A3D',
+    entryType: 'special',
   },
   {
-    id: 'finale',
-    short: 'Finale',
-    title: 'Champion of Champions',
-    tag: 'Finale',
-    description: 'Official winners collide. Only the strongest leave crowned.',
-    img: '/battles-photos/champion-of-champions.jpg',
+    id: 'nfl',
+    short: 'NFL',
+    title: 'NFL/National Football League Box Battle',
+    tag: '100K · Vault Gift',
+    description: 'Gridiron glory live on TikTok. 100K target — Vault Gift reward.',
+    img: '/photos/battle-highlights.jpg',
     accent: '#E8B94A',
+    entryType: 'special',
+  },
+  {
+    id: 'nba',
+    short: 'NBA',
+    title: 'NBA Box Battle',
+    tag: 'Courtside',
+    description: 'Hoops energy in the Dynasty arena — fast breaks, big gifts, bigger crowns.',
+    img: '/battles-photos/champion-of-champions.jpg',
+    accent: '#FF6B1A',
+    entryType: 'special',
   },
 ]
 
-const accents = ['#FF6B1A', '#E8B94A', '#C4A0FF', '#FF8A3D', '#E8B94A']
+const accents = ['#FF6B1A', '#E8B94A', '#C4A0FF', '#FF8A3D', '#E8B94A', '#FF6B1A']
 
 export default function BattleTypes() {
+  const { openBattle } = useSignUp()
   const { collections, getPage } = useContent()
   const homePage = getPage('home')
-  const battleTypesTitle = homePage.battleTypesTitle || 'Battle types'
-  const battleTypesKicker = homePage.battleTypesKicker || 'The Arena'
+  const battleTypesTitle = homePage.battleTypesTitle || 'Battle formats'
+  const battleTypesKicker = homePage.battleTypesKicker || 'The Arena · 6 Formats'
   const battleTypesLink = homePage.battleTypesLink || 'Full schedule'
   const types =
     collections.battleCatalog?.length > 0
@@ -69,10 +86,20 @@ export default function BattleTypes() {
           description: t.blurb || t.description,
           img: t.img,
           accent: accents[i % accents.length],
+          entryType: i === 0 ? 'official' : 'special',
         }))
       : fallbackTypes
   const [active, setActive] = useState(0)
   const battle = types[active]
+
+  const handleClaimSlot = () => {
+    openBattle({
+      type: battle.title,
+      title: battle.title,
+      battleLabel: battle.title,
+      entryType: battle.entryType || (battle.id === 'official' || battle.id === 'daily' ? 'official' : 'special'),
+    })
+  }
 
   return (
     <section className="relative overflow-hidden home-band-purple home-band-sep">
@@ -92,7 +119,7 @@ export default function BattleTypes() {
               className="font-display font-bold text-ivory leading-[0.95] tracking-tight"
               style={{ fontSize: 'clamp(1.85rem, 4vw, 2.75rem)' }}
             >
-              Battle <span className="text-gradient">{battleTypesTitle.replace(/^Battle\s*/i, '') || 'types'}</span>
+              Battle <span className="text-gradient">{battleTypesTitle.replace(/^Battle\s*/i, '') || 'formats'}</span>
             </h2>
           </div>
           <Link to="/battle-schedule" className="sec-cta-ghost self-start sm:self-auto">
@@ -103,10 +130,8 @@ export default function BattleTypes() {
           </Link>
         </Motion>
 
-        {/* Interactive arena stage */}
         <Motion delay={90}>
           <div className="arena-stage">
-            {/* Featured visual */}
             <div className="arena-stage__visual relative overflow-hidden" id="arena-stage-panel" role="tabpanel" aria-labelledby={`arena-tab-${battle.id}`}>
               {types.map((t, i) => (
                 <img
@@ -127,7 +152,6 @@ export default function BattleTypes() {
                 }}
               />
 
-              {/* Giant index watermark */}
               <span
                 className="arena-stage__idx font-display font-extrabold absolute -bottom-4 -right-2 sm:right-4 leading-none select-none pointer-events-none"
                 style={{ color: `${battle.accent}33` }}
@@ -136,7 +160,6 @@ export default function BattleTypes() {
                 {String(active + 1).padStart(2, '0')}
               </span>
 
-              {/* Active copy over visual */}
               <div key={battle.id} className="arena-stage__copy relative z-10 flex flex-col justify-end h-full p-5 sm:p-8 lg:p-10">
                 <p
                   className="text-[10px] font-bold uppercase tracking-[0.32em] mb-3"
@@ -152,8 +175,9 @@ export default function BattleTypes() {
                 <p className="text-white/75 text-sm leading-relaxed max-w-md mb-6">
                   {battle.description}
                 </p>
-                <Link
-                  to="/battle-schedule"
+                <button
+                  type="button"
+                  onClick={handleClaimSlot}
                   className="sec-cta self-start"
                   style={{
                     background: `linear-gradient(135deg, ${battle.accent}, ${battle.accent === '#E8B94A' || battle.accent === '#C4A0FF' ? '#FF6B1A' : '#CC5200'})`,
@@ -163,11 +187,10 @@ export default function BattleTypes() {
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
                     <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                </Link>
+                </button>
               </div>
             </div>
 
-            {/* Compact roster rail */}
             <div
               className="arena-stage__rail"
               role="tablist"

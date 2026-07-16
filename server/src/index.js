@@ -73,6 +73,10 @@ async function ensureExtraTables() {
       tiktok_handle   TEXT NOT NULL,
       followers       INT,
       available_date  DATE,
+      league_level    TEXT,
+      badge_number    TEXT,
+      has_community   TEXT,
+      highest_coins   BIGINT,
       status          TEXT NOT NULL DEFAULT 'new',
       notes           TEXT,
       created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -85,6 +89,10 @@ async function ensureExtraTables() {
 
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS full_name TEXT NOT NULL DEFAULT '';
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS followers INT;
+    ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS league_level TEXT;
+    ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS badge_number TEXT;
+    ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS has_community TEXT;
+    ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS highest_coins BIGINT;
 
     CREATE TABLE IF NOT EXISTS contact_messages (
       id           BIGSERIAL PRIMARY KEY,

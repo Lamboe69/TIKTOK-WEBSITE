@@ -3,7 +3,14 @@ import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
 import { apiFetch, readJsonResponse } from '../utils/api'
+import {
+  CHARITY_SUBMIT_LABEL,
+  CHARITY_PAYPAL_EMAIL,
+  WHATSAPP_CHANNEL_URL,
+} from '../constants/brand'
 import './morePages.css'
+
+const CHARITY_DONATE_AMOUNTS = [10, 25, 50, 100, 250]
 
 const supportTypes = [
   'Financial',
@@ -38,15 +45,16 @@ export default function Outreach() {
   const commitmentHeading = page.commitmentHeading || 'Our Commitment'
   const commitmentBody =
     page.commitmentBody ||
-    "King Maker's charity operates across multiple regions, with dedicated support pathways for applicants in the USA, and around the world. Backed by a growing global community, we are transforming digital influence into meaningful, lasting change."
+    '"I want to be a Godsend to those in need." – King Maker\n\nKing Maker\'s charity operates across multiple regions, with dedicated support pathways for applicants in the USA and around the world. Backed by a growing global community, we are transforming digital influence into meaningful, lasting change.'
   const howHeading = page.howHeading || 'How It Works'
   const missionImage = page.missionImage || '/photos/community-meetup.jpg'
-  const outreachFormHeading = page.formHeading || 'Apply for Charity'
+  const outreachFormHeading = page.formHeading || 'KM Dynasty Charity — Apply Now'
   const outreachFormSubtitle =
     page.formSubtitle ||
-    'Your need is valid. We are ready to listen, review, and reach out with the support you deserve. Fill in the form and our team will be in touch.'
-  const contactEmail = settings.email || 'lagwatinc@gmail.com'
-  const paypalEmail = settings.paypalEmail || ''
+    'Wherever you are in the world — from the United States and beyond — King Maker\'s charity initiative is here for you. Your story matters. Your need is valid.'
+  const contactEmail = settings.email || 'charity@kmdynasty.org'
+  const [donateCause, setDonateCause] = useState('')
+  const [donateAmount, setDonateAmount] = useState('25')
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -97,22 +105,32 @@ export default function Outreach() {
         </div>
         <div className="outreach-hero__lockup">
           <Motion delay={60}>
-            <p className="outreach-hero__brand">{siteName || 'King Maker'}</p>
-            <h1 className="outreach-hero__title">{page.heroTitle || 'Apply for Charity'}</h1>
+            <p className="outreach-hero__brand">KM Dynasty Charity</p>
+            <h1 className="outreach-hero__title">
+              {page.heroTitle || 'King Maker Charity Initiative — A Global Call for Help'}
+            </h1>
             <p className="outreach-hero__lede">
-              {page.heroLede || 'Your Story Matters'}
+              {page.heroLede || 'A Global Call for Help'}
             </p>
             <p className="outreach-hero__support">
               {page.heroSupport ||
-                'Your need is valid. We are ready to listen, review, and reach out with the support you deserve. Fill in the form and our team will be in touch.'}
+                'We believe that no one should face hardship alone. Through the King Maker Charity Initiative, we extend a hand of hope to individuals and families in urgent need — whether financial hardship, health challenges, or unexpected life circumstances.'}
             </p>
             <div className="outreach-hero__actions">
               <a href="#charity-apply" className="mp-cta">
                 Apply now
                 <span className="w-4 h-4 block">{Icons.arrowRight}</span>
               </a>
-              <a href="#charity-commitment" className="mp-link">
-                Our commitment
+              <a href="#charity-donate" className="mp-link">
+                Support with PayPal
+              </a>
+              <a
+                href={WHATSAPP_CHANNEL_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mp-link"
+              >
+                KM WhatsApp Channel
               </a>
             </div>
           </Motion>
@@ -212,47 +230,103 @@ export default function Outreach() {
                   }}
                 >
                   <h3 className="font-display font-bold text-lg text-ivory mb-2">
-                    Donate with PayPal
+                    Support a cause — PayPal
                   </h3>
                   <p className="text-white/50 text-sm mb-4">
-                    Support the {siteName || 'King Maker'} charity fund. Every dollar helps someone in need.
+                    Donate to the {siteName || 'King Maker'} charity fund. Choose an amount and tell us
+                    what cause you want to support.
                   </p>
-                  <form
-                    action="https://www.paypal.com/donate"
-                    method="post"
-                    target="_blank"
-                    onSubmit={(e) => {
-                      if (!paypalEmail) {
-                        e.preventDefault()
-                        alert(
-                          'Donations coming soon — the admin will configure PayPal in Settings.'
-                        )
-                      }
-                    }}
-                  >
-                    <input type="hidden" name="business" value={paypalEmail} />
-                    <input type="hidden" name="no_recurring" value="0" />
-                    <input
-                      type="hidden"
-                      name="item_name"
-                      value={`${siteName || 'King Maker'} Charity Donation`}
-                    />
-                    <input type="hidden" name="currency_code" value="USD" />
-                    <input type="hidden" name="amount" value="" />
-                    <button
-                      type="submit"
-                      className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105"
-                      style={{
-                        background: 'linear-gradient(135deg, #0070BA, #005ea6)',
-                        borderRadius: 8,
-                      }}
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+                        Cause or programme (optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={donateCause}
+                        onChange={(e) => setDonateCause(e.target.value)}
+                        placeholder="e.g. Medical support, education fund…"
+                        className="w-full px-4 py-3 rounded-lg text-sm text-ivory placeholder-white/20 focus:outline-none focus:ring-2 focus:ring-ember/40"
+                        style={{
+                          background: 'rgba(255,255,255,0.06)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">
+                        Donation amount (USD)
+                      </p>
+                      <div className="flex flex-wrap gap-2 mb-3">
+                        {CHARITY_DONATE_AMOUNTS.map((amt) => (
+                          <button
+                            key={amt}
+                            type="button"
+                            onClick={() => setDonateAmount(String(amt))}
+                            className="px-3 py-1.5 text-xs font-bold rounded-lg transition-all"
+                            style={{
+                              background:
+                                donateAmount === String(amt)
+                                  ? 'rgba(255,107,26,0.25)'
+                                  : 'rgba(255,255,255,0.06)',
+                              border: `1px solid ${
+                                donateAmount === String(amt)
+                                  ? 'rgba(255,107,26,0.5)'
+                                  : 'rgba(255,255,255,0.1)'
+                              }`,
+                              color: donateAmount === String(amt) ? '#FF8A3D' : 'rgba(255,255,255,0.7)',
+                            }}
+                          >
+                            ${amt}
+                          </button>
+                        ))}
+                      </div>
+                      <input
+                        type="number"
+                        min={1}
+                        step={1}
+                        value={donateAmount}
+                        onChange={(e) => setDonateAmount(e.target.value)}
+                        className="w-full px-4 py-3 rounded-lg text-sm text-ivory focus:outline-none focus:ring-2 focus:ring-ember/40"
+                        style={{
+                          background: 'rgba(255,255,255,0.06)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                        }}
+                      />
+                    </div>
+                    <form
+                      action="https://www.paypal.com/donate"
+                      method="post"
+                      target="_blank"
                     >
-                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" />
-                      </svg>
-                      Donate with PayPal
-                    </button>
-                  </form>
+                      <input type="hidden" name="business" value={CHARITY_PAYPAL_EMAIL} />
+                      <input type="hidden" name="no_recurring" value="0" />
+                      <input
+                        type="hidden"
+                        name="item_name"
+                        value={
+                          donateCause.trim()
+                            ? `${siteName || 'KM Dynasty'} Charity — ${donateCause.trim()}`
+                            : `${siteName || 'KM Dynasty'} Charity Donation`
+                        }
+                      />
+                      <input type="hidden" name="currency_code" value="USD" />
+                      <input type="hidden" name="amount" value={donateAmount || '25'} />
+                      <button
+                        type="submit"
+                        className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white rounded-lg transition-all hover:scale-105 w-full justify-center"
+                        style={{
+                          background: 'linear-gradient(135deg, #0070BA, #005ea6)',
+                          borderRadius: 8,
+                        }}
+                      >
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106z" />
+                        </svg>
+                        Donate ${donateAmount || '25'} with PayPal
+                      </button>
+                    </form>
+                  </div>
                 </div>
               </Motion>
             </div>
@@ -363,7 +437,7 @@ export default function Outreach() {
                       }}
                       disabled={submitting}
                     >
-                      {submitting ? 'Submitting…' : 'Submit Application'}
+                      {submitting ? 'Submitting…' : CHARITY_SUBMIT_LABEL}
                     </button>
                     {submitError ? (
                       <p className="text-red-300 text-sm text-center">{submitError}</p>

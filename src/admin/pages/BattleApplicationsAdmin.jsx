@@ -410,6 +410,23 @@ export default function BattleApplicationsAdmin() {
                                     </a>
                                     <span>{formatFollowers(row.followers)} followers</span>
                                     <span>Available {formatDay(row.availableDate)}</span>
+                                    {row.entryType === 'official' ? (
+                                      <>
+                                        <span>League {row.leagueLevel || '—'}</span>
+                                        <span>Badge {row.badgeNumber || '—'}</span>
+                                        <span>
+                                          Community / team:{' '}
+                                          {row.hasCommunity === 'yes'
+                                            ? 'Yes'
+                                            : row.hasCommunity === 'no'
+                                              ? 'No'
+                                              : '—'}
+                                        </span>
+                                        <span>
+                                          Highest coins: {formatFollowers(row.highestCoins)}
+                                        </span>
+                                      </>
+                                    ) : null}
                                   </div>
                                   <div className="ba-detail__notes">
                                     <input

@@ -4,6 +4,7 @@ import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
 import { apiFetch, readJsonResponse } from '../utils/api'
+import { CONTACT_SUBMIT_LABEL, CONTACT_EMAIL, CONTACT_PHONE_WHATSAPP } from '../constants/brand'
 import './Contact.css'
 
 const FORMSPREE_CONTACT = ''
@@ -32,9 +33,8 @@ const topics = [
 ]
 
 const fallbackLines = [
-  { label: 'US', value: '+1 (469) 664-1195', href: 'tel:+14696641195' },
-  { label: 'Uganda', value: '+256-200-947-070', href: 'tel:+256200947070' },
-  { label: 'Email', value: 'lagwatinc@gmail.com', href: 'mailto:lagwatinc@gmail.com' },
+  { label: 'Call Us', value: `${CONTACT_PHONE_WHATSAPP} · WhatsApp only`, href: 'tel:+12542164240' },
+  { label: 'Email', value: CONTACT_EMAIL, href: `mailto:${CONTACT_EMAIL}` },
   { label: 'Hours', value: '9am–6pm CT · Mon–Fri' },
 ]
 
@@ -45,7 +45,7 @@ export default function Contact() {
   const page = getPage('contact')
   const formHeading = page.formHeading || 'Write to us'
   const formSubtitle = page.formSubtitle || 'Two steps — pick a topic, then fill in your details. We reply within 1–2 business days.'
-  const formSubmitLabel = page.formSubmitLabel || 'Send message'
+  const formSubmitLabel = page.formSubmitLabel || CONTACT_SUBMIT_LABEL
   const hqTitle = page.hqTitle || 'Headquarters'
   const hqCity = page.hqCity || 'Dallas, Texas'
   const hqDescription = page.hqDescription || "Dual lines across the US and Uganda — La'Gwat Agency."
@@ -75,7 +75,7 @@ export default function Contact() {
       }),
     ].slice(0, 4)
   }, [collections.contactLines, settings])
-  const contactEmail = settings.email || 'lagwatinc@gmail.com'
+  const contactEmail = settings.email || CONTACT_EMAIL
 
   const initialTopic = searchParams.get('topic') === 'creator' ? 1 : 0
   const [topic, setTopic] = useState(initialTopic)

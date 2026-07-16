@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom'
 import { useSignUp } from './SignUpContext'
 import { useContent } from '../cms/ContentContext'
+import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
 import { Icons } from './Icons'
 
 export default function StickyCTA() {
@@ -9,7 +10,7 @@ export default function StickyCTA() {
   const { settings } = useContent()
 
   const isSpecialPage = pathname === '/daily-quotes'
-  const label = isSpecialPage ? 'Fill Form Here' : settings.ctaLabel || 'Join My Box Battle'
+  const label = isSpecialPage ? BATTLE_SUBMIT_LABEL : settings.ctaLabel || 'Join My Box Battle'
   const paypalEmail = settings.paypalEmail || ''
   const siteName = settings.siteName || ''
 
