@@ -49,6 +49,13 @@ export const TESTIMONIALS_LAYOUTS = [
   { id: 'mosaic', label: 'Voice Mosaic', description: 'Grid of all voices — active tile expands' },
 ]
 
+export const CONTACT_TEAM_LAYOUTS = [
+  { id: 'credits', label: 'Opening Credits', description: 'Cinematic portrait cards with role credits' },
+  { id: 'cards', label: 'Dynasty Cards', description: 'Grid of portrait tiles with hover lift' },
+  { id: 'split', label: 'Spotlight Duo', description: 'Bold side-by-side spotlights for key leads' },
+  { id: 'lineup', label: 'Roster Strip', description: 'Numbered horizontal lineup with avatars' },
+]
+
 export const SECTION_LAYOUT_REGISTRY = {
   howItWorksLayout: { layouts: HOW_IT_WORKS_LAYOUTS, default: 'editorial' },
   battleTypesLayout: { layouts: BATTLE_TYPES_LAYOUTS, default: 'arena' },
@@ -57,6 +64,7 @@ export const SECTION_LAYOUT_REGISTRY = {
   recognitionLayout: { layouts: RECOGNITION_LAYOUTS, default: 'marquee' },
   masterclassLayout: { layouts: MASTERCLASS_LAYOUTS, default: 'atelier' },
   testimonialsLayout: { layouts: TESTIMONIALS_LAYOUTS, default: 'spotlight' },
+  contactTeamLayout: { layouts: CONTACT_TEAM_LAYOUTS, default: 'credits' },
 }
 
 const layoutMetaByField = Object.fromEntries(

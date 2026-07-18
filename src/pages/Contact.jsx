@@ -2,35 +2,40 @@ import { useMemo, useState, useEffect } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
+import ContactTeam from '../components/contact/ContactTeam'
 import { useContent } from '../cms/ContentContext'
+import { normalizePeoplePhotos } from '../cms/normalize'
 import { apiFetch, readJsonResponse } from '../utils/api'
 import { CONTACT_SUBMIT_LABEL, CONTACT_EMAIL, CONTACT_PHONE_WHATSAPP } from '../constants/brand'
 import './Contact.css'
 
 const FORMSPREE_CONTACT = ''
 
-const topics = [
+const fallbackTopics = [
   {
     title: 'General Question',
-    desc: 'Ask anything about the Dynasty',
+    description: 'Ask anything about the Dynasty',
     value: 'General Question',
   },
   {
     title: 'Creator Inquiry',
-    desc: 'Join The A-Team Agency',
+    description: 'Join The A-Team Agency',
     value: "Creator Management Inquiry (La'Gwat Agency)",
   },
   {
     title: 'Press / Media',
-    desc: 'Interviews & partnerships',
+    description: 'Interviews & partnerships',
     value: 'Press / Media',
   },
   {
     title: 'Other',
-    desc: 'Something else',
+    description: 'Something else',
     value: 'Other',
   },
 ]
+
+const DEFAULT_MAP =
+  'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107440.60493614768!2d-96.844958!3d32.78761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c197d8735a3a9%3A0x7e7a2b70e7a6a2a7!2sDallas%2C%20TX!5e0!3m2!1sen!2sus!4v1'
 
 const fallbackLines = [
   { label: 'Call Us', value: `${CONTACT_PHONE_WHATSAPP} · WhatsApp only`, href: 'tel:+12542164240' },
@@ -49,6 +54,24 @@ export default function Contact() {
   const hqTitle = page.hqTitle || 'Headquarters'
   const hqCity = page.hqCity || 'Dallas, Texas'
   const hqDescription = page.hqDescription || "Dual lines across the US and Uganda — La'Gwat Agency."
+  const hqMapUrl = page.hqMapUrl || DEFAULT_MAP
+
+  const topics = useMemo(() => {
+    const fromCms = (collections.contactTopics || [])
+      .filter((t) => t.title && t.value)
+      .map((t) => ({
+        title: t.title,
+        desc: t.description || t.desc || '',
+        value: t.value,
+      }))
+    return fromCms.length ? fromCms : fallbackTopics.map((t) => ({ ...t, desc: t.description }))
+  }, [collections.contactTopics])
+
+  const teamMembers = useMemo(
+    () => normalizePeoplePhotos(collections.contactTeam || []),
+    [collections.contactTeam],
+  )
+
   const lines = useMemo(() => {
     if (collections.contactLines?.length) {
       return collections.contactLines.map((l) => ({
@@ -75,9 +98,20 @@ export default function Contact() {
       }),
     ].slice(0, 4)
   }, [collections.contactLines, settings])
-  const contactEmail = settings.email || CONTACT_EMAIL
 
-  const initialTopic = searchParams.get('topic') === 'creator' ? 1 : 0
+  const hqLinks = useMemo(
+    () => lines.filter((l) => l.href).slice(0, 4),
+    [lines],
+  )
+
+  const contactEmail = settings.email || CONTACT_EMAIL
+  const creatorTopicIndex = topics.findIndex((t) =>
+    /creator|agency/i.test(t.value) || /creator|agency/i.test(t.title),
+  )
+  const initialTopic = searchParams.get('topic') === 'creator' && creatorTopicIndex >= 0
+    ? creatorTopicIndex
+    : 0
+
   const [topic, setTopic] = useState(initialTopic)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
@@ -85,10 +119,17 @@ export default function Contact() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (searchParams.get('topic') === 'creator') setTopic(1)
-  }, [searchParams])
+    if (searchParams.get('topic') === 'creator' && creatorTopicIndex >= 0) {
+      setTopic(creatorTopicIndex)
+    }
+  }, [searchParams, creatorTopicIndex])
 
-  const selected = topics[topic]
+  useEffect(() => {
+    if (topic >= topics.length) setTopic(0)
+  }, [topic, topics.length])
+
+  const selected = topics[topic] || topics[0]
+  if (!selected) return null
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -140,7 +181,6 @@ export default function Contact() {
 
   return (
     <main className="contact-page">
-      {/* Hero — Call Cut: full-bleed photo punched through the word */}
       <section className="contact-hero" aria-label={`Contact ${siteName}`}>
         <div className="contact-hero__media" aria-hidden>
           <img
@@ -187,10 +227,8 @@ export default function Contact() {
             </div>
           </Motion>
         </div>
-
       </section>
 
-      {/* Quick lines */}
       <section className="contact-lines" aria-label="Contact details">
         {lines.map(({ label, value, href }, i) => (
           <Motion key={label} delay={30 + i * 35} className="contact-lines__cell">
@@ -202,15 +240,10 @@ export default function Contact() {
         ))}
       </section>
 
-      {/* Clear two-step form */}
       <section id="contact-write" className="contact-write">
         <Motion delay={40} className="contact-pad contact-write__head">
-          <h2 className="contact-write__heading">
-            {formHeading}
-          </h2>
-          <p className="contact-write__sub">
-            {formSubtitle}
-          </p>
+          <h2 className="contact-write__heading">{formHeading}</h2>
+          <p className="contact-write__sub">{formSubtitle}</p>
         </Motion>
 
         <div className="contact-pad">
@@ -225,7 +258,6 @@ export default function Contact() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form" noValidate={false}>
-                {/* Step 1 */}
                 <fieldset className="contact-form__step">
                   <legend className="contact-form__legend">
                     <span className="contact-form__step-n">1</span>
@@ -253,7 +285,6 @@ export default function Contact() {
                   </div>
                 </fieldset>
 
-                {/* Step 2 */}
                 <fieldset className="contact-form__step">
                   <legend className="contact-form__legend">
                     <span className="contact-form__step-n">2</span>
@@ -328,11 +359,12 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Map / HQ */}
+      <ContactTeam page={page} members={teamMembers} />
+
       <section className="contact-hq" aria-label="Location">
         <iframe
-          title={`${siteName} — Dallas, Texas`}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d107440.60493614768!2d-96.844958!3d32.78761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864c197d8735a3a9%3A0x7e7a2b70e7a6a2a7!2sDallas%2C%20TX!5e0!3m2!1sen!2sus!4v1"
+          title={`${siteName} — ${hqCity}`}
+          src={hqMapUrl}
           allowFullScreen
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -343,9 +375,15 @@ export default function Contact() {
           <h2>{hqCity}</h2>
           <p>{hqDescription}</p>
           <div className="contact-hq__links">
-            <a href="tel:+14696641195">+1 (469) 664-1195</a>
-            <a href="tel:+256200947070">+256-200-947-070</a>
-            <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+            {hqLinks.length ? (
+              hqLinks.map((l) => (
+                <a key={l.label} href={l.href}>
+                  {l.value}
+                </a>
+              ))
+            ) : (
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+            )}
           </div>
         </Motion>
       </section>

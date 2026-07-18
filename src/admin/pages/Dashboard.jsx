@@ -101,6 +101,9 @@ export default function AdminDashboard() {
           ['heroSlides', 'Hero slide'],
           ['adPackages', 'Ad package'],
           ['agencyRegions', 'Agency region'],
+          ['contactTeam', 'Contact team member'],
+          ['contactTopics', 'Contact topic'],
+          ['contactLines', 'Contact line'],
         ].map(([key, label]) => (
           <Link key={key} to={`/admin/collections/${key}/new`}>
             <strong>+ {label}</strong>

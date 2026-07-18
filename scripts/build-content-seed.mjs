@@ -79,6 +79,10 @@ const content = {
       heroBrand: 'KM DYNASTY',
       heroTitle: 'Contact',
       heroLede: 'Reach the dynasty — business, creator support, or just say hello.',
+      contactTeamLayout: 'credits',
+      teamKicker: 'The Team',
+      teamTitle: 'Meet the dynasty',
+      teamSubtitle: 'The people behind the arena — reach out and we will route you to the right voice.',
     },
     agency: {
       heroImage: '/photos/agency-partners.jpg',
@@ -339,6 +343,37 @@ const content = {
       { id: 2, label: 'US phone', value: '+1 (469) 664-1195', href: 'tel:+14696641195' },
       { id: 3, label: 'Uganda', value: '+256-200-947-070', href: 'tel:+256200947070' },
       { id: 4, label: 'Hours', value: 'Mon–Sat · reply within 48h', href: '' },
+    ],
+    contactTeam: [
+      {
+        id: 1,
+        name: 'King Maker',
+        role: 'Founder · Host',
+        tag: '@kingmakernevergivesup',
+        url: 'https://www.tiktok.com/@kingmakernevergivesup',
+        photo: '/team/maker.jpg',
+        bio: '',
+      },
+      {
+        id: 2,
+        name: 'King Mufasa',
+        role: 'General Manager',
+        tag: 'Dynasty Management',
+        url: 'https://www.tiktok.com/@kingmufasa781',
+        photo: '/team/mufasa.jpg',
+        bio: '',
+      },
+    ],
+    contactTopics: [
+      { id: 1, title: 'General Question', description: 'Ask anything about the Dynasty', value: 'General Question' },
+      {
+        id: 2,
+        title: 'Creator Inquiry',
+        description: 'Join The A-Team Agency',
+        value: "Creator Management Inquiry (La'Gwat Agency)",
+      },
+      { id: 3, title: 'Press / Media', description: 'Interviews & partnerships', value: 'Press / Media' },
+      { id: 4, title: 'Other', description: 'Something else', value: 'Other' },
     ],
     mediaLibrary: [
       '/photos/battle-highlights.jpg',

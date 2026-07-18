@@ -141,6 +141,10 @@
       "formHeading": "Write to us",
       "formSubtitle": "Two steps — pick a topic, then fill in your details. We reply within 1–2 business days.",
       "formSubmitLabel": "Send message",
+      "contactTeamLayout": "credits",
+      "teamKicker": "The Team",
+      "teamTitle": "Meet the dynasty",
+      "teamSubtitle": "The people behind the arena — reach out and we will route you to the right voice.",
       "hqTitle": "Headquarters",
       "hqCity": "Dallas, Texas",
       "hqDescription": "Dual lines across the US and Uganda — La'Gwat Agency."
@@ -1113,6 +1117,52 @@
         "label": "Hours",
         "value": "Mon–Sat · reply within 48h",
         "href": ""
+      }
+    ],
+    "contactTeam": [
+      {
+        "id": 1,
+        "name": "King Maker",
+        "role": "Founder · Host",
+        "tag": "@kingmakernevergivesup",
+        "url": "https://www.tiktok.com/@kingmakernevergivesup",
+        "photo": "/team/maker.jpg",
+        "bio": ""
+      },
+      {
+        "id": 2,
+        "name": "King Mufasa",
+        "role": "General Manager",
+        "tag": "Dynasty Management",
+        "url": "https://www.tiktok.com/@kingmufasa781",
+        "photo": "/team/mufasa.jpg",
+        "bio": ""
+      }
+    ],
+    "contactTopics": [
+      {
+        "id": 1,
+        "title": "General Question",
+        "description": "Ask anything about the Dynasty",
+        "value": "General Question"
+      },
+      {
+        "id": 2,
+        "title": "Creator Inquiry",
+        "description": "Join The A-Team Agency",
+        "value": "Creator Management Inquiry (La'Gwat Agency)"
+      },
+      {
+        "id": 3,
+        "title": "Press / Media",
+        "description": "Interviews & partnerships",
+        "value": "Press / Media"
+      },
+      {
+        "id": 4,
+        "title": "Other",
+        "description": "Something else",
+        "value": "Other"
       }
     ],
     "mediaLibrary": [

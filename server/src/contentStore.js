@@ -19,6 +19,8 @@ export const ITEM_COLLECTIONS = [
   'howItWorks',
   'battleCatalog',
   'contactLines',
+  'contactTeam',
+  'contactTopics',
   'navLinks',
   'navMoreLinks',
   'footerExploreLinks',

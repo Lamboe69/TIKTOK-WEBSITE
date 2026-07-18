@@ -7,6 +7,29 @@ import { getSectionLayoutMeta } from '../../cms/sectionLayouts'
 import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 
+const CONTACT_SECTIONS = [
+  { id: 'hero', label: 'Hero', match: (key) => key.startsWith('hero') },
+  { id: 'form', label: 'Write form', match: (key) => key.startsWith('form') },
+  {
+    id: 'team',
+    label: 'Team',
+    match: (key) => key.startsWith('team') || key === 'contactTeamLayout',
+    collections: [{ key: 'contactTeam', label: 'Team members' }],
+  },
+  {
+    id: 'hq',
+    label: 'HQ & map',
+    match: (key) => key.startsWith('hq'),
+    collections: [{ key: 'contactLines', label: 'Contact lines (phones, email, hours)' }],
+  },
+]
+
+const CONTACT_COLLECTION_LINKS = [
+  { key: 'contactTeam', label: 'Contact team', desc: 'People on the Contact page' },
+  { key: 'contactTopics', label: 'Form topics', desc: 'Message topic buttons in the write form' },
+  { key: 'contactLines', label: 'Contact lines', desc: 'Top strip + HQ link row' },
+]
+
 export default function PageEditor() {
   const { key } = useParams()
   const pageSchema = PAGE_SCHEMA.find((p) => p.key === key)
@@ -39,6 +62,7 @@ export default function PageEditor() {
   }
 
   const media = content?.collections?.mediaLibrary || []
+  const isContactPage = key === 'contact'
 
   const heroFields = pageSchema.fields.filter((f) => f.key.startsWith('hero'))
   const bodyFields = pageSchema.fields.filter((f) => !f.key.startsWith('hero'))
@@ -157,10 +181,36 @@ export default function PageEditor() {
     )
   }
 
+  const renderContactSections = () => (
+    <>
+      {CONTACT_SECTIONS.map((section) => {
+        const fields = bodyFields.filter((f) => section.match(f.key))
+        if (!fields.length && !section.collections?.length) return null
+        return (
+          <div key={section.id} style={{ marginBottom: '2rem' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              {section.label}
+            </h3>
+            {fields.map(renderField)}
+            {section.collections?.map((c) => (
+              <p key={c.key} style={{ fontSize: '0.8rem', marginTop: '0.75rem' }}>
+                <Link to={`/admin/collections/${c.key}`} style={{ color: '#ff8a3d', fontSize: '0.8rem' }}>
+                  Manage {c.label} →
+                </Link>
+              </p>
+            ))}
+          </div>
+        )
+      })}
+    </>
+  )
+
   return (
     <AdminPage
       title={pageSchema.label}
-      lede="Edit hero and body content for this page."
+      lede={isContactPage
+        ? 'Edit hero, form copy, team presentation, and HQ. Team members and form topics live in Collections.'
+        : 'Edit hero and body content for this page.'}
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <button className="admin-btn" type="button" disabled={busy} onClick={save}>
@@ -183,15 +233,39 @@ export default function PageEditor() {
         )}
         {bodyFields.length > 0 && (
           <div style={{ marginBottom: '2rem' }}>
-            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-              Body Content
-            </h3>
-            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '1rem' }}>
-              Edit the text copy on this page. Leave blank to use defaults.
-            </p>
-            {bodyFields.map(renderField)}
+            {isContactPage ? (
+              renderContactSections()
+            ) : (
+              <>
+                <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Body Content
+                </h3>
+                <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '1rem' }}>
+                  Edit the text copy on this page. Leave blank to use defaults.
+                </p>
+                {bodyFields.map(renderField)}
+              </>
+            )}
           </div>
         )}
+        {isContactPage ? (
+          <div style={{ marginBottom: '2rem', padding: '1rem', border: '1px solid rgba(255,138,61,0.25)', borderRadius: '8px' }}>
+            <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              Contact collections
+            </h3>
+            <div className="admin-grid">
+              {CONTACT_COLLECTION_LINKS.map((c) => (
+                <Link key={c.key} to={`/admin/collections/${c.key}`} className="admin-card">
+                  <strong>{c.label}</strong>
+                  <span>{c.desc}</span>
+                </Link>
+              ))}
+            </div>
+            <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginTop: '0.75rem' }}>
+              Form topics: add, remove, or reorder items in Collections → Contact form topics.
+            </p>
+          </div>
+        ) : null}
       </form>
       {toast ? <div className="admin-toast">{toast}</div> : null}
     </AdminPage>
