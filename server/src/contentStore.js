@@ -20,6 +20,7 @@ export const ITEM_COLLECTIONS = [
   'battleCatalog',
   'contactLines',
   'contactTeam',
+  'aboutCast',
   'contactTopics',
   'navLinks',
   'navMoreLinks',

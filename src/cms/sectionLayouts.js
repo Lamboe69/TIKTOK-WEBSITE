@@ -50,10 +50,18 @@ export const TESTIMONIALS_LAYOUTS = [
 ]
 
 export const CONTACT_TEAM_LAYOUTS = [
-  { id: 'credits', label: 'Opening Credits', description: 'Cinematic portrait cards with role credits' },
-  { id: 'cards', label: 'Dynasty Cards', description: 'Grid of portrait tiles with hover lift' },
-  { id: 'split', label: 'Spotlight Duo', description: 'Bold side-by-side spotlights for key leads' },
-  { id: 'lineup', label: 'Roster Strip', description: 'Numbered horizontal lineup with avatars' },
+  { id: 'credits', label: 'Cinema Crawl', description: 'Film-grain panels with giant watermark names and timecode stamps' },
+  { id: 'cards', label: 'Holo Deck', description: 'Holographic trading cards with rainbow foil borders and 3D tilt' },
+  { id: 'split', label: 'Arena Face-Off', description: 'Battle poster panels with flashing lights and a VS divider' },
+  { id: 'lineup', label: 'Ticket Wallet', description: 'Torn arena admission stubs on a perforated rail' },
+  { id: 'pedestal', label: 'Throne Lights', description: 'Pulsing spotlights on marble plinths — VIP statue row' },
+  { id: 'polaroid', label: 'Conspiracy Board', description: 'Cork board with red string, pins, and CONFIDENTIAL stamps' },
+  { id: 'sigil', label: 'Rune Crown', description: 'Triple rotating rings, elder glyphs, and gold hex crests' },
+  { id: 'reel', label: 'Infinite Premiere', description: 'Auto-scrolling 35mm filmstrip with projector flicker' },
+  { id: 'oracle', label: 'Tarot Court', description: 'Fanned oracle cards on velvet — hover lifts your pick' },
+  { id: 'broadcast', label: 'Late Night Broadcast', description: 'Retro CRT TVs with scanlines, static, and ON AIR badges' },
+  { id: 'constellation', label: 'Star Map', description: 'Team orbiting a dynasty core — connected constellation lines' },
+  { id: 'summoning', label: 'Ritual Circle', description: 'Arcane summoning ring with glowing portals at each point' },
 ]
 
 export const SECTION_LAYOUT_REGISTRY = {

@@ -364,6 +364,26 @@ const content = {
         bio: '',
       },
     ],
+    aboutCast: [
+      {
+        id: 1,
+        name: 'King Maker',
+        role: 'Founder · Host',
+        tag: '@kingmakernevergivesup',
+        url: 'https://www.tiktok.com/@kingmakernevergivesup',
+        photo: '/team/maker.jpg',
+        bio: '',
+      },
+      {
+        id: 2,
+        name: 'King Mufasa',
+        role: 'General Manager',
+        tag: 'Dynasty Management',
+        url: 'https://www.tiktok.com/@kingmufasa781',
+        photo: '/team/mufasa.jpg',
+        bio: '',
+      },
+    ],
     contactTopics: [
       { id: 1, title: 'General Question', description: 'Ask anything about the Dynasty', value: 'General Question' },
       {

@@ -6,15 +6,15 @@ import { HERO_LAYOUTS } from '../../components/sections/hero/heroLayouts'
 import { getSectionLayoutMeta } from '../../cms/sectionLayouts'
 import { mediaLabel, mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
+import InlineCollectionEditor from '../components/InlineCollectionEditor'
 
 const CONTACT_SECTIONS = [
   { id: 'hero', label: 'Hero', match: (key) => key.startsWith('hero') },
   { id: 'form', label: 'Write form', match: (key) => key.startsWith('form') },
   {
     id: 'team',
-    label: 'Team',
+    label: 'Contact Team',
     match: (key) => key.startsWith('team') || key === 'contactTeamLayout',
-    collections: [{ key: 'contactTeam', label: 'Team members' }],
   },
   {
     id: 'hq',
@@ -29,6 +29,8 @@ const CONTACT_COLLECTION_LINKS = [
   { key: 'contactTopics', label: 'Form topics', desc: 'Message topic buttons in the write form' },
   { key: 'contactLines', label: 'Contact lines', desc: 'Top strip + HQ link row' },
 ]
+
+const ABOUT_CAST_KEYS = ['castHeading', 'castDescription']
 
 export default function PageEditor() {
   const { key } = useParams()
@@ -63,9 +65,16 @@ export default function PageEditor() {
 
   const media = content?.collections?.mediaLibrary || []
   const isContactPage = key === 'contact'
+  const isAboutPage = key === 'about'
 
   const heroFields = pageSchema.fields.filter((f) => f.key.startsWith('hero'))
   const bodyFields = pageSchema.fields.filter((f) => !f.key.startsWith('hero'))
+  const aboutCastFields = isAboutPage
+    ? bodyFields.filter((f) => ABOUT_CAST_KEYS.includes(f.key))
+    : []
+  const aboutOtherFields = isAboutPage
+    ? bodyFields.filter((f) => !ABOUT_CAST_KEYS.includes(f.key))
+    : bodyFields
 
   const save = async (e) => {
     e.preventDefault()
@@ -181,6 +190,15 @@ export default function PageEditor() {
     )
   }
 
+  const renderContactTeamRoster = () => (
+    <InlineCollectionEditor
+      collectionKey="contactTeam"
+      title="Team members"
+      hint="Edit names, roles, photos, and links here. Changes go live as soon as you save each member."
+      emptyHint="No team members saved yet — the live site shows built-in defaults until you add your own."
+    />
+  )
+
   const renderContactSections = () => (
     <>
       {CONTACT_SECTIONS.map((section) => {
@@ -191,14 +209,13 @@ export default function PageEditor() {
             <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               {section.label}
             </h3>
-            {fields.map(renderField)}
-            {section.collections?.map((c) => (
-              <p key={c.key} style={{ fontSize: '0.8rem', marginTop: '0.75rem' }}>
-                <Link to={`/admin/collections/${c.key}`} style={{ color: '#ff8a3d', fontSize: '0.8rem' }}>
-                  Manage {c.label} →
-                </Link>
+            {section.id === 'team' ? (
+              <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginBottom: '1rem' }}>
+                Pick a design and headings below, then edit each team member inline.
               </p>
-            ))}
+            ) : null}
+            {fields.map(renderField)}
+            {section.id === 'team' ? renderContactTeamRoster() : null}
           </div>
         )
       })}
@@ -209,8 +226,10 @@ export default function PageEditor() {
     <AdminPage
       title={pageSchema.label}
       lede={isContactPage
-        ? 'Edit hero, form copy, team presentation, and HQ. Team members and form topics live in Collections.'
-        : 'Edit hero and body content for this page.'}
+        ? 'Edit hero, form copy, Contact Team design, and HQ. Edit team members inline in the Contact Team section.'
+        : isAboutPage
+          ? 'Edit About copy and the Opening Credits cast inline below.'
+          : 'Edit hero and body content for this page.'}
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <button className="admin-btn" type="button" disabled={busy} onClick={save}>
@@ -235,6 +254,25 @@ export default function PageEditor() {
           <div style={{ marginBottom: '2rem' }}>
             {isContactPage ? (
               renderContactSections()
+            ) : isAboutPage ? (
+              <>
+                <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                  Body Content
+                </h3>
+                {aboutOtherFields.map(renderField)}
+                <div style={{ marginTop: '2rem' }}>
+                  <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    Opening Credits Cast
+                  </h3>
+                  {aboutCastFields.map(renderField)}
+                  <InlineCollectionEditor
+                    collectionKey="aboutCast"
+                    title="Cast members"
+                    hint="People shown in the Opening Credits section on the About page."
+                    emptyHint="No cast saved yet — the live site shows built-in defaults until you add your own."
+                  />
+                </div>
+              </>
             ) : (
               <>
                 <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>

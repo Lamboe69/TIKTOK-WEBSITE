@@ -1,7 +1,9 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import Motion from '../components/Motion'
 import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
+import { normalizePeoplePhotos } from '../cms/normalize'
 import { A_TEAM_APPLY_URL } from '../constants/brand'
 import './About.css'
 
@@ -45,7 +47,7 @@ const creed = [
   { word: 'Intensity', img: '/battles-photos/daily-godsent.jpg' },
 ]
 
-const cast = [
+const fallbackCast = [
   {
     name: 'King Maker',
     role: 'Founder · Host',
@@ -63,7 +65,7 @@ const cast = [
 ]
 
 export default function About() {
-  const { getPage, settings } = useContent()
+  const { getPage, settings, collections } = useContent()
   const siteName = settings.siteName || ''
   const page = getPage('about')
   const statsRaw = page.stats || '50K+ | Followers\n100+ | Battles Hosted\n50+ | Winners Crowned\n6 | Global Regions'
@@ -75,6 +77,10 @@ export default function About() {
   const creedHeading = page.creedHeading || 'The Creed'
   const castHeading = page.castHeading || 'Opening Credits'
   const castDescription = page.castDescription || 'The hands that hold the crown.'
+  const cast = useMemo(() => {
+    const fromCms = normalizePeoplePhotos(collections.aboutCast || [])
+    return fromCms.length ? fromCms : fallbackCast
+  }, [collections.aboutCast])
   const endHeading = page.endHeading || 'Ready for the next frame?'
   const tickerLoop = [...stats, ...stats]
 

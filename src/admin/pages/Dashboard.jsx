@@ -90,6 +90,14 @@ export default function AdminDashboard() {
         Quick add
       </p>
       <div className="admin-quick">
+        <Link to="/admin/pages/contact" className="admin-card">
+          <strong>Contact page</strong>
+          <span>Team design, form copy, HQ map</span>
+        </Link>
+        <Link to="/admin/collections/contactTeam" className="admin-card">
+          <strong>Contact team</strong>
+          <span>Edit people shown on Contact (names, roles, photos)</span>
+        </Link>
         {[
           ['topGifters', 'Top gifter'],
           ['topFans', 'Top fan'],
@@ -102,6 +110,7 @@ export default function AdminDashboard() {
           ['adPackages', 'Ad package'],
           ['agencyRegions', 'Agency region'],
           ['contactTeam', 'Contact team member'],
+          ['aboutCast', 'About cast member'],
           ['contactTopics', 'Contact topic'],
           ['contactLines', 'Contact line'],
         ].map(([key, label]) => (
