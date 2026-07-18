@@ -48,7 +48,7 @@ function ScrollToTop() {
 function PageTransition({ children }) {
   const { pathname } = useLocation()
   return (
-    <div key={pathname} className="animate-fade-in" style={{ animationDuration: '0.3s' }}>
+    <div key={pathname} className="animate-fade-in overflow-x-clip max-w-full" style={{ animationDuration: '0.3s' }}>
       {children}
     </div>
   )
@@ -56,7 +56,7 @@ function PageTransition({ children }) {
 
 function PublicChrome({ children }) {
   return (
-    <div className="min-h-screen bg-white font-body">
+    <div className="min-h-screen bg-white font-body overflow-x-clip max-w-full">
       <ScrollProgress />
       <Navbar />
       <div className="pb-20 md:pb-0">

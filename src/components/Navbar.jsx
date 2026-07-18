@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useLocation } from 'react-router-dom'
 import { Icons } from './Icons'
 import { useContent } from '../cms/ContentContext'
@@ -59,10 +60,18 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!mobileOpen) return undefined
-    const prev = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const html = document.documentElement
+    const { style: htmlStyle } = html
+    const { style: bodyStyle } = document.body
+    const prev = {
+      htmlOverflow: htmlStyle.overflow,
+      bodyOverflow: bodyStyle.overflow,
+    }
+    htmlStyle.overflow = 'hidden'
+    bodyStyle.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = prev
+      htmlStyle.overflow = prev.htmlOverflow
+      bodyStyle.overflow = prev.bodyOverflow
     }
   }, [mobileOpen])
 
@@ -88,6 +97,71 @@ export default function Navbar() {
   }, [moreOpen, mobileOpen])
 
   const moreActive = moreLinks.some(({ to }) => isActive(pathname, to))
+
+  const mobileOverlay = createPortal(
+    <>
+      <button
+        type="button"
+        className={`site-nav__backdrop${mobileOpen ? ' is-open' : ''}`}
+        aria-label="Close menu"
+        aria-hidden={!mobileOpen}
+        tabIndex={mobileOpen ? 0 : -1}
+        onClick={() => setMobileOpen(false)}
+      />
+      <div
+        className={`site-nav__panel${mobileOpen ? ' is-open' : ''}`}
+        id="site-nav-panel"
+        aria-hidden={!mobileOpen}
+      >
+        <div className="site-nav__panel-inner">
+          <div className="site-nav__panel-grid">
+            {navLinks.map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                className={`site-nav__panel-link${isActive(pathname, to) ? ' is-active' : ''}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          <p className="site-nav__panel-label">Explore</p>
+          <div className="site-nav__panel-more">
+            {moreLinks.map(({ to, label, blurb }) => (
+              <Link
+                key={to}
+                to={to}
+                className={isActive(pathname, to) ? 'is-active' : undefined}
+                onClick={() => setMobileOpen(false)}
+              >
+                <strong>{label}</strong>
+                <em>{blurb}</em>
+              </Link>
+            ))}
+          </div>
+          <form
+            action="https://www.paypal.com/donate"
+            method="post"
+            target="_blank"
+            className="site-nav__panel-donate"
+            onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}
+          >
+            <input type="hidden" name="business" value={paypalEmail} />
+            <input type="hidden" name="no_recurring" value="0" />
+            <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+            <input type="hidden" name="currency_code" value="USD" />
+            <input type="hidden" name="amount" value="" />
+            <button type="submit" className="site-nav__donate-btn site-nav__donate-btn--mobile">
+              <span className="w-4 h-4 block">{Icons.heart}</span>
+              Donate with PayPal
+            </button>
+          </form>
+        </div>
+      </div>
+    </>,
+    document.body,
+  )
 
   return (
     <header
@@ -157,24 +231,27 @@ export default function Navbar() {
                     </span>
                   </Link>
                 ))}
+              </div>
+            </div>
           </div>
 
-          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__donate" onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}>
-              <input type="hidden" name="business" value={paypalEmail} />
-              <input type="hidden" name="no_recurring" value="0" />
-              <input type="hidden" name="item_name" value={`${siteName} Donation`} />
-              <input type="hidden" name="currency_code" value="USD" />
-              <input type="hidden" name="amount" value="" />
-              <button
-                type="submit"
-                className="site-nav__donate-btn"
-              >
-                <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
-                Donate
-              </button>
-            </form>
-        </div>
-          </div>
+          <form
+            action="https://www.paypal.com/donate"
+            method="post"
+            target="_blank"
+            className="site-nav__donate"
+            onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}
+          >
+            <input type="hidden" name="business" value={paypalEmail} />
+            <input type="hidden" name="no_recurring" value="0" />
+            <input type="hidden" name="item_name" value={`${siteName} Donation`} />
+            <input type="hidden" name="currency_code" value="USD" />
+            <input type="hidden" name="amount" value="" />
+            <button type="submit" className="site-nav__donate-btn">
+              <span className="w-3.5 h-3.5 block">{Icons.heart}</span>
+              Donate
+            </button>
+          </form>
         </div>
 
         <button
@@ -182,6 +259,7 @@ export default function Navbar() {
           className="site-nav__toggle"
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
+          aria-controls="site-nav-panel"
           onClick={() => setMobileOpen((v) => !v)}
         >
           <span>{mobileOpen ? Icons.close : Icons.menu}</span>
@@ -190,50 +268,7 @@ export default function Navbar() {
         <div className="site-nav__signal" aria-hidden />
       </nav>
 
-      <div className="site-nav__panel" id="site-nav-panel">
-        <div className="site-nav__panel-inner">
-          <div className="site-nav__panel-grid">
-            {navLinks.map(({ to, label }) => (
-              <Link
-                key={to}
-                to={to}
-                className={`site-nav__panel-link${isActive(pathname, to) ? ' is-active' : ''}`}
-                onClick={() => setMobileOpen(false)}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-          <p className="site-nav__panel-label">Explore</p>
-          <div className="site-nav__panel-more">
-            {moreLinks.map(({ to, label, blurb }) => (
-              <Link
-                key={to}
-                to={to}
-                className={isActive(pathname, to) ? 'is-active' : undefined}
-                onClick={() => setMobileOpen(false)}
-              >
-                <strong>{label}</strong>
-                <em>{blurb}</em>
-              </Link>
-            ))}
-          </div>
-          <form action="https://www.paypal.com/donate" method="post" target="_blank" className="site-nav__panel-donate" onSubmit={(e) => handleDonateSubmit(e, paypalEmail, siteName, showDonateComingSoon)}>
-              <input type="hidden" name="business" value={paypalEmail} />
-              <input type="hidden" name="no_recurring" value="0" />
-              <input type="hidden" name="item_name" value={`${siteName} Donation`} />
-              <input type="hidden" name="currency_code" value="USD" />
-              <input type="hidden" name="amount" value="" />
-              <button
-                type="submit"
-                className="site-nav__donate-btn site-nav__donate-btn--mobile"
-              >
-                <span className="w-4 h-4 block">{Icons.heart}</span>
-                Donate with PayPal
-              </button>
-            </form>
-        </div>
-      </div>
+      {mobileOverlay}
     </header>
   )
 }

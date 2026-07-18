@@ -5,16 +5,32 @@
 /* ─── Reset ─── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+  max-width: 100%;
+}
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background: #1C0E38;
   color: #FFF7F0;
-  overflow-x: hidden;
+  overflow-x: clip;
+  max-width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+#root {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+img,
+video,
+iframe {
+  max-width: 100%;
 }
 
 /* ─── Selection ─── */

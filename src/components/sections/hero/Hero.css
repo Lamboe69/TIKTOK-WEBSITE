@@ -3,6 +3,8 @@
   --hero-ember: #FF8A3D;
   --hero-deep: #1E1038;
   background: var(--hero-deep);
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 /* ─── Progress ─── */
@@ -844,7 +846,7 @@
   position: absolute;
   left: 50%;
   top: 0;
-  width: min(98vw, 1080px);
+  width: min(100%, 100vw);
   height: calc(100% - 10.5rem);
   min-height: min(68vh, 520px);
   max-height: 720px;
@@ -991,7 +993,7 @@
   align-items: center;
 }
 .hero-overlay--prism .hero-overlay__inner {
-  width: min(98vw, 1080px);
+  width: min(100%, 100vw);
   max-width: 100%;
   padding: 0 0 0.65rem;
   background: none;
@@ -1104,7 +1106,7 @@
 
 @media (max-width: 767px) {
   .hero-prism__jewel-wrap {
-    width: 98vw;
+    width: 100%;
     height: calc(100% - 12.5rem);
     min-height: 55vh;
   }
@@ -1135,9 +1137,9 @@
    ORBIT — Orbital Crown
    ═══════════════════════════════════════ */
 .hero-orbit {
-  --orbit-card-w: min(94vw, 880px);
+  --orbit-card-w: min(100%, 100vw);
   --orbit-card-h: min(56vh, 520px);
-  --orbit-radius: min(48vw, 540px);
+  --orbit-radius: min(42vw, 480px);
   display: flex;
   align-items: center;
   justify-content: center;
