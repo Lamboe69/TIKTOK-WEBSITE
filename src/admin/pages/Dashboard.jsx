@@ -113,6 +113,7 @@ export default function AdminDashboard() {
           ['aboutCast', 'About cast member'],
           ['contactTopics', 'Contact topic'],
           ['contactLines', 'Contact line'],
+          ['leagueLevels', 'League level'],
         ].map(([key, label]) => (
           <Link key={key} to={`/admin/collections/${key}/new`}>
             <strong>+ {label}</strong>
@@ -125,6 +126,10 @@ export default function AdminDashboard() {
         Payments &amp; applications
       </p>
       <div className="admin-grid" style={{ marginBottom: '1.75rem' }}>
+        <Link to="/admin/schedule/week" className="admin-card">
+          <strong>Next 7 days</strong>
+          <span>Edit the seven-day horizon boxes on Battle Schedule</span>
+        </Link>
         <Link to="/admin/enrollments" className="admin-card">
           <strong>Masterclass enrollments</strong>
           <span>View PayPal bookings &amp; capture IDs</span>

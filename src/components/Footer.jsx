@@ -9,6 +9,7 @@ import {
   INSTAGRAM_URL,
   THREADS_URL,
   TIKTOK_URL,
+  FACEBOOK_URL,
   WHATSAPP_CHANNEL_URL,
   WHATSAPP_PHONE_URL,
   YOUTUBE_URL,
@@ -95,6 +96,7 @@ export default function Footer() {
 
   const socials = [
     { href: tiktokUrl, icon: 'tiktokBrand', label: 'TikTok', brand: 'tiktok' },
+    { href: settings.facebookUrl || FACEBOOK_URL, icon: 'facebook', label: 'Facebook', brand: 'facebook' },
     { href: settings.instagramUrl || INSTAGRAM_URL, icon: 'instagram', label: 'Instagram', brand: 'instagram' },
     { href: settings.youtubeUrl || YOUTUBE_URL, icon: 'youtube', label: 'YouTube', brand: 'youtube' },
     { href: settings.threadsUrl || THREADS_URL, icon: 'threads', label: 'Threads', brand: 'threads' },

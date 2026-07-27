@@ -12,6 +12,7 @@ const SECTIONS = [
   { title: 'Footer Text', keys: ['copyright', 'disclaimer'] },
   { title: 'Social Media', keys: ['tiktokHandle', 'tiktokUrl', 'instagramUrl', 'youtubeUrl', 'whatsappUrl', 'facebookUrl', 'twitchUrl'] },
   { title: 'Payments', keys: ['paypalEmail'] },
+  { title: 'Battle application form', keys: ['giftingLevelGuideVideo'] },
 ]
 
 export default function SettingsEditor() {

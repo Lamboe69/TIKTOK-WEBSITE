@@ -119,3 +119,31 @@ export function defaultOfficialBattleLabel(catalog) {
   const battles = normalizeBattleCatalog(catalog)
   return battles.find((b) => b.entryType === 'official')?.title || OFFICIAL_BATTLE_LABEL
 }
+
+/** Map a catalog battle title to the schedule filter type (Daily Godsent, etc.) */
+export function inferScheduleTypeFromTitle(title, battleTypes = []) {
+  const t = String(title || '').toLowerCase()
+  const types = battleTypes.filter((x) => x && x !== 'All')
+  for (const type of types) {
+    if (t.includes(type.toLowerCase())) return type
+  }
+  if (t.includes('godsent') || t.includes('official')) return 'Daily Godsent'
+  if (t.includes('beautiful') || t.includes('handsome')) return 'Most Beautiful'
+  if (t.includes('country')) return 'Country'
+  if (t.includes('scavenger')) return 'Scavengers'
+  if (t.includes('champion')) return 'Champion of Champions'
+  if (t.includes('soccer') || t.includes('football')) return 'Scavengers'
+  if (t.includes('nfl')) return 'Country'
+  if (t.includes('nba')) return 'Champion of Champions'
+  return types[0] || 'Daily Godsent'
+}
+
+export function scheduleFieldsFromCatalogBattle(battle, battleTypes = []) {
+  if (!battle) return {}
+  return {
+    title: battle.title,
+    type: inferScheduleTypeFromTitle(battle.title, battleTypes),
+    description: battle.blurb || '',
+    image: battle.img || '',
+  }
+}

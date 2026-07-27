@@ -151,6 +151,7 @@ export default function CharityApplicationsAdmin() {
 
   return (
     <AdminPage
+      wide
       title="Charity applications"
       lede="Applications from the Charity page. Review stories and update status."
       actions={

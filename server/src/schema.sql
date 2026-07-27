@@ -81,21 +81,27 @@ CREATE INDEX IF NOT EXISTS idx_enrollments_status_created
   ON masterclass_enrollments (status, created_at DESC);
 
 CREATE TABLE IF NOT EXISTS battle_applications (
-  id              BIGSERIAL PRIMARY KEY,
-  entry_type      TEXT NOT NULL DEFAULT 'official',
-  battle_label    TEXT NOT NULL,
-  full_name       TEXT NOT NULL DEFAULT '',
-  tiktok_handle   TEXT NOT NULL,
-  followers       INT,
-  available_date  DATE,
-  league_level    TEXT,
-  badge_number    TEXT,
-  has_community   TEXT,
-  highest_coins   BIGINT,
-  status          TEXT NOT NULL DEFAULT 'new',
-  notes           TEXT,
-  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  id                            BIGSERIAL PRIMARY KEY,
+  entry_type                    TEXT NOT NULL DEFAULT 'official',
+  battle_label                  TEXT NOT NULL,
+  full_name                     TEXT NOT NULL DEFAULT '',
+  tiktok_handle                 TEXT NOT NULL,
+  email                         TEXT,
+  country                       TEXT,
+  whatsapp                      TEXT,
+  followers                     INT,
+  followers_screenshot_url      TEXT,
+  available_date                DATE,
+  league_level                  TEXT,
+  badge_number                  TEXT,
+  has_community                 TEXT,
+  highest_coins                 BIGINT,
+  can_rally_supporters          TEXT,
+  gifting_level_screenshot_url  TEXT,
+  status                        TEXT NOT NULL DEFAULT 'new',
+  notes                         TEXT,
+  created_at                    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at                    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_battle_apps_status_created

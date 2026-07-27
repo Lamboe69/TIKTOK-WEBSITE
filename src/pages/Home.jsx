@@ -8,6 +8,7 @@ import CommunityRecognition from '../components/sections/CommunityRecognition'
 import Testimonials from '../components/sections/Testimonials'
 import MasterclassTeaser from '../components/sections/MasterclassTeaser'
 import TimezoneStrip from '../components/sections/TimezoneStrip'
+import UpcomingBattles from '../components/sections/UpcomingBattles'
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <StatBar />
       <HowItWorks />
       <BattleTypes />
+      <UpcomingBattles />
       <KmLovers />
       <WinnersVisit />
       <CommunityRecognition />

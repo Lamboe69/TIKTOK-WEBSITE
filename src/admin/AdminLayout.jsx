@@ -83,15 +83,20 @@ export function AdminLogin() {
 }
 
 /** Page chrome: sticky header + scrollable body */
-export function AdminPage({ title, lede, actions, children }) {
+export function AdminPage({ title, lede, actions, search, wide = false, children }) {
   return (
-    <div className="admin-page">
+    <div className={`admin-page ${wide ? 'admin-page--wide' : ''}`}>
       <header className="admin-page__header">
         <div className="admin-page__heading">
           {title ? <h1>{title}</h1> : null}
           {lede ? <p className="lede">{lede}</p> : null}
         </div>
-        {actions ? <div className="admin-page__actions">{actions}</div> : null}
+        {actions || search ? (
+          <div className="admin-page__actions">
+            {actions ? <div className="admin-page__toolbar">{actions}</div> : null}
+            {search ? <div className="admin-page__search">{search}</div> : null}
+          </div>
+        ) : null}
       </header>
       <div className="admin-page__body">{children}</div>
     </div>
@@ -174,6 +179,12 @@ function AdminShell() {
               className={location.pathname === '/admin/media' ? 'is-active' : ''}
             >
               Media library
+            </Link>
+            <Link
+              to="/admin/schedule/week"
+              className={location.pathname === '/admin/schedule/week' ? 'is-active' : ''}
+            >
+              Next 7 days
             </Link>
 
             <p className="admin-side__section">Pages</p>

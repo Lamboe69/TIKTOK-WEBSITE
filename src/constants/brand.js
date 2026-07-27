@@ -8,6 +8,7 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/kingmakernevergivesup'
 export const YOUTUBE_URL = 'https://www.youtube.com/@kingmakertrevor'
 export const THREADS_URL = 'https://www.threads.com/@kingmakernevergivesup'
 export const WHATSAPP_CHANNEL_URL = 'https://www.whatsapp.com/channel/0029VbBKWXr17Emxeq6kGN0j'
+export const FACEBOOK_URL = 'https://www.facebook.com/kingmakernevergivesup'
 
 export const A_TEAM_APPLY_URL = 'https://www.tiktok.com/t/ZT6W5EG3X/'
 export const CONTACT_PHONE_WHATSAPP = '+256 200 947 070'

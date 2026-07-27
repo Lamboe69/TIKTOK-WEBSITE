@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { getAdminToken } from '../../cms/ContentContext'
 import { apiFetch, readJsonResponse } from '../../utils/api'
+import { mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
+import { AdminPagination, AdminSearchBar } from '../components/AdminListControls'
+import { ADMIN_PAGE_SIZE, paginateItems } from '../utils/collectionList'
 
 const STATUS_FILTERS = [
   { key: 'all', label: 'All' },
@@ -18,14 +21,6 @@ const TYPE_FILTERS = [
   { key: 'special', label: 'Special' },
 ]
 
-function formatDay(value) {
-  if (!value) return '—'
-  const raw = String(value).slice(0, 10)
-  const d = new Date(`${raw}T12:00:00`)
-  if (Number.isNaN(d.getTime())) return raw
-  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-}
-
 function formatFollowers(n) {
   if (n == null || n === '') return '—'
   const num = Number(n)
@@ -33,6 +28,21 @@ function formatFollowers(n) {
   if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`
   if (num >= 1_000) return `${(num / 1_000).toFixed(num >= 10_000 ? 0 : 1)}K`
   return String(num)
+}
+
+function formatRally(value) {
+  if (!value) return '—'
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}
+
+function ScreenshotLink({ url, label }) {
+  if (!url) return <span>{label}: —</span>
+  const href = mediaUrl(url)
+  return (
+    <a href={href} target="_blank" rel="noreferrer">
+      {label}
+    </a>
+  )
 }
 
 function ConfirmModal({ open, title, body, confirmLabel, danger, busy, onCancel, onConfirm }) {
@@ -77,10 +87,274 @@ function ConfirmModal({ open, title, body, confirmLabel, danger, busy, onCancel,
   )
 }
 
+function BattleGroupSection({
+  group,
+  isCollapsed,
+  onToggleCollapse,
+  resetKey,
+  expanded,
+  setExpanded,
+  noteDraft,
+  setNoteDraft,
+  askConfirm,
+}) {
+  const [page, setPage] = useState(1)
+  const pagination = useMemo(
+    () => paginateItems(group.apps, page, ADMIN_PAGE_SIZE),
+    [group.apps, page],
+  )
+
+  useEffect(() => {
+    setPage(1)
+  }, [resetKey, group.label])
+
+  return (
+    <section className="ba-group">
+      <button type="button" className="ba-group__head" onClick={onToggleCollapse}>
+        <span className="ba-group__title">{group.label}</span>
+        <span className="ba-group__meta">
+          {group.apps.length} applicants
+          {group.newCount ? ` · ${group.newCount} new` : ''}
+          {group.entryType ? ` · ${group.entryType}` : ''}
+          {pagination.totalPages > 1 ? ` · page ${pagination.page}/${pagination.totalPages}` : ''}
+          <em>{isCollapsed ? '+' : '−'}</em>
+        </span>
+      </button>
+
+      {!isCollapsed ? (
+        <>
+          <div className="ba-group__pagination">
+            <AdminPagination
+              compact
+              label="Applicants"
+              page={pagination.page}
+              totalPages={pagination.totalPages}
+              total={pagination.total}
+              start={pagination.start}
+              end={pagination.end}
+              onChange={setPage}
+            />
+          </div>
+
+          <div className="ba-table-wrap">
+            <table className="ba-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>TikTok</th>
+                  <th>Country</th>
+                  <th>Followers</th>
+                  <th>Status</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {pagination.items.map((row) => {
+                  const open = expanded === row.id
+                  const who = row.fullName || `@${row.tiktokHandle}`
+                  return (
+                    <Fragment key={row.id}>
+                      <tr
+                        className={open ? 'is-open' : ''}
+                        onClick={() => {
+                          setExpanded(open ? null : row.id)
+                          setNoteDraft(row.notes || '')
+                        }}
+                      >
+                        <td>
+                          <strong>{row.fullName || '—'}</strong>
+                          <small>#{row.id}</small>
+                        </td>
+                        <td>@{row.tiktokHandle}</td>
+                        <td>{row.country || '—'}</td>
+                        <td>{formatFollowers(row.followers)}</td>
+                        <td>
+                          <span className={`ba-status ba-status--${row.status}`}>{row.status}</span>
+                        </td>
+                        <td className="ba-table__actions" onClick={(e) => e.stopPropagation()}>
+                          {row.status === 'new' ? (
+                            <button
+                              type="button"
+                              className="ba-link"
+                              onClick={() =>
+                                askConfirm({
+                                  id: row.id,
+                                  patch: { status: 'contacted' },
+                                  title: 'Mark as contacted?',
+                                  body: `Mark ${who} as contacted for ${row.battleLabel}?`,
+                                  confirmLabel: 'Mark contacted',
+                                  successToast: 'Marked contacted',
+                                })
+                              }
+                            >
+                              Contact
+                            </button>
+                          ) : null}
+                          {row.status !== 'approved' ? (
+                            <button
+                              type="button"
+                              className="ba-link"
+                              onClick={() =>
+                                askConfirm({
+                                  id: row.id,
+                                  patch: { status: 'approved' },
+                                  title: 'Approve applicant?',
+                                  body: `Approve ${who} for ${row.battleLabel}?`,
+                                  confirmLabel: 'Approve',
+                                  successToast: 'Approved',
+                                })
+                              }
+                            >
+                              Approve
+                            </button>
+                          ) : null}
+                          {row.status !== 'declined' ? (
+                            <button
+                              type="button"
+                              className="ba-link ba-link--dim"
+                              onClick={() =>
+                                askConfirm({
+                                  id: row.id,
+                                  patch: { status: 'declined' },
+                                  title: 'Decline applicant?',
+                                  body: `Decline ${who} for ${row.battleLabel}? This can be changed later.`,
+                                  confirmLabel: 'Decline',
+                                  danger: true,
+                                  successToast: 'Declined',
+                                })
+                              }
+                            >
+                              Decline
+                            </button>
+                          ) : null}
+                        </td>
+                      </tr>
+                      {open ? (
+                        <tr className="ba-detail">
+                          <td colSpan={6}>
+                            <div className="ba-detail__row">
+                              <a
+                                href={`https://www.tiktok.com/@${row.tiktokHandle}`}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Open @{row.tiktokHandle}
+                              </a>
+                              <span>{row.email || '—'}</span>
+                              <span>{row.whatsapp || '—'}</span>
+                              <span>{formatFollowers(row.followers)} followers</span>
+                              <span>League {row.leagueLevel || '—'}</span>
+                              <span>Badge {row.badgeNumber || '—'}</span>
+                              <span>
+                                Community / team:{' '}
+                                {row.hasCommunity === 'yes'
+                                  ? 'Yes'
+                                  : row.hasCommunity === 'no'
+                                    ? 'No'
+                                    : '—'}
+                              </span>
+                              <span>
+                                Highest coins in one battle: {formatFollowers(row.highestCoins)}
+                              </span>
+                              <span>Rally supporters: {formatRally(row.canRallySupporters)}</span>
+                              <ScreenshotLink url={row.followersScreenshotUrl} label="Followers screenshot" />
+                              <ScreenshotLink
+                                url={row.giftingLevelScreenshotUrl}
+                                label="Gifting level screenshot"
+                              />
+                            </div>
+                            {row.followersScreenshotUrl || row.giftingLevelScreenshotUrl ? (
+                              <div className="ba-detail__shots">
+                                {row.followersScreenshotUrl ? (
+                                  <figure>
+                                    <figcaption>Followers screenshot</figcaption>
+                                    <a
+                                      href={mediaUrl(row.followersScreenshotUrl)}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <img
+                                        src={mediaUrl(row.followersScreenshotUrl)}
+                                        alt={`Followers screenshot for ${who}`}
+                                      />
+                                    </a>
+                                  </figure>
+                                ) : null}
+                                {row.giftingLevelScreenshotUrl ? (
+                                  <figure>
+                                    <figcaption>Gifting level screenshot</figcaption>
+                                    <a
+                                      href={mediaUrl(row.giftingLevelScreenshotUrl)}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <img
+                                        src={mediaUrl(row.giftingLevelScreenshotUrl)}
+                                        alt={`Gifting level screenshot for ${who}`}
+                                      />
+                                    </a>
+                                  </figure>
+                                ) : null}
+                              </div>
+                            ) : null}
+                            <div className="ba-detail__notes">
+                              <input
+                                value={noteDraft}
+                                onChange={(e) => setNoteDraft(e.target.value)}
+                                placeholder="Admin notes…"
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                              <button
+                                type="button"
+                                className="admin-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  askConfirm({
+                                    id: row.id,
+                                    patch: { notes: noteDraft },
+                                    title: 'Save notes?',
+                                    body: `Save admin notes for ${who}?`,
+                                    confirmLabel: 'Save notes',
+                                    successToast: 'Notes saved',
+                                  })
+                                }}
+                              >
+                                Save
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : null}
+                    </Fragment>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="ba-group__pagination ba-group__pagination--foot">
+            <AdminPagination
+              compact
+              label="Applicants"
+              page={pagination.page}
+              totalPages={pagination.totalPages}
+              total={pagination.total}
+              start={pagination.start}
+              end={pagination.end}
+              onChange={setPage}
+            />
+          </div>
+        </>
+      ) : null}
+    </section>
+  )
+}
+
 export default function BattleApplicationsAdmin() {
   const [status, setStatus] = useState('all')
   const [entryType, setEntryType] = useState('all')
   const [battleFilter, setBattleFilter] = useState('all')
+  const [query, setQuery] = useState('')
   const [collapsed, setCollapsed] = useState({})
   const [rows, setRows] = useState([])
   const [counts, setCounts] = useState({})
@@ -122,14 +396,38 @@ export default function BattleApplicationsAdmin() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, entryType])
 
+  const listResetKey = `${query}|${battleFilter}|${status}|${entryType}`
+
+  const searchedRows = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    if (!q) return rows
+    return rows.filter((row) => {
+      const haystack = [
+        row.fullName,
+        row.tiktokHandle,
+        row.battleLabel,
+        row.country,
+        row.email,
+        row.whatsapp,
+        row.status,
+        row.notes,
+        row.leagueLevel,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+      return haystack.includes(q)
+    })
+  }, [rows, query])
+
   const battleCounts = useMemo(() => {
     const map = {}
-    for (const row of rows) {
+    for (const row of searchedRows) {
       const key = row.battleLabel || 'Unknown battle'
       map[key] = (map[key] || 0) + 1
     }
     return map
-  }, [rows])
+  }, [searchedRows])
 
   const battleFilters = useMemo(() => {
     const labels = Object.keys(battleCounts).sort((a, b) => a.localeCompare(b))
@@ -139,8 +437,8 @@ export default function BattleApplicationsAdmin() {
   const groups = useMemo(() => {
     const filtered =
       battleFilter === 'all'
-        ? rows
-        : rows.filter((r) => (r.battleLabel || 'Unknown battle') === battleFilter)
+        ? searchedRows
+        : searchedRows.filter((r) => (r.battleLabel || 'Unknown battle') === battleFilter)
 
     const map = new Map()
     for (const row of filtered) {
@@ -156,7 +454,7 @@ export default function BattleApplicationsAdmin() {
         newCount: apps.filter((a) => a.status === 'new').length,
       }))
       .sort((a, b) => a.label.localeCompare(b.label))
-  }, [rows, battleFilter])
+  }, [searchedRows, battleFilter])
 
   const updateApplication = async (id, patch) => {
     const token = getAdminToken()
@@ -195,17 +493,32 @@ export default function BattleApplicationsAdmin() {
 
   return (
     <AdminPage
+      wide
       title="Box battle applications"
-      lede="Grouped by battle type. Tap a row for notes."
+      lede="Grouped by battle type. Each battle section paginates 5 applicants at a time — expand a section to browse pages."
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <button type="button" className="admin-btn admin-btn--ghost" onClick={() => load(status, entryType)}>
             Refresh
           </button>
+          <Link to="/admin/collections/leagueLevels" className="admin-btn admin-btn--ghost">
+            League levels
+          </Link>
+          <Link to="/admin/settings" className="admin-btn admin-btn--ghost">
+            Form settings
+          </Link>
           <Link to="/admin" className="admin-btn admin-btn--ghost">
             Dashboard
           </Link>
         </div>
+      }
+      search={
+        <AdminSearchBar
+          variant="header"
+          value={query}
+          onChange={setQuery}
+          placeholder="Search name, TikTok, battle, country, email…"
+        />
       }
     >
       <div className="ba-apps">
@@ -278,194 +591,25 @@ export default function BattleApplicationsAdmin() {
           </p>
         ) : null}
         {!loading && !error && groups.length === 0 ? (
-          <p className="lede">No applications yet.</p>
+          <p className="lede">{query ? 'No applications match your search.' : 'No applications yet.'}</p>
         ) : null}
 
-        {groups.map((group) => {
-          const isCollapsed = Boolean(collapsed[group.label])
-          return (
-            <section key={group.label} className="ba-group">
-              <button
-                type="button"
-                className="ba-group__head"
-                onClick={() =>
-                  setCollapsed((prev) => ({ ...prev, [group.label]: !prev[group.label] }))
-                }
-              >
-                <span className="ba-group__title">{group.label}</span>
-                <span className="ba-group__meta">
-                  {group.apps.length}
-                  {group.newCount ? ` · ${group.newCount} new` : ''}
-                  {group.entryType ? ` · ${group.entryType}` : ''}
-                  <em>{isCollapsed ? '+' : '−'}</em>
-                </span>
-              </button>
-
-              {!isCollapsed ? (
-                <div className="ba-table-wrap">
-                  <table className="ba-table">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>TikTok</th>
-                        <th>Followers</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {group.apps.map((row) => {
-                        const open = expanded === row.id
-                        const who = row.fullName || `@${row.tiktokHandle}`
-                        return (
-                          <Fragment key={row.id}>
-                            <tr
-                              className={open ? 'is-open' : ''}
-                              onClick={() => {
-                                setExpanded(open ? null : row.id)
-                                setNoteDraft(row.notes || '')
-                              }}
-                            >
-                              <td>
-                                <strong>{row.fullName || '—'}</strong>
-                                <small>#{row.id}</small>
-                              </td>
-                              <td>@{row.tiktokHandle}</td>
-                              <td>{formatFollowers(row.followers)}</td>
-                              <td>{formatDay(row.availableDate)}</td>
-                              <td>
-                                <span className={`ba-status ba-status--${row.status}`}>
-                                  {row.status}
-                                </span>
-                              </td>
-                              <td className="ba-table__actions" onClick={(e) => e.stopPropagation()}>
-                                {row.status === 'new' ? (
-                                  <button
-                                    type="button"
-                                    className="ba-link"
-                                    onClick={() =>
-                                      askConfirm({
-                                        id: row.id,
-                                        patch: { status: 'contacted' },
-                                        title: 'Mark as contacted?',
-                                        body: `Mark ${who} as contacted for ${row.battleLabel}?`,
-                                        confirmLabel: 'Mark contacted',
-                                        successToast: 'Marked contacted',
-                                      })
-                                    }
-                                  >
-                                    Contact
-                                  </button>
-                                ) : null}
-                                {row.status !== 'approved' ? (
-                                  <button
-                                    type="button"
-                                    className="ba-link"
-                                    onClick={() =>
-                                      askConfirm({
-                                        id: row.id,
-                                        patch: { status: 'approved' },
-                                        title: 'Approve applicant?',
-                                        body: `Approve ${who} for ${row.battleLabel}?`,
-                                        confirmLabel: 'Approve',
-                                        successToast: 'Approved',
-                                      })
-                                    }
-                                  >
-                                    Approve
-                                  </button>
-                                ) : null}
-                                {row.status !== 'declined' ? (
-                                  <button
-                                    type="button"
-                                    className="ba-link ba-link--dim"
-                                    onClick={() =>
-                                      askConfirm({
-                                        id: row.id,
-                                        patch: { status: 'declined' },
-                                        title: 'Decline applicant?',
-                                        body: `Decline ${who} for ${row.battleLabel}? This can be changed later.`,
-                                        confirmLabel: 'Decline',
-                                        danger: true,
-                                        successToast: 'Declined',
-                                      })
-                                    }
-                                  >
-                                    Decline
-                                  </button>
-                                ) : null}
-                              </td>
-                            </tr>
-                            {open ? (
-                              <tr className="ba-detail">
-                                <td colSpan={6}>
-                                  <div className="ba-detail__row">
-                                    <a
-                                      href={`https://www.tiktok.com/@${row.tiktokHandle}`}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                    >
-                                      Open @{row.tiktokHandle}
-                                    </a>
-                                    <span>{formatFollowers(row.followers)} followers</span>
-                                    <span>Available {formatDay(row.availableDate)}</span>
-                                    {row.entryType === 'official' ? (
-                                      <>
-                                        <span>League {row.leagueLevel || '—'}</span>
-                                        <span>Badge {row.badgeNumber || '—'}</span>
-                                        <span>
-                                          Community / team:{' '}
-                                          {row.hasCommunity === 'yes'
-                                            ? 'Yes'
-                                            : row.hasCommunity === 'no'
-                                              ? 'No'
-                                              : '—'}
-                                        </span>
-                                        <span>
-                                          Highest coins: {formatFollowers(row.highestCoins)}
-                                        </span>
-                                      </>
-                                    ) : null}
-                                  </div>
-                                  <div className="ba-detail__notes">
-                                    <input
-                                      value={noteDraft}
-                                      onChange={(e) => setNoteDraft(e.target.value)}
-                                      placeholder="Admin notes…"
-                                      onClick={(e) => e.stopPropagation()}
-                                    />
-                                    <button
-                                      type="button"
-                                      className="admin-btn"
-                                      onClick={(e) => {
-                                        e.stopPropagation()
-                                        askConfirm({
-                                          id: row.id,
-                                          patch: { notes: noteDraft },
-                                          title: 'Save notes?',
-                                          body: `Save admin notes for ${who}?`,
-                                          confirmLabel: 'Save notes',
-                                          successToast: 'Notes saved',
-                                        })
-                                      }}
-                                    >
-                                      Save
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ) : null}
-                          </Fragment>
-                        )
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              ) : null}
-            </section>
-          )
-        })}
+        {groups.map((group) => (
+          <BattleGroupSection
+            key={group.label}
+            group={group}
+            isCollapsed={Boolean(collapsed[group.label])}
+            onToggleCollapse={() =>
+              setCollapsed((prev) => ({ ...prev, [group.label]: !prev[group.label] }))
+            }
+            resetKey={listResetKey}
+            expanded={expanded}
+            setExpanded={setExpanded}
+            noteDraft={noteDraft}
+            setNoteDraft={setNoteDraft}
+            askConfirm={askConfirm}
+          />
+        ))}
       </div>
 
       <ConfirmModal

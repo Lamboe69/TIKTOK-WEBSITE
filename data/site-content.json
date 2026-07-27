@@ -15,10 +15,11 @@
     "instagramUrl": "",
     "youtubeUrl": "",
     "whatsappUrl": "",
-    "facebookUrl": "",
+    "facebookUrl": "https://www.facebook.com/kingmakernevergivesup",
     "twitchUrl": "",
     "ctaLabel": "Join My Box Battle",
-    "paypalEmail": ""
+    "paypalEmail": "",
+    "giftingLevelGuideVideo": ""
   },
   "pages": {
     "home": {
@@ -34,6 +35,12 @@
       "battleTypesTitle": "Battle types",
       "battleTypesKicker": "The Arena",
       "battleTypesLink": "Full schedule",
+      "upcomingBattlesKicker": "Coming up",
+      "upcomingBattlesTitle": "Next in the arena",
+      "livestreamZonesTitle": "Daily Livestream Time Zones",
+      "livestreamClockKicker": "Live clock",
+      "livestreamAnchorLabel": "Dallas anchor",
+      "livestreamClockTagline": "King Maker goes live when this clock hits — same moment, every region.",
       "kmLoversLayout": "guardian",
       "kmLoversTitle": "They don't just watch — they protect",
       "kmLoversDescription": "KM DYNASTY LOVERS are the heartbeat of the Dynasty — shielding livestreams, lifting each other, and carrying the culture forward.",
@@ -194,6 +201,8 @@
       "heroLede": "Know when the arena opens. Show up ready.",
       "boardKicker": "The Arena Board",
       "boardTitle": "Choose your fire",
+      "weekHorizonKicker": "Seven-day horizon",
+      "weekHorizonTitle": "Your week in the arena",
       "finaleKicker": "Path to the crown",
       "finaleTitle": "Champion of Champions",
       "finaleBody": "Official winners collide in one finale. Win your night — then claim your seat.",
@@ -357,7 +366,7 @@
         "id": 1,
         "title": "Daily Godsent Box Battle",
         "type": "Daily Godsent",
-        "date": "2026-07-12",
+        "date": "2026-07-27",
         "time": "8:00 PM CT",
         "description": "The daily grind. Bring your taps, prayers, and energy."
       },
@@ -365,15 +374,15 @@
         "id": 2,
         "title": "Daily Godsent Box Battle",
         "type": "Daily Godsent",
-        "date": "2026-07-13",
+        "date": "2026-07-28",
         "time": "8:00 PM CT",
-        "description": "Sunday finale – weekly winners compete for the crown."
+        "description": "Midweek momentum — show up ready for the crown."
       },
       {
         "id": 3,
         "title": "Most Beautiful Box Battle",
         "type": "Most Beautiful",
-        "date": "2026-07-14",
+        "date": "2026-07-29",
         "time": "7:00 PM CT",
         "description": "Beauty meets battle. Show your sparkle in the box."
       },
@@ -381,7 +390,7 @@
         "id": 6,
         "title": "Daily Godsent Box Battle",
         "type": "Daily Godsent",
-        "date": "2026-07-15",
+        "date": "2026-07-30",
         "time": "8:00 PM CT",
         "description": "Midweek battle. Keep the momentum alive."
       },
@@ -389,7 +398,7 @@
         "id": 4,
         "title": "Country Box Battle",
         "type": "Country",
-        "date": "2026-07-16",
+        "date": "2026-07-31",
         "time": "7:30 PM CT",
         "description": "Rep your nation. Country pride in the box battle arena."
       },
@@ -397,7 +406,7 @@
         "id": 7,
         "title": "Scavengers Box Battle",
         "type": "Scavengers",
-        "date": "2026-07-17",
+        "date": "2026-08-01",
         "time": "7:00 PM CT",
         "description": "Scavengers edition. For those who hunt for the win."
       },
@@ -405,7 +414,7 @@
         "id": 8,
         "title": "Daily Godsent Box Battle",
         "type": "Daily Godsent",
-        "date": "2026-07-18",
+        "date": "2026-08-02",
         "time": "8:00 PM CT",
         "description": "Friday night battle. End the week strong."
       },
@@ -413,7 +422,7 @@
         "id": 5,
         "title": "Champion of Champions",
         "type": "Champion of Champions",
-        "date": "2026-07-20",
+        "date": "2026-08-03",
         "time": "9:00 PM CT",
         "description": "Winners from ALL Official Godsent Battles compete in the grand KM DYNASTY finale."
       }
@@ -425,6 +434,13 @@
       "Most Beautiful",
       "Country",
       "Champion of Champions"
+    ],
+    "livestreamRegions": [
+      { "id": 1, "region": "US CST", "time": "3:30 PM", "abbr": "CST", "isAnchor": "true", "group": "" },
+      { "id": 2, "region": "US EST", "time": "4:30 PM", "abbr": "EST", "isAnchor": "false", "group": "" },
+      { "id": 3, "region": "UK", "time": "9:30 PM", "abbr": "GMT", "isAnchor": "false", "group": "uk-ng" },
+      { "id": 4, "region": "Nigeria", "time": "9:30 PM", "abbr": "WAT", "isAnchor": "false", "group": "uk-ng" },
+      { "id": 5, "region": "EAT", "time": "11:30 PM", "abbr": "EAT", "isAnchor": "false", "group": "" }
     ],
     "blogPosts": [
       {
@@ -1092,6 +1108,14 @@
         "blurb": "No tap minimum. Pure hunger. Underdogs rewrite the night.",
         "img": "/battles-photos/scavengers.jpg"
       }
+    ],
+    "leagueLevels": [
+      { "id": 1, "label": "A1" },
+      { "id": 2, "label": "A2" },
+      { "id": 3, "label": "B1" },
+      { "id": 4, "label": "B2" },
+      { "id": 5, "label": "C1" },
+      { "id": 6, "label": "C2" }
     ],
     "contactLines": [
       {

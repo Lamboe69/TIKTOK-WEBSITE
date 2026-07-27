@@ -359,6 +359,16 @@
   box-shadow: 0 4px 14px rgba(238, 42, 123, 0.35);
 }
 
+.site-footer__social--facebook {
+  background: #1877f2;
+  border-color: rgba(24, 119, 242, 0.45);
+  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.28);
+}
+
+.site-footer__social--facebook:hover {
+  box-shadow: 0 8px 22px rgba(24, 119, 242, 0.35);
+}
+
 .site-footer__social--youtube {
   background: #ff0000;
   box-shadow: 0 4px 14px rgba(255, 0, 0, 0.35);

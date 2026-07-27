@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
+import { createPortal } from 'react-dom'
 import { Icons } from './Icons'
 import { apiFetch, readJsonResponse } from '../utils/api'
 import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
@@ -7,10 +8,13 @@ import {
   battleCatalogToFormOptions,
   defaultOfficialBattleLabel,
 } from '../cms/battleCatalog'
+import { mediaUrl } from '../utils/mediaUrl'
 import './SignUpModal.css'
 
 const FORMSPREE_OFFICIAL = ''
 const FORMSPREE_SPECIAL = ''
+
+const FALLBACK_LEAGUE_LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
 
 const battleMeta = {
   official: {
@@ -27,6 +31,31 @@ const battleMeta = {
   },
 }
 
+function RequiredLabel({ htmlFor, children, as = 'label' }) {
+  const Tag = as
+  return (
+    <Tag className="signup-field__label" htmlFor={as === 'label' ? htmlFor : undefined}>
+      {children} <span className="signup-field__required" aria-hidden="true">*</span>
+    </Tag>
+  )
+}
+
+function toEmbedVideoUrl(raw) {
+  const url = String(raw || '').trim()
+  if (!url) return ''
+  if (/youtube\.com\/embed\//i.test(url)) return url
+  const watchMatch = url.match(/[?&]v=([^&]+)/i)
+  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`
+  const shortMatch = url.match(/youtu\.be\/([^?&]+)/i)
+  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`
+  if (/\.(mp4|webm|ogg)(\?|$)/i.test(url) || url.startsWith('/')) return mediaUrl(url)
+  return url
+}
+
+function isDirectVideoUrl(url) {
+  return /\.(mp4|webm|ogg)(\?|$)/i.test(url) || (url.startsWith('/') && !url.includes('youtube'))
+}
+
 function emptyForm(type, preset, officialLabel) {
   const defaultBattle =
     preset?.battleLabel ||
@@ -34,18 +63,21 @@ function emptyForm(type, preset, officialLabel) {
   return {
     fullName: '',
     tiktok: '',
+    email: '',
+    country: '',
+    whatsapp: '',
     followers: '',
     battle: defaultBattle,
-    date: preset?.date || '',
     leagueLevel: '',
     badgeNumber: '',
     hasCommunity: '',
     highestCoins: '',
+    canRallySupporters: '',
   }
 }
 
 export default function SignUpModal({ type = 'official', preset = null, isOpen, onClose }) {
-  const { collections } = useContent()
+  const { collections, settings } = useContent()
   const battleOptions = useMemo(
     () => battleCatalogToFormOptions(collections.battleCatalog),
     [collections.battleCatalog],
@@ -54,11 +86,23 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
     () => defaultOfficialBattleLabel(collections.battleCatalog),
     [collections.battleCatalog],
   )
+  const leagueLevels = useMemo(() => {
+    const fromCms = (collections.leagueLevels || [])
+      .map((row) => String(row.label || '').trim())
+      .filter(Boolean)
+    return fromCms.length ? fromCms : FALLBACK_LEAGUE_LEVELS
+  }, [collections.leagueLevels])
+
+  const giftingGuideVideo = String(settings?.giftingLevelGuideVideo || '').trim()
+  const giftingGuideEmbed = toEmbedVideoUrl(giftingGuideVideo)
 
   const [form, setForm] = useState(() => emptyForm(type, preset, officialLabel))
+  const [followersScreenshot, setFollowersScreenshot] = useState(null)
+  const [giftingLevelScreenshot, setGiftingLevelScreenshot] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const [showGiftingGuide, setShowGiftingGuide] = useState(false)
   const firstFieldRef = useRef(null)
 
   const selectedOption =
@@ -70,29 +114,41 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const isOfficial = entryType === 'official'
   const meta = battleMeta[isOfficial ? 'official' : 'special']
   const endpoint = isOfficial ? FORMSPREE_OFFICIAL : FORMSPREE_SPECIAL
-  const applyingFor = form.battle || (isOfficial ? officialLabel : 'Select a battle type')
+  const applyingFor = form.battle || officialLabel || 'Select a battle type'
   const battleLocked = Boolean(preset?.battleLabel)
 
   useEffect(() => {
     if (!isOpen) return
     setForm(emptyForm(type, preset, officialLabel))
+    setFollowersScreenshot(null)
+    setGiftingLevelScreenshot(null)
     setSubmitted(false)
     setError('')
+    setShowGiftingGuide(false)
   }, [isOpen, type, preset, officialLabel])
 
   useEffect(() => {
     if (!isOpen) return undefined
     const handler = (e) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape') {
+        if (showGiftingGuide) setShowGiftingGuide(false)
+        else onClose()
+      }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [isOpen, onClose])
+  }, [isOpen, onClose, showGiftingGuide])
 
   useEffect(() => {
-    document.body.style.overflow = isOpen ? 'hidden' : ''
+    if (!isOpen) return undefined
+    const html = document.documentElement
+    const prevHtml = html.style.overflow
+    const prevBody = document.body.style.overflow
+    html.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = ''
+      html.style.overflow = prevHtml
+      document.body.style.overflow = prevBody
     }
   }, [isOpen])
 
@@ -104,6 +160,10 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
+  const handleBattleSelect = (value) => {
+    setForm({ ...form, battle: value })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
@@ -114,43 +174,58 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       if (!Number.isFinite(followers) || followers < 0) {
         throw new Error('Please enter your TikTok follower count')
       }
-
-      if (isOfficial) {
-        if (!String(form.leagueLevel).trim()) {
-          throw new Error('Please enter your league level')
-        }
-        if (!String(form.badgeNumber).trim()) {
-          throw new Error('Please enter your badge number')
-        }
-        if (!form.hasCommunity) {
-          throw new Error('Please tell us if you have a community or team')
-        }
-        const highestCoins = Number(String(form.highestCoins).replace(/,/g, ''))
-        if (!Number.isFinite(highestCoins) || highestCoins < 0) {
-          throw new Error('Please enter your highest coins ever on TikTok')
-        }
+      if (!followersScreenshot) {
+        throw new Error('Please attach a screenshot of your TikTok follower count')
+      }
+      if (!String(form.email).trim()) {
+        throw new Error('Please enter your email address')
+      }
+      if (!String(form.country).trim()) {
+        throw new Error('Please enter your country')
+      }
+      if (!String(form.whatsapp).trim()) {
+        throw new Error('Please enter your WhatsApp number')
+      }
+      if (!String(form.leagueLevel).trim()) {
+        throw new Error('Please select your league level')
+      }
+      if (!String(form.badgeNumber).trim()) {
+        throw new Error('Please enter your badge number')
+      }
+      if (!form.hasCommunity) {
+        throw new Error('Please tell us if you have a community or team')
+      }
+      const highestCoins = Number(String(form.highestCoins).replace(/,/g, ''))
+      if (!Number.isFinite(highestCoins) || highestCoins < 0) {
+        throw new Error('Please enter your highest TikTok coins gained in a single battle')
+      }
+      if (!form.canRallySupporters) {
+        throw new Error('Please tell us if you can rally your supporters for the event')
+      }
+      if (!giftingLevelScreenshot) {
+        throw new Error('Please attach a screenshot of your gifting level')
       }
 
-      const payload = {
-        entryType,
-        battleLabel: form.battle,
-        fullName: form.fullName,
-        tiktok: form.tiktok,
-        followers,
-        date: form.date,
-      }
-
-      if (isOfficial) {
-        payload.leagueLevel = String(form.leagueLevel).trim()
-        payload.badgeNumber = String(form.badgeNumber).trim()
-        payload.hasCommunity = form.hasCommunity
-        payload.highestCoins = Number(String(form.highestCoins).replace(/,/g, ''))
-      }
+      const formData = new FormData()
+      formData.append('entryType', entryType)
+      formData.append('battleLabel', form.battle)
+      formData.append('fullName', form.fullName)
+      formData.append('tiktok', form.tiktok)
+      formData.append('email', form.email)
+      formData.append('country', form.country)
+      formData.append('whatsapp', form.whatsapp)
+      formData.append('followers', String(followers))
+      formData.append('leagueLevel', String(form.leagueLevel).trim())
+      formData.append('badgeNumber', String(form.badgeNumber).trim())
+      formData.append('hasCommunity', form.hasCommunity)
+      formData.append('highestCoins', String(highestCoins))
+      formData.append('canRallySupporters', form.canRallySupporters)
+      formData.append('followersScreenshot', followersScreenshot)
+      formData.append('giftingLevelScreenshot', giftingLevelScreenshot)
 
       const res = await apiFetch('/api/battle-applications', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: formData,
       })
       const data = await readJsonResponse(res)
       if (!res.ok) throw new Error(data.error || 'Could not submit your entry')
@@ -182,32 +257,41 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const handleClose = () => {
     setSubmitted(false)
     setError('')
+    setShowGiftingGuide(false)
+    setFollowersScreenshot(null)
+    setGiftingLevelScreenshot(null)
     setForm(emptyForm(type, null, officialLabel))
     onClose()
   }
 
   if (!isOpen) return null
 
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-5">
+  return createPortal(
+    <>
       <div
-        className="absolute inset-0"
-        style={{ background: 'rgba(18,6,32,0.85)', backdropFilter: 'blur(12px)' }}
-        onClick={handleClose}
-      />
-
-      <div className="signup-modal" style={{ '--signup-accent': meta.accent }}>
+        className="signup-modal-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="signup-modal-title"
+      >
         <button
           type="button"
-          onClick={handleClose}
-          className="absolute top-3.5 right-3.5 w-8 h-8 flex items-center justify-center rounded-lg text-white/40 hover:text-white transition-all hover:scale-110 z-10"
-          style={{ background: 'rgba(255,255,255,0.06)' }}
+          className="signup-modal-backdrop"
           aria-label="Close"
-        >
-          <span className="w-4 h-4 block">{Icons.close}</span>
-        </button>
+          onClick={handleClose}
+        />
 
-        <div className="signup-modal__inner">
+        <div className="signup-modal" style={{ '--signup-accent': meta.accent }}>
+          <button
+            type="button"
+            onClick={handleClose}
+            className="signup-modal__close"
+            aria-label="Close"
+          >
+            <span className="w-4 h-4 block">{Icons.close}</span>
+          </button>
+
+          <div className="signup-modal__inner">
           {submitted ? (
             <div className="text-center py-8">
               <div
@@ -216,12 +300,14 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
               >
                 <span className="w-8 h-8 block text-ember">{Icons.check}</span>
               </div>
-              <h3 className="font-display font-bold text-2xl text-ivory mb-2">You&apos;re In!</h3>
-              <p className="text-white/50 text-sm mb-2 leading-relaxed">
-                Applied for <span className="text-ivory font-semibold">{applyingFor}</span>
+              <h3 className="font-display font-bold text-2xl text-ivory mb-2">Application Received!</h3>
+              <p className="text-white/50 text-sm mb-3 leading-relaxed max-w-md mx-auto">
+                Thank you for applying for{' '}
+                <span className="text-ivory font-semibold">{applyingFor}</span>.
               </p>
-              <p className="text-white/50 text-sm mb-8 leading-relaxed">
-                Your entry has been submitted.<br />See you in the battle!
+              <p className="text-white/55 text-sm mb-8 leading-relaxed max-w-md mx-auto">
+                Your application was well received and is being processed. Our team will review your
+                details and contact you about the next steps.
               </p>
               <button
                 type="button"
@@ -229,73 +315,47 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                 className="px-8 py-3 text-sm font-bold text-white rounded-xl transition-all hover:scale-105"
                 style={{ background: 'linear-gradient(135deg, #FF6B1A, #CC5200)' }}
               >
-                Let&apos;s Go 🔥
+                Done
               </button>
             </div>
           ) : (
             <>
-              <header className={`signup-modal__header${isOfficial ? ' signup-modal__header--compact' : ''}`}>
-                <div className="signup-modal__badge">
-                  <span className="signup-modal__badge-dot" aria-hidden />
-                  {meta.badge}
-                </div>
-                <h2 className="signup-modal__title">Join Box Battle</h2>
-                {!isOfficial ? (
-                  <p className="signup-modal__subtitle">
-                    {battleLocked
-                      ? `Apply for ${form.battle}`
-                      : 'Tell us about yourself — we review every application.'}
-                  </p>
-                ) : null}
+              <header className="signup-modal__header">
+                <h2 id="signup-modal-title" className="signup-modal__title">Join Box Battle</h2>
+                <p className="signup-modal__subtitle">
+                  {battleLocked
+                    ? `Apply for ${form.battle}`
+                    : 'Tell us about yourself — we review every application.'}
+                </p>
               </header>
 
               <form
                 onSubmit={handleSubmit}
-                className={`signup-modal__form${isOfficial ? ' signup-modal__form--official' : ''}`}
+                className="signup-modal__form"
                 style={{ '--signup-accent': meta.accent }}
               >
                 {!battleLocked ? (
-                  <div className="signup-field signup-field--full signup-field--battle">
-                    <label className="signup-field__label" htmlFor="signup-battle">
-                      Box battle type *
-                    </label>
-                    <select
-                      id="signup-battle"
-                      ref={firstFieldRef}
-                      name="battle"
-                      value={form.battle}
-                      onChange={handleChange}
-                      required
-                      className="signup-field__control signup-field__control--select"
-                    >
-                      <option value="" className="bg-[#1F0A38]">
-                        Select the battle you&apos;re applying for…
-                      </option>
-                      <optgroup label="Official" className="bg-[#1F0A38]">
-                        {battleOptions
-                          .filter((o) => o.group === 'Official')
-                          .map((opt) => (
-                            <option key={opt.value} value={opt.value} className="bg-[#1F0A38]">
-                              {opt.value}
-                            </option>
-                          ))}
-                      </optgroup>
-                      {battleOptions.some((o) => o.group === 'Special') ? (
-                        <optgroup label="Special" className="bg-[#1F0A38]">
-                          {battleOptions
-                            .filter((o) => o.group === 'Special')
-                            .map((opt) => (
-                              <option key={opt.value} value={opt.value} className="bg-[#1F0A38]">
-                                {opt.value}
-                              </option>
-                            ))}
-                        </optgroup>
-                      ) : null}
-                    </select>
-                  </div>
+                  <fieldset className="signup-field signup-field--full signup-field--battle">
+                    <RequiredLabel as="legend">Box battle type</RequiredLabel>
+                    <div className="signup-battle-list" ref={firstFieldRef} tabIndex={-1}>
+                      {battleOptions.map((opt, index) => (
+                        <label key={opt.value} className="signup-battle-option">
+                          <input
+                            type="radio"
+                            name="battle"
+                            value={opt.value}
+                            checked={form.battle === opt.value}
+                            onChange={() => handleBattleSelect(opt.value)}
+                            required={index === 0}
+                          />
+                          <span>{opt.value}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
                 ) : (
                   <div className="signup-field signup-field--full signup-field--battle">
-                    <label className="signup-field__label">Box battle type *</label>
+                    <RequiredLabel>Box battle type</RequiredLabel>
                     <div ref={firstFieldRef} tabIndex={-1} className="signup-field__static">
                       {form.battle}
                     </div>
@@ -303,164 +363,259 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                 )}
 
                 <div className="signup-field">
-                    <label className="signup-field__label" htmlFor="signup-name">
-                      Full name *
-                    </label>
+                  <RequiredLabel htmlFor="signup-name">Full name</RequiredLabel>
+                  <input
+                    id="signup-name"
+                    ref={battleLocked ? firstFieldRef : undefined}
+                    type="text"
+                    name="fullName"
+                    value={form.fullName}
+                    onChange={handleChange}
+                    required
+                    autoComplete="name"
+                    placeholder="Your full name"
+                    className="signup-field__control"
+                  />
+                </div>
+
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-tiktok">TikTok username</RequiredLabel>
+                  <div className="signup-field__wrap">
+                    <span className="signup-field__at" aria-hidden>
+                      @
+                    </span>
                     <input
-                      id="signup-name"
-                      ref={battleLocked ? firstFieldRef : undefined}
+                      id="signup-tiktok"
                       type="text"
-                      name="fullName"
-                      value={form.fullName}
+                      name="tiktok"
+                      value={form.tiktok}
                       onChange={handleChange}
                       required
-                      autoComplete="name"
-                      placeholder="Your full name"
-                      className="signup-field__control"
+                      autoComplete="username"
+                      placeholder="yourusername"
+                      className="signup-field__control signup-field__tiktok"
                     />
                   </div>
+                </div>
 
-                  <div className="signup-field">
-                    <label className="signup-field__label" htmlFor="signup-tiktok">
-                      TikTok username *
-                    </label>
-                    <div className="signup-field__wrap">
-                      <span className="signup-field__at" aria-hidden>
-                        @
-                      </span>
-                      <input
-                        id="signup-tiktok"
-                        type="text"
-                        name="tiktok"
-                        value={form.tiktok}
-                        onChange={handleChange}
-                        required
-                        autoComplete="username"
-                        placeholder="yourusername"
-                        className="signup-field__control signup-field__tiktok"
-                      />
-                    </div>
-                  </div>
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-email">Email address</RequiredLabel>
+                  <input
+                    id="signup-email"
+                    type="email"
+                    name="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    className="signup-field__control"
+                  />
+                </div>
 
-                  <div className="signup-field">
-                    <label className="signup-field__label" htmlFor="signup-followers">
-                      TikTok followers *
-                    </label>
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-country">Country</RequiredLabel>
+                  <input
+                    id="signup-country"
+                    type="text"
+                    name="country"
+                    value={form.country}
+                    onChange={handleChange}
+                    required
+                    autoComplete="country-name"
+                    placeholder="e.g. Uganda"
+                    className="signup-field__control"
+                  />
+                </div>
+
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-whatsapp">WhatsApp number</RequiredLabel>
+                  <input
+                    id="signup-whatsapp"
+                    type="tel"
+                    name="whatsapp"
+                    value={form.whatsapp}
+                    onChange={handleChange}
+                    required
+                    autoComplete="tel"
+                    placeholder="e.g. +256 700 000000"
+                    className="signup-field__control"
+                  />
+                </div>
+
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-followers">TikTok followers</RequiredLabel>
+                  <input
+                    id="signup-followers"
+                    type="number"
+                    name="followers"
+                    value={form.followers}
+                    onChange={handleChange}
+                    required
+                    min={0}
+                    step={1}
+                    inputMode="numeric"
+                    placeholder="e.g. 12500"
+                    className="signup-field__control"
+                  />
+                </div>
+
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-followers-shot">
+                    Screenshot of TikTok followers
+                  </RequiredLabel>
+                  <label className="signup-file">
                     <input
-                      id="signup-followers"
-                      type="number"
-                      name="followers"
-                      value={form.followers}
-                      onChange={handleChange}
+                      id="signup-followers-shot"
+                      type="file"
+                      accept="image/*"
                       required
-                      min={0}
-                      step={1}
-                      inputMode="numeric"
-                      placeholder="e.g. 12500"
-                      className="signup-field__control"
+                      onChange={(e) => setFollowersScreenshot(e.target.files?.[0] || null)}
                     />
-                  </div>
+                    <span className="signup-file__btn">Choose image</span>
+                    <span className="signup-file__name">
+                      {followersScreenshot?.name || 'No file chosen'}
+                    </span>
+                  </label>
+                  <p className="signup-field__hint">
+                    Open your TikTok profile and screenshot the follower count shown on your page.
+                  </p>
+                </div>
 
-                  <div className="signup-field">
-                    <label className="signup-field__label" htmlFor="signup-date">
-                      Date available *
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-league">League level</RequiredLabel>
+                  <select
+                    id="signup-league"
+                    name="leagueLevel"
+                    value={form.leagueLevel}
+                    onChange={handleChange}
+                    required
+                    className="signup-field__control signup-field__control--select"
+                  >
+                    <option value="" className="bg-[#1F0A38]">
+                      Select your league level…
+                    </option>
+                    {leagueLevels.map((level) => (
+                      <option key={level} value={level} className="bg-[#1F0A38]">
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="signup-field">
+                  <RequiredLabel htmlFor="signup-badge">Badge number</RequiredLabel>
+                  <input
+                    id="signup-badge"
+                    type="text"
+                    name="badgeNumber"
+                    value={form.badgeNumber}
+                    onChange={handleChange}
+                    required
+                    placeholder="Your badge number"
+                    className="signup-field__control"
+                  />
+                </div>
+
+                <div className="signup-field signup-field--full">
+                  <RequiredLabel htmlFor="signup-coins">
+                    What is your highest number of TikTok coins gained in a single battle?
+                  </RequiredLabel>
+                  <input
+                    id="signup-coins"
+                    type="number"
+                    name="highestCoins"
+                    value={form.highestCoins}
+                    onChange={handleChange}
+                    required
+                    min={0}
+                    step={1}
+                    inputMode="numeric"
+                    placeholder="e.g. 500000"
+                    className="signup-field__control"
+                  />
+                </div>
+
+                <div className="signup-field signup-field--full signup-field--community">
+                  <RequiredLabel as="span">
+                    Can you rally your supporters for the event and win it?
+                  </RequiredLabel>
+                  <div className="signup-pills" role="radiogroup" aria-label="Rally supporters">
+                    {['yes', 'no', 'maybe'].map((value) => (
+                      <label key={value} className="signup-pill">
+                        <input
+                          type="radio"
+                          name="canRallySupporters"
+                          value={value}
+                          checked={form.canRallySupporters === value}
+                          onChange={handleChange}
+                          required
+                        />
+                        <span>{value.charAt(0).toUpperCase() + value.slice(1)}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="signup-field signup-field--full signup-field--community">
+                  <RequiredLabel as="span">Community / team?</RequiredLabel>
+                  <div className="signup-pills" role="radiogroup" aria-label="Community or team">
+                    <label className="signup-pill">
+                      <input
+                        type="radio"
+                        name="hasCommunity"
+                        value="yes"
+                        checked={form.hasCommunity === 'yes'}
+                        onChange={handleChange}
+                        required
+                      />
+                      <span>Yes</span>
                     </label>
-                    <input
-                      id="signup-date"
-                      type="date"
-                      name="date"
-                      value={form.date}
-                      onChange={handleChange}
-                      required
-                      className="signup-field__control signup-field__control--date"
-                    />
+                    <label className="signup-pill">
+                      <input
+                        type="radio"
+                        name="hasCommunity"
+                        value="no"
+                        checked={form.hasCommunity === 'no'}
+                        onChange={handleChange}
+                      />
+                      <span>No</span>
+                    </label>
                   </div>
+                </div>
 
-                {isOfficial ? (
-                  <>
-                    <div className="signup-field">
-                      <label className="signup-field__label" htmlFor="signup-league">
-                        League level *
-                      </label>
-                      <input
-                        id="signup-league"
-                        type="text"
-                        name="leagueLevel"
-                        value={form.leagueLevel}
-                        onChange={handleChange}
-                        required
-                        placeholder="e.g. A1, B2"
-                        className="signup-field__control"
-                      />
-                    </div>
-
-                    <div className="signup-field">
-                      <label className="signup-field__label" htmlFor="signup-badge">
-                        Badge number *
-                      </label>
-                      <input
-                        id="signup-badge"
-                        type="text"
-                        name="badgeNumber"
-                        value={form.badgeNumber}
-                        onChange={handleChange}
-                        required
-                        placeholder="Your badge number"
-                        className="signup-field__control"
-                      />
-                    </div>
-
-                    <div className="signup-field">
-                      <label className="signup-field__label" htmlFor="signup-coins">
-                        Highest coins *
-                      </label>
-                      <input
-                        id="signup-coins"
-                        type="number"
-                        name="highestCoins"
-                        value={form.highestCoins}
-                        onChange={handleChange}
-                        required
-                        min={0}
-                        step={1}
-                        inputMode="numeric"
-                        placeholder="e.g. 500000"
-                        className="signup-field__control"
-                      />
-                    </div>
-
-                    <div className="signup-field signup-field--community">
-                      <span className="signup-field__label">Community / team? *</span>
-                      <div className="signup-pills" role="radiogroup" aria-label="Community or team">
-                        <label className="signup-pill">
-                          <input
-                            type="radio"
-                            name="hasCommunity"
-                            value="yes"
-                            checked={form.hasCommunity === 'yes'}
-                            onChange={handleChange}
-                            required
-                          />
-                          <span>Yes</span>
-                        </label>
-                        <label className="signup-pill">
-                          <input
-                            type="radio"
-                            name="hasCommunity"
-                            value="no"
-                            checked={form.hasCommunity === 'no'}
-                            onChange={handleChange}
-                          />
-                          <span>No</span>
-                        </label>
-                      </div>
-                    </div>
-
-                    <p className="signup-field--full signup-modal__note signup-modal__note--inline">
-                      Min. <span className="text-ember font-semibold">5,000 taps</span> required · Say a prayer before your battle
-                    </p>
-                  </>
-                ) : null}
+                <div className="signup-field signup-field--full">
+                  <RequiredLabel htmlFor="signup-gifting-shot">
+                    Attach screenshot of your gifting level
+                  </RequiredLabel>
+                  <label className="signup-file">
+                    <input
+                      id="signup-gifting-shot"
+                      type="file"
+                      accept="image/*"
+                      required
+                      onChange={(e) => setGiftingLevelScreenshot(e.target.files?.[0] || null)}
+                    />
+                    <span className="signup-file__btn">Choose image</span>
+                    <span className="signup-file__name">
+                      {giftingLevelScreenshot?.name || 'No file chosen'}
+                    </span>
+                  </label>
+                  <p className="signup-field__hint">
+                    Open TikTok → Profile → Settings → Gifting level, then screenshot your level.{' '}
+                    {giftingGuideVideo ? (
+                      <button
+                        type="button"
+                        className="signup-field__guide-link"
+                        onClick={() => setShowGiftingGuide(true)}
+                      >
+                        Watch how to capture and attach your screenshot
+                      </button>
+                    ) : (
+                      <span>Need help? Ask our team for a walkthrough video.</span>
+                    )}
+                  </p>
+                </div>
 
                 {error ? (
                   <p className="signup-field--full signup-modal__error" role="alert">
@@ -468,7 +623,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                   </p>
                 ) : null}
 
-                <div className={`signup-modal__footer${isOfficial ? ' signup-modal__footer--compact' : ''}`}>
+                <div className="signup-modal__footer">
                   <button type="submit" disabled={submitting} className="signup-modal__submit">
                     {submitting ? 'Sending…' : BATTLE_SUBMIT_LABEL}
                   </button>
@@ -481,6 +636,46 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
           )}
         </div>
       </div>
-    </div>
+      </div>
+
+      {showGiftingGuide && giftingGuideVideo ? (
+        <div className="signup-guide" role="dialog" aria-modal="true" aria-label="Gifting level guide">
+          <button
+            type="button"
+            className="signup-guide__backdrop"
+            aria-label="Close guide"
+            onClick={() => setShowGiftingGuide(false)}
+          />
+          <div className="signup-guide__panel">
+            <div className="signup-guide__head">
+              <h3>How to screenshot your gifting level</h3>
+              <button
+                type="button"
+                className="signup-guide__close"
+                aria-label="Close"
+                onClick={() => setShowGiftingGuide(false)}
+              >
+                {Icons.close}
+              </button>
+            </div>
+            <div className="signup-guide__video">
+              {isDirectVideoUrl(giftingGuideEmbed) ? (
+                <video controls playsInline src={giftingGuideEmbed}>
+                  <track kind="captions" />
+                </video>
+              ) : (
+                <iframe
+                  title="Gifting level screenshot guide"
+                  src={giftingGuideEmbed}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </>,
+    document.body,
   )
 }

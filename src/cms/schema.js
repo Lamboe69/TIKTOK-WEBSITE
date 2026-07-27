@@ -32,6 +32,12 @@ export const PAGE_SCHEMA = [
       { key: 'battleTypesTitle', label: 'Battle Types — title', type: 'text' },
       { key: 'battleTypesKicker', label: 'Battle Types — kicker', type: 'text' },
       { key: 'battleTypesLink', label: 'Battle Types — schedule link text', type: 'text' },
+      { key: 'upcomingBattlesKicker', label: 'Upcoming Battles — kicker', type: 'text' },
+      { key: 'upcomingBattlesTitle', label: 'Upcoming Battles — title', type: 'text' },
+      { key: 'livestreamZonesTitle', label: 'Daily Livestream Time Zones — heading', type: 'text' },
+      { key: 'livestreamClockKicker', label: 'Livestream clock — kicker', type: 'text' },
+      { key: 'livestreamAnchorLabel', label: 'Livestream clock — anchor label', type: 'text' },
+      { key: 'livestreamClockTagline', label: 'Livestream clock — tagline', type: 'textarea' },
       {
         key: 'kmLoversLayout',
         label: 'KM Lovers — section style',
@@ -268,6 +274,8 @@ export const PAGE_SCHEMA = [
       { key: 'heroLede', label: 'Supporting line', type: 'textarea' },
       { key: 'boardKicker', label: 'Arena board — kicker', type: 'text' },
       { key: 'boardTitle', label: 'Arena board — title', type: 'text' },
+      { key: 'weekHorizonKicker', label: 'Seven-day horizon — kicker', type: 'text' },
+      { key: 'weekHorizonTitle', label: 'Seven-day horizon — title', type: 'text' },
       { key: 'finaleKicker', label: 'Finale — kicker', type: 'text' },
       { key: 'finaleTitle', label: 'Finale — title', type: 'text' },
       { key: 'finaleBody', label: 'Finale — description', type: 'textarea' },
@@ -339,6 +347,11 @@ export const SETTINGS_FIELDS = [
   { key: 'facebookUrl', label: 'Facebook URL', type: 'text' },
   { key: 'twitchUrl', label: 'Twitch URL', type: 'text' },
   { key: 'paypalEmail', label: 'PayPal business email (for donations & payments)', type: 'text' },
+  {
+    key: 'giftingLevelGuideVideo',
+    label: 'Battle form — gifting level screenshot guide video URL (YouTube or direct video link)',
+    type: 'text',
+  },
 ]
 
 export const COLLECTIONS = [
@@ -359,14 +372,28 @@ export const COLLECTIONS = [
   {
     key: 'schedule',
     label: 'Battle schedule',
-    description: 'Upcoming battles',
+    description: 'Upcoming battles · use Next 7 days editor for the horizon boxes',
     titleField: 'title',
     fields: [
-      { key: 'title', label: 'Title', type: 'text' },
+      { key: 'title', label: 'Battle', type: 'text' },
       { key: 'type', label: 'Type', type: 'text' },
       { key: 'date', label: 'Date (YYYY-MM-DD)', type: 'text' },
       { key: 'time', label: 'Time', type: 'text' },
+      { key: 'image', label: 'Poster image (optional)', type: 'image' },
       { key: 'description', label: 'Description', type: 'textarea' },
+    ],
+  },
+  {
+    key: 'livestreamRegions',
+    label: 'Livestream time zones',
+    description: 'Regional livestream times on the home page',
+    titleField: 'region',
+    fields: [
+      { key: 'region', label: 'Region name', type: 'text' },
+      { key: 'time', label: 'Time (e.g. 3:30 PM)', type: 'text' },
+      { key: 'abbr', label: 'Abbreviation (e.g. CST)', type: 'text' },
+      { key: 'isAnchor', label: 'Anchor region (Dallas clock)', type: 'select', options: ['true', 'false'] },
+      { key: 'group', label: 'Group ID (same ID = shared StatBar cell, optional)', type: 'text' },
     ],
   },
   {
@@ -502,7 +529,7 @@ export const COLLECTIONS = [
   {
     key: 'battleCatalog',
     label: 'Battle types',
-    description: 'Homepage battle mosaic and signup form dropdown',
+    description: 'Homepage battle mosaic and signup form battle list',
     titleField: 'title',
     fields: [
       { key: 'title', label: 'Title', type: 'text' },
@@ -517,6 +544,13 @@ export const COLLECTIONS = [
       { key: 'short', label: 'Short label (optional)', type: 'text' },
       { key: 'tag', label: 'Tag line (optional)', type: 'text' },
     ],
+  },
+  {
+    key: 'leagueLevels',
+    label: 'League levels',
+    description: 'Options shown in the box battle application form',
+    titleField: 'label',
+    fields: [{ key: 'label', label: 'Level label (e.g. A1, B2)', type: 'text' }],
   },
   {
     key: 'masterclassTiers',

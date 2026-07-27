@@ -36,6 +36,7 @@ import EnrollmentsAdmin from './admin/pages/EnrollmentsAdmin'
 import BattleApplicationsAdmin from './admin/pages/BattleApplicationsAdmin'
 import CharityApplicationsAdmin from './admin/pages/CharityApplicationsAdmin'
 import ContactMessagesAdmin from './admin/pages/ContactMessagesAdmin'
+import WeekScheduleAdmin from './admin/pages/WeekScheduleAdmin'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -84,6 +85,7 @@ function AppRoutes() {
           <Route path="applications" element={<BattleApplicationsAdmin />} />
           <Route path="charity-applications" element={<CharityApplicationsAdmin />} />
           <Route path="contact-messages" element={<ContactMessagesAdmin />} />
+          <Route path="schedule/week" element={<WeekScheduleAdmin />} />
           <Route path="pages/:key" element={<PageEditor />} />
           <Route path="collections/:key" element={<CollectionList />} />
           <Route path="collections/:key/:id" element={<CollectionEdit />} />

@@ -167,6 +167,7 @@ export default function ContactMessagesAdmin() {
 
   return (
     <AdminPage
+      wide
       title="Contact messages"
       lede="Messages from the Contact page. Review concerns and mark them resolved."
       actions={

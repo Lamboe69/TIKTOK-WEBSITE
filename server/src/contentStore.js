@@ -5,6 +5,7 @@ export const ITEM_COLLECTIONS = [
   'heroSlides',
   'quotes',
   'schedule',
+  'livestreamRegions',
   'blogPosts',
   'gallery',
   'testimonials',
