@@ -39,6 +39,21 @@ const applicationUpload = upload.fields([
   { name: 'giftingLevelScreenshot', maxCount: 1 },
 ])
 
+function handleUploadErrors(req, res, next) {
+  applicationUpload(req, res, (err) => {
+    if (!err) return next()
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(413).json({
+        error: 'Each screenshot must be 8 MB or smaller. Try a smaller image or take a new screenshot.',
+      })
+    }
+    if (err.message === 'Only image uploads allowed') {
+      return res.status(400).json({ error: 'Screenshots must be image files (JPG, PNG, etc.)' })
+    }
+    return res.status(400).json({ error: err.message || 'Invalid upload' })
+  })
+}
+
 function normalizeHandle(raw) {
   return String(raw || '')
     .trim()
@@ -233,7 +248,7 @@ function validateApplicationBody(body, files) {
 }
 
 /** Public: submit a box battle application */
-router.post('/', applicationUpload, async (req, res) => {
+router.post('/', handleUploadErrors, async (req, res) => {
   try {
     const validated = validateApplicationBody(req.body, req.files)
     if (validated.error) {

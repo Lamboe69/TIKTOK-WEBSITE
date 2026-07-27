@@ -35,11 +35,27 @@ export function apiUrl(path) {
   return base ? `${base}${p}` : p
 }
 
+function networkErrorMessage(url, err) {
+  const msg = String(err?.message || err || '')
+  if (!/failed to fetch|networkerror|load failed/i.test(msg)) return msg || 'Request failed'
+
+  const isLocal =
+    typeof location !== 'undefined' &&
+    /^localhost$|^127\.0\.0\.1$/.test(location.hostname)
+  if (isLocal) {
+    return 'Could not reach the API. Start the backend with `npm run dev:api` (or `npm run dev:all`) and try again.'
+  }
+  return 'Could not reach the server. Check your connection, or use smaller screenshot files (under 4 MB each) and try again.'
+}
+
 /** Fetch with clearer errors when the server returns HTML instead of JSON. */
 export async function apiFetch(path, options) {
   const url = apiUrl(path)
-  const res = await fetch(url, options)
-  return res
+  try {
+    return await fetch(url, options)
+  } catch (err) {
+    throw new Error(networkErrorMessage(url, err))
+  }
 }
 
 export async function readJsonResponse(res) {
@@ -53,9 +69,11 @@ export async function readJsonResponse(res) {
     throw new Error(
       res.ok
         ? 'Invalid JSON response from server'
-        : looksLikeNginxHtml && res.status === 405
-          ? 'nginx returned 405 — add location /api/ { proxy_pass http://127.0.0.1:4000; } before location /'
-          : `Server error (${res.status}). ${snippet}`,
+        : res.status === 413
+          ? 'Upload too large — use smaller screenshots (under 4 MB each) and try again.'
+          : looksLikeNginxHtml && res.status === 405
+            ? 'nginx returned 405 — add location /api/ { proxy_pass http://127.0.0.1:4000; } before location /'
+            : `Server error (${res.status}). ${snippet}`,
     )
   }
 }

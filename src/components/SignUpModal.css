@@ -411,6 +411,348 @@
   color: rgba(255, 255, 255, 0.45);
 }
 
+/* Screenshot upload with preview */
+.signup-field--screenshot {
+  grid-column: 1 / -1;
+}
+
+.signup-screenshot {
+  position: relative;
+}
+
+.signup-screenshot__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* —— Empty state —— */
+.signup-screenshot__empty {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 4.75rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.85rem;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  background:
+    radial-gradient(ellipse 80% 120% at 0% 0%, color-mix(in srgb, var(--signup-accent, #ff6b1a) 10%, transparent), transparent 55%),
+    rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+.signup-screenshot__empty:hover,
+.signup-screenshot__empty:focus-visible {
+  border-color: color-mix(in srgb, var(--signup-accent, #ff6b1a) 50%, transparent);
+  background:
+    radial-gradient(ellipse 80% 120% at 0% 0%, color-mix(in srgb, var(--signup-accent, #ff6b1a) 16%, transparent), transparent 55%),
+    rgba(0, 0, 0, 0.28);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--signup-accent, #ff6b1a) 12%, transparent),
+    0 10px 28px rgba(0, 0, 0, 0.22);
+  outline: none;
+}
+
+.signup-screenshot__empty:active {
+  transform: scale(0.995);
+}
+
+.signup-screenshot__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  color: var(--signup-accent, #ff6b1a);
+  background: color-mix(in srgb, var(--signup-accent, #ff6b1a) 16%, rgba(0, 0, 0, 0.35));
+  border: 1px solid color-mix(in srgb, var(--signup-accent, #ff6b1a) 28%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.signup-screenshot__empty-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.signup-screenshot__cta {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: rgba(248, 244, 238, 0.95);
+  letter-spacing: 0.01em;
+}
+
+.signup-screenshot__empty-hint {
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.signup-screenshot__empty-tag {
+  align-self: center;
+  padding: 0.28rem 0.55rem;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* —— Preview state —— */
+.signup-screenshot--ready .signup-screenshot__preview {
+  animation: signup-shot-in 0.35s ease both;
+}
+
+@keyframes signup-shot-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.signup-screenshot__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: 0.85rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--signup-accent, #ff6b1a) 32%, rgba(255, 255, 255, 0.12));
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--signup-accent, #ff6b1a) 8%, rgba(0, 0, 0, 0.32)) 0%, rgba(0, 0, 0, 0.28) 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.signup-screenshot__preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.signup-screenshot__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--signup-accent, #ff6b1a) 75%, #fff);
+}
+
+.signup-screenshot__badge svg {
+  flex-shrink: 0;
+}
+
+.signup-screenshot__size-pill {
+  padding: 0.22rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.signup-screenshot__frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 9rem;
+  max-height: min(42vh, 18rem);
+  padding: 0.75rem;
+  cursor: pointer;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.04) 75%),
+    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.04) 75%),
+    rgba(0, 0, 0, 0.42);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    8px 8px;
+}
+
+.signup-screenshot__frame img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(40vh, 16.5rem);
+  object-fit: contain;
+  border-radius: 0.45rem;
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.signup-screenshot__frame-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.65rem;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  pointer-events: none;
+}
+
+.signup-screenshot__frame-cta {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.signup-screenshot__frame:hover .signup-screenshot__frame-overlay,
+.signup-screenshot__frame:focus-visible .signup-screenshot__frame-overlay {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .signup-screenshot__frame-overlay {
+    opacity: 1;
+  }
+}
+
+.signup-screenshot__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.55rem 0.85rem;
+  padding: 0.65rem 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.signup-screenshot__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  min-width: 0;
+  flex: 1 1 10rem;
+}
+
+.signup-screenshot__name {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(248, 244, 238, 0.9);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.signup-screenshot__meta-hint {
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.signup-screenshot__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.signup-screenshot__change,
+.signup-screenshot__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.signup-screenshot__change {
+  color: #fff;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--signup-accent, #ff6b1a) 85%, #fff) 0%,
+    color-mix(in srgb, var(--signup-accent, #ff6b1a) 55%, #000) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--signup-accent, #ff6b1a) 45%, transparent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--signup-accent, #ff6b1a) 28%, transparent);
+}
+
+.signup-screenshot__change:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+}
+
+.signup-screenshot__remove {
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.signup-screenshot__remove:hover {
+  color: #ffc9c9;
+  border-color: rgba(255, 120, 120, 0.35);
+  background: rgba(255, 90, 90, 0.12);
+}
+
+.signup-screenshot .signup-field__hint {
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 640px) {
+  .signup-screenshot__frame {
+    min-height: 10rem;
+    max-height: min(36vh, 16rem);
+  }
+
+  .signup-screenshot__frame img {
+    max-height: min(34vh, 14.5rem);
+  }
+}
+
 .signup-guide {
   position: fixed;
   inset: 0;
