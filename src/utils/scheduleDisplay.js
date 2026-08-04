@@ -5,6 +5,7 @@ export const TYPE_IMAGES = {
   'Most Beautiful': '/battles-photos/most-beautiful.jpg',
   Country: '/battles-photos/country.jpg',
   Scavengers: '/battles-photos/scavengers.jpg',
+  Sports: '/battles-photos/scavengers.jpg',
   'Champion of Champions': '/battles-photos/champion-of-champions.jpg',
 }
 
@@ -13,6 +14,7 @@ export const TYPE_ACCENT = {
   'Most Beautiful': '#E8B94A',
   Country: '#C4A0FF',
   Scavengers: '#FF8A3D',
+  Sports: '#2E8B57',
   'Champion of Champions': '#E8B94A',
 }
 

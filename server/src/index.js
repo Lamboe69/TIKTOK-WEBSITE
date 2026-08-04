@@ -95,10 +95,14 @@ async function ensureExtraTables() {
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS highest_coins BIGINT;
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS email TEXT;
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS country TEXT;
+    ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS team TEXT;
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS whatsapp TEXT;
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS followers_screenshot_url TEXT;
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS gifting_level_screenshot_url TEXT;
     ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS can_rally_supporters TEXT;
+    ALTER TABLE battle_applications ADD COLUMN IF NOT EXISTS deleted_at TIMESTAMPTZ;
+    CREATE INDEX IF NOT EXISTS idx_battle_apps_deleted_at
+      ON battle_applications (deleted_at);
 
     CREATE TABLE IF NOT EXISTS contact_messages (
       id           BIGSERIAL PRIMARY KEY,

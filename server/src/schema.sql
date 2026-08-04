@@ -88,6 +88,7 @@ CREATE TABLE IF NOT EXISTS battle_applications (
   tiktok_handle                 TEXT NOT NULL,
   email                         TEXT,
   country                       TEXT,
+  team                          TEXT,
   whatsapp                      TEXT,
   followers                     INT,
   followers_screenshot_url      TEXT,
@@ -100,6 +101,7 @@ CREATE TABLE IF NOT EXISTS battle_applications (
   gifting_level_screenshot_url  TEXT,
   status                        TEXT NOT NULL DEFAULT 'new',
   notes                         TEXT,
+  deleted_at                    TIMESTAMPTZ,
   created_at                    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at                    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -109,6 +111,9 @@ CREATE INDEX IF NOT EXISTS idx_battle_apps_status_created
 
 CREATE INDEX IF NOT EXISTS idx_battle_apps_entry_type
   ON battle_applications (entry_type, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_battle_apps_deleted_at
+  ON battle_applications (deleted_at);
 
 CREATE TABLE IF NOT EXISTS contact_messages (
   id           BIGSERIAL PRIMARY KEY,

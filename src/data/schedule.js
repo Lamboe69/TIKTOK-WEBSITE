@@ -1,6 +1,24 @@
 import { toDateKey } from '../utils/scheduleDisplay'
 
-export const battleTypes = ['All', 'Daily Godsent', 'Scavengers', 'Most Beautiful', 'Country', 'Champion of Champions']
+export const battleTypes = [
+  'All',
+  'Daily Godsent',
+  'Scavengers',
+  'Most Beautiful',
+  'Country',
+  'Sports',
+  'Champion of Champions',
+]
+
+/** Ensure Sports is available even if CMS battleTypes predate the category. */
+export function withSportsCategory(types) {
+  const list = (Array.isArray(types) ? types : []).filter((t) => t && t !== 'All')
+  const base = list.length ? list : battleTypes.filter((t) => t !== 'All')
+  if (base.some((t) => String(t).toLowerCase() === 'sports')) return base
+  const idx = base.findIndex((t) => t === 'Champion of Champions')
+  if (idx >= 0) return [...base.slice(0, idx), 'Sports', ...base.slice(idx)]
+  return [...base, 'Sports']
+}
 
 const SCHEDULE_TEMPLATE = [
   {

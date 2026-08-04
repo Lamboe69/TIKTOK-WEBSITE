@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { useMemo, useState, useCallback } from 'react'
 import Motion from '../Motion'
 import { useSignUp } from '../SignUpContext'
@@ -6,9 +5,9 @@ import { useContent } from '../../cms/ContentContext'
 import { normalizeBattleCatalog } from '../../cms/battleCatalog'
 import { normalizeSectionLayout } from '../../cms/sectionLayouts'
 
-function BattleHeader({ kicker, title, linkText }) {
+function BattleHeader({ kicker, title }) {
   return (
-    <Motion delay={40} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+    <Motion delay={40} className="mb-8">
       <div>
         <p className="sec-kicker mb-2">{kicker}</p>
         <h2
@@ -18,12 +17,6 @@ function BattleHeader({ kicker, title, linkText }) {
           Battle <span className="text-gradient">{title.replace(/^Battle\s*/i, '') || 'formats'}</span>
         </h2>
       </div>
-      <Link to="/battle-schedule" className="sec-cta-ghost self-start sm:self-auto">
-        {linkText}
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </Link>
     </Motion>
   )
 }
@@ -65,7 +58,6 @@ export default function BattleTypes() {
   const layout = normalizeSectionLayout('battleTypesLayout', homePage.battleTypesLayout)
   const battleTypesTitle = homePage.battleTypesTitle || 'Battle formats'
   const battleTypesKicker = homePage.battleTypesKicker || 'The Arena · 6 Formats'
-  const battleTypesLink = homePage.battleTypesLink || 'Full schedule'
   const types = useMemo(
     () => normalizeBattleCatalog(collections.battleCatalog),
     [collections.battleCatalog],
@@ -116,7 +108,7 @@ export default function BattleTypes() {
       <section className={sectionClass}>
         <div className="absolute inset-0 pointer-events-none opacity-50" style={{ background: 'radial-gradient(ellipse 55% 70% at 85% 40%, rgba(255,107,26,0.16), transparent 60%)' }} />
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
-          <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} linkText={battleTypesLink} />
+          <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} />
           <Motion delay={90}>
             <div className="hexpit-grid">
               {types.map((t, i) => (
@@ -147,7 +139,7 @@ export default function BattleTypes() {
       <section className={sectionClass}>
         <div className="absolute inset-0 pointer-events-none opacity-50" style={{ background: 'radial-gradient(ellipse 55% 70% at 50% 50%, rgba(255,107,26,0.2), transparent 60%)' }} />
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
-          <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} linkText={battleTypesLink} />
+          <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} />
           <Motion delay={90}>
             <div className="roulette-stage">
               <div className="roulette-controls">
@@ -195,7 +187,7 @@ export default function BattleTypes() {
     return (
       <section className={sectionClass}>
         <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
-          <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} linkText={battleTypesLink} />
+          <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} />
           <Motion delay={90}>
             <div className="vhs-layout">
               <div className="vhs-deck">
@@ -241,7 +233,7 @@ export default function BattleTypes() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-12 sm:py-16">
-        <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} linkText={battleTypesLink} />
+        <BattleHeader kicker={battleTypesKicker} title={battleTypesTitle} />
 
         <Motion delay={90}>
           <div className="arena-stage">

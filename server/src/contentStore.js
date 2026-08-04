@@ -19,6 +19,7 @@ export const ITEM_COLLECTIONS = [
   'joinSteps',
   'howItWorks',
   'battleCatalog',
+  'leagueLevels',
   'contactLines',
   'contactTeam',
   'aboutCast',

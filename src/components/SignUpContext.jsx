@@ -64,6 +64,7 @@ export function SignUpProvider({ children }) {
       'Most Beautiful': 'Most Beautiful Box Battle',
       Country: 'Country Box Battle',
       Scavengers: 'Scavengers Box Games',
+      Sports: battle.title || 'Sports Box Battle',
       'Champion of Champions': 'Champion of Champions',
       'Lowest Coins': 'Lowest Coins Box Battle',
     }

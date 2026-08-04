@@ -18,6 +18,7 @@ import {
   paginateItems,
   scheduleRowMeta,
 } from '../utils/collectionList'
+import { withSportsCategory } from '../../data/schedule'
 
 export function Field({ field, value, onChange, media }) {
   if (field.type === 'textarea') {
@@ -40,6 +41,23 @@ export function Field({ field, value, onChange, media }) {
             </option>
           ))}
         </select>
+      </div>
+    )
+  }
+
+  if (field.type === 'number') {
+    return (
+      <div className="admin-field">
+        <label>{field.label}</label>
+        <input
+          type="number"
+          min={1}
+          step={1}
+          inputMode="numeric"
+          value={value ?? ''}
+          placeholder={field.placeholder || ''}
+          onChange={(e) => onChange(e.target.value === '' ? '' : e.target.value)}
+        />
       </div>
     )
   }
@@ -109,7 +127,7 @@ export default function CollectionList() {
   const [query, setQuery] = useState('')
   const [typeFilter, setTypeFilter] = useState('all')
   const [whenFilter, setWhenFilter] = useState('all')
-  const [sort, setSort] = useState(key === 'schedule' ? 'date-asc' : 'title-asc')
+  const [sort, setSort] = useState(key === 'schedule' ? 'date-asc' : key === 'battleCatalog' ? 'id-asc' : 'title-asc')
   const [page, setPage] = useState(1)
   const navigate = useNavigate()
 
@@ -117,7 +135,7 @@ export default function CollectionList() {
     setQuery('')
     setTypeFilter('all')
     setWhenFilter('all')
-    setSort(key === 'schedule' ? 'date-asc' : 'title-asc')
+    setSort(key === 'schedule' ? 'date-asc' : key === 'battleCatalog' ? 'id-asc' : 'title-asc')
     setPage(1)
   }, [key])
 
@@ -131,7 +149,7 @@ export default function CollectionList() {
   const scheduleTypeOptions = useMemo(() => {
     const fromCms = (content?.collections?.battleTypes || []).filter((t) => t && t !== 'All')
     const fromItems = [...new Set(items.map((item) => item.type).filter(Boolean))]
-    return fromCms.length ? fromCms : fromItems
+    return withSportsCategory(fromCms.length ? fromCms : fromItems)
   }, [content?.collections?.battleTypes, items])
 
   const typeCounts = useMemo(() => {
@@ -229,11 +247,17 @@ export default function CollectionList() {
   const duplicate = async (item) => {
     try {
       const { id: _id, ...rest } = item
-      await createCollectionItem(key, {
+      const payload = {
         ...rest,
-        id: Date.now(),
         [schema.titleField]: `${item[schema.titleField] || 'Item'} (copy)`,
-      })
+      }
+      if (key === 'battleCatalog') {
+        const nums = items.map((i) => Number(i.id)).filter((n) => Number.isFinite(n))
+        payload.id = nums.length ? Math.max(...nums) + 1 : 1
+      } else {
+        payload.id = Date.now()
+      }
+      await createCollectionItem(key, payload)
       await refresh()
       setToast('Duplicated')
     } catch (err) {
@@ -322,6 +346,17 @@ export default function CollectionList() {
               </div>
             ) : null}
 
+            {key === 'battleCatalog' ? (
+              <div className="admin-list-controls__sort">
+                <label htmlFor="battle-sort">Sort</label>
+                <select id="battle-sort" value={sort} onChange={(e) => setSort(e.target.value)}>
+                  <option value="id-asc">Position ID · 1 first</option>
+                  <option value="title-asc">Title · A–Z</option>
+                  <option value="title-desc">Title · Z–A</option>
+                </select>
+              </div>
+            ) : null}
+
             <AdminPagination
               page={pagination.page}
               totalPages={pagination.totalPages}
@@ -369,8 +404,16 @@ export default function CollectionList() {
                       <div className="admin-row__meta">
                         {key === 'schedule'
                           ? scheduleRowMeta(item)
-                          : key === 'battleCatalog' && item.entryType
-                            ? `${item.entryType} · ID ${item.id}`
+                          : key === 'battleCatalog'
+                            ? [
+                                item.entryType || 'special',
+                                item.category === 'Sports' || String(item.category).toLowerCase() === 'sports'
+                                  ? 'Sports'
+                                  : null,
+                                `ID ${item.id}`,
+                              ]
+                                .filter(Boolean)
+                                .join(' · ')
                             : `ID ${item.id}`}
                       </div>
                     </div>
@@ -435,7 +478,12 @@ export function CollectionEdit() {
     if (!schema || !content) return
     const items = content.collections?.[key] || []
     if (isNew) {
-      setDraft(blankItem(schema))
+      const draft = blankItem(schema)
+      if (schema.editableId || key === 'battleCatalog') {
+        const nums = items.map((i) => Number(i.id)).filter((n) => Number.isFinite(n))
+        draft.id = nums.length ? Math.max(...nums) + 1 : 1
+      }
+      setDraft(draft)
     } else {
       const found = items.find((i) => String(i.id) === String(id))
       setDraft(found ? { ...found } : null)
@@ -449,7 +497,7 @@ export function CollectionEdit() {
       </AdminPage>
     )
   }
-  if (loading || !draft) {
+  if (loading) {
     return (
       <AdminPage title={schema.label}>
         <p className="lede">Loading…</p>
@@ -457,9 +505,22 @@ export function CollectionEdit() {
     )
   }
 
+  if (!draft) {
+    return (
+      <AdminPage title={schema.label}>
+        <p className="lede">This item was not found. It may not have saved — go back and try creating it again.</p>
+        <Link to={`/admin/collections/${key}`} className="admin-btn admin-btn--ghost">
+          Back to list
+        </Link>
+      </AdminPage>
+    )
+  }
+
   const media = content?.collections?.mediaLibrary || []
   const battleCatalog = content?.collections?.battleCatalog
-  const battleTypes = (content?.collections?.battleTypes || []).filter((t) => t && t !== 'All')
+  const battleTypes = withSportsCategory(
+    (content?.collections?.battleTypes || []).filter((t) => t && t !== 'All'),
+  )
 
   const setField = (fieldKey, value) => {
     setDraft((d) => ({ ...d, [fieldKey]: value }))
@@ -473,6 +534,12 @@ export function CollectionEdit() {
     e?.preventDefault?.()
     setBusy(true)
     try {
+      if (schema.editableId || key === 'battleCatalog') {
+        const position = Number(draft.id)
+        if (!Number.isFinite(position) || position < 1 || !Number.isInteger(position)) {
+          throw new Error('Position ID must be a whole number of 1 or higher')
+        }
+      }
       if (isNew) {
         const created = await createCollectionItem(key, draft)
         await refresh()

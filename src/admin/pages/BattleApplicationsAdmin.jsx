@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, Fragment } from 'react'
+import { useEffect, useMemo, useState, useRef, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import { getAdminToken } from '../../cms/ContentContext'
 import { apiFetch, readJsonResponse } from '../../utils/api'
@@ -45,7 +45,7 @@ function ScreenshotLink({ url, label }) {
   )
 }
 
-function ConfirmModal({ open, title, body, confirmLabel, danger, busy, onCancel, onConfirm }) {
+function ConfirmModal({ open, title, body, confirmLabel, danger, busy, onCancel, onConfirm, meta }) {
   useEffect(() => {
     if (!open) return undefined
     const onKey = (e) => {
@@ -66,9 +66,29 @@ function ConfirmModal({ open, title, body, confirmLabel, danger, busy, onCancel,
         disabled={busy}
         onClick={onCancel}
       />
-      <div className="ba-confirm__panel">
+      <div className={`ba-confirm__panel${danger ? ' ba-confirm__panel--danger' : ''}`}>
+        {danger ? (
+          <div className="ba-confirm__icon" aria-hidden>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        ) : null}
         <h3 id="ba-confirm-title">{title}</h3>
         <p>{body}</p>
+        {meta ? (
+          <ul className="ba-confirm__meta">
+            {meta.map((line) => (
+              <li key={line}>{line}</li>
+            ))}
+          </ul>
+        ) : null}
         <div className="ba-confirm__actions">
           <button type="button" className="admin-btn admin-btn--ghost" disabled={busy} onClick={onCancel}>
             Cancel
@@ -142,7 +162,7 @@ function BattleGroupSection({
                 <tr>
                   <th>Name</th>
                   <th>TikTok</th>
-                  <th>Country</th>
+                  <th>Country / Team</th>
                   <th>Followers</th>
                   <th>Status</th>
                   <th />
@@ -166,7 +186,11 @@ function BattleGroupSection({
                           <small>#{row.id}</small>
                         </td>
                         <td>@{row.tiktokHandle}</td>
-                        <td>{row.country || '—'}</td>
+                        <td>
+                          {row.country || row.team
+                            ? [row.country, row.team].filter(Boolean).join(' · ')
+                            : '—'}
+                        </td>
                         <td>{formatFollowers(row.followers)}</td>
                         <td>
                           <span className={`ba-status ba-status--${row.status}`}>{row.status}</span>
@@ -227,6 +251,29 @@ function BattleGroupSection({
                               Decline
                             </button>
                           ) : null}
+                          <button
+                            type="button"
+                            className="ba-link ba-link--danger"
+                            onClick={() =>
+                              askConfirm({
+                                id: row.id,
+                                action: 'delete',
+                                title: 'Delete this application?',
+                                body: 'This removes the application from your list. You can undo right after if you change your mind.',
+                                meta: [
+                                  who,
+                                  `@${row.tiktokHandle}`,
+                                  row.battleLabel || 'Unknown battle',
+                                  `Status: ${row.status}`,
+                                ],
+                                confirmLabel: 'Delete application',
+                                danger: true,
+                                successToast: 'Application deleted',
+                              })
+                            }
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                       {open ? (
@@ -253,6 +300,7 @@ function BattleGroupSection({
                                     ? 'No'
                                     : '—'}
                               </span>
+                              {row.team ? <span>Team name: {row.team}</span> : null}
                               <span>
                                 Highest coins in one battle: {formatFollowers(row.highestCoins)}
                               </span>
@@ -361,11 +409,25 @@ export default function BattleApplicationsAdmin() {
   const [typeCounts, setTypeCounts] = useState({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [toast, setToast] = useState('')
+  const [toast, setToast] = useState(null)
   const [expanded, setExpanded] = useState(null)
   const [noteDraft, setNoteDraft] = useState('')
   const [confirm, setConfirm] = useState(null)
   const [confirmBusy, setConfirmBusy] = useState(false)
+  const toastTimer = useRef(null)
+
+  const showToast = (next) => {
+    if (toastTimer.current) window.clearTimeout(toastTimer.current)
+    setToast(next)
+    const ms = next?.undoId ? 12000 : 3200
+    toastTimer.current = window.setTimeout(() => setToast(null), ms)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (toastTimer.current) window.clearTimeout(toastTimer.current)
+    }
+  }, [])
 
   const load = async (nextStatus = status, nextType = entryType) => {
     setLoading(true)
@@ -407,6 +469,7 @@ export default function BattleApplicationsAdmin() {
         row.tiktokHandle,
         row.battleLabel,
         row.country,
+        row.team,
         row.email,
         row.whatsapp,
         row.status,
@@ -473,19 +536,67 @@ export default function BattleApplicationsAdmin() {
     return data
   }
 
+  const deleteApplication = async (id) => {
+    const token = getAdminToken()
+    const res = await apiFetch(`/api/admin/battle-applications/${id}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    const data = await readJsonResponse(res)
+    if (!res.ok) throw new Error(data.error || 'Delete failed')
+    if (expanded === id) {
+      setExpanded(null)
+      setNoteDraft('')
+    }
+    await load(status, entryType)
+    return data
+  }
+
+  const restoreApplication = async (id) => {
+    const token = getAdminToken()
+    const res = await apiFetch(`/api/admin/battle-applications/${id}/restore`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    const data = await readJsonResponse(res)
+    if (!res.ok) throw new Error(data.error || 'Restore failed')
+    await load(status, entryType)
+    return data
+  }
+
   const askConfirm = (action) => setConfirm(action)
 
   const runConfirmed = async () => {
     if (!confirm) return
     setConfirmBusy(true)
     try {
-      await updateApplication(confirm.id, confirm.patch)
-      setToast(confirm.successToast || 'Updated')
-      setConfirm(null)
+      if (confirm.action === 'delete') {
+        await deleteApplication(confirm.id)
+        setConfirm(null)
+        showToast({
+          message: confirm.successToast || 'Application deleted',
+          undoId: confirm.id,
+        })
+      } else {
+        await updateApplication(confirm.id, confirm.patch)
+        setConfirm(null)
+        showToast({ message: confirm.successToast || 'Updated' })
+      }
     } catch (err) {
-      setToast(err.message)
+      showToast({ message: err.message })
     } finally {
       setConfirmBusy(false)
+    }
+  }
+
+  const undoDelete = async () => {
+    if (!toast?.undoId) return
+    const id = toast.undoId
+    try {
+      await restoreApplication(id)
+      showToast({ message: 'Application restored' })
+    } catch (err) {
+      showToast({ message: err.message })
     }
   }
 
@@ -517,7 +628,7 @@ export default function BattleApplicationsAdmin() {
           variant="header"
           value={query}
           onChange={setQuery}
-          placeholder="Search name, TikTok, battle, country, email…"
+          placeholder="Search name, TikTok, battle, country, team, email…"
         />
       }
     >
@@ -616,6 +727,7 @@ export default function BattleApplicationsAdmin() {
         open={Boolean(confirm)}
         title={confirm?.title || ''}
         body={confirm?.body || ''}
+        meta={confirm?.meta || null}
         confirmLabel={confirm?.confirmLabel || 'Confirm'}
         danger={Boolean(confirm?.danger)}
         busy={confirmBusy}
@@ -625,7 +737,16 @@ export default function BattleApplicationsAdmin() {
         onConfirm={runConfirmed}
       />
 
-      {toast ? <div className="admin-toast">{toast}</div> : null}
+      {toast ? (
+        <div className={`admin-toast${toast.undoId ? ' admin-toast--undo' : ''}`}>
+          <span>{toast.message}</span>
+          {toast.undoId ? (
+            <button type="button" className="admin-toast__undo" onClick={undoDelete}>
+              Undo
+            </button>
+          ) : null}
+        </div>
+      ) : null}
     </AdminPage>
   )
 }

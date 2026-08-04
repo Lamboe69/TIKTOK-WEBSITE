@@ -41,6 +41,11 @@ const defaultColumns = {
   ],
 }
 
+function toWhatsAppUrl(phone) {
+  const digits = String(phone || '').replace(/\D/g, '')
+  return digits ? `https://wa.me/${digits}` : WHATSAPP_PHONE_URL
+}
+
 function LinkColumn({ title, links }) {
   const { pathname } = useLocation()
   return (
@@ -69,7 +74,8 @@ export default function Footer() {
   const [subscribed, setSubscribed] = useState(false)
 
   const contactEmail = settings.email || CONTACT_EMAIL
-  const whatsappPhone = settings.whatsappPhone || CONTACT_PHONE_WHATSAPP
+  const whatsappPhone = settings.phoneUG || settings.whatsappPhone || CONTACT_PHONE_WHATSAPP
+  const whatsappHref = toWhatsAppUrl(whatsappPhone)
   const location = settings.location || 'Dallas, Texas, USA'
   const siteName = settings.siteName || 'KING MAKER'
   const tagline =
@@ -81,6 +87,21 @@ export default function Footer() {
     'Independent fan/community platform. Not affiliated with TikTok or ByteDance.'
   const tiktokUrl = settings.tiktokUrl || TIKTOK_URL
   const paypalEmail = settings.paypalEmail || ''
+
+  const logoKicker = settings.footerLogoKicker || 'Godsent Box Battles'
+  const tiktokButton = settings.footerTiktokButton || 'Follow on TikTok'
+  const donateButton = settings.footerDonateButton || 'Donate'
+  const columnExplore = settings.footerColumnExplore || 'Explore'
+  const columnCommunity = settings.footerColumnCommunity || 'Community'
+  const columnSupport = settings.footerColumnSupport || 'Support'
+  const columnContact = settings.footerColumnContact || 'Contact'
+  const newsletterTitle = settings.footerNewsletterTitle || 'Stay in the Dynasty'
+  const newsletterPlaceholder = settings.footerNewsletterPlaceholder || 'Your email address'
+  const newsletterButton = settings.footerNewsletterButton || 'Subscribe'
+  const newsletterSuccess = settings.footerNewsletterSuccess || "You're on the list!"
+  const socialHeading = settings.footerSocialHeading || 'Follow us'
+  const advertiseText = settings.footerAdvertiseText || 'Want to reach our audience?'
+  const advertiseLink = settings.footerAdvertiseLink || 'Advertise with us'
 
   const columns = {
     explore: collections.footerExploreLinks?.length
@@ -130,7 +151,7 @@ export default function Footer() {
               <img src="/photos/logo.jpg" alt="" />
               <span>
                 <span className="site-footer__logo-name">{siteName}</span>
-                <span className="site-footer__logo-kicker">Godsent Box Battles</span>
+                <span className="site-footer__logo-kicker">{logoKicker}</span>
               </span>
             </Link>
             <p className="site-footer__tagline">{tagline}</p>
@@ -144,7 +165,7 @@ export default function Footer() {
                 <span className="site-footer__btn-icon site-footer__btn-icon--tiktok">
                   {Icons.tiktok}
                 </span>
-                Follow on TikTok
+                {tiktokButton}
               </a>
               <form
                 action="https://www.paypal.com/donate"
@@ -161,18 +182,18 @@ export default function Footer() {
                 <input type="hidden" name="amount" value="" />
                 <button type="submit" className="site-footer__btn site-footer__btn--paypal">
                   <span className="site-footer__btn-icon">{Icons.heart}</span>
-                  Donate
+                  {donateButton}
                 </button>
               </form>
             </div>
           </div>
 
-          <LinkColumn title="Explore" links={columns.explore} />
-          <LinkColumn title="Community" links={columns.community} />
-          <LinkColumn title="Support" links={columns.support} />
+          <LinkColumn title={columnExplore} links={columns.explore} />
+          <LinkColumn title={columnCommunity} links={columns.community} />
+          <LinkColumn title={columnSupport} links={columns.support} />
 
           <div>
-            <h4 className="site-footer__col-title">Contact</h4>
+            <h4 className="site-footer__col-title">{columnContact}</h4>
             <ul className="site-footer__contact-list">
               <li className="site-footer__contact-item">
                 <a href={`mailto:${contactEmail}`}>
@@ -181,7 +202,7 @@ export default function Footer() {
                 </a>
               </li>
               <li className="site-footer__contact-item">
-                <a href={WHATSAPP_PHONE_URL} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer">
                   <span className="site-footer__contact-icon">{Icons.whatsapp}</span>
                   WhatsApp · {whatsappPhone}
                 </a>
@@ -198,11 +219,11 @@ export default function Footer() {
 
         <div className="site-footer__strip">
           <div>
-            <p className="site-footer__newsletter-title">Stay in the Dynasty</p>
+            <p className="site-footer__newsletter-title">{newsletterTitle}</p>
             {subscribed ? (
               <p className="site-footer__newsletter-done">
                 <span className="site-footer__btn-icon">{Icons.check}</span>
-                You&apos;re on the list!
+                {newsletterSuccess}
               </p>
             ) : (
               <form onSubmit={handleSubscribe} className="site-footer__newsletter-form">
@@ -210,19 +231,19 @@ export default function Footer() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Your email address"
+                  placeholder={newsletterPlaceholder}
                   required
                   className="site-footer__newsletter-input"
                 />
                 <button type="submit" className="site-footer__newsletter-btn">
-                  Subscribe
+                  {newsletterButton}
                 </button>
               </form>
             )}
           </div>
 
           <div>
-            <p className="site-footer__social-head">Follow us</p>
+            <p className="site-footer__social-head">{socialHeading}</p>
             <div className="site-footer__socials">
               {socials.map(({ href, icon, label, brand }) => (
                 <a
@@ -247,8 +268,8 @@ export default function Footer() {
               &copy; {new Date().getFullYear()} {copyright}
             </p>
             <p className="site-footer__advertise">
-              Want to reach our audience?{' '}
-              <Link to="/advertise">Advertise with us</Link>
+              {advertiseText}{' '}
+              <Link to="/advertise">{advertiseLink}</Link>
             </p>
           </div>
           <p className="site-footer__disclaimer">{disclaimer}</p>

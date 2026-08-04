@@ -613,12 +613,35 @@ body.admin-lock {
   right: 1.25rem;
   bottom: 1.25rem;
   z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
   padding: 0.85rem 1.1rem;
   background: #1a1024;
   border: 1px solid rgba(255, 107, 26, 0.45);
   color: var(--ad-text);
   font-size: 0.88rem;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+.admin-toast--undo {
+  border-color: rgba(255, 138, 138, 0.45);
+}
+
+.admin-toast__undo {
+  border: 0;
+  background: transparent;
+  color: #ffb86b;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.2rem 0;
+}
+
+.admin-toast__undo:hover {
+  color: #fff7f0;
 }
 
 .admin-media-grid {
@@ -852,6 +875,14 @@ body.admin-lock {
   color: var(--ad-muted);
 }
 
+.ba-link--danger {
+  color: #ff8a8a;
+}
+
+.ba-link--danger:hover {
+  color: #ffb0b0;
+}
+
 .ba-status {
   display: inline-block;
   padding: 0.1rem 0.4rem;
@@ -1005,11 +1036,27 @@ body.admin-lock {
 .ba-confirm__panel {
   position: relative;
   z-index: 1;
-  width: min(100%, 380px);
-  padding: 1.25rem 1.2rem;
+  width: min(100%, 400px);
+  padding: 1.35rem 1.25rem 1.25rem;
   background: var(--ad-panel);
   border: 1px solid var(--ad-line);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+.ba-confirm__panel--danger {
+  border-color: rgba(255, 138, 138, 0.35);
+}
+
+.ba-confirm__icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.85rem;
+  border-radius: 0.75rem;
+  color: #ff8a8a;
+  background: rgba(255, 138, 138, 0.12);
+  border: 1px solid rgba(255, 138, 138, 0.28);
 }
 
 .ba-confirm__panel h3 {
@@ -1019,10 +1066,30 @@ body.admin-lock {
 }
 
 .ba-confirm__panel p {
-  margin: 0 0 1.1rem;
+  margin: 0 0 0.85rem;
   color: var(--ad-muted);
   font-size: 0.85rem;
   line-height: 1.45;
+}
+
+.ba-confirm__meta {
+  list-style: none;
+  margin: 0 0 1.15rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--ad-line);
+}
+
+.ba-confirm__meta li {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--ad-text);
+}
+
+.ba-confirm__meta li + li {
+  margin-top: 0.2rem;
+  color: var(--ad-muted);
 }
 
 .ba-confirm__actions {

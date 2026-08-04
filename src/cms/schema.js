@@ -31,7 +31,6 @@ export const PAGE_SCHEMA = [
       },
       { key: 'battleTypesTitle', label: 'Battle Types — title', type: 'text' },
       { key: 'battleTypesKicker', label: 'Battle Types — kicker', type: 'text' },
-      { key: 'battleTypesLink', label: 'Battle Types — schedule link text', type: 'text' },
       { key: 'upcomingBattlesKicker', label: 'Upcoming Battles — kicker', type: 'text' },
       { key: 'upcomingBattlesTitle', label: 'Upcoming Battles — title', type: 'text' },
       { key: 'livestreamZonesTitle', label: 'Daily Livestream Time Zones — heading', type: 'text' },
@@ -272,8 +271,6 @@ export const PAGE_SCHEMA = [
       { key: 'heroImage', label: 'Hero image', type: 'image' },
       { key: 'heroTitle', label: 'Title', type: 'text' },
       { key: 'heroLede', label: 'Supporting line', type: 'textarea' },
-      { key: 'boardKicker', label: 'Arena board — kicker', type: 'text' },
-      { key: 'boardTitle', label: 'Arena board — title', type: 'text' },
       { key: 'weekHorizonKicker', label: 'Seven-day horizon — kicker', type: 'text' },
       { key: 'weekHorizonTitle', label: 'Seven-day horizon — title', type: 'text' },
       { key: 'finaleKicker', label: 'Finale — kicker', type: 'text' },
@@ -335,15 +332,35 @@ export const SETTINGS_FIELDS = [
   { key: 'ctaLabel', label: 'Primary CTA label', type: 'text' },
   { key: 'email', label: 'Contact email', type: 'text' },
   { key: 'phoneUS', label: 'US phone', type: 'text' },
-  { key: 'phoneUG', label: 'Uganda phone', type: 'text' },
+  { key: 'phoneUG', label: 'WhatsApp / Uganda phone (shown in footer contact)', type: 'text' },
   { key: 'location', label: 'Location text (e.g. Dallas, Texas, USA)', type: 'text' },
   { key: 'copyright', label: 'Copyright text', type: 'text' },
   { key: 'disclaimer', label: 'Footer disclaimer text', type: 'text' },
+  {
+    key: 'footerLogoKicker',
+    label: 'Text under site name (e.g. Godsent Box Battles)',
+    type: 'text',
+    placeholder: 'Godsent Box Battles',
+  },
+  { key: 'footerTiktokButton', label: 'Footer — TikTok button label', type: 'text' },
+  { key: 'footerDonateButton', label: 'Footer — Donate button label', type: 'text' },
+  { key: 'footerColumnExplore', label: 'Footer — Explore column title', type: 'text' },
+  { key: 'footerColumnCommunity', label: 'Footer — Community column title', type: 'text' },
+  { key: 'footerColumnSupport', label: 'Footer — Support column title', type: 'text' },
+  { key: 'footerColumnContact', label: 'Footer — Contact column title', type: 'text' },
+  { key: 'footerNewsletterTitle', label: 'Footer — newsletter title', type: 'text' },
+  { key: 'footerNewsletterPlaceholder', label: 'Footer — newsletter email placeholder', type: 'text' },
+  { key: 'footerNewsletterButton', label: 'Footer — newsletter button label', type: 'text' },
+  { key: 'footerNewsletterSuccess', label: 'Footer — newsletter success message', type: 'text' },
+  { key: 'footerSocialHeading', label: 'Footer — social heading', type: 'text' },
+  { key: 'footerAdvertiseText', label: 'Footer — advertise line (before link)', type: 'text' },
+  { key: 'footerAdvertiseLink', label: 'Footer — advertise link label', type: 'text' },
   { key: 'tiktokHandle', label: 'TikTok handle', type: 'text' },
   { key: 'tiktokUrl', label: 'TikTok URL', type: 'text' },
   { key: 'instagramUrl', label: 'Instagram URL', type: 'text' },
   { key: 'youtubeUrl', label: 'YouTube URL', type: 'text' },
-  { key: 'whatsappUrl', label: 'WhatsApp URL', type: 'text' },
+  { key: 'threadsUrl', label: 'Threads URL', type: 'text' },
+  { key: 'whatsappUrl', label: 'WhatsApp Channel URL', type: 'text' },
   { key: 'facebookUrl', label: 'Facebook URL', type: 'text' },
   { key: 'twitchUrl', label: 'Twitch URL', type: 'text' },
   { key: 'paypalEmail', label: 'PayPal business email (for donations & payments)', type: 'text' },
@@ -529,9 +546,16 @@ export const COLLECTIONS = [
   {
     key: 'battleCatalog',
     label: 'Battle types',
-    description: 'Homepage battle mosaic and signup form battle list',
+    description: 'Homepage battle mosaic and signup form battle list. ID controls display order (1 = first).',
     titleField: 'title',
+    editableId: true,
     fields: [
+      {
+        key: 'id',
+        label: 'Position ID (1 = listed first)',
+        type: 'number',
+        placeholder: '1',
+      },
       { key: 'title', label: 'Title', type: 'text' },
       { key: 'blurb', label: 'Blurb', type: 'textarea' },
       { key: 'img', label: 'Image', type: 'image' },
@@ -540,6 +564,12 @@ export const COLLECTIONS = [
         label: 'Entry type',
         type: 'select',
         options: ['official', 'special'],
+      },
+      {
+        key: 'category',
+        label: 'Category — choose Sports to show the Team field on the application form',
+        type: 'select',
+        options: ['General', 'Sports'],
       },
       { key: 'short', label: 'Short label (optional)', type: 'text' },
       { key: 'tag', label: 'Tag line (optional)', type: 'text' },
@@ -704,6 +734,7 @@ export function getCollection(key) {
 export function blankItem(schema) {
   const item = { id: Date.now() }
   for (const f of schema.fields) {
+    if (f.key === 'id') continue
     item[f.key] = f.type === 'select' ? f.options?.[0] || '' : ''
   }
   return item

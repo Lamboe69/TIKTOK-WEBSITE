@@ -2,7 +2,7 @@ import { toDateKey } from '../../utils/scheduleDisplay'
 
 const SEARCH_KEYS = {
   schedule: ['title', 'type', 'date', 'time', 'description'],
-  battleCatalog: ['title', 'blurb', 'short', 'tag', 'entryType'],
+  battleCatalog: ['title', 'blurb', 'short', 'tag', 'entryType', 'category'],
 }
 
 export const ADMIN_PAGE_SIZE = 5
@@ -54,7 +54,14 @@ export function filterCollectionItems(items, { key, schema, query, typeFilter, w
   }
 
   const titleKey = schema?.titleField || 'title'
-  if (sort === 'title-desc') {
+  if (sort === 'id-asc') {
+    list.sort((a, b) => {
+      const na = Number(a.id)
+      const nb = Number(b.id)
+      if (Number.isFinite(na) && Number.isFinite(nb) && na !== nb) return na - nb
+      return String(a.id ?? '').localeCompare(String(b.id ?? ''), undefined, { numeric: true })
+    })
+  } else if (sort === 'title-desc') {
     list.sort((a, b) => String(b[titleKey] || '').localeCompare(String(a[titleKey] || '')))
   } else {
     list.sort((a, b) => String(a[titleKey] || '').localeCompare(String(b[titleKey] || '')))

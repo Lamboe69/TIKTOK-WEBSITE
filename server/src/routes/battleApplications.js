@@ -5,6 +5,7 @@ import { Router } from 'express'
 import multer from 'multer'
 import { query } from '../db.js'
 import { spacesConfigured, uploadBufferToSpaces } from '../spaces.js'
+import { battleRequiresCountry, battleRequiresTeam } from '../battleFields.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const uploadsDir = path.join(__dirname, '../../../public/uploads/battle-apps')
@@ -35,7 +36,6 @@ const upload = multer({
 })
 
 const applicationUpload = upload.fields([
-  { name: 'followersScreenshot', maxCount: 1 },
   { name: 'giftingLevelScreenshot', maxCount: 1 },
 ])
 
@@ -120,6 +120,7 @@ function serializeApplication(row) {
     tiktokHandle: row.tiktok_handle,
     email: row.email,
     country: row.country,
+    team: row.team || '',
     whatsapp: row.whatsapp,
     followers: row.followers,
     followersScreenshotUrl: row.followers_screenshot_url,
@@ -132,12 +133,13 @@ function serializeApplication(row) {
     availableDate,
     status: row.status,
     notes: row.notes,
+    deletedAt: row.deleted_at || null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }
 }
 
-function validateApplicationBody(body, files) {
+function validateApplicationBody(body, files, { schedule = [] } = {}) {
   const entryType = String(body?.entryType || body?.type || 'official')
     .trim()
     .toLowerCase()
@@ -167,12 +169,43 @@ function validateApplicationBody(body, files) {
     return { error: 'Please enter a valid email address' }
   }
 
-  const country = String(body?.country || '').trim()
-  if (!country || country.length < 2) {
-    return { error: 'Please enter your country' }
+  let battleLabel = String(body?.battleLabel || body?.game || '').trim()
+  if (!battleLabel) {
+    return { error: 'Please choose which box battle you are applying for' }
   }
-  if (country.length > 120) {
+
+  const scheduleType = String(
+    body?.scheduleType || body?.battleCategory || body?.filterType || '',
+  ).trim()
+
+  const needsCountry = battleRequiresCountry(battleLabel)
+  const country = String(body?.country || '').trim()
+  if (needsCountry) {
+    if (!country || country.length < 2) {
+      return { error: 'Please enter your country' }
+    }
+    if (country.length > 120) {
+      return { error: 'Country name is too long' }
+    }
+  } else if (country.length > 120) {
     return { error: 'Country name is too long' }
+  }
+
+  const needsTeam = battleRequiresTeam({
+    battleLabel,
+    battleType: scheduleType,
+    schedule,
+  })
+  const team = String(body?.team || '').trim()
+  if (needsTeam) {
+    if (!team || team.length < 2) {
+      return { error: 'Please enter your team name' }
+    }
+    if (team.length > 120) {
+      return { error: 'Team name is too long' }
+    }
+  } else if (team.length > 120) {
+    return { error: 'Team name is too long' }
   }
 
   const whatsapp = String(body?.whatsapp || '').trim()
@@ -186,16 +219,6 @@ function validateApplicationBody(body, files) {
   const followers = parseFollowers(body?.followers)
   if (followers == null) {
     return { error: 'Please enter your TikTok follower count' }
-  }
-
-  const followersScreenshot = files?.followersScreenshot?.[0]
-  if (!followersScreenshot) {
-    return { error: 'Please attach a screenshot of your TikTok follower count' }
-  }
-
-  let battleLabel = String(body?.battleLabel || body?.game || body?.battleType || '').trim()
-  if (!battleLabel) {
-    return { error: 'Please choose which box battle you are applying for' }
   }
 
   const leagueLevel = String(body?.leagueLevel || '').trim()
@@ -233,7 +256,8 @@ function validateApplicationBody(body, files) {
     fullName,
     tiktokHandle,
     email,
-    country,
+    country: needsCountry ? country : '',
+    team: needsTeam ? team : '',
     whatsapp,
     followers,
     battleLabel,
@@ -242,23 +266,34 @@ function validateApplicationBody(body, files) {
     hasCommunity,
     highestCoins,
     canRallySupporters,
-    followersScreenshot,
     giftingLevelScreenshot,
+  }
+}
+
+async function loadScheduleItems() {
+  try {
+    const r = await query(
+      `SELECT data
+       FROM collection_items
+       WHERE collection_key = 'schedule'
+       ORDER BY sort_order, id`,
+    )
+    return r.rows.map((row) => row.data || {})
+  } catch (err) {
+    console.error('load schedule for battle applications', err)
+    return []
   }
 }
 
 /** Public: submit a box battle application */
 router.post('/', handleUploadErrors, async (req, res) => {
   try {
-    const validated = validateApplicationBody(req.body, req.files)
+    const schedule = await loadScheduleItems()
+    const validated = validateApplicationBody(req.body, req.files, { schedule })
     if (validated.error) {
       return res.status(400).json({ error: validated.error })
     }
 
-    const followersScreenshotUrl = await persistApplicationImage(
-      validated.followersScreenshot,
-      'followers',
-    )
     const giftingLevelScreenshotUrl = await persistApplicationImage(
       validated.giftingLevelScreenshot,
       'gifting',
@@ -266,8 +301,8 @@ router.post('/', handleUploadErrors, async (req, res) => {
 
     const inserted = await query(
       `INSERT INTO battle_applications
-         (entry_type, battle_label, full_name, tiktok_handle, email, country, whatsapp,
-          followers, followers_screenshot_url, league_level, badge_number, has_community,
+         (entry_type, battle_label, full_name, tiktok_handle, email, country, team, whatsapp,
+          followers, league_level, badge_number, has_community,
           highest_coins, can_rally_supporters, gifting_level_screenshot_url, status)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, 'new')
        RETURNING *`,
@@ -278,9 +313,9 @@ router.post('/', handleUploadErrors, async (req, res) => {
         validated.tiktokHandle,
         validated.email,
         validated.country,
+        validated.team,
         validated.whatsapp,
         validated.followers,
-        followersScreenshotUrl,
         validated.leagueLevel,
         validated.badgeNumber,
         validated.hasCommunity,
@@ -307,7 +342,7 @@ adminBattleApplicationsRouter.get('/', async (req, res) => {
   try {
     const status = String(req.query.status || '').trim().toLowerCase()
     const entryType = String(req.query.type || '').trim().toLowerCase()
-    const clauses = []
+    const clauses = ['deleted_at IS NULL']
     const params = []
 
     if (status && status !== 'all') {
@@ -319,7 +354,7 @@ adminBattleApplicationsRouter.get('/', async (req, res) => {
       clauses.push(`entry_type = $${params.length}`)
     }
 
-    const where = clauses.length ? `WHERE ${clauses.join(' AND ')}` : ''
+    const where = `WHERE ${clauses.join(' AND ')}`
     const r = await query(
       `SELECT *
        FROM battle_applications
@@ -332,11 +367,13 @@ adminBattleApplicationsRouter.get('/', async (req, res) => {
     const counts = await query(
       `SELECT status, COUNT(*)::int AS count
        FROM battle_applications
+       WHERE deleted_at IS NULL
        GROUP BY status`,
     )
     const typeCounts = await query(
       `SELECT entry_type, COUNT(*)::int AS count
        FROM battle_applications
+       WHERE deleted_at IS NULL
        GROUP BY entry_type`,
     )
 
@@ -360,9 +397,10 @@ adminBattleApplicationsRouter.patch('/:id', async (req, res) => {
       return res.status(400).json({ error: 'Invalid status' })
     }
 
-    const current = await query(`SELECT * FROM battle_applications WHERE id = $1 LIMIT 1`, [
-      req.params.id,
-    ])
+    const current = await query(
+      `SELECT * FROM battle_applications WHERE id = $1 AND deleted_at IS NULL LIMIT 1`,
+      [req.params.id],
+    )
     if (!current.rows[0]) return res.status(404).json({ error: 'Not found' })
 
     const nextNotes = notes !== undefined ? notes : current.rows[0].notes
@@ -371,7 +409,7 @@ adminBattleApplicationsRouter.patch('/:id', async (req, res) => {
     const updated = await query(
       `UPDATE battle_applications
        SET notes = $1, status = $2, updated_at = NOW()
-       WHERE id = $3
+       WHERE id = $3 AND deleted_at IS NULL
        RETURNING *`,
       [nextNotes, nextStatus, req.params.id],
     )
@@ -379,6 +417,40 @@ adminBattleApplicationsRouter.patch('/:id', async (req, res) => {
     res.json({ application: serializeApplication(updated.rows[0]) })
   } catch (err) {
     res.status(500).json({ error: err.message || 'Failed to update application' })
+  }
+})
+
+adminBattleApplicationsRouter.delete('/:id', async (req, res) => {
+  try {
+    const updated = await query(
+      `UPDATE battle_applications
+       SET deleted_at = NOW(), updated_at = NOW()
+       WHERE id = $1 AND deleted_at IS NULL
+       RETURNING *`,
+      [req.params.id],
+    )
+    if (!updated.rows[0]) return res.status(404).json({ error: 'Not found' })
+    res.json({ ok: true, application: serializeApplication(updated.rows[0]) })
+  } catch (err) {
+    console.error('soft delete battle application', err)
+    res.status(500).json({ error: err.message || 'Failed to delete application' })
+  }
+})
+
+adminBattleApplicationsRouter.post('/:id/restore', async (req, res) => {
+  try {
+    const updated = await query(
+      `UPDATE battle_applications
+       SET deleted_at = NULL, updated_at = NOW()
+       WHERE id = $1 AND deleted_at IS NOT NULL
+       RETURNING *`,
+      [req.params.id],
+    )
+    if (!updated.rows[0]) return res.status(404).json({ error: 'Not found or not deleted' })
+    res.json({ ok: true, application: serializeApplication(updated.rows[0]) })
+  } catch (err) {
+    console.error('restore battle application', err)
+    res.status(500).json({ error: err.message || 'Failed to restore application' })
   }
 })
 

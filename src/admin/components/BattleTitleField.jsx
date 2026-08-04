@@ -23,7 +23,7 @@ export function BattleTitleField({ value, onChange, catalog, battleTypes, onAppl
         ) : null}
         {battles.map((battle) => (
           <option key={battle.id} value={battle.title}>
-            {battle.title}
+            {battle.category === 'Sports' ? `${battle.title} · Sports` : battle.title}
           </option>
         ))}
       </select>

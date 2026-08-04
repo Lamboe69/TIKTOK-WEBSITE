@@ -11,6 +11,8 @@ import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
 import { useContent } from '../cms/ContentContext'
 import {
   battleCatalogToFormOptions,
+  battleRequiresCountry,
+  battleRequiresTeam,
   defaultOfficialBattleLabel,
 } from '../cms/battleCatalog'
 import { mediaUrl } from '../utils/mediaUrl'
@@ -175,6 +177,7 @@ function emptyForm(type, preset, officialLabel) {
     tiktok: '',
     email: '',
     country: '',
+    team: '',
     whatsapp: '',
     followers: '',
     battle: defaultBattle,
@@ -207,7 +210,6 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const giftingGuideEmbed = toEmbedVideoUrl(giftingGuideVideo)
 
   const [form, setForm] = useState(() => emptyForm(type, preset, officialLabel))
-  const [followersScreenshot, setFollowersScreenshot] = useState(null)
   const [giftingLevelScreenshot, setGiftingLevelScreenshot] = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
@@ -226,11 +228,17 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const endpoint = isOfficial ? FORMSPREE_OFFICIAL : FORMSPREE_SPECIAL
   const applyingFor = form.battle || officialLabel || 'Select a battle type'
   const battleLocked = Boolean(preset?.battleLabel)
+  const showCountry = battleRequiresCountry(form.battle)
+  const showTeam = battleRequiresTeam({
+    battleLabel: form.battle,
+    battleType: selectedOption?.category || preset?.battleType,
+    schedule: collections.schedule,
+    catalog: collections.battleCatalog,
+  })
 
   useEffect(() => {
     if (!isOpen) return
     setForm(emptyForm(type, preset, officialLabel))
-    setFollowersScreenshot(null)
     setGiftingLevelScreenshot(null)
     setSubmitted(false)
     setError('')
@@ -284,14 +292,14 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       if (!Number.isFinite(followers) || followers < 0) {
         throw new Error('Please enter your TikTok follower count')
       }
-      if (!followersScreenshot) {
-        throw new Error('Please attach a screenshot of your TikTok follower count')
-      }
       if (!String(form.email).trim()) {
         throw new Error('Please enter your email address')
       }
-      if (!String(form.country).trim()) {
+      if (showCountry && !String(form.country).trim()) {
         throw new Error('Please enter your country')
+      }
+      if (showTeam && !String(form.team).trim()) {
+        throw new Error('Please enter your team name')
       }
       if (!String(form.whatsapp).trim()) {
         throw new Error('Please enter your WhatsApp number')
@@ -316,18 +324,12 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
         throw new Error('Please attach a screenshot of your gifting level')
       }
 
-      const followersFile = await compressScreenshot(followersScreenshot)
       const giftingFile = await compressScreenshot(giftingLevelScreenshot)
 
-      for (const [label, file] of [
-        ['follower count', followersFile],
-        ['gifting level', giftingFile],
-      ]) {
-        if (file.size > MAX_SCREENSHOT_BYTES) {
-          throw new Error(
-            `Your ${label} screenshot is too large (${formatFileSize(file.size)}). Please use a smaller image under ${formatFileSize(MAX_SCREENSHOT_BYTES)}.`,
-          )
-        }
+      if (giftingFile.size > MAX_SCREENSHOT_BYTES) {
+        throw new Error(
+          `Your gifting level screenshot is too large (${formatFileSize(giftingFile.size)}). Please use a smaller image under ${formatFileSize(MAX_SCREENSHOT_BYTES)}.`,
+        )
       }
 
       const formData = new FormData()
@@ -336,7 +338,9 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       formData.append('fullName', form.fullName)
       formData.append('tiktok', form.tiktok)
       formData.append('email', form.email)
-      formData.append('country', form.country)
+      formData.append('country', showCountry ? form.country : '')
+      formData.append('team', showTeam ? form.team : '')
+      if (preset?.battleType) formData.append('scheduleType', preset.battleType)
       formData.append('whatsapp', form.whatsapp)
       formData.append('followers', String(followers))
       formData.append('leagueLevel', String(form.leagueLevel).trim())
@@ -344,7 +348,6 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       formData.append('hasCommunity', form.hasCommunity)
       formData.append('highestCoins', String(highestCoins))
       formData.append('canRallySupporters', form.canRallySupporters)
-      formData.append('followersScreenshot', followersFile)
       formData.append('giftingLevelScreenshot', giftingFile)
 
       const res = await apiFetch('/api/battle-applications', {
@@ -382,7 +385,6 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
     setSubmitted(false)
     setError('')
     setShowGiftingGuide(false)
-    setFollowersScreenshot(null)
     setGiftingLevelScreenshot(null)
     setForm(emptyForm(type, null, officialLabel))
     onClose()
@@ -537,20 +539,39 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                   />
                 </div>
 
-                <div className="signup-field">
-                  <RequiredLabel htmlFor="signup-country">Country</RequiredLabel>
-                  <input
-                    id="signup-country"
-                    type="text"
-                    name="country"
-                    value={form.country}
-                    onChange={handleChange}
-                    required
-                    autoComplete="country-name"
-                    placeholder="e.g. Uganda"
-                    className="signup-field__control"
-                  />
-                </div>
+                {showCountry ? (
+                  <div className="signup-field">
+                    <RequiredLabel htmlFor="signup-country">Country</RequiredLabel>
+                    <input
+                      id="signup-country"
+                      type="text"
+                      name="country"
+                      value={form.country}
+                      onChange={handleChange}
+                      required
+                      autoComplete="country-name"
+                      placeholder="e.g. Uganda"
+                      className="signup-field__control"
+                    />
+                  </div>
+                ) : null}
+
+                {showTeam ? (
+                  <div className="signup-field">
+                    <RequiredLabel htmlFor="signup-team">Team</RequiredLabel>
+                    <input
+                      id="signup-team"
+                      type="text"
+                      name="team"
+                      value={form.team}
+                      onChange={handleChange}
+                      required
+                      autoComplete="organization"
+                      placeholder="e.g. Manchester United"
+                      className="signup-field__control"
+                    />
+                  </div>
+                ) : null}
 
                 <div className="signup-field">
                   <RequiredLabel htmlFor="signup-whatsapp">WhatsApp number</RequiredLabel>
@@ -581,19 +602,6 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                     inputMode="numeric"
                     placeholder="e.g. 12500"
                     className="signup-field__control"
-                  />
-                </div>
-
-                <div className="signup-field signup-field--full signup-field--screenshot">
-                  <RequiredLabel htmlFor="signup-followers-shot">
-                    Screenshot of TikTok followers
-                  </RequiredLabel>
-                  <ScreenshotUploadField
-                    id="signup-followers-shot"
-                    file={followersScreenshot}
-                    onChange={setFollowersScreenshot}
-                    required
-                    hint="Open your TikTok profile and screenshot the follower count shown on your page. Use JPG or PNG under 4 MB (large phone photos are compressed automatically)."
                   />
                 </div>
 
@@ -703,28 +711,49 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                   <RequiredLabel htmlFor="signup-gifting-shot">
                     Attach screenshot of your gifting level
                   </RequiredLabel>
-                  <ScreenshotUploadField
-                    id="signup-gifting-shot"
-                    file={giftingLevelScreenshot}
-                    onChange={setGiftingLevelScreenshot}
-                    required
-                    hint="Open TikTok → Profile → Settings → Gifting level, then screenshot your level. Use JPG or PNG under 4 MB each."
-                  >
-                    {giftingGuideVideo ? (
-                      <>
-                        {' '}
-                        <button
-                          type="button"
-                          className="signup-field__guide-link"
-                          onClick={() => setShowGiftingGuide(true)}
-                        >
-                          Watch how to capture and attach your screenshot
-                        </button>
-                      </>
-                    ) : (
-                      <span> Need help? Ask our team for a walkthrough video.</span>
-                    )}
-                  </ScreenshotUploadField>
+
+                  <div className="signup-gifting-row">
+                    <figure className="signup-gifting-sample">
+                      <div className="signup-gifting-sample__head">
+                        <span className="signup-gifting-sample__badge">Example</span>
+                        <p className="signup-gifting-sample__title">Expected look</p>
+                      </div>
+                      <div className="signup-gifting-sample__frame">
+                        <img
+                          src="/photos/kingmaker.jpg"
+                          alt="Sample TikTok profile showing gifting level cards"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </div>
+                      <figcaption className="signup-gifting-sample__caption">
+                        Show your gifting level cards clearly
+                      </figcaption>
+                    </figure>
+
+                    <ScreenshotUploadField
+                      id="signup-gifting-shot"
+                      file={giftingLevelScreenshot}
+                      onChange={setGiftingLevelScreenshot}
+                      required
+                      hint="Open TikTok → Profile → Settings → Gifting level, then screenshot your level. Use JPG or PNG under 4 MB."
+                    >
+                      {giftingGuideVideo ? (
+                        <>
+                          {' '}
+                          <button
+                            type="button"
+                            className="signup-field__guide-link"
+                            onClick={() => setShowGiftingGuide(true)}
+                          >
+                            Watch how to capture and attach your screenshot
+                          </button>
+                        </>
+                      ) : (
+                        <span> Need help? Ask our team for a walkthrough video.</span>
+                      )}
+                    </ScreenshotUploadField>
+                  </div>
                 </div>
 
                 {error ? (

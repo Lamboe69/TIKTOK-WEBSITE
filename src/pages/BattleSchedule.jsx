@@ -1,15 +1,12 @@
-import { useState, useMemo, useEffect } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-import { battleTypes as fallbackTypes, schedule as fallbackSchedule } from '../data/schedule'
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { schedule as fallbackSchedule } from '../data/schedule'
 import { Icons } from '../components/Icons'
-import { useSignUp } from '../components/SignUpContext'
-import { convertTimezones, getBattleStatus, getCountdown, getBattleDate, downloadICS } from '../utils/battle'
+import { convertTimezones, getCountdown, getBattleDate } from '../utils/battle'
 import Motion from '../components/Motion'
 import WeekHorizon from '../components/sections/WeekHorizon'
 import { useContent } from '../cms/ContentContext'
-import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
 import {
-  TYPE_IMAGES,
   TYPE_ACCENT,
   formatScheduleDay,
   getBattleImage,
@@ -29,20 +26,11 @@ function parseCountdownParts(str) {
 }
 
 export default function BattleSchedule() {
-  const [searchParams] = useSearchParams()
-  const battleParam = searchParams.get('battle')
-  const [activeType, setActiveType] = useState('All')
-  const [activeId, setActiveId] = useState(null)
-  const [paused, setPaused] = useState(false)
-  const { openOfficial, openBattle } = useSignUp()
   const { collections, getPage, settings } = useContent()
   const page = getPage('schedule')
   const siteName = settings.siteName || ''
   const schedule = collections.schedule?.length ? collections.schedule : fallbackSchedule
-  const filters = collections.battleTypes?.length ? collections.battleTypes : fallbackTypes
 
-  const boardKicker = page.boardKicker || 'The Arena Board'
-  const boardTitle = page.boardTitle || 'Choose your fire'
   const weekHorizonKicker = page.weekHorizonKicker || 'Seven-day horizon'
   const weekHorizonTitle = page.weekHorizonTitle || 'Your week in the arena'
   const finaleKicker = page.finaleKicker || 'Path to the crown'
@@ -63,81 +51,24 @@ export default function BattleSchedule() {
       const n = upcoming[0] || null
       setNext(n)
       setCountdown(n ? getCountdown(n.dateObj) : '')
-      setActiveId((prev) => {
-        if (prev && schedule.some((b) => b.id === prev)) return prev
-        return n?.id ?? schedule[0]?.id ?? null
-      })
     }
     update()
     const id = setInterval(update, 30000)
     return () => clearInterval(id)
   }, [schedule])
 
-  useEffect(() => {
-    if (!battleParam) return
-    const id = Number(battleParam)
-    if (!Number.isFinite(id)) return
-    if (!schedule.some((b) => b.id === id)) return
-    setActiveId(id)
-    const battle = schedule.find((b) => b.id === id)
-    if (battle) setActiveType('All')
-    requestAnimationFrame(() => {
-      document.getElementById('sched-board')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
-  }, [battleParam, schedule])
-
-  const filtered = useMemo(
-    () => (activeType === 'All' ? schedule : schedule.filter((b) => b.type === activeType)),
-    [activeType, schedule],
-  )
-
-  useEffect(() => {
-    if (!filtered.length) return
-    if (!filtered.some((b) => b.id === activeId)) {
-      setActiveId(filtered[0].id)
-    }
-  }, [filtered, activeId])
-
-  useEffect(() => {
-    if (paused || filtered.length < 2) return undefined
-    const id = window.setInterval(() => {
-      setActiveId((cur) => {
-        const idx = filtered.findIndex((b) => b.id === cur)
-        const nextIdx = idx < 0 ? 0 : (idx + 1) % filtered.length
-        return filtered[nextIdx].id
-      })
-    }, 6000)
-    return () => clearInterval(id)
-  }, [paused, filtered])
-
-  const handleHorizonSelect = (id) => {
-    setActiveType('All')
-    setActiveId(id)
-    requestAnimationFrame(() => {
-      document.getElementById('sched-board')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    })
-  }
-
-  const battle = filtered.find((b) => b.id === activeId) || filtered[0] || null
-  const accent = battle ? TYPE_ACCENT[battle.type] || '#FF6B1A' : '#FF6B1A'
-  const img = battle ? getBattleImage(battle) : TYPE_IMAGES['Daily Godsent']
-  const status = battle ? getBattleStatus(battle.date, battle.time) : null
-  const zones = battle ? convertTimezones(battle.date, battle.time) : []
-  const day = battle ? formatScheduleDay(battle.date) : null
   const countdownParts = parseCountdownParts(countdown)
   const nextDay = next ? formatScheduleDay(next.date) : null
-
-  const handleEnter = () => (battle ? openBattle(battle) : openOfficial())
-
   const nextZones = next ? convertTimezones(next.date, next.time) : []
   const ctZone = nextZones.find((z) => z.label === 'CT') || nextZones[0]
+  const heroImg = next ? getBattleImage(next) : '/battles-photos/daily-godsent.jpg'
 
   return (
     <main className="sched-page">
       <section className="sched-hero" aria-label="Battle Schedule">
         <div className="sched-hero__photo-plane">
           <img
-            src={next ? getBattleImage(next) : img}
+            src={heroImg}
             alt={next ? next.title : 'Battle schedule'}
             className="sched-hero__photo"
           />
@@ -215,140 +146,8 @@ export default function BattleSchedule() {
           schedule={schedule}
           kicker={weekHorizonKicker}
           title={weekHorizonTitle}
-          onSelectBattle={handleHorizonSelect}
         />
       </div>
-
-      <section id="sched-board" className="sched-board">
-        <div className="sched-pad sched-board__intro">
-          <Motion delay={40}>
-            <p className="sec-kicker mb-2">{boardKicker}</p>
-            <div className="sched-board__intro-row">
-              <h2 className="sched-board__heading font-display font-bold text-ivory tracking-tight">{boardTitle}</h2>
-              <p className="sched-board__count">
-                {filtered.length} {filtered.length === 1 ? 'battle' : 'battles'}
-              </p>
-            </div>
-          </Motion>
-        </div>
-
-        <div className="sched-ribbon" role="tablist" aria-label="Battle types">
-          {filters.map((type) => {
-            const on = activeType === type
-            const a = type === 'All' ? '#FF8A3D' : TYPE_ACCENT[type] || '#FF8A3D'
-            return (
-              <button
-                key={type}
-                type="button"
-                role="tab"
-                aria-selected={on}
-                className={`sched-ribbon__btn ${on ? 'is-active' : ''}`}
-                style={{ ['--sched-accent']: a }}
-                onClick={() => setActiveType(type)}
-              >
-                {type === 'All' ? 'All Arenas' : type}
-              </button>
-            )
-          })}
-        </div>
-
-        {battle ? (
-          <div className="sched-stage" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
-            <div className="sched-stage__visual">
-              {filtered.map((b) => (
-                <img
-                  key={b.id}
-                  src={getBattleImage(b)}
-                  alt={b.id === battle.id ? b.title : ''}
-                  aria-hidden={b.id !== battle.id}
-                  className={`sched-stage__img ${b.id === battle.id ? 'is-on' : ''}`}
-                />
-              ))}
-              <div className="sched-stage__veil" />
-
-              <div className="sched-stage__copy sched-pad">
-                <div className="sched-stage__copy-inner">
-                  <div className="sched-stage__badges">
-                    <span className="sched-status" data-status={status} style={{ ['--sched-accent']: accent }}>
-                      {status === 'live' ? 'Live now' : status === 'today' ? 'Tonight' : 'Upcoming'}
-                    </span>
-                    <span className="sched-type" style={{ color: accent }}>
-                      {battle.type}
-                    </span>
-                  </div>
-
-                  <p className="sched-stage__date font-display">
-                    <span>{day?.weekday}</span>
-                    <span className="sched-stage__date-em">
-                      {day?.month} {day?.day}
-                    </span>
-                  </p>
-
-                  <h3 className="sched-stage__title font-display font-bold text-ivory">{battle.title}</h3>
-                  <p className="sched-stage__desc">{battle.description}</p>
-
-                  <div className="sched-zones" aria-label="Kickoff times">
-                    {zones.map(({ label, time }) => (
-                      <div key={label} className="sched-zones__cell">
-                        <span className="sched-zones__time font-display">{time}</span>
-                        <span className="sched-zones__label">{label}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="sched-stage__actions">
-                    <button type="button" onClick={handleEnter} className="sched-hero__cta">
-                      {BATTLE_SUBMIT_LABEL}
-                      <span className="w-4 h-4 block">{Icons.arrowRight}</span>
-                    </button>
-                    <button type="button" onClick={() => downloadICS(battle)} className="sched-hero__link">
-                      Add to calendar
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="sched-chrono" role="listbox" aria-label="Scheduled battles">
-              {filtered.map((b, i) => {
-                const on = b.id === battle.id
-                const d = formatScheduleDay(b.date)
-                const a = TYPE_ACCENT[b.type] || '#FF6B1A'
-                return (
-                  <button
-                    key={b.id}
-                    type="button"
-                    role="option"
-                    aria-selected={on}
-                    className={`sched-chrono__row ${on ? 'is-active' : ''}`}
-                    style={{ ['--sched-accent']: a }}
-                    onClick={() => setActiveId(b.id)}
-                    onMouseEnter={() => setActiveId(b.id)}
-                  >
-                    <span className="sched-chrono__idx font-display">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="sched-chrono__date">
-                      <span className="sched-chrono__day">{d.day}</span>
-                      <span className="sched-chrono__mon">{d.month}</span>
-                    </span>
-                    <span className="sched-chrono__meta">
-                      <span className="sched-chrono__type">{b.type}</span>
-                      <span className="sched-chrono__title">{b.title}</span>
-                    </span>
-                    <span className="sched-chrono__time">{b.time.replace(' CT', '')}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        ) : (
-          <div className="sched-pad sched-empty">
-            <p>No {activeType} battles on the board yet.</p>
-            <button type="button" onClick={() => setActiveType('All')} className="sched-hero__link">
-              Show all arenas
-            </button>
-          </div>
-        )}
-      </section>
 
       <section className="sched-finale">
         <div className="sched-finale__grid">

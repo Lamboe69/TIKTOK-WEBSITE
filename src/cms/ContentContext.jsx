@@ -36,7 +36,24 @@ function cloneContent(content) {
 
 function nextCollectionItemId(items) {
   const nums = (items || []).map((i) => Number(i.id)).filter((n) => Number.isFinite(n))
-  return nums.length ? Math.max(...nums) + 1 : Date.now()
+  return nums.length ? Math.max(...nums) + 1 : 1
+}
+
+function normalizeItemId(raw, fallback) {
+  if (raw == null || raw === '') return fallback
+  const asNum = Number(raw)
+  if (Number.isFinite(asNum) && String(asNum) === String(raw).trim()) return asNum
+  return raw
+}
+
+function sortCollectionIfNeeded(key, items) {
+  if (key !== 'battleCatalog') return items
+  return [...items].sort((a, b) => {
+    const na = Number(a?.id)
+    const nb = Number(b?.id)
+    if (Number.isFinite(na) && Number.isFinite(nb) && na !== nb) return na - nb
+    return String(a?.id ?? '').localeCompare(String(b?.id ?? ''), undefined, { numeric: true })
+  })
 }
 
 async function mutateContent(mutator) {
@@ -95,10 +112,21 @@ export async function createCollectionItem(key, item) {
   let created = null
   await mutateContent((content) => {
     const items = Array.isArray(content.collections?.[key]) ? [...content.collections[key]] : []
-    const id = item.id != null ? item.id : nextCollectionItemId(items)
+    const id = normalizeItemId(item.id, nextCollectionItemId(items))
+    const conflictIdx = items.findIndex((row) => String(row.id) === String(id))
+    if (conflictIdx >= 0) {
+      if (key !== 'battleCatalog') {
+        throw new Error(`ID ${id} is already used by another item`)
+      }
+      const taken = new Set(items.map((row) => String(row.id)))
+      taken.add(String(id))
+      let free = 1
+      while (taken.has(String(free))) free += 1
+      items[conflictIdx] = { ...items[conflictIdx], id: free }
+    }
     created = { ...item, id }
     items.push(created)
-    content.collections = { ...content.collections, [key]: items }
+    content.collections = { ...content.collections, [key]: sortCollectionIfNeeded(key, items) }
     return content
   })
   return created
@@ -109,8 +137,19 @@ export async function updateCollectionItem(key, id, item) {
     const items = Array.isArray(content.collections?.[key]) ? [...content.collections[key]] : []
     const idx = items.findIndex((row) => String(row.id) === String(id))
     if (idx < 0) throw new Error('Item not found')
-    items[idx] = { ...items[idx], ...item, id: items[idx].id }
-    content.collections = { ...content.collections, [key]: items }
+    const previousId = items[idx].id
+    const nextId = normalizeItemId(item.id, previousId)
+
+    if (String(nextId) !== String(previousId)) {
+      const otherIdx = items.findIndex((row, i) => i !== idx && String(row.id) === String(nextId))
+      if (otherIdx >= 0) {
+        // Swap positions: the battle that held nextId takes this item's previous ID
+        items[otherIdx] = { ...items[otherIdx], id: normalizeItemId(previousId, previousId) }
+      }
+    }
+
+    items[idx] = { ...items[idx], ...item, id: nextId }
+    content.collections = { ...content.collections, [key]: sortCollectionIfNeeded(key, items) }
     return content
   })
 }

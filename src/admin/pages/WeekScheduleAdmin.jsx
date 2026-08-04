@@ -11,7 +11,7 @@ import {
   normalizeBattleCatalog,
   scheduleFieldsFromCatalogBattle,
 } from '../../cms/battleCatalog'
-import { schedule as fallbackSchedule } from '../../data/schedule'
+import { schedule as fallbackSchedule, withSportsCategory } from '../../data/schedule'
 import { getBattleImage, getNextSevenDays } from '../../utils/scheduleDisplay'
 import { mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
@@ -23,6 +23,7 @@ const BATTLE_TYPES = [
   'Scavengers',
   'Most Beautiful',
   'Country',
+  'Sports',
   'Champion of Champions',
 ]
 
@@ -199,7 +200,7 @@ export default function WeekScheduleAdmin() {
 
   const battleTypes = useMemo(() => {
     const fromCms = (content?.collections?.battleTypes || []).filter((t) => t && t !== 'All')
-    return fromCms.length ? fromCms : BATTLE_TYPES
+    return withSportsCategory(fromCms.length ? fromCms : BATTLE_TYPES)
   }, [content?.collections?.battleTypes])
 
   const days = useMemo(() => getNextSevenDays(schedule), [schedule])

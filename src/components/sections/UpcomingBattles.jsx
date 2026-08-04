@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom'
 import Motion from '../Motion'
 import { useContent } from '../../cms/ContentContext'
 import { getDefaultSchedule } from '../../data/schedule'
 import { getBattleStatus } from '../../utils/battle'
+import { mediaUrl } from '../../utils/mediaUrl'
 import {
   formatScheduleDay,
   getBattleAccent,
@@ -10,6 +10,44 @@ import {
   getUpcomingBattles,
   resolveScheduleList,
 } from '../../utils/scheduleDisplay'
+
+function posterFilename(battle) {
+  const title = String(battle?.title || 'battle-poster')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+  const date = String(battle?.date || '').slice(0, 10)
+  return `${title || 'battle-poster'}${date ? `-${date}` : ''}.jpg`
+}
+
+async function downloadPoster(src, battle) {
+  const url = mediaUrl(src)
+  if (!url) return
+  const filename = posterFilename(battle)
+
+  try {
+    const res = await fetch(url, { mode: 'cors' })
+    if (!res.ok) throw new Error('fetch failed')
+    const blob = await res.blob()
+    const blobUrl = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = blobUrl
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+    URL.revokeObjectURL(blobUrl)
+  } catch {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    a.target = '_blank'
+    a.rel = 'noopener noreferrer'
+    document.body.appendChild(a)
+    a.click()
+    a.remove()
+  }
+}
 
 export default function UpcomingBattles() {
   const { collections, getPage } = useContent()
@@ -33,7 +71,7 @@ export default function UpcomingBattles() {
       />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-16">
-        <Motion delay={30} className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+        <Motion delay={30} className="mb-10">
           <div>
             <p className="sec-kicker mb-2">{kicker}</p>
             <h2
@@ -43,52 +81,66 @@ export default function UpcomingBattles() {
               {title}
             </h2>
           </div>
-          <Link to="/battle-schedule" className="sec-cta-ghost self-start sm:self-auto">
-            Full schedule
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
         </Motion>
 
         <div className="upcoming-grid">
           {upcoming.map((battle, idx) => {
             const day = formatScheduleDay(battle.date)
             const accent = getBattleAccent(battle)
-            const img = getBattleImage(battle)
+            const img = mediaUrl(getBattleImage(battle))
             const status = getBattleStatus(battle.date, battle.time)
 
             return (
               <Motion key={battle.id} delay={60 + idx * 50}>
-                <Link
-                  to={`/battle-schedule?battle=${battle.id}#sched-board`}
-                  className="upcoming-card group"
+                <article
+                  className="upcoming-card"
                   style={{ '--up-accent': accent }}
                 >
                   <div className="upcoming-card__visual">
-                    <img src={img} alt="" className="upcoming-card__img" loading="lazy" />
-                    <div className="upcoming-card__veil" />
-                    <span className="upcoming-card__rank font-display">{String(idx + 1).padStart(2, '0')}</span>
+                    <img
+                      src={img}
+                      alt={`${battle.title} poster`}
+                      className="upcoming-card__img"
+                      loading="lazy"
+                    />
+                    <span className="upcoming-card__rank font-display" aria-hidden>
+                      {String(idx + 1).padStart(2, '0')}
+                    </span>
                     {status === 'live' ? (
                       <span className="upcoming-card__badge upcoming-card__badge--live">Live now</span>
                     ) : status === 'today' ? (
                       <span className="upcoming-card__badge">Tonight</span>
                     ) : null}
                   </div>
+
                   <div className="upcoming-card__body">
                     <p className="upcoming-card__meta">
-                      {day.weekday} {day.month} {day.day} · {battle.time}
+                      <span>
+                        {day.weekday} {day.month} {day.day}
+                      </span>
+                      <span className="upcoming-card__dot" aria-hidden />
+                      <span>{battle.time}</span>
                     </p>
                     <p className="upcoming-card__type">{battle.type}</p>
                     <h3 className="upcoming-card__title font-display">{battle.title}</h3>
-                    <span className="upcoming-card__link">
-                      View details
-                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-                        <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+                    <button
+                      type="button"
+                      className="upcoming-card__download"
+                      onClick={() => downloadPoster(img, battle)}
+                    >
+                      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path
+                          d="M8 2v8m0 0L5 7.5M8 10l3-2.5M3 13h10"
+                          stroke="currentColor"
+                          strokeWidth="1.75"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
                       </svg>
-                    </span>
+                      Download Poster
+                    </button>
                   </div>
-                </Link>
+                </article>
               </Motion>
             )
           })}

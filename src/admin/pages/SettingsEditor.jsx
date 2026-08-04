@@ -9,10 +9,48 @@ import { AdminPage } from '../AdminLayout'
 const SECTIONS = [
   { title: 'Brand & Identity', keys: ['siteName', 'tagline', 'ctaLabel'] },
   { title: 'Contact Information', keys: ['email', 'phoneUS', 'phoneUG', 'location'] },
-  { title: 'Footer Text', keys: ['copyright', 'disclaimer'] },
-  { title: 'Social Media', keys: ['tiktokHandle', 'tiktokUrl', 'instagramUrl', 'youtubeUrl', 'whatsappUrl', 'facebookUrl', 'twitchUrl'] },
+  {
+    title: 'Footer',
+    keys: [
+      'footerLogoKicker',
+      'footerTiktokButton',
+      'footerDonateButton',
+      'footerColumnExplore',
+      'footerColumnCommunity',
+      'footerColumnSupport',
+      'footerColumnContact',
+      'footerNewsletterTitle',
+      'footerNewsletterPlaceholder',
+      'footerNewsletterButton',
+      'footerNewsletterSuccess',
+      'footerSocialHeading',
+      'footerAdvertiseText',
+      'footerAdvertiseLink',
+      'copyright',
+      'disclaimer',
+    ],
+  },
+  {
+    title: 'Social Media',
+    keys: [
+      'tiktokHandle',
+      'tiktokUrl',
+      'instagramUrl',
+      'youtubeUrl',
+      'threadsUrl',
+      'whatsappUrl',
+      'facebookUrl',
+      'twitchUrl',
+    ],
+  },
   { title: 'Payments', keys: ['paypalEmail'] },
   { title: 'Battle application form', keys: ['giftingLevelGuideVideo'] },
+]
+
+const FOOTER_LINK_COLLECTIONS = [
+  { key: 'footerExploreLinks', label: 'Explore links' },
+  { key: 'footerCommunityLinks', label: 'Community links' },
+  { key: 'footerSupportLinks', label: 'Support links' },
 ]
 
 export default function SettingsEditor() {
@@ -70,6 +108,18 @@ export default function SettingsEditor() {
             <h3 style={{ fontSize: '0.85rem', fontWeight: 700, color: '#c4a0ff', marginBottom: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
               {section.title}
             </h3>
+            {section.title === 'Footer' ? (
+              <p className="lede" style={{ marginBottom: '1rem' }}>
+                Edit footer copy below. Manage link columns here:{' '}
+                {FOOTER_LINK_COLLECTIONS.map((col, i) => (
+                  <span key={col.key}>
+                    {i > 0 ? ' · ' : null}
+                    <Link to={`/admin/collections/${col.key}`}>{col.label}</Link>
+                  </span>
+                ))}
+                . Brand name, tagline, contact, and social URLs also appear in the footer.
+              </p>
+            ) : null}
             {section.keys.map((key) => {
               const field = fieldMap[key]
               if (!field) return null
@@ -78,6 +128,7 @@ export default function SettingsEditor() {
                   <label>{field.label}</label>
                   <textarea
                     value={draft[field.key] || ''}
+                    placeholder={field.placeholder || ''}
                     onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
                   />
                 </div>
@@ -86,6 +137,7 @@ export default function SettingsEditor() {
                   <label>{field.label}</label>
                   <input
                     value={draft[field.key] || ''}
+                    placeholder={field.placeholder || ''}
                     onChange={(e) => setDraft({ ...draft, [field.key]: e.target.value })}
                   />
                 </div>
