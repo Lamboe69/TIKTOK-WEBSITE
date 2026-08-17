@@ -1,58 +1,10 @@
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { Router } from 'express'
 import multer from 'multer'
 import { query } from '../db.js'
-import { spacesConfigured, uploadBufferToSpaces } from '../spaces.js'
 import { battleRequiresCountry, battleRequiresTeam } from '../battleFields.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const uploadsDir = path.join(__dirname, '../../../public/uploads/battle-apps')
-fs.mkdirSync(uploadsDir, { recursive: true })
-
 const router = Router()
-
-function safeFilename(originalName, mime = 'image/jpeg') {
-  const extFromName = path.extname(originalName || '').toLowerCase()
-  const safeBase = path
-    .basename(originalName || 'upload', extFromName)
-    .replace(/[^a-zA-Z0-9_-]/g, '-')
-    .slice(0, 48)
-  const mimeExt = String(mime.split('/')[1] || 'jpg').replace('jpeg', 'jpg')
-  const ext = extFromName || `.${mimeExt}`
-  return `${Date.now()}-${safeBase || 'upload'}${ext}`
-}
-
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 8 * 1024 * 1024 },
-  fileFilter: (_req, file, cb) => {
-    if (!file.mimetype?.startsWith('image/')) {
-      return cb(new Error('Only image uploads allowed'))
-    }
-    cb(null, true)
-  },
-})
-
-const applicationUpload = upload.fields([
-  { name: 'giftingLevelScreenshot', maxCount: 1 },
-])
-
-function handleUploadErrors(req, res, next) {
-  applicationUpload(req, res, (err) => {
-    if (!err) return next()
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(413).json({
-        error: 'Each screenshot must be 8 MB or smaller. Try a smaller image or take a new screenshot.',
-      })
-    }
-    if (err.message === 'Only image uploads allowed') {
-      return res.status(400).json({ error: 'Screenshots must be image files (JPG, PNG, etc.)' })
-    }
-    return res.status(400).json({ error: err.message || 'Invalid upload' })
-  })
-}
+const parseApplicationBody = multer().none()
 
 function normalizeHandle(raw) {
   return String(raw || '')
@@ -82,23 +34,6 @@ function parseEmail(raw) {
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null
   if (email.length > 254) return null
   return email
-}
-
-async function persistApplicationImage(file, prefix) {
-  const finalName = safeFilename(file.originalname, file.mimetype)
-  const key = `battle-apps/${prefix}-${finalName}`
-
-  if (spacesConfigured()) {
-    return uploadBufferToSpaces({
-      key,
-      body: file.buffer,
-      contentType: file.mimetype,
-    })
-  }
-
-  const filePath = path.join(uploadsDir, `${prefix}-${finalName}`)
-  fs.writeFileSync(filePath, file.buffer)
-  return `/uploads/battle-apps/${prefix}-${finalName}`
 }
 
 function serializeApplication(row) {
@@ -139,7 +74,7 @@ function serializeApplication(row) {
   }
 }
 
-function validateApplicationBody(body, files, { schedule = [] } = {}) {
+function validateApplicationBody(body, { schedule = [] } = {}) {
   const entryType = String(body?.entryType || body?.type || 'official')
     .trim()
     .toLowerCase()
@@ -246,9 +181,9 @@ function validateApplicationBody(body, files, { schedule = [] } = {}) {
     return { error: 'Please tell us if you can rally your supporters for the event' }
   }
 
-  const giftingLevelScreenshot = files?.giftingLevelScreenshot?.[0]
-  if (!giftingLevelScreenshot) {
-    return { error: 'Please attach a screenshot of your gifting level' }
+  const consentConfirmed = String(body?.consentConfirmed || '').trim().toLowerCase()
+  if (!['yes', 'true', '1', 'on'].includes(consentConfirmed)) {
+    return { error: 'Please confirm the consent statement before submitting' }
   }
 
   return {
@@ -266,7 +201,6 @@ function validateApplicationBody(body, files, { schedule = [] } = {}) {
     hasCommunity,
     highestCoins,
     canRallySupporters,
-    giftingLevelScreenshot,
   }
 }
 
@@ -286,18 +220,13 @@ async function loadScheduleItems() {
 }
 
 /** Public: submit a box battle application */
-router.post('/', handleUploadErrors, async (req, res) => {
+router.post('/', parseApplicationBody, async (req, res) => {
   try {
     const schedule = await loadScheduleItems()
-    const validated = validateApplicationBody(req.body, req.files, { schedule })
+    const validated = validateApplicationBody(req.body, { schedule })
     if (validated.error) {
       return res.status(400).json({ error: validated.error })
     }
-
-    const giftingLevelScreenshotUrl = await persistApplicationImage(
-      validated.giftingLevelScreenshot,
-      'gifting',
-    )
 
     const inserted = await query(
       `INSERT INTO battle_applications
@@ -321,7 +250,7 @@ router.post('/', handleUploadErrors, async (req, res) => {
         validated.hasCommunity,
         validated.highestCoins,
         validated.canRallySupporters,
-        giftingLevelScreenshotUrl,
+        null,
       ],
     )
 

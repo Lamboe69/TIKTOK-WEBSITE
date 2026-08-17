@@ -962,6 +962,31 @@
   grid-column: 1 / -1;
 }
 
+.signup-field--consent {
+  grid-column: 1 / -1;
+}
+
+.signup-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.8rem 0.9rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.signup-consent input[type='checkbox'] {
+  margin-top: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--signup-accent, #ff6b1a);
+  flex-shrink: 0;
+}
+
 .signup-field__control,
 .signup-field__static {
   width: 100%;

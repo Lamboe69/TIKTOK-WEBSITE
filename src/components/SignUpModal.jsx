@@ -2,11 +2,6 @@ import { useState, useEffect, useRef, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { Icons } from './Icons'
 import { apiFetch, readJsonResponse } from '../utils/api'
-import {
-  compressScreenshot,
-  formatFileSize,
-  MAX_SCREENSHOT_BYTES,
-} from '../utils/compressImage'
 import { BATTLE_SUBMIT_LABEL } from '../constants/brand'
 import { useContent } from '../cms/ContentContext'
 import {
@@ -15,7 +10,6 @@ import {
   battleRequiresTeam,
   defaultOfficialBattleLabel,
 } from '../cms/battleCatalog'
-import { mediaUrl } from '../utils/mediaUrl'
 import './SignUpModal.css'
 
 const FORMSPREE_OFFICIAL = ''
@@ -47,127 +41,6 @@ function RequiredLabel({ htmlFor, children, as = 'label' }) {
   )
 }
 
-function toEmbedVideoUrl(raw) {
-  const url = String(raw || '').trim()
-  if (!url) return ''
-  if (/youtube\.com\/embed\//i.test(url)) return url
-  const watchMatch = url.match(/[?&]v=([^&]+)/i)
-  if (watchMatch) return `https://www.youtube.com/embed/${watchMatch[1]}`
-  const shortMatch = url.match(/youtu\.be\/([^?&]+)/i)
-  if (shortMatch) return `https://www.youtube.com/embed/${shortMatch[1]}`
-  if (/\.(mp4|webm|ogg)(\?|$)/i.test(url) || url.startsWith('/')) return mediaUrl(url)
-  return url
-}
-
-function isDirectVideoUrl(url) {
-  return /\.(mp4|webm|ogg)(\?|$)/i.test(url) || (url.startsWith('/') && !url.includes('youtube'))
-}
-
-function ScreenshotUploadField({ id, file, onChange, required, hint, children }) {
-  const inputRef = useRef(null)
-  const [previewUrl, setPreviewUrl] = useState(null)
-
-  useEffect(() => {
-    if (!file) {
-      setPreviewUrl(null)
-      return undefined
-    }
-    const url = URL.createObjectURL(file)
-    setPreviewUrl(url)
-    return () => URL.revokeObjectURL(url)
-  }, [file])
-
-  const handleClear = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    onChange(null)
-    if (inputRef.current) inputRef.current.value = ''
-  }
-
-  return (
-    <div className={`signup-screenshot${file ? ' signup-screenshot--ready' : ''}`}>
-      <input
-        ref={inputRef}
-        id={id}
-        className="signup-screenshot__input"
-        type="file"
-        accept="image/*"
-        required={required && !file}
-        onChange={(e) => onChange(e.target.files?.[0] || null)}
-      />
-
-      {previewUrl ? (
-        <div className="signup-screenshot__preview">
-          <div className="signup-screenshot__preview-head">
-            <span className="signup-screenshot__badge">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M20 6L9 17l-5-5"
-                  stroke="currentColor"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              Screenshot attached
-            </span>
-            <span className="signup-screenshot__size-pill">{formatFileSize(file.size)}</span>
-          </div>
-
-          <label htmlFor={id} className="signup-screenshot__frame" aria-label="Change screenshot">
-            <img src={previewUrl} alt="Screenshot preview" />
-            <span className="signup-screenshot__frame-overlay">
-              <span className="signup-screenshot__frame-cta">Tap to replace</span>
-            </span>
-          </label>
-
-          <div className="signup-screenshot__bar">
-            <div className="signup-screenshot__meta">
-              <span className="signup-screenshot__name">{file.name}</span>
-              <span className="signup-screenshot__meta-hint">Looks good — submit when ready</span>
-            </div>
-            <div className="signup-screenshot__actions">
-              <label htmlFor={id} className="signup-screenshot__change">
-                Change
-              </label>
-              <button type="button" className="signup-screenshot__remove" onClick={handleClear}>
-                Remove
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <label htmlFor={id} className="signup-screenshot__empty">
-          <span className="signup-screenshot__icon" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.5" />
-              <circle cx="8.5" cy="10" r="1.5" fill="currentColor" />
-              <path
-                d="M21 16l-5.5-5.5a1.5 1.5 0 00-2.12 0L3 21"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-          </span>
-          <span className="signup-screenshot__empty-copy">
-            <span className="signup-screenshot__cta">Add screenshot</span>
-            <span className="signup-screenshot__empty-hint">
-              Tap to open gallery or camera · JPG or PNG
-            </span>
-          </span>
-          <span className="signup-screenshot__empty-tag">Max 4 MB</span>
-        </label>
-      )}
-
-      <p className="signup-field__hint">
-        {hint}
-        {children}
-      </p>
-    </div>
-  )
-}
-
 function emptyForm(type, preset, officialLabel) {
   const defaultBattle =
     preset?.battleLabel ||
@@ -190,7 +63,7 @@ function emptyForm(type, preset, officialLabel) {
 }
 
 export default function SignUpModal({ type = 'official', preset = null, isOpen, onClose }) {
-  const { collections, settings } = useContent()
+  const { collections } = useContent()
   const battleOptions = useMemo(
     () => battleCatalogToFormOptions(collections.battleCatalog),
     [collections.battleCatalog],
@@ -206,15 +79,11 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
     return fromCms.length ? fromCms : FALLBACK_LEAGUE_LEVELS
   }, [collections.leagueLevels])
 
-  const giftingGuideVideo = String(settings?.giftingLevelGuideVideo || '').trim()
-  const giftingGuideEmbed = toEmbedVideoUrl(giftingGuideVideo)
-
   const [form, setForm] = useState(() => emptyForm(type, preset, officialLabel))
-  const [giftingLevelScreenshot, setGiftingLevelScreenshot] = useState(null)
+  const [consentChecked, setConsentChecked] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
-  const [showGiftingGuide, setShowGiftingGuide] = useState(false)
   const firstFieldRef = useRef(null)
 
   const selectedOption =
@@ -239,23 +108,21 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   useEffect(() => {
     if (!isOpen) return
     setForm(emptyForm(type, preset, officialLabel))
-    setGiftingLevelScreenshot(null)
+    setConsentChecked(false)
     setSubmitted(false)
     setError('')
-    setShowGiftingGuide(false)
   }, [isOpen, type, preset, officialLabel])
 
   useEffect(() => {
     if (!isOpen) return undefined
     const handler = (e) => {
       if (e.key === 'Escape') {
-        if (showGiftingGuide) setShowGiftingGuide(false)
-        else onClose()
+        onClose()
       }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [isOpen, onClose, showGiftingGuide])
+  }, [isOpen, onClose])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -320,16 +187,8 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       if (!form.canRallySupporters) {
         throw new Error('Please tell us if you can rally your supporters for the event')
       }
-      if (!giftingLevelScreenshot) {
-        throw new Error('Please attach a screenshot of your gifting level')
-      }
-
-      const giftingFile = await compressScreenshot(giftingLevelScreenshot)
-
-      if (giftingFile.size > MAX_SCREENSHOT_BYTES) {
-        throw new Error(
-          `Your gifting level screenshot is too large (${formatFileSize(giftingFile.size)}). Please use a smaller image under ${formatFileSize(MAX_SCREENSHOT_BYTES)}.`,
-        )
+      if (!consentChecked) {
+        throw new Error('Please confirm the consent statement before submitting')
       }
 
       const formData = new FormData()
@@ -348,7 +207,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       formData.append('hasCommunity', form.hasCommunity)
       formData.append('highestCoins', String(highestCoins))
       formData.append('canRallySupporters', form.canRallySupporters)
-      formData.append('giftingLevelScreenshot', giftingFile)
+      formData.append('consentConfirmed', 'yes')
 
       const res = await apiFetch('/api/battle-applications', {
         method: 'POST',
@@ -384,8 +243,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
   const handleClose = () => {
     setSubmitted(false)
     setError('')
-    setShowGiftingGuide(false)
-    setGiftingLevelScreenshot(null)
+    setConsentChecked(false)
     setForm(emptyForm(type, null, officialLabel))
     onClose()
   }
@@ -707,53 +565,20 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                   </div>
                 </div>
 
-                <div className="signup-field signup-field--full signup-field--screenshot">
-                  <RequiredLabel htmlFor="signup-gifting-shot">
-                    Attach screenshot of your gifting level
-                  </RequiredLabel>
-
-                  <div className="signup-gifting-row">
-                    <figure className="signup-gifting-sample">
-                      <div className="signup-gifting-sample__head">
-                        <span className="signup-gifting-sample__badge">Example</span>
-                        <p className="signup-gifting-sample__title">Expected look</p>
-                      </div>
-                      <div className="signup-gifting-sample__frame">
-                        <img
-                          src="/photos/kingmaker.jpg"
-                          alt="Sample TikTok profile showing gifting level cards"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                      </div>
-                      <figcaption className="signup-gifting-sample__caption">
-                        Show your gifting level cards clearly
-                      </figcaption>
-                    </figure>
-
-                    <ScreenshotUploadField
-                      id="signup-gifting-shot"
-                      file={giftingLevelScreenshot}
-                      onChange={setGiftingLevelScreenshot}
+                <div className="signup-field signup-field--full signup-field--consent">
+                  <label className="signup-consent">
+                    <input
+                      type="checkbox"
+                      checked={consentChecked}
+                      onChange={(e) => setConsentChecked(e.target.checked)}
                       required
-                      hint="Open TikTok → Profile → Settings → Gifting level, then screenshot your level. Use JPG or PNG under 4 MB."
-                    >
-                      {giftingGuideVideo ? (
-                        <>
-                          {' '}
-                          <button
-                            type="button"
-                            className="signup-field__guide-link"
-                            onClick={() => setShowGiftingGuide(true)}
-                          >
-                            Watch how to capture and attach your screenshot
-                          </button>
-                        </>
-                      ) : (
-                        <span> Need help? Ask our team for a walkthrough video.</span>
-                      )}
-                    </ScreenshotUploadField>
-                  </div>
+                    />
+                    <span>
+                      I confirm that the information provided are correct. I understand that
+                      incorrect information may lead to automatic disqualification of my
+                      participation.
+                    </span>
+                  </label>
                 </div>
 
                 {error ? (
@@ -777,43 +602,6 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
       </div>
       </div>
 
-      {showGiftingGuide && giftingGuideVideo ? (
-        <div className="signup-guide" role="dialog" aria-modal="true" aria-label="Gifting level guide">
-          <button
-            type="button"
-            className="signup-guide__backdrop"
-            aria-label="Close guide"
-            onClick={() => setShowGiftingGuide(false)}
-          />
-          <div className="signup-guide__panel">
-            <div className="signup-guide__head">
-              <h3>How to screenshot your gifting level</h3>
-              <button
-                type="button"
-                className="signup-guide__close"
-                aria-label="Close"
-                onClick={() => setShowGiftingGuide(false)}
-              >
-                {Icons.close}
-              </button>
-            </div>
-            <div className="signup-guide__video">
-              {isDirectVideoUrl(giftingGuideEmbed) ? (
-                <video controls playsInline src={giftingGuideEmbed}>
-                  <track kind="captions" />
-                </video>
-              ) : (
-                <iframe
-                  title="Gifting level screenshot guide"
-                  src={giftingGuideEmbed}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              )}
-            </div>
-          </div>
-        </div>
-      ) : null}
     </>,
     document.body,
   )
