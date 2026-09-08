@@ -1,5 +1,4 @@
 import Hero from '../components/sections/Hero'
-import StatBar from '../components/StatBar'
 import HowItWorks from '../components/sections/HowItWorks'
 import BattleTypes from '../components/sections/BattleTypes'
 import KmLovers from '../components/sections/KmLovers'
@@ -14,10 +13,9 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <StatBar />
+      <UpcomingBattles />
       <HowItWorks />
       <BattleTypes />
-      <UpcomingBattles />
       <KmLovers />
       <WinnersVisit />
       <CommunityRecognition />

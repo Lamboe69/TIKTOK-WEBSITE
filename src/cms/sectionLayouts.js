@@ -1,6 +1,11 @@
 /** Home section layout presets — admin picks in Pages → Home. */
 
 export const HOW_IT_WORKS_LAYOUTS = [
+  { id: 'eclipse', label: 'Solar Eclipse', description: 'Full-bleed halves part like an eclipse around a molten seam' },
+  { id: 'gatefold', label: 'Gatefold Press', description: 'Edge-to-edge newspaper sheets fold open from the spine' },
+  { id: 'portals', label: 'Twin Portals', description: 'Arched dimensional gates with orbiting rings' },
+  { id: 'runway', label: 'Arena Runway', description: 'Perspective floor + live center lane across the viewport' },
+  { id: 'prism', label: 'Prism Slash', description: 'Diagonal full-bleed cut with asymmetric panels' },
   { id: 'editorial', label: 'Dynasty Editorial', description: 'Split image panel with stacked step cards' },
   { id: 'compass', label: 'Crown Compass', description: 'Steps orbit a glowing battle-map dial' },
   { id: 'spiral', label: 'Ascent Spiral', description: 'Vertical spiral staircase with ember thread' },
@@ -65,7 +70,7 @@ export const CONTACT_TEAM_LAYOUTS = [
 ]
 
 export const SECTION_LAYOUT_REGISTRY = {
-  howItWorksLayout: { layouts: HOW_IT_WORKS_LAYOUTS, default: 'editorial' },
+  howItWorksLayout: { layouts: HOW_IT_WORKS_LAYOUTS, default: 'eclipse' },
   battleTypesLayout: { layouts: BATTLE_TYPES_LAYOUTS, default: 'arena' },
   kmLoversLayout: { layouts: KM_LOVERS_LAYOUTS, default: 'guardian' },
   winnersLayout: { layouts: WINNERS_LAYOUTS, default: 'split' },

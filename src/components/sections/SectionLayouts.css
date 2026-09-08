@@ -1,5 +1,645 @@
 /* ─── Configurable home section layouts ─── */
 
+/* How It Works — shared dual-panel copy */
+.how-dual__copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 34rem;
+}
+.how-dual__mark {
+  margin-bottom: 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ff8a3d;
+}
+.how-dual__headline {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.85rem, 4.2vw, 3.35rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #f8f4ee;
+}
+.how-dual__lede {
+  margin: 1rem 0 0;
+  font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+  line-height: 1.55;
+  color: rgba(248, 244, 238, 0.64);
+}
+.how-dual__cta {
+  margin-top: 1.5rem;
+  padding: 0.85rem 1.35rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: linear-gradient(135deg, #ff9a4d, #ff6b1a 55%, #e85a10);
+  color: #14080a;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: transform 0.22s ease, filter 0.22s ease;
+}
+.how-dual__cta:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+/* ── Gatefold (full-bleed fold) ── */
+.how-dual--gatefold {
+  perspective: 2200px;
+  overflow: hidden;
+}
+.how-dual__bleed {
+  width: 100%;
+}
+.how-dual__mast {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 2.25rem 1.25rem 1.5rem;
+  text-align: center;
+}
+.how-dual__edition {
+  margin: 0;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 138, 61, 0.8);
+}
+.how-dual__mast h2 {
+  margin: 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  line-height: 1;
+  color: #f8f4ee;
+}
+.how-gatefold {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  min-height: 28rem;
+  transform-style: preserve-3d;
+}
+@media (min-width: 900px) {
+  .how-gatefold {
+    grid-template-columns: 1fr 0.7rem 1fr;
+    min-height: min(72vh, 38rem);
+  }
+}
+.how-gatefold__spine {
+  display: none;
+}
+@media (min-width: 900px) {
+  .how-gatefold__spine {
+    display: block;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,0.55), rgba(255,107,26,0.55), rgba(0,0,0,0.55));
+    box-shadow: 0 0 40px rgba(255, 107, 26, 0.18);
+    z-index: 4;
+  }
+}
+.how-gatefold__sheet {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 0%, rgba(255,107,26,0.12), transparent 60%),
+    linear-gradient(160deg, #1c1230, #10081c 70%);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: transform 1.1s cubic-bezier(0.2, 0.9, 0.2, 1), opacity 0.7s ease;
+}
+.how-gatefold__face {
+  padding: clamp(1.75rem, 4vw, 3.5rem);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.how-gatefold__media {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  max-height: 14rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.how-gatefold__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+@media (min-width: 900px) {
+  .how-gatefold__sheet--left {
+    transform-origin: right center;
+    transform: rotateY(82deg);
+    opacity: 0.45;
+  }
+  .how-gatefold__sheet--right {
+    transform-origin: left center;
+    transform: rotateY(-82deg);
+    opacity: 0.45;
+  }
+  .how-dual--gatefold.is-on .how-gatefold__sheet--left,
+  .how-dual--gatefold.is-on .how-gatefold__sheet--right {
+    transform: rotateY(0);
+    opacity: 1;
+  }
+  .how-dual--gatefold.is-on .how-gatefold__sheet--right {
+    transition-delay: 0.12s;
+  }
+}
+@media (max-width: 899px) {
+  .how-gatefold__sheet {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  .how-dual--gatefold.is-on .how-gatefold__sheet {
+    opacity: 1;
+    transform: none;
+  }
+  .how-dual--gatefold.is-on .how-gatefold__sheet--right {
+    transition-delay: 0.12s;
+  }
+}
+
+/* ── Eclipse ── */
+.how-dual--eclipse {
+  overflow: hidden;
+}
+.how-eclipse {
+  position: relative;
+  width: 100%;
+  min-height: min(78vh, 42rem);
+  display: flex;
+  flex-direction: column;
+}
+.how-eclipse__sky {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 45%, rgba(255,107,26,0.2), transparent 55%),
+    radial-gradient(circle at 50% 48%, rgba(255,200,120,0.12), transparent 28%);
+}
+.how-eclipse__corona {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  width: min(18rem, 40vw);
+  height: min(18rem, 40vw);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 170, 80, 0.25);
+  box-shadow:
+    0 0 60px rgba(255, 107, 26, 0.15),
+    inset 0 0 40px rgba(255, 107, 26, 0.08);
+  animation: how-corona 8s ease-in-out infinite;
+}
+@keyframes how-corona {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+}
+.how-eclipse__kicker {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+  padding: 2rem 1.25rem 0;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255,138,61,0.85);
+}
+.how-eclipse__halves {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+@media (min-width: 900px) {
+  .how-eclipse__halves {
+    grid-template-columns: 1fr 0.15rem 1fr;
+    align-items: stretch;
+  }
+}
+.how-eclipse__half {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  transition: transform 1.05s cubic-bezier(0.2, 0.85, 0.2, 1), opacity 0.7s ease;
+}
+.how-eclipse__half--left {
+  background: linear-gradient(105deg, rgba(10,5,18,0.55), transparent 70%);
+}
+.how-eclipse__half--right {
+  background: linear-gradient(255deg, rgba(10,5,18,0.55), transparent 70%);
+}
+.how-eclipse__seam {
+  display: none;
+}
+@media (min-width: 900px) {
+  .how-eclipse__seam {
+    display: block;
+    position: relative;
+    z-index: 3;
+  }
+  .how-eclipse__seam span {
+    position: absolute;
+    inset: 8% 0;
+    background: linear-gradient(180deg, transparent, #ff8a3d, transparent);
+    box-shadow: 0 0 28px rgba(255, 107, 26, 0.55);
+  }
+  .how-eclipse__half--left {
+    transform: translateX(-18%);
+    opacity: 0.35;
+  }
+  .how-eclipse__half--right {
+    transform: translateX(18%);
+    opacity: 0.35;
+  }
+  .how-dual--eclipse.is-on .how-eclipse__half--left,
+  .how-dual--eclipse.is-on .how-eclipse__half--right {
+    transform: none;
+    opacity: 1;
+  }
+}
+.how-eclipse__ghost {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.14;
+  pointer-events: none;
+  mix-blend-mode: luminosity;
+}
+@media (max-width: 899px) {
+  .how-eclipse__half {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  .how-dual--eclipse.is-on .how-eclipse__half {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Portals ── */
+.how-portals {
+  width: 100%;
+  padding: 3rem 0 4rem;
+}
+.how-portals__head {
+  text-align: center;
+  padding: 0 1.25rem 2rem;
+}
+.how-portals__title {
+  margin: 0.5rem 0 0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  color: #f8f4ee;
+  line-height: 1.1;
+}
+.how-portals__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  width: 100%;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+}
+@media (min-width: 900px) {
+  .how-portals__row {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+}
+.how-portals__gate {
+  position: relative;
+  min-height: 26rem;
+  display: grid;
+  place-items: center;
+  transition: transform 0.9s cubic-bezier(0.2, 0.85, 0.2, 1), opacity 0.7s ease;
+  opacity: 0;
+  transform: translateY(2rem) scale(0.94);
+}
+.how-dual--portals.is-on .how-portals__gate {
+  opacity: 1;
+  transform: none;
+}
+.how-dual--portals.is-on .how-portals__gate--support {
+  transition-delay: 0.14s;
+}
+.how-portals__ring {
+  position: absolute;
+  border-radius: 50% / 58%;
+  border: 1px solid rgba(255, 138, 61, 0.28);
+  pointer-events: none;
+}
+.how-portals__ring--a {
+  inset: 4%;
+  animation: how-orbit 18s linear infinite;
+}
+.how-portals__ring--b {
+  inset: 11%;
+  border-color: rgba(255, 200, 120, 0.18);
+  animation: how-orbit 26s linear infinite reverse;
+}
+@keyframes how-orbit {
+  to { transform: rotate(360deg); }
+}
+.how-portals__chamber {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 28rem);
+  min-height: 20rem;
+  padding: 2rem 1.6rem;
+  border-radius: 50% / 12% 12% 42% 42%;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(255,107,26,0.18), transparent 55%),
+    linear-gradient(180deg, rgba(28,16,48,0.92), rgba(12,6,22,0.96));
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+.how-portals__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.18;
+  pointer-events: none;
+}
+.how-portals__chamber .how-dual__copy {
+  max-width: none;
+}
+
+/* ── Runway ── */
+.how-runway {
+  position: relative;
+  width: 100%;
+  min-height: min(80vh, 44rem);
+  overflow: hidden;
+  padding: 2.5rem 0 3rem;
+}
+.how-runway__floor {
+  position: absolute;
+  inset: 35% 0 0;
+  background:
+    linear-gradient(180deg, transparent, rgba(255,107,26,0.06)),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 48px,
+      rgba(255,255,255,0.035) 48px,
+      rgba(255,255,255,0.035) 49px
+    );
+  transform: perspective(600px) rotateX(58deg);
+  transform-origin: center top;
+  pointer-events: none;
+}
+.how-runway__head {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.how-runway__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  min-height: 24rem;
+}
+@media (min-width: 900px) {
+  .how-runway__stage {
+    grid-template-columns: 1fr 5.5rem 1fr;
+    min-height: 28rem;
+  }
+}
+.how-runway__side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.75rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 4rem);
+  transition: transform 1s cubic-bezier(0.2, 0.85, 0.2, 1), opacity 0.65s ease;
+}
+.how-runway__side--left {
+  background: linear-gradient(90deg, rgba(255,107,26,0.08), transparent 65%);
+}
+.how-runway__side--right {
+  background: linear-gradient(270deg, rgba(232,185,74,0.08), transparent 65%);
+}
+.how-runway__lane {
+  display: none;
+}
+@media (min-width: 900px) {
+  .how-runway__lane {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+  }
+  .how-runway__lane::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    bottom: 8%;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, #ff8a3d, transparent);
+  }
+  .how-runway__side--left {
+    transform: translateX(-12%);
+    opacity: 0.4;
+  }
+  .how-runway__side--right {
+    transform: translateX(12%);
+    opacity: 0.4;
+  }
+  .how-dual--runway.is-on .how-runway__side {
+    transform: none;
+    opacity: 1;
+  }
+}
+.how-runway__pulse {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: #ff6b1a;
+  box-shadow: 0 0 0 0 rgba(255, 107, 26, 0.5);
+  animation: how-pulse 1.8s ease-out infinite;
+  z-index: 1;
+}
+@keyframes how-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,107,26,0.45); }
+  70% { box-shadow: 0 0 0 16px rgba(255,107,26,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,107,26,0); }
+}
+.how-runway__tag {
+  z-index: 1;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  color: #ff8a3d;
+}
+.how-runway__still {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-height: 12rem;
+  object-fit: cover;
+  border-radius: 0.65rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  opacity: 0.85;
+}
+@media (max-width: 899px) {
+  .how-runway__side {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  .how-dual--runway.is-on .how-runway__side {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── Prism slash ── */
+.how-prism {
+  position: relative;
+  width: 100%;
+  min-height: min(82vh, 44rem);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .how-prism {
+    grid-template-columns: 1.05fr 0.95fr;
+  }
+}
+.how-prism__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.22;
+  filter: saturate(0.85) contrast(1.05);
+  pointer-events: none;
+}
+.how-prism__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(118deg, #12081f 0%, rgba(18,8,31,0.82) 42%, rgba(18,8,31,0.55) 58%, #12081f 100%);
+  pointer-events: none;
+}
+.how-prism__kicker {
+  position: absolute;
+  top: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,138,61,0.9);
+}
+.how-prism__slash {
+  display: none;
+}
+@media (min-width: 900px) {
+  .how-prism__slash {
+    display: block;
+    position: absolute;
+    top: -10%;
+    bottom: -10%;
+    left: 52%;
+    width: 3px;
+    z-index: 3;
+    background: linear-gradient(180deg, transparent, #ff8a3d, #e8b94a, transparent);
+    transform: rotate(8deg);
+    box-shadow: 0 0 30px rgba(255, 107, 26, 0.35);
+  }
+}
+.how-prism__pane {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4.5rem);
+  transition: opacity 0.75s ease, transform 1s cubic-bezier(0.2, 0.85, 0.2, 1);
+}
+.how-prism__pane--left {
+  background: linear-gradient(105deg, rgba(255,107,26,0.1), transparent 70%);
+}
+.how-prism__pane--right {
+  background: linear-gradient(250deg, rgba(232,185,74,0.08), transparent 70%);
+}
+@media (min-width: 900px) {
+  .how-prism__pane--left {
+    clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
+    transform: translateX(-10%);
+    opacity: 0.4;
+  }
+  .how-prism__pane--right {
+    clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+    margin-left: -6%;
+    transform: translateX(10%);
+    opacity: 0.4;
+  }
+  .how-dual--prism.is-on .how-prism__pane {
+    transform: none;
+    opacity: 1;
+  }
+}
+@media (max-width: 899px) {
+  .how-prism__pane {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  .how-dual--prism.is-on .how-prism__pane {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-gatefold__sheet,
+  .how-eclipse__half,
+  .how-portals__gate,
+  .how-runway__side,
+  .how-prism__pane,
+  .how-portals__ring--a,
+  .how-portals__ring--b,
+  .how-eclipse__corona,
+  .how-runway__pulse {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
 /* How It Works — Compass */
 .how-steps--compass .how-compass {
   position: relative;

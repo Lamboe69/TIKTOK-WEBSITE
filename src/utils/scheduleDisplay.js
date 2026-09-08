@@ -73,6 +73,10 @@ export function resolveScheduleList(cmsSchedule, fallbackSchedule) {
   return cms.length ? cms : fallbackSchedule
 }
 
+export function getWeekBattles(schedule) {
+  return getNextSevenDays(schedule).flatMap((day) => day.battles)
+}
+
 export function getNextSevenDays(schedule) {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
