@@ -137,14 +137,21 @@
 
 .site-nav__link {
   position: relative;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.8rem;
+  padding: 0.4rem 0.52rem;
+  font-size: 0.74rem;
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.015em;
   color: rgba(255, 247, 240, 0.58);
   text-decoration: none;
   transition: color 0.2s ease;
   white-space: nowrap;
+}
+
+@media (min-width: 1180px) {
+  .site-nav__link {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
+  }
 }
 .site-nav__link:hover { color: var(--nav-ivory); }
 

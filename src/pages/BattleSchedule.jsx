@@ -5,6 +5,7 @@ import { Icons } from '../components/Icons'
 import { convertTimezones, getCountdown, getBattleDate } from '../utils/battle'
 import Motion from '../components/Motion'
 import WeekHorizon from '../components/sections/WeekHorizon'
+import AdBanner from '../components/AdBanner'
 import { useContent } from '../cms/ContentContext'
 import {
   TYPE_ACCENT,
@@ -31,8 +32,8 @@ export default function BattleSchedule() {
   const siteName = settings.siteName || ''
   const schedule = collections.schedule?.length ? collections.schedule : fallbackSchedule
 
-  const weekHorizonKicker = page.weekHorizonKicker || 'Seven-day horizon'
-  const weekHorizonTitle = page.weekHorizonTitle || 'Your week in the arena'
+  const weekHorizonKicker = page.weekHorizonKicker || '30-day horizon'
+  const weekHorizonTitle = page.weekHorizonTitle || 'Your month in the arena'
   const finaleKicker = page.finaleKicker || 'Path to the crown'
   const finaleTitle = page.finaleTitle || 'Champion of Champions'
   const finaleBody = page.finaleBody || 'Official winners collide in one finale. Win your night — then claim your seat.'
@@ -117,7 +118,7 @@ export default function BattleSchedule() {
 
             <Motion delay={320} className="sched-hero__actions">
               <a href="#week-horizon" className="sched-hero__cta">
-                Seven-day horizon
+                30-day horizon
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -148,6 +149,8 @@ export default function BattleSchedule() {
           title={weekHorizonTitle}
         />
       </div>
+
+      <AdBanner slot="schedule-after-horizon" />
 
       <section className="sched-finale">
         <div className="sched-finale__grid">

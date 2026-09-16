@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, useCallback } from 'react'
 import { apiUrl } from '../utils/api'
+import { formatCount, normalizeCountAbbrev } from '../utils/formatCount'
 
 // How stats are labeled site-wide
 const STAT_LABELS = {
@@ -62,28 +63,36 @@ function writeLocalCache(data) {
   }
 }
 
-function formatCount(n) {
-  if (n === null || n === undefined) return null
-  if (n >= 1_000_000_000) return (n / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B'
-  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
-  if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K'
-  return String(n)
-}
-
 function mergeStats(apiData) {
-  if (!apiData) return { ...FALLBACK, ...STATIC_COUNTS }
+  if (!apiData) {
+    return {
+      ...FALLBACK,
+      ...STATIC_COUNTS,
+      followersFormatted: normalizeCountAbbrev(FALLBACK.followersFormatted),
+      likesFormatted: normalizeCountAbbrev(FALLBACK.likesFormatted),
+      battlesHostedFormatted: normalizeCountAbbrev(STATIC_COUNTS.battlesHosted.formatted),
+      winnersCrownedFormatted: normalizeCountAbbrev(STATIC_COUNTS.winnersCrowned.formatted),
+      avgViewersFormatted: normalizeCountAbbrev(STATIC_COUNTS.avgViewers.formatted),
+    }
+  }
 
   return {
     followers: apiData.followers,
-    followersFormatted: apiData.followersFormatted || formatCount(apiData.followers),
+    followersFormatted: normalizeCountAbbrev(apiData.followersFormatted || formatCount(apiData.followers)),
     likes: apiData.likes,
-    likesFormatted: apiData.likesFormatted || formatCount(apiData.likes),
+    likesFormatted: normalizeCountAbbrev(apiData.likesFormatted || formatCount(apiData.likes)),
     battlesHosted: STATIC_COUNTS.battlesHosted.value,
-    battlesHostedFormatted: STATIC_COUNTS.battlesHosted.formatted || formatCount(STATIC_COUNTS.battlesHosted.value),
+    battlesHostedFormatted: normalizeCountAbbrev(
+      STATIC_COUNTS.battlesHosted.formatted || formatCount(STATIC_COUNTS.battlesHosted.value),
+    ),
     winnersCrowned: STATIC_COUNTS.winnersCrowned.value,
-    winnersCrownedFormatted: STATIC_COUNTS.winnersCrowned.formatted || formatCount(STATIC_COUNTS.winnersCrowned.value),
+    winnersCrownedFormatted: normalizeCountAbbrev(
+      STATIC_COUNTS.winnersCrowned.formatted || formatCount(STATIC_COUNTS.winnersCrowned.value),
+    ),
     avgViewers: STATIC_COUNTS.avgViewers.value,
-    avgViewersFormatted: STATIC_COUNTS.avgViewers.formatted || formatCount(STATIC_COUNTS.avgViewers.value),
+    avgViewersFormatted: normalizeCountAbbrev(
+      STATIC_COUNTS.avgViewers.formatted || formatCount(STATIC_COUNTS.avgViewers.value),
+    ),
     displayName: apiData.displayName || 'King Maker',
     username: apiData.username || 'kingmakernevergivesup',
     source: apiData.source || 'api',

@@ -73,25 +73,36 @@ export function resolveScheduleList(cmsSchedule, fallbackSchedule) {
   return cms.length ? cms : fallbackSchedule
 }
 
-export function getWeekBattles(schedule) {
-  return getNextSevenDays(schedule).flatMap((day) => day.battles)
+/** Battles falling within the next `days` calendar days (inclusive of today). */
+export function getHorizonBattles(schedule, days = 30) {
+  return getNextNDays(schedule, days).flatMap((day) => day.battles)
 }
 
-export function getNextSevenDays(schedule) {
+/** @deprecated Prefer getHorizonBattles(schedule, 7) */
+export function getWeekBattles(schedule) {
+  return getHorizonBattles(schedule, 7)
+}
+
+/** Build day slots for today through today+(n-1). */
+export function getNextNDays(schedule, n = 30) {
+  const total = Math.max(1, Number(n) || 30)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
   const byDate = new Map()
-  for (const battle of schedule) {
+  for (const battle of schedule || []) {
+    if (!battle?.date) continue
     if (!byDate.has(battle.date)) byDate.set(battle.date, [])
     byDate.get(battle.date).push(battle)
   }
 
   const days = []
-  for (let i = 0; i < 7; i += 1) {
+  for (let i = 0; i < total; i += 1) {
     const d = new Date(today)
     d.setDate(today.getDate() + i)
     const iso = toDateKey(d)
-    const battles = (byDate.get(iso) || []).sort((a, b) => a.time.localeCompare(b.time))
+    const battles = (byDate.get(iso) || []).sort((a, b) =>
+      String(a.time || '').localeCompare(String(b.time || '')),
+    )
     days.push({
       date: iso,
       label: formatScheduleDay(iso),
@@ -102,6 +113,21 @@ export function getNextSevenDays(schedule) {
     })
   }
   return days
+}
+
+/** @deprecated Prefer getNextNDays(schedule, 7) */
+export function getNextSevenDays(schedule) {
+  return getNextNDays(schedule, 7)
+}
+
+export function chunkItems(items, size) {
+  const list = Array.isArray(items) ? items : []
+  const pageSize = Math.max(1, Number(size) || 1)
+  const pages = []
+  for (let i = 0; i < list.length; i += pageSize) {
+    pages.push(list.slice(i, i + pageSize))
+  }
+  return pages.length ? pages : [[]]
 }
 
 export function parseDisplayTime(timeStr) {

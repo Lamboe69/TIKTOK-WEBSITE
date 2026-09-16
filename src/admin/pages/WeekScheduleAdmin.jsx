@@ -12,7 +12,7 @@ import {
   scheduleFieldsFromCatalogBattle,
 } from '../../cms/battleCatalog'
 import { schedule as fallbackSchedule, withSportsCategory } from '../../data/schedule'
-import { getBattleImage, getNextSevenDays } from '../../utils/scheduleDisplay'
+import { getBattleImage, getNextNDays } from '../../utils/scheduleDisplay'
 import { mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 import { BattleTitleField } from '../components/BattleTitleField'
@@ -203,7 +203,7 @@ export default function WeekScheduleAdmin() {
     return withSportsCategory(fromCms.length ? fromCms : BATTLE_TYPES)
   }, [content?.collections?.battleTypes])
 
-  const days = useMemo(() => getNextSevenDays(schedule), [schedule])
+  const days = useMemo(() => getNextNDays(schedule, 30), [schedule])
   const media = content?.collections?.mediaLibrary || []
   const filled = days.filter((d) => d.primary).length
 
@@ -213,7 +213,7 @@ export default function WeekScheduleAdmin() {
 
   if (loading) {
     return (
-      <AdminPage title="Next 7 days">
+      <AdminPage title="Next 30 days">
         <p className="lede">Loading…</p>
       </AdminPage>
     )
@@ -221,8 +221,8 @@ export default function WeekScheduleAdmin() {
 
   return (
     <AdminPage
-      title="Next 7 days"
-      lede="Edit the seven-day horizon boxes on the Battle Schedule page. Pick a battle from your catalog — poster and description fill in automatically."
+      title="Next 30 days"
+      lede="Edit the 30-day horizon boxes on the Battle Schedule page (shown 15 at a time). Pick a battle from your catalog — poster and description fill in automatically."
       actions={
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           <a href="/battle-schedule#week-horizon" target="_blank" rel="noreferrer" className="admin-btn admin-btn--ghost">
@@ -241,7 +241,7 @@ export default function WeekScheduleAdmin() {
       }
     >
       <div className="admin-week__summary">
-        <strong>{filled}</strong> of <strong>7</strong> days filled · dates run from today through the next six days
+        <strong>{filled}</strong> of <strong>30</strong> days filled · dates run from today through the next 29 days
       </div>
 
       <div className="admin-week__grid">

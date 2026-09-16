@@ -10,8 +10,8 @@ import {
   formatScheduleDay,
   getBattleAccent,
   getBattleImage,
+  getHorizonBattles,
   getUpcomingBattles,
-  getWeekBattles,
   resolveScheduleList,
 } from '../../utils/scheduleDisplay'
 
@@ -59,8 +59,8 @@ export default function UpcomingBattles() {
   const { collections, getPage } = useContent()
   const homePage = getPage('home')
   const schedule = resolveScheduleList(collections.schedule, getDefaultSchedule())
-  const week = getWeekBattles(schedule)
-  const upcoming = week.length ? week : getUpcomingBattles(schedule, 14)
+  const horizon = getHorizonBattles(schedule, 30)
+  const upcoming = horizon.length ? horizon : getUpcomingBattles(schedule, 30)
 
   const kicker = homePage.upcomingBattlesKicker || 'Coming up'
   const title = homePage.upcomingBattlesTitle || 'Next in the arena'
@@ -86,7 +86,7 @@ export default function UpcomingBattles() {
             <div>
               <p className="sec-kicker mb-2">{kicker}</p>
               <h2 className="upcoming-head__title font-display">{title}</h2>
-              <p className="upcoming-head__hint">Drag or swipe — full week of battle flyers</p>
+              <p className="upcoming-head__hint">Drag or swipe — next 30 days of battle flyers</p>
             </div>
             {upcoming.length > 1 ? (
               <div className="upcoming-nav" role="group" aria-label="Flyer carousel controls">

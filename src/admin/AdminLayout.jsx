@@ -184,7 +184,7 @@ function AdminShell() {
               to="/admin/schedule/week"
               className={location.pathname === '/admin/schedule/week' ? 'is-active' : ''}
             >
-              Next 7 days
+              Next 30 days
             </Link>
 
             <p className="admin-side__section">Pages</p>

@@ -818,43 +818,170 @@
   color: rgba(255, 247, 240, 0.85);
 }
 
-/* ═══ Seven-day horizon deck ═══ */
+/* ═══ 30-day horizon deck (15 per swipe page) ═══ */
 .week-horizon {
   position: relative;
   padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(3rem, 7vw, 5rem);
   background:
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255, 107, 26, 0.12), transparent 55%),
-    linear-gradient(180deg, #0E0618 0%, #120620 45%, #10081C 100%);
+    linear-gradient(180deg, #0e0618 0%, #120620 45%, #10081c 100%);
   overflow: hidden;
 }
 
 .week-horizon__head {
-  margin-bottom: clamp(1.75rem, 4vw, 2.75rem);
+  margin-bottom: clamp(1.5rem, 3.5vw, 2.4rem);
+}
+
+.week-horizon__head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.25rem;
+  flex-wrap: wrap;
 }
 
 .week-horizon__title {
   font-size: clamp(2rem, 5vw, 3.35rem);
   line-height: 0.95;
-  max-width: 16ch;
+  max-width: 18ch;
+  margin: 0;
+}
+
+.week-horizon__hint {
+  margin: 0.65rem 0 0;
+  font-size: 0.82rem;
+  color: rgba(255, 247, 240, 0.55);
+}
+
+.week-horizon__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.week-horizon__page-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15rem;
+  min-width: 2.6rem;
+  justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  color: #fff7f0;
+  font-variant-numeric: tabular-nums;
+}
+
+.week-horizon__page-count span {
+  opacity: 0.4;
+  margin-inline: 0.1rem;
+}
+
+.week-horizon__nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 247, 240, 0.18);
+  background: rgba(14, 6, 28, 0.45);
+  color: #fff7f0;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.week-horizon__nav-btn:hover:not(:disabled) {
+  background: rgba(255, 107, 26, 0.22);
+  border-color: rgba(255, 138, 61, 0.55);
+}
+
+.week-horizon__nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.week-horizon__swiper {
+  width: 100%;
+  overflow: hidden;
+  padding-bottom: 0.35rem;
+}
+
+.week-horizon__page {
+  height: auto;
 }
 
 .week-horizon__deck {
   display: grid;
-  grid-template-columns: repeat(7, minmax(9.5rem, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.85rem;
-  padding: 0 var(--sched-pad);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
+  padding: 0 var(--sched-pad, 1.25rem);
 }
 
-.week-horizon__deck::-webkit-scrollbar {
-  display: none;
+@media (max-width: 1100px) {
+  .week-horizon__deck {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .week-horizon__deck {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .week-horizon__deck {
+    grid-template-columns: 1fr;
+  }
 }
 
 .week-horizon__slot {
-  scroll-snap-align: start;
-  min-width: 9.5rem;
+  min-width: 0;
+}
+
+.week-horizon__pager {
+  margin-top: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.week-horizon__progress {
+  width: min(100%, 22rem);
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 247, 240, 0.12);
+  overflow: hidden;
+}
+
+.week-horizon__progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #ff8a3d, #ff6b1a);
+  transition: width 0.35s ease;
+}
+
+.week-horizon__dots {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.week-horizon__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 247, 240, 0.28);
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.week-horizon__dot.is-active {
+  width: 1.4rem;
+  background: #ff8a3d;
 }
 
 .week-horizon__card {

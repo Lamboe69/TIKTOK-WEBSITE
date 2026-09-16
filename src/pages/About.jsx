@@ -5,6 +5,7 @@ import { Icons } from '../components/Icons'
 import { useContent } from '../cms/ContentContext'
 import { normalizePeoplePhotos } from '../cms/normalize'
 import { A_TEAM_APPLY_URL } from '../constants/brand'
+import { normalizeCountAbbrev } from '../utils/formatCount'
 import './About.css'
 
 const chapters = [
@@ -71,7 +72,7 @@ export default function About() {
   const statsRaw = page.stats || '50K+ | Followers\n100+ | Battles Hosted\n50+ | Winners Crowned\n6 | Global Regions'
   const stats = statsRaw.split('\n').filter(Boolean).map(line => {
     const [value, label] = line.split('|').map(s => s.trim())
-    return { value, label }
+    return { value: normalizeCountAbbrev(value), label }
   })
   const reelHeading = page.reelHeading || 'Four scenes. One dynasty.'
   const creedHeading = page.creedHeading || 'The Creed'

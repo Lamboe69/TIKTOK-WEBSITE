@@ -281,7 +281,7 @@ export default function CollectionList() {
         <div className="admin-toolbar" style={{ marginBottom: 0 }}>
           {key === 'schedule' ? (
             <Link to="/admin/schedule/week" className="admin-btn">
-              Next 7 days editor
+              Next 30 days editor
             </Link>
           ) : null}
           <button

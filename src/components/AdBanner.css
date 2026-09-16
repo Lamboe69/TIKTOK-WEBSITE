@@ -1,0 +1,209 @@
+/* Beacon banner — full-bleed partner strip, not a card grid */
+.ad-banner {
+  --ad-ink: #12081c;
+  --ad-accent: #ff8a3d;
+  --ad-ivory: #fff7f0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 120% at 100% 50%, color-mix(in srgb, var(--ad-accent) 28%, transparent), transparent 58%),
+    linear-gradient(105deg, var(--ad-ink) 0%, #1a0d28 48%, #0e0618 100%);
+  color: var(--ad-ivory);
+  border-block: 1px solid color-mix(in srgb, var(--ad-accent) 35%, transparent);
+}
+
+.ad-banner--violet {
+  --ad-ink: #160b2a;
+  --ad-accent: #c4a0ff;
+}
+
+.ad-banner--gold {
+  --ad-ink: #1a1208;
+  --ad-accent: #e8b94a;
+}
+
+.ad-banner--ink {
+  --ad-ink: #0a0710;
+  --ad-accent: #ff6b1a;
+}
+
+.ad-banner__rail {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.35rem;
+  background: linear-gradient(180deg, transparent, var(--ad-accent), transparent);
+  opacity: 0.9;
+}
+
+.ad-banner__frame {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.9fr);
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  align-items: center;
+  width: min(100%, 80rem);
+  margin: 0 auto;
+  padding: clamp(1.6rem, 4vw, 2.75rem) clamp(1.1rem, 3vw, 2rem);
+}
+
+.ad-banner__sponsor {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0 0 0.65rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ad-ivory) 62%, transparent);
+}
+
+.ad-banner__sponsor span {
+  padding: 0.2rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--ad-accent) 55%, transparent);
+  color: var(--ad-accent);
+  letter-spacing: 0.16em;
+}
+
+.ad-banner__sponsor em {
+  font-style: normal;
+  color: var(--ad-ivory);
+}
+
+.ad-banner__headline {
+  margin: 0;
+  max-width: 18ch;
+  font-size: clamp(1.65rem, 3.8vw, 2.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.ad-banner__subline {
+  margin: 0.75rem 0 0;
+  max-width: 38ch;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, var(--ad-ivory) 72%, transparent);
+}
+
+.ad-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.ad-banner__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.65rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 999px;
+  background: var(--ad-accent);
+  color: #12081c;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.ad-banner__cta:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.ad-banner__meta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ad-ivory) 55%, transparent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--ad-accent) 45%, transparent);
+  padding-bottom: 0.1rem;
+  transition: color 0.2s ease;
+}
+
+.ad-banner__meta:hover {
+  color: var(--ad-ivory);
+}
+
+.ad-banner__media {
+  position: relative;
+  min-height: clamp(9rem, 22vw, 14rem);
+  overflow: hidden;
+  clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.ad-banner__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: scale(1.02);
+}
+
+.ad-banner__slash {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 18%;
+  background: linear-gradient(90deg, var(--ad-ink), transparent);
+}
+
+.ad-banner__glyph {
+  position: relative;
+  min-height: clamp(7rem, 18vw, 12rem);
+  display: grid;
+  place-items: center;
+}
+
+.ad-banner__glyph span {
+  width: min(70%, 11rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--ad-accent) 40%, transparent);
+  background:
+    radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--ad-accent) 45%, transparent), transparent 55%),
+    radial-gradient(circle at 70% 70%, color-mix(in srgb, var(--ad-ivory) 12%, transparent), transparent 50%);
+  animation: ad-banner-pulse 4.5s ease-in-out infinite;
+}
+
+@keyframes ad-banner-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 820px) {
+  .ad-banner__frame {
+    grid-template-columns: 1fr;
+    gap: 1.1rem;
+  }
+
+  .ad-banner__media {
+    min-height: 11rem;
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+    order: -1;
+  }
+
+  .ad-banner__headline {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-banner__glyph span {
+    animation: none;
+  }
+}

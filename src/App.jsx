@@ -6,6 +6,7 @@ import { ContentProvider } from './cms/ContentContext'
 import { ToastProvider } from './components/ToastContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import AdBanner from './components/AdBanner'
 import StickyCTA from './components/StickyCTA'
 import ScrollProgress from './components/ScrollProgress'
 import SEO from './components/SEO'
@@ -64,6 +65,7 @@ function PublicChrome({ children }) {
         <PageTransition>{children}</PageTransition>
       </div>
       <StickyCTA />
+      <AdBanner slot="site-pre-footer" />
       <Footer />
     </div>
   )

@@ -16,6 +16,7 @@ export const ITEM_COLLECTIONS = [
   'masterclassTerms',
   'faq',
   'adPackages',
+  'bannerAds',
   'joinSteps',
   'howItWorks',
   'battleCatalog',

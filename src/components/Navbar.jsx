@@ -6,6 +6,9 @@ import { useContent } from '../cms/ContentContext'
 import { handleDonateSubmit, useToast } from './ToastContext'
 import './Navbar.css'
 
+const PROMOTED_NAV = [{ to: '/advertise', label: 'Advertise' }]
+const HIDDEN_FROM_MAIN = new Set(['/giveaway'])
+
 const defaultNavLinks = [
   { to: '/', label: 'Home' },
   { to: '/how-to-join', label: 'How to Join' },
@@ -13,6 +16,7 @@ const defaultNavLinks = [
   { to: '/masterclass', label: 'Masterclass' },
   { to: '/agency', label: 'Agency' },
   { to: '/about', label: 'About' },
+  { to: '/advertise', label: 'Advertise' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -23,8 +27,35 @@ const defaultMoreLinks = [
   { to: '/charity', label: 'Charity', blurb: 'Apply for support', icon: 'heart' },
   { to: '/giveaway', label: 'Giveaway', blurb: 'Claim your reward', icon: 'gift' },
   { to: '/faq', label: 'FAQ', blurb: 'Answers & guidance', icon: 'clipboard' },
-  { to: '/advertise', label: 'Advertise', blurb: 'Partner with us', icon: 'target' },
 ]
+
+function withPromotedNav(links, more) {
+  const base = (Array.isArray(links) && links.length ? [...links] : [...defaultNavLinks]).filter(
+    (link) => !HIDDEN_FROM_MAIN.has(link.to),
+  )
+  const rest = Array.isArray(more) && more.length ? [...more] : [...defaultMoreLinks]
+  const promotedPaths = new Set(PROMOTED_NAV.map((item) => item.to))
+
+  for (const item of PROMOTED_NAV) {
+    if (!base.some((link) => link.to === item.to)) {
+      const contactIdx = base.findIndex((link) => link.to === '/contact')
+      if (contactIdx >= 0) base.splice(contactIdx, 0, item)
+      else base.push(item)
+    }
+  }
+
+  const moreLinks = rest.filter((link) => !promotedPaths.has(link.to))
+  if (!moreLinks.some((link) => link.to === '/giveaway')) {
+    moreLinks.push({
+      to: '/giveaway',
+      label: 'Giveaway',
+      blurb: 'Claim your reward',
+      icon: 'gift',
+    })
+  }
+
+  return { navLinks: base, moreLinks }
+}
 
 function isActive(pathname, to) {
   if (to === '/') return pathname === '/'
@@ -43,8 +74,7 @@ export default function Navbar() {
   const siteName = settings.siteName || ''
   const tagline = settings.tagline || 'Godsent Box Battles'
   const paypalEmail = settings.paypalEmail || ''
-  const navLinks = (collections.navLinks?.length ? collections.navLinks : defaultNavLinks)
-  const moreLinks = (collections.navMoreLinks?.length ? collections.navMoreLinks : defaultMoreLinks)
+  const { navLinks, moreLinks } = withPromotedNav(collections.navLinks, collections.navMoreLinks)
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 12)

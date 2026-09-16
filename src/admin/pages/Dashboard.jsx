@@ -127,8 +127,8 @@ export default function AdminDashboard() {
       </p>
       <div className="admin-grid" style={{ marginBottom: '1.75rem' }}>
         <Link to="/admin/schedule/week" className="admin-card">
-          <strong>Next 7 days</strong>
-          <span>Edit the seven-day horizon boxes on Battle Schedule</span>
+          <strong>Next 30 days</strong>
+          <span>Edit the 30-day horizon boxes on Battle Schedule</span>
         </Link>
         <Link to="/admin/enrollments" className="admin-card">
           <strong>Masterclass enrollments</strong>

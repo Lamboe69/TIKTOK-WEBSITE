@@ -1,3 +1,4 @@
+import AdBanner from '../components/AdBanner'
 import Hero from '../components/sections/Hero'
 import HowItWorks from '../components/sections/HowItWorks'
 import BattleTypes from '../components/sections/BattleTypes'
@@ -14,6 +15,7 @@ export default function Home() {
     <main>
       <Hero />
       <UpcomingBattles />
+      <AdBanner slot="home-after-upcoming" />
       <HowItWorks />
       <BattleTypes />
       <KmLovers />
@@ -21,6 +23,7 @@ export default function Home() {
       <CommunityRecognition />
       <MasterclassTeaser />
       <TimezoneStrip />
+      <AdBanner slot="home-before-testimonials" />
       <Testimonials />
     </main>
   )

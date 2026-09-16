@@ -6,6 +6,7 @@ import { mediaUrl } from '../../utils/mediaUrl'
 import { AdminPage } from '../AdminLayout'
 import { AdminPagination, AdminSearchBar } from '../components/AdminListControls'
 import { ADMIN_PAGE_SIZE, paginateItems } from '../utils/collectionList'
+import { formatCount, normalizeCountAbbrev } from '../../utils/formatCount'
 
 const STATUS_FILTERS = [
   { key: 'all', label: 'All' },
@@ -24,10 +25,8 @@ const TYPE_FILTERS = [
 function formatFollowers(n) {
   if (n == null || n === '') return '—'
   const num = Number(n)
-  if (!Number.isFinite(num)) return String(n)
-  if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`
-  if (num >= 1_000) return `${(num / 1_000).toFixed(num >= 10_000 ? 0 : 1)}K`
-  return String(num)
+  if (!Number.isFinite(num)) return normalizeCountAbbrev(n)
+  return normalizeCountAbbrev(formatCount(num) || String(num))
 }
 
 function formatRally(value) {
