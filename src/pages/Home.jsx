@@ -23,7 +23,6 @@ export default function Home() {
       <CommunityRecognition />
       <MasterclassTeaser />
       <TimezoneStrip />
-      <AdBanner slot="home-before-testimonials" />
       <Testimonials />
     </main>
   )

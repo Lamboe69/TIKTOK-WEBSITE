@@ -554,12 +554,12 @@ export const COLLECTIONS = [
   {
     key: 'bannerAds',
     label: 'Banner ads',
-    description: 'Site banner creatives by slot — home, schedule, and site-wide',
+    description: 'All enabled creatives rotate in a swipeable carousel at each banner zone',
     titleField: 'headline',
     fields: [
       {
         key: 'slot',
-        label: 'Placement slot',
+        label: 'Label / preferred zone (all enabled ads still rotate together)',
         type: 'select',
         options: [
           'home-after-upcoming',

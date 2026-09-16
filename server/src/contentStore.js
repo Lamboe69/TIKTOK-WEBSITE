@@ -46,6 +46,17 @@ export function ensureItemId(item, index = 0) {
   return String(Date.now() + index)
 }
 
+/** Item collections to write: known list + any extra array keys in the payload (except blobs). */
+export function resolveItemCollectionKeys(collections = {}) {
+  const keys = new Set(ITEM_COLLECTIONS)
+  for (const [key, value] of Object.entries(collections || {})) {
+    if (BLOB_COLLECTIONS.includes(key)) continue
+    if (key === 'mediaLibrary') continue
+    if (Array.isArray(value)) keys.add(key)
+  }
+  return [...keys]
+}
+
 export async function bumpMeta(client) {
   await client.query(
     `UPDATE content_meta
@@ -85,6 +96,11 @@ export async function assembleContent(client) {
       collections[row.collection_key] = []
     }
     collections[row.collection_key].push(item)
+  }
+
+  // Ensure every item collection key that exists in DB is present even if not in ITEM_COLLECTIONS yet
+  for (const row of itemsRes.rows) {
+    if (!Array.isArray(collections[row.collection_key])) collections[row.collection_key] = []
   }
 
   if (!collections.mediaLibrary?.length) {
@@ -136,7 +152,7 @@ export async function replaceAllContent(client, body) {
       )
     }
 
-    for (const key of ITEM_COLLECTIONS) {
+    for (const key of resolveItemCollectionKeys(collections)) {
       if (!(key in collections)) continue
       const items = Array.isArray(collections[key]) ? collections[key] : []
       await client.query(`DELETE FROM collection_items WHERE collection_key = $1`, [key])

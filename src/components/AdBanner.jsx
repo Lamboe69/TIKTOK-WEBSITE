@@ -1,7 +1,12 @@
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { A11y, Autoplay, Keyboard } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import { useContent } from '../cms/ContentContext'
 import { mediaUrl } from '../utils/mediaUrl'
 import './AdBanner.css'
+
+import 'swiper/css'
 
 export const BANNER_SLOT_LABELS = {
   'home-after-upcoming': 'Home · after upcoming battles',
@@ -81,17 +86,7 @@ function resolveHref(href) {
   return { kind: 'internal', href: raw.startsWith('/') ? raw : `/${raw}` }
 }
 
-/**
- * Renders the first enabled banner for a named slot.
- * Edit creatives in Admin → Collections → Banner ads.
- */
-export default function AdBanner({ slot, className = '' }) {
-  const { collections } = useContent()
-  const ads = collections.bannerAds?.length ? collections.bannerAds : DEFAULT_BANNER_ADS
-  const ad = ads.find((item) => item?.slot === slot && isEnabled(item))
-
-  if (!ad) return null
-
+function BannerSlide({ ad }) {
   const theme = ad.theme || 'ember'
   const image = mediaUrl(ad.image)
   const href = resolveHref(ad.ctaHref || ad.href)
@@ -116,13 +111,7 @@ export default function AdBanner({ slot, className = '' }) {
     ) : null
 
   return (
-    <aside
-      className={`ad-banner ad-banner--${theme}${className ? ` ${className}` : ''}`}
-      style={style}
-      aria-label={`Sponsored: ${sponsor}`}
-      data-ad-slot={slot}
-      data-ad-slot-label={BANNER_SLOT_LABELS[slot] || slot}
-    >
+    <div className={`ad-banner__slide ad-banner--${theme}`} style={style}>
       <div className="ad-banner__rail" aria-hidden />
       <div className="ad-banner__frame">
         <div className="ad-banner__copy">
@@ -151,6 +140,147 @@ export default function AdBanner({ slot, className = '' }) {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+/**
+ * Swipeable banner carousel — shows every enabled creative.
+ * `slot` marks where this carousel sits on the site (Admin placement label).
+ */
+export default function AdBanner({ slot, className = '' }) {
+  const { collections } = useContent()
+  const source = collections.bannerAds?.length ? collections.bannerAds : DEFAULT_BANNER_ADS
+  const ads = source.filter(isEnabled)
+  const swiperRef = useRef(null)
+  const [active, setActive] = useState(0)
+
+  if (!ads.length) return null
+
+  const last = Math.max(0, ads.length - 1)
+  const multi = ads.length > 1
+  const looping = ads.length > 2
+  const canPrev = looping || active > 0
+  const canNext = looping || active < last
+
+  return (
+    <aside
+      className={`ad-banner${className ? ` ${className}` : ''}`}
+      aria-label="Sponsored banners"
+      data-ad-slot={slot}
+      data-ad-slot-label={BANNER_SLOT_LABELS[slot] || slot}
+    >
+      {multi ? (
+        <div className="ad-banner__toolbar">
+          <p className="ad-banner__toolbar-label">
+            Partner beacons
+            <span>
+              {String(active + 1).padStart(2, '0')} / {String(ads.length).padStart(2, '0')}
+            </span>
+          </p>
+          <div className="ad-banner__nav" role="group" aria-label="Banner controls">
+            <button
+              type="button"
+              className="ad-banner__nav-btn"
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={!canPrev}
+              aria-label="Previous banner"
+            >
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path
+                  d="M10.5 3.5 6 8l4.5 4.5"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              className="ad-banner__nav-btn"
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={!canNext}
+              aria-label="Next banner"
+            >
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden>
+                <path
+                  d="M5.5 3.5 10 8l-4.5 4.5"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      <Swiper
+        className="ad-banner__swiper"
+        modules={[Keyboard, A11y, Autoplay]}
+        speed={520}
+        spaceBetween={0}
+        slidesPerView={1}
+        watchOverflow
+        grabCursor
+        loop={looping}
+        autoplay={
+          multi
+            ? {
+                delay: 6500,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }
+            : false
+        }
+        keyboard={{ enabled: true }}
+        a11y={{
+          enabled: true,
+          prevSlideMessage: 'Previous banner',
+          nextSlideMessage: 'Next banner',
+        }}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper
+        }}
+        onSlideChange={(swiper) => setActive(swiper.realIndex ?? swiper.activeIndex)}
+      >
+        {ads.map((ad) => (
+          <SwiperSlide key={ad.id ?? `${ad.slot}-${ad.headline}`}>
+            <BannerSlide ad={ad} />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
+      {multi ? (
+        <div className="ad-banner__pager">
+          <div className="ad-banner__progress" aria-hidden>
+            <span style={{ width: `${((active + 1) / ads.length) * 100}%` }} />
+          </div>
+          <div className="ad-banner__dots" role="tablist" aria-label="Banner slides">
+            {ads.map((ad, idx) => (
+              <button
+                key={ad.id ?? `dot-${idx}`}
+                type="button"
+                role="tab"
+                aria-selected={idx === active}
+                aria-label={`Show banner ${idx + 1}`}
+                className={`ad-banner__dot${idx === active ? ' is-active' : ''}`}
+                onClick={() => {
+                  const swiper = swiperRef.current
+                  if (!swiper) return
+                  if (typeof swiper.slideToLoop === 'function' && swiper.params?.loop) {
+                    swiper.slideToLoop(idx)
+                  } else {
+                    swiper.slideTo(idx)
+                  }
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      ) : null}
     </aside>
   )
 }
