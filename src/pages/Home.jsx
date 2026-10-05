@@ -2,7 +2,7 @@ import AdBanner from '../components/AdBanner'
 import Hero from '../components/sections/Hero'
 import HowItWorks from '../components/sections/HowItWorks'
 import BattleTypes from '../components/sections/BattleTypes'
-import KmLovers from '../components/sections/KmLovers'
+import HostLivestream from '../components/sections/HostLivestream'
 import WinnersVisit from '../components/sections/WinnersVisit'
 import CommunityRecognition from '../components/sections/CommunityRecognition'
 import Testimonials from '../components/sections/Testimonials'
@@ -18,7 +18,7 @@ export default function Home() {
       <AdBanner slot="home-after-upcoming" />
       <HowItWorks />
       <BattleTypes />
-      <KmLovers />
+      <HostLivestream />
       <WinnersVisit />
       <CommunityRecognition />
       <MasterclassTeaser />

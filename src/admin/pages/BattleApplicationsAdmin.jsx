@@ -159,7 +159,7 @@ function BattleGroupSection({
             <table className="ba-table">
               <thead>
                 <tr>
-                  <th>Name</th>
+                  <th>TikTok name</th>
                   <th>TikTok</th>
                   <th>Country / Team</th>
                   <th>Followers</th>

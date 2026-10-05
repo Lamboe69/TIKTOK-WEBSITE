@@ -7,6 +7,8 @@ const ALLOWED_TOPICS = new Set([
   'General Question',
   "Creator Management Inquiry (La'Gwat Agency)",
   'Press / Media',
+  'Host livestream token',
+  'Host livestream — $600 token',
   'Other',
 ])
 

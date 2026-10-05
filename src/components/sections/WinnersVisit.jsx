@@ -1,6 +1,7 @@
 import Motion from '../Motion'
 import { useContent } from '../../cms/ContentContext'
 import { normalizeSectionLayout } from '../../cms/sectionLayouts'
+import './WinnersVisit.css'
 
 const defaultSteps = [
   'Win an Official Godsent Box Battle',
@@ -9,20 +10,30 @@ const defaultSteps = [
   'Claim your spotlight before the whole family',
 ]
 
+function splitSpotlightTitle(title) {
+  const dot = title.indexOf('.')
+  if (dot > 0 && dot < title.length - 1) {
+    return {
+      lead: title.slice(0, dot + 1).trim(),
+      rest: title.slice(dot + 1).trim(),
+    }
+  }
+  const words = title.split(' ').filter(Boolean)
+  const cut = Math.max(1, Math.ceil(words.length / 3))
+  return {
+    lead: words.slice(0, cut).join(' '),
+    rest: words.slice(cut).join(' '),
+  }
+}
+
 function WinnersHead({ kicker, title, subtitle }) {
+  const { lead, rest } = splitSpotlightTitle(title)
   return (
     <>
       <p className="sec-kicker mb-4" style={{ color: 'rgba(232,185,74,0.95)' }}>{kicker}</p>
-      <h2
-        className="font-display font-bold text-ivory leading-[0.95] tracking-tight mb-4"
-        style={{ fontSize: 'clamp(2.2rem, 4vw, 3.4rem)' }}
-      >
-        {title.includes(' ') ? (
-          <>
-            {title.split(' ').slice(0, Math.ceil(title.split(' ').length / 2)).join(' ')}<br />
-            <span className="text-gradient">{title.split(' ').slice(Math.ceil(title.split(' ').length / 2)).join(' ')}</span>
-          </>
-        ) : title}
+      <h2 className="win-head font-display">
+        <span className="win-head__lead">{lead}</span>
+        {rest ? <span className="win-head__rest">{rest}</span> : null}
       </h2>
       <p className="text-white/70 text-sm leading-relaxed max-w-md mb-10">{subtitle}</p>
     </>
@@ -92,61 +103,65 @@ export default function WinnersVisit() {
   }
 
   if (layout === 'coronation') {
+    const { lead, rest } = splitSpotlightTitle(sectionTitle)
     return (
-      <section className={sectionClass}>
-        <div className="coronation-arc">
-          <Motion delay={60}>
-            <WinnersHead kicker={winnersKicker} title={sectionTitle} subtitle={sectionSubtitle} />
-          </Motion>
-          <div className="coronation-arc__crown" aria-hidden />
-          <img src={winnersImage} alt="Winners" className="w-full max-w-md mx-auto rounded-lg mb-6 object-cover aspect-video" loading="lazy" />
-          <div className="coronation-steps">
-            {steps.map((text, i) => (
-              <Motion key={text} delay={120 + i * 70}>
-                <article className="coronation-step" style={{ '--coronation-i': i }}>
-                  <span className="font-display font-bold text-ember text-lg block mb-2">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-ivory text-sm leading-snug">{text}</p>
-                </article>
-              </Motion>
-            ))}
+      <section className="win-crown" aria-label={sectionTitle}>
+        <div className="win-crown__stage">
+          <div className="win-crown__poster">
+            <div className="win-crown__iris" aria-hidden>
+              <span />
+            </div>
+            <p className="win-crown__kicker">{winnersKicker}</p>
+            <h2 className="win-crown__title font-display">
+              <span>{lead}</span>
+              {rest ? <em>{rest}</em> : null}
+            </h2>
           </div>
+          <p className="win-crown__lede">{sectionSubtitle}</p>
+          <ol className="win-crown__steps">
+            {steps.map((text, i) => (
+              <li key={text} style={{ '--i': i }}>
+                <span className="font-display">{String(i + 1).padStart(2, '0')}</span>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
     )
   }
 
+  const { lead, rest } = splitSpotlightTitle(sectionTitle)
+
   return (
-    <section className={sectionClass}>
-      <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[520px]">
-        <div className="relative min-h-[300px] order-2 lg:order-1">
-          <img src={winnersImage} alt="Winners livestream visit" className="absolute inset-0 w-full h-full object-cover" />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(to left, #2A1028 0%, transparent 40%), linear-gradient(to top, rgba(42,16,40,0.55), transparent 40%)',
-            }}
-          />
-        </div>
+    <section className="win-spot" aria-label={sectionTitle}>
+      <div className="win-spot__beam" aria-hidden />
+      <p className="win-spot__ghost font-display" aria-hidden>CROWN</p>
 
-        <div className="order-1 lg:order-2 px-5 sm:px-10 lg:px-14 py-16 sm:py-20 flex flex-col justify-center">
-          <Motion delay={60}>
-            <WinnersHead kicker={winnersKicker} title={sectionTitle} subtitle={sectionSubtitle} />
-          </Motion>
+      <div className="win-spot__stage">
+        <Motion delay={40} className="win-spot__copy">
+          <p className="win-spot__kicker">{winnersKicker}</p>
+          <h2 className="win-spot__title font-display">
+            <span className="win-spot__lead">{lead}</span>
+            {rest ? <span className="win-spot__rest">{rest}</span> : null}
+          </h2>
+          <p className="win-spot__lede">{sectionSubtitle}</p>
+        </Motion>
 
-          <ol className="space-y-0">
-            {steps.map((text, i) => (
-              <Motion key={text} delay={120 + i * 70}>
-                <li className="flex gap-5 py-4 border-t border-white/[0.06] last:border-b">
-                  <span className="font-display font-bold text-ember text-xl w-8 flex-shrink-0">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-                  <p className="text-ivory text-sm sm:text-base leading-snug pt-1">{text}</p>
-                </li>
-              </Motion>
-            ))}
-          </ol>
-        </div>
+        <figure className="win-spot__portrait">
+          <img src={winnersImage} alt="" />
+          <span className="win-spot__halo" aria-hidden />
+          <figcaption>Livestream visit</figcaption>
+        </figure>
+
+        <ol className="win-spot__path">
+          {steps.map((text, i) => (
+            <li key={text} style={{ '--i': i }}>
+              <span className="win-spot__n font-display">{String(i + 1).padStart(2, '0')}</span>
+              <p>{text}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   )

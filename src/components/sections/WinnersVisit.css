@@ -1,0 +1,400 @@
+.win-head {
+  margin: 0 0 1rem;
+  color: #fff7f0;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.win-head__lead {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1.5px #fff7f0;
+}
+
+.win-head__rest {
+  display: block;
+  color: #e8b94a;
+}
+
+.win-spot {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(3.5rem, 8vw, 6.5rem) 0;
+  background:
+    radial-gradient(ellipse 40% 70% at 48% 0%, rgba(255, 236, 196, 0.16), transparent 58%),
+    #07040e;
+  color: #fff7f0;
+  box-shadow: inset 0 1px 0 rgba(232, 185, 74, 0.28);
+}
+
+.win-spot__beam {
+  position: absolute;
+  z-index: 0;
+  left: 42%;
+  top: -8%;
+  width: min(28rem, 46vw);
+  height: 125%;
+  background: linear-gradient(180deg, rgba(255, 244, 214, 0.22), rgba(232, 185, 74, 0.05) 42%, transparent 78%);
+  clip-path: polygon(38% 0, 62% 0, 100% 100%, 0 100%);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.win-spot__ghost {
+  position: absolute;
+  z-index: 0;
+  right: -0.06em;
+  bottom: -0.18em;
+  margin: 0;
+  font-size: clamp(6rem, 16vw, 12rem);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 247, 240, 0.07);
+  pointer-events: none;
+  user-select: none;
+}
+
+.win-spot__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(14rem, 0.72fr) minmax(0, 0.95fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+  width: min(100% - 2.4rem, 78rem);
+  margin: 0 auto;
+}
+
+.win-spot__kicker {
+  margin: 0 0 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #e8b94a;
+}
+
+.win-spot__title {
+  margin: 0;
+  font-size: clamp(3.6rem, 7vw, 6.4rem);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+}
+
+.win-spot__lead {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1.5px #fff7f0;
+}
+
+.win-spot__rest {
+  display: block;
+  max-width: 8ch;
+  margin-top: 0.12em;
+  color: #fff7f0;
+  font-size: 0.62em;
+  line-height: 0.92;
+}
+
+.win-spot__lede {
+  margin: 1.15rem 0 0;
+  max-width: 32ch;
+  color: rgba(255, 247, 240, 0.68);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.win-spot__portrait {
+  position: relative;
+  margin: 0;
+  justify-self: center;
+  width: min(100%, 18.5rem);
+  aspect-ratio: 3 / 4;
+}
+
+.win-spot__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  border-radius: 50% 50% 42% 42%;
+  filter: saturate(0.92) contrast(1.05);
+}
+
+.win-spot__halo {
+  position: absolute;
+  inset: -0.7rem;
+  border-radius: 50%;
+  border: 1px dashed rgba(232, 185, 74, 0.65);
+  animation: win-spin 22s linear infinite;
+  pointer-events: none;
+}
+
+.win-spot__portrait figcaption {
+  position: absolute;
+  left: 50%;
+  bottom: 0.85rem;
+  transform: translateX(-50%);
+  padding: 0.28rem 0.6rem;
+  background: #07040e;
+  color: #e8b94a;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.win-spot__path {
+  position: relative;
+  margin: 0;
+  padding: 0.4rem 0 0.4rem 1.35rem;
+  list-style: none;
+}
+
+.win-spot__path::before {
+  content: '';
+  position: absolute;
+  left: 0.28rem;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, #e8b94a 18%, #ff6b1a 82%, transparent);
+}
+
+.win-spot__path li {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.85rem;
+  align-items: start;
+  margin-left: calc(var(--i) * 0.85rem);
+  padding: 0.85rem 0;
+}
+
+.win-spot__path li::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.35rem - var(--i) * 0.85rem);
+  top: 1.35rem;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: #e8b94a;
+  box-shadow: 0 0 0 4px rgba(232, 185, 74, 0.15);
+}
+
+.win-spot__n {
+  color: rgba(232, 185, 74, 0.85);
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.win-spot__path p {
+  margin: 0;
+  color: rgba(255, 247, 240, 0.86);
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.win-spot__path li:last-child p {
+  color: #fff7f0;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.15;
+}
+
+@keyframes win-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 980px) {
+  .win-spot__stage {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .win-spot__portrait {
+    order: -1;
+    width: min(16rem, 68vw);
+  }
+
+  .win-spot__beam {
+    left: 10%;
+    width: 70%;
+  }
+
+  .win-spot__path li {
+    margin-left: 0;
+  }
+
+  .win-spot__path li::before {
+    left: -1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .win-spot__halo {
+    animation: none;
+  }
+}
+
+/* Coronation — the period is the spotlight */
+.win-crown {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  scroll-margin-top: 4.5rem;
+  padding: clamp(2.8rem, 7vw, 5.5rem) 0 calc(6.4rem + env(safe-area-inset-bottom, 0px));
+  background: #07050c;
+  color: #fff7f0;
+  box-shadow: inset 0 1px 0 rgba(232, 185, 74, 0.45);
+}
+
+.win-crown__stage {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 1.6rem, 34rem);
+  margin: 0 auto;
+}
+
+.win-crown__kicker {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 0.7rem;
+  text-align: center;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #e8b94a;
+}
+
+.win-crown__poster {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  min-height: min(23rem, 92vw);
+}
+
+.win-crown__iris {
+  position: absolute;
+  width: min(21.5rem, 92vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 248, 226, 0.34) 0 6%, rgba(232, 185, 74, 0.14) 24%, transparent 60%);
+  box-shadow:
+    inset 0 0 0 1px rgba(232, 185, 74, 0.8),
+    inset 0 0 0 11px rgba(232, 185, 74, 0.07);
+}
+
+.win-crown__iris span {
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 185, 74, 0.28);
+}
+
+.win-crown__title {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  text-align: center;
+  font-size: clamp(4.6rem, 18vw, 7.2rem);
+  line-height: 0.78;
+  letter-spacing: -0.05em;
+}
+
+.win-crown__title span {
+  display: block;
+  color: transparent;
+  -webkit-text-stroke: 1.35px #fff7f0;
+  text-shadow: 0 0 28px rgba(232, 185, 74, 0.28);
+}
+
+.win-crown__title em {
+  display: block;
+  width: min(11ch, 70vw);
+  margin: 0.45rem auto 0;
+  font-style: normal;
+  color: #e8b94a;
+  font-size: 0.4em;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.win-crown__lede {
+  margin: 1.35rem auto 0;
+  max-width: 36ch;
+  text-align: center;
+  color: rgba(255, 247, 240, 0.66);
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.win-crown__steps {
+  display: grid;
+  gap: 0.4rem;
+  margin: 1.5rem 0.2rem 0 0.35rem;
+  padding: 0;
+  list-style: none;
+}
+
+.win-crown__steps li {
+  display: grid;
+  gap: 0.12rem;
+  margin-left: calc(var(--i) * 0.95rem);
+  padding: 0.72rem 0.85rem 0.72rem 0.9rem;
+  border-left: 2px solid #e8b94a;
+  background: linear-gradient(90deg, rgba(232, 185, 74, 0.14), transparent 78%);
+}
+
+.win-crown__steps span {
+  color: #e8b94a;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+}
+
+.win-crown__steps p {
+  margin: 0;
+  color: #fff7f0;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+@media (min-width: 900px) {
+  .win-crown {
+    padding-bottom: clamp(4rem, 7vw, 6rem);
+  }
+
+  .win-crown__stage {
+    width: min(100% - 4rem, 70rem);
+    display: grid;
+    grid-template-columns: minmax(18rem, 0.9fr) minmax(0, 1fr);
+    column-gap: 3.5rem;
+    align-items: center;
+  }
+
+  .win-crown__poster,
+  .win-crown__lede {
+    grid-column: 1;
+  }
+
+  .win-crown__lede {
+    margin-top: 0.4rem;
+  }
+
+  .win-crown__steps {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    margin: 0;
+    align-self: center;
+  }
+}
+

@@ -19,6 +19,13 @@ export const BATTLE_TYPES_LAYOUTS = [
   { id: 'vhs', label: 'VHS Tape Deck', description: 'Retro tape carousel with scan-line nostalgia' },
 ]
 
+export const HOST_LIVESTREAM_LAYOUTS = [
+  { id: 'stage', label: 'Stage Coin', description: 'Diagonal photo gate with a spinning gold token on the seam' },
+  { id: 'broadcast', label: 'On Air Desk', description: 'Split control-room frames with a lower-third price chyron' },
+  { id: 'vault', label: 'Token Vault', description: 'Round vault porthole above a deposit slip' },
+  { id: 'premiere', label: 'Premiere Marquee', description: 'Bulb-lit theater posters with a hanging token' },
+]
+
 export const KM_LOVERS_LAYOUTS = [
   { id: 'guardian', label: 'Guardian Banner', description: 'Full-bleed community photo with pillar copy' },
   { id: 'shieldwall', label: 'Shield Wall', description: 'Hexagonal avatar mosaic protecting the message' },
@@ -30,7 +37,7 @@ export const WINNERS_LAYOUTS = [
   { id: 'split', label: 'Spotlight Split', description: 'Classic image + numbered step list' },
   { id: 'trophy', label: 'Trophy Case', description: 'Glass vitrine with engraved winner plaques' },
   { id: 'runway', label: 'Red Carpet Runway', description: 'Velvet runway with spotlight step markers' },
-  { id: 'coronation', label: 'Coronation Arc', description: 'Crown arch with steps ascending the curve' },
+  { id: 'coronation', label: 'Coronation', description: 'Gold crown in a spotlight, steps rising beside it' },
 ]
 
 export const RECOGNITION_LAYOUTS = [
@@ -73,6 +80,7 @@ export const SECTION_LAYOUT_REGISTRY = {
   howItWorksLayout: { layouts: HOW_IT_WORKS_LAYOUTS, default: 'eclipse' },
   battleTypesLayout: { layouts: BATTLE_TYPES_LAYOUTS, default: 'arena' },
   kmLoversLayout: { layouts: KM_LOVERS_LAYOUTS, default: 'guardian' },
+  hostLivestreamLayout: { layouts: HOST_LIVESTREAM_LAYOUTS, default: 'stage' },
   winnersLayout: { layouts: WINNERS_LAYOUTS, default: 'split' },
   recognitionLayout: { layouts: RECOGNITION_LAYOUTS, default: 'marquee' },
   masterclassLayout: { layouts: MASTERCLASS_LAYOUTS, default: 'atelier' },

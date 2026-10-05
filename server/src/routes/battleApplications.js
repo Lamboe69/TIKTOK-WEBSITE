@@ -85,7 +85,7 @@ function validateApplicationBody(body, { schedule = [] } = {}) {
 
   const fullName = String(body?.fullName || body?.name || '').trim()
   if (!fullName || fullName.length < 2) {
-    return { error: 'Please enter your full name' }
+    return { error: 'Please enter your TikTok name' }
   }
   if (fullName.length > 120) {
     return { error: 'Full name is too long' }

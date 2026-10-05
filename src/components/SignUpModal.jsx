@@ -347,7 +347,7 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                 )}
 
                 <div className="signup-field">
-                  <RequiredLabel htmlFor="signup-name">Full name</RequiredLabel>
+                  <RequiredLabel htmlFor="signup-name">TikTok name</RequiredLabel>
                   <input
                     id="signup-name"
                     ref={battleLocked ? firstFieldRef : undefined}
@@ -356,8 +356,8 @@ export default function SignUpModal({ type = 'official', preset = null, isOpen, 
                     value={form.fullName}
                     onChange={handleChange}
                     required
-                    autoComplete="name"
-                    placeholder="Your full name"
+                    autoComplete="nickname"
+                    placeholder="Your TikTok name"
                     className="signup-field__control"
                   />
                 </div>
